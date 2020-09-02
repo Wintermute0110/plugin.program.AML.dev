@@ -46,7 +46,8 @@ import subprocess
 import urllib.parse
 
 # --- Addon object (used to access settings) ---
-__addon__         = xbmcaddon.Addon()
+__addon__ = xbmcaddon.Addon()
+# Remove this legacy __*__ variables and put them in the cfg object.
 __addon_id__      = __addon__.getAddonInfo('id')
 __addon_name__    = __addon__.getAddonInfo('name')
 __addon_version__ = __addon__.getAddonInfo('version')
@@ -58,14 +59,23 @@ __addon_type__    = __addon__.getAddonInfo('type')
 # _PATH is a filename | _DIR is a directory
 class AML_Paths:
     def __init__(self):
+        # --- Kodi-related variables and data ---
+        self.__addon_id__      = __addon__.getAddonInfo('id')
+        self.__addon_name__    = __addon__.getAddonInfo('name')
+        self.__addon_version__ = __addon__.getAddonInfo('version')
+        self.__addon_author__  = __addon__.getAddonInfo('author')
+        self.__addon_profile__ = __addon__.getAddonInfo('profile')
+        self.__addon_type__    = __addon__.getAddonInfo('type')
+
+        # --- File and directory names ---
         self.HOME_DIR         = FileName('special://home')
         self.PROFILE_DIR      = FileName('special://profile')
-        self.ADDON_CODE_DIR   = self.HOME_DIR.pjoin('addons/' + __addon_id__)
-        self.ADDON_DATA_DIR   = self.PROFILE_DIR.pjoin('addon_data/' + __addon_id__)
+        self.ADDON_CODE_DIR   = self.HOME_DIR.pjoin('addons/' + self.__addon_id__)
+        self.ADDON_DATA_DIR   = self.PROFILE_DIR.pjoin('addon_data/' + self.__addon_id__)
         self.ICON_FILE_PATH   = self.ADDON_CODE_DIR.pjoin('media/icon.png')
         self.FANART_FILE_PATH = self.ADDON_CODE_DIR.pjoin('media/fanart.jpg')
 
-        # >> MAME stdout/strderr files
+        # MAME stdout/strderr files.
         self.MAME_STDOUT_PATH     = self.ADDON_DATA_DIR.pjoin('log_stdout.log')
         self.MAME_STDERR_PATH     = self.ADDON_DATA_DIR.pjoin('log_stderr.log')
         self.MAME_STDOUT_VER_PATH = self.ADDON_DATA_DIR.pjoin('log_version_stdout.log')
@@ -74,7 +84,7 @@ class AML_Paths:
         self.MONO_FONT_PATH       = self.ADDON_CODE_DIR.pjoin('fonts/Inconsolata.otf')
         self.CUSTOM_FILTER_PATH   = self.ADDON_CODE_DIR.pjoin('filters/AML-MAME-filters.xml')
 
-        # --- MAME XML, main database and main PClone list ---
+        # MAME XML, main database and main PClone list.
         self.MAME_XML_PATH = self.ADDON_DATA_DIR.pjoin('MAME.xml')
         self.MAME_XML_CONTROL_PATH = self.ADDON_DATA_DIR.pjoin('MAME_control.json')
         self.MAME_2003_PLUS_XML_CONTROL_PATH = self.ADDON_DATA_DIR.pjoin('MAME_2003_plus_control.json')
@@ -234,12 +244,12 @@ class AML_Paths:
         self.REPORT_SL_AUDIT_CHDS_GOOD_PATH    = self.REPORTS_DIR.pjoin('Audit_SL_CHDs_good.txt')
         self.REPORT_SL_AUDIT_CHDS_ERRORS_PATH  = self.REPORTS_DIR.pjoin('Audit_SL_CHDs_errors.txt')
 
-        # >> Custom filters report.
+        # Custom filters report.
         self.REPORT_CF_XML_SYNTAX_PATH = self.REPORTS_DIR.pjoin('Custom_filter_XML_check.txt')
         self.REPORT_CF_DB_BUILD_PATH   = self.REPORTS_DIR.pjoin('Custom_filter_database_report.txt')
         self.REPORT_CF_HISTOGRAMS_PATH = self.REPORTS_DIR.pjoin('Custom_filter_histogram.txt')
 
-        # >> DEBUG data
+        # DEBUG data
         self.REPORT_DEBUG_MAME_ITEM_DATA_PATH       = self.REPORTS_DIR.pjoin('debug_MAME_item_data.txt')
         self.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH   = self.REPORTS_DIR.pjoin('debug_MAME_item_ROM_DB_data.txt')
         self.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH = self.REPORTS_DIR.pjoin('debug_MAME_item_Audit_DB_data.txt')
@@ -249,85 +259,120 @@ class AML_Paths:
         self.REPORT_DEBUG_MAME_COLLISIONS_PATH      = self.REPORTS_DIR.pjoin('debug_MAME_collisions.txt')
         self.REPORT_DEBUG_SL_COLLISIONS_PATH        = self.REPORTS_DIR.pjoin('debug_SL_collisions.txt')
 
+        # --- Former global variables ---
+        self.settings = {}
+        self.base_url = ''
+        self.addon_handle = 0
+        self.content_type = ''
+        # Map of AEL artwork types to Kodi standard types,
+        self.mame_icon = ''
+        self.mame_fanart = ''
+        self.SL_icon = ''
+        self.SL_fanart = ''
+
 # --- Global variables ---
+# Put all these global variables into the g_cfg object instantiated in run_plugin().
 g_PATHS = AML_Paths()
 g_settings = {}
 g_base_url = ''
 g_addon_handle = 0
 g_content_type = ''
-g_time_str = str(datetime.datetime.now())
-
+# Map of AEL artwork types to Kodi standard types,
 g_mame_icon = ''
 g_mame_fanart = ''
 g_SL_icon = ''
 g_SL_fanart = ''
 
+# Module loading time. This variable is read only (only modified here).
+g_time_str = str(datetime.datetime.now())
+
 # ---------------------------------------------------------------------------------------------
 # This is the plugin entry point.
 # ---------------------------------------------------------------------------------------------
 def run_plugin(addon_argv):
+    global g_settings
     global g_base_url
     global g_addon_handle
     global g_content_type
+    global g_mame_icon
+    global g_mame_fanart
+    global g_SL_icon
+    global g_SL_fanart
 
-    # --- Initialise log system ---
+    # Unify all global variables into an object to simplify function calling.
+    # Keep compatibility with legacy code until all addon has been refactored.
+    # Instead of using a global variable create an instance of the cfg object here
+    # and pass as first argument of all functions. Long live to functional programming!
+    cfg = AML_Paths()
+
+    # --- Initialize log system ---
     # Force DEBUG log level for development.
     # Place it before setting loading so settings can be dumped during debugging.
     # set_log_level(LOG_DEBUG)
 
     # --- Fill in settings dictionary using addon_obj.getSetting() ---
-    get_settings()
-    set_log_level(g_settings['log_level'])
+    get_settings(cfg)
+    set_log_level(cfg.settings['log_level'])
 
     # --- Some debug stuff for development ---
     log_debug('---------- Called AML Main::run_plugin() constructor ----------')
     log_debug('sys.platform    {}'.format(sys.platform))
     log_debug('Python version  ' + sys.version.replace('\n', ''))
-    log_debug('__a_id__        {}'.format(__addon_id__))
-    log_debug('__a_version__   {}'.format(__addon_version__))
-    # log_debug('ADDON_DATA_DIR {}'.format(g_PATHS.ADDON_DATA_DIR.getPath()))
+    log_debug('__a_id__        {}'.format(cfg.__addon_id__))
+    log_debug('__a_version__   {}'.format(cfg.__addon_version__))
+    # log_debug('ADDON_DATA_DIR {}'.format(cfg.ADDON_DATA_DIR.getPath()))
     for i in range(len(addon_argv)): log_debug('addon_argv[{}] = "{}"'.format(i, addon_argv[i]))
     # Timestamp to see if this submodule is reinterpreted or not (interpreter uses a cached instance).
     log_debug('submodule global timestamp {}'.format(g_time_str))
     # log_debug('recursionlimit {}'.format(sys.getrecursionlimit()))
 
     # --- Secondary setting processing ---
-    get_settings_log_enabled()
-    log_debug('Operation mode "{}"'.format(g_settings['op_mode']))
-    log_debug('SL global enable is {}'.format(g_settings['global_enable_SL']))
+    get_settings_log_enabled(cfg)
+    log_debug('Operation mode "{}"'.format(cfg.settings['op_mode']))
+    log_debug('SL global enable is {}'.format(cfg.settings['global_enable_SL']))
 
     # --- Playground and testing code ---
     # kodi_get_screensaver_mode()
 
     # --- Addon data paths creation ---
-    if not g_PATHS.ADDON_DATA_DIR.exists(): g_PATHS.ADDON_DATA_DIR.makedirs()
-    if not g_PATHS.CACHE_DIR.exists(): g_PATHS.CACHE_DIR.makedirs()
-    if not g_PATHS.CATALOG_DIR.exists(): g_PATHS.CATALOG_DIR.makedirs()
-    if not g_PATHS.MAIN_DB_HASH_DIR.exists(): g_PATHS.MAIN_DB_HASH_DIR.makedirs()
-    if not g_PATHS.FILTERS_DB_DIR.exists(): g_PATHS.FILTERS_DB_DIR.makedirs()
-    if not g_PATHS.SL_DB_DIR.exists(): g_PATHS.SL_DB_DIR.makedirs()
-    if not g_PATHS.REPORTS_DIR.exists(): g_PATHS.REPORTS_DIR.makedirs()
+    if not cfg.ADDON_DATA_DIR.exists(): cfg.ADDON_DATA_DIR.makedirs()
+    if not cfg.CACHE_DIR.exists(): cfg.CACHE_DIR.makedirs()
+    if not cfg.CATALOG_DIR.exists(): cfg.CATALOG_DIR.makedirs()
+    if not cfg.MAIN_DB_HASH_DIR.exists(): cfg.MAIN_DB_HASH_DIR.makedirs()
+    if not cfg.FILTERS_DB_DIR.exists(): cfg.FILTERS_DB_DIR.makedirs()
+    if not cfg.SL_DB_DIR.exists(): cfg.SL_DB_DIR.makedirs()
+    if not cfg.REPORTS_DIR.exists(): cfg.REPORTS_DIR.makedirs()
 
     # --- If control_dic does not exists create an empty one ---
-    # control_dic will be used for database built checks, etc.
-    if not g_PATHS.MAIN_CONTROL_PATH.exists(): mame_create_empty_control_dic(g_PATHS, __addon_version__)
+    # Remove this code. If control_dic file does not exists return None when required.
+    if not cfg.MAIN_CONTROL_PATH.exists(): mame_create_empty_control_dic(cfg, __addon_version__)
 
     # --- Process URL ---
-    g_base_url = addon_argv[0]
-    g_addon_handle = int(addon_argv[1])
+    cfg.base_url = addon_argv[0]
+    cfg.addon_handle = int(addon_argv[1])
     args = urllib.parse.parse_qs(addon_argv[2][1:])
     # log_debug('args = {}'.format(args))
     # Interestingly, if plugin is called as type executable then args is empty.
     # However, if plugin is called as type game then Kodi adds the following
     # even for the first call: 'content_type': ['game']
-    g_content_type = args['content_type'] if 'content_type' in args else None
-    log_debug('content_type = {}'.format(g_content_type))
+    cfg.content_type = args['content_type'] if 'content_type' in args else None
+    log_debug('content_type = {}'.format(cfg.content_type))
+
+    # Compatibility with former code.
+    g_settings = cfg.settings
+    g_base_url = cfg.base_url
+    g_addon_handle = cfg.addon_handle
+    g_content_type = cfg.content_type
+    g_mame_icon = cfg.mame_icon
+    g_mame_fanart = cfg.mame_fanart
+    g_SL_icon = cfg.SL_icon
+    g_SL_fanart = cfg.SL_fanart
 
     # --- URL routing -------------------------------------------------------------------------
     # Show addon root window.
     args_size = len(args)
     if not 'catalog' in args and not 'command' in args:
-        render_root_list()
+        render_root_list(cfg)
         log_debug('Advanced MAME Launcher exit (addon root)')
         return
 
@@ -374,7 +419,7 @@ def run_plugin(addon_argv):
     elif 'command' in args:
         command = args['command'][0]
 
-        # >> Commands used by skins to render items of the addon root menu.
+        # Commands used by skins to render items of the addon root menu.
         if   command == 'SKIN_SHOW_FAV_SLOTS':       render_skin_fav_slots()
         elif command == 'SKIN_SHOW_MAIN_FILTERS':    render_skin_main_filters()
         elif command == 'SKIN_SHOW_BINARY_FILTERS':  render_skin_binary_filters()
@@ -382,9 +427,8 @@ def run_plugin(addon_argv):
         elif command == 'SKIN_SHOW_DAT_SLOTS':       render_skin_dat_slots()
         elif command == 'SKIN_SHOW_SL_FILTERS':      render_skin_SL_filters()
 
-        # >> Auxiliar commands from parent machine context menu
-        # >> Not sure if this will cause problems with the concurrent protected code once it's
-        #    implemented.
+        # Auxiliar commands from parent machine context menu
+        # Not sure if this will cause problems with the concurrent protected code once it's implemented.
         elif command == 'EXEC_SHOW_MAME_CLONES':
             catalog_name  = args['catalog'][0] if 'catalog' in args else ''
             category_name = args['category'][0] if 'category' in args else ''
@@ -413,7 +457,7 @@ def run_plugin(addon_argv):
             run_SL_machine(SL_name, ROM_name, location)
 
         elif command == 'SETUP_PLUGIN':
-            command_context_setup_plugin()
+            command_context_setup_plugin(cfg)
 
         #
         # Not used at the moment.
@@ -527,498 +571,550 @@ def run_plugin(addon_argv):
 
 #
 # Get Addon Settings. log_*() functions cannot be used here during normal operation.
-def get_settings():
-    global g_settings
-    o = __addon__
+def get_settings(cfg):
+    settings = cfg.settings
+    aobj = __addon__
 
     # --- Main operation ---
-    g_settings['op_mode_raw'] = o.getSettingInt('op_mode_raw')
-    g_settings['enable_SL'] = o.getSettingBool('enable_SL')
-    g_settings['mame_prog'] = o.getSettingString('mame_prog')
-    g_settings['SL_hash_path'] = o.getSettingString('SL_hash_path')
+    settings['op_mode_raw'] = aobj.getSettingInt('op_mode_raw')
+    settings['enable_SL'] = aobj.getSettingBool('enable_SL')
+    settings['mame_prog'] = aobj.getSettingString('mame_prog')
+    settings['SL_hash_path'] = aobj.getSettingString('SL_hash_path')
 
-    g_settings['retroarch_prog'] = o.getSettingString('retroarch_prog')
-    g_settings['libretro_dir'] = o.getSettingString('libretro_dir')
-    g_settings['xml_2003_path'] = o.getSettingString('xml_2003_path')
+    settings['retroarch_prog'] = aobj.getSettingString('retroarch_prog')
+    settings['libretro_dir'] = aobj.getSettingString('libretro_dir')
+    settings['xml_2003_path'] = aobj.getSettingString('xml_2003_path')
 
     # --- Optional paths ---
-    g_settings['rom_path'] = o.getSettingString('rom_path')
-    g_settings['assets_path'] = o.getSettingString('assets_path')
-    g_settings['dats_path'] = o.getSettingString('dats_path')
-    g_settings['chd_path'] = o.getSettingString('chd_path')
-    g_settings['samples_path'] = o.getSettingString('samples_path')
-    g_settings['SL_rom_path'] = o.getSettingString('SL_rom_path')
-    g_settings['SL_chd_path'] = o.getSettingString('SL_chd_path')
+    settings['rom_path'] = aobj.getSettingString('rom_path')
+    settings['assets_path'] = aobj.getSettingString('assets_path')
+    settings['dats_path'] = aobj.getSettingString('dats_path')
+    settings['chd_path'] = aobj.getSettingString('chd_path')
+    settings['samples_path'] = aobj.getSettingString('samples_path')
+    settings['SL_rom_path'] = aobj.getSettingString('SL_rom_path')
+    settings['SL_chd_path'] = aobj.getSettingString('SL_chd_path')
 
     # --- ROM sets ---
-    g_settings['mame_rom_set'] = o.getSettingInt('mame_rom_set')
-    g_settings['mame_chd_set'] = o.getSettingInt('mame_chd_set')
-    g_settings['SL_rom_set'] = o.getSettingInt('SL_rom_set')
-    g_settings['SL_chd_set'] = o.getSettingInt('SL_chd_set')
+    settings['mame_rom_set'] = aobj.getSettingInt('mame_rom_set')
+    settings['mame_chd_set'] = aobj.getSettingInt('mame_chd_set')
+    settings['SL_rom_set'] = aobj.getSettingInt('SL_rom_set')
+    settings['SL_chd_set'] = aobj.getSettingInt('SL_chd_set')
 
     # Misc separator
-    g_settings['filter_XML'] = o.getSettingString('filter_XML')
-    g_settings['generate_history_infolabel'] = o.getSettingBool('generate_history_infolabel')
+    settings['filter_XML'] = aobj.getSettingString('filter_XML')
+    settings['generate_history_infolabel'] = aobj.getSettingBool('generate_history_infolabel')
 
     # --- Display I ---
-    g_settings['display_launcher_notify'] = o.getSettingBool('display_launcher_notify')
-    g_settings['mame_view_mode'] = o.getSettingInt('mame_view_mode')
-    g_settings['sl_view_mode'] = o.getSettingInt('sl_view_mode')
-    g_settings['display_hide_Mature'] = o.getSettingBool('display_hide_Mature')
-    g_settings['display_hide_BIOS'] = o.getSettingBool('display_hide_BIOS')
-    g_settings['display_hide_imperfect'] = o.getSettingBool('display_hide_imperfect')
-    g_settings['display_hide_nonworking'] = o.getSettingBool('display_hide_nonworking')
-    g_settings['display_rom_available'] = o.getSettingBool('display_rom_available')
-    g_settings['display_chd_available'] = o.getSettingBool('display_chd_available')
-    g_settings['display_SL_items_available'] = o.getSettingBool('display_SL_items_available')
-    g_settings['display_MAME_flags'] = o.getSettingBool('display_MAME_flags')
-    g_settings['display_SL_flags'] = o.getSettingBool('display_SL_flags')
+    settings['display_launcher_notify'] = aobj.getSettingBool('display_launcher_notify')
+    settings['mame_view_mode'] = aobj.getSettingInt('mame_view_mode')
+    settings['sl_view_mode'] = aobj.getSettingInt('sl_view_mode')
+    settings['display_hide_Mature'] = aobj.getSettingBool('display_hide_Mature')
+    settings['display_hide_BIOS'] = aobj.getSettingBool('display_hide_BIOS')
+    settings['display_hide_imperfect'] = aobj.getSettingBool('display_hide_imperfect')
+    settings['display_hide_nonworking'] = aobj.getSettingBool('display_hide_nonworking')
+    settings['display_rom_available'] = aobj.getSettingBool('display_rom_available')
+    settings['display_chd_available'] = aobj.getSettingBool('display_chd_available')
+    settings['display_SL_items_available'] = aobj.getSettingBool('display_SL_items_available')
+    settings['display_MAME_flags'] = aobj.getSettingBool('display_MAME_flags')
+    settings['display_SL_flags'] = aobj.getSettingBool('display_SL_flags')
 
     # --- Display II ---
-    g_settings['display_main_filters'] = o.getSettingBool('display_main_filters')
-    g_settings['display_binary_filters'] = o.getSettingBool('display_binary_filters')
-    g_settings['display_catalog_filters'] = o.getSettingBool('display_catalog_filters')
-    g_settings['display_DAT_browser'] = o.getSettingBool('display_DAT_browser')
-    g_settings['display_SL_browser'] = o.getSettingBool('display_SL_browser')
-    g_settings['display_custom_filters'] = o.getSettingBool('display_custom_filters')
-    g_settings['display_ROLs'] = o.getSettingBool('display_ROLs')
-    g_settings['display_MAME_favs'] = o.getSettingBool('display_MAME_favs')
-    g_settings['display_MAME_most'] = o.getSettingBool('display_MAME_most')
-    g_settings['display_MAME_recent'] = o.getSettingBool('display_MAME_recent')
-    g_settings['display_SL_favs'] = o.getSettingBool('display_SL_favs')
-    g_settings['display_SL_most'] = o.getSettingBool('display_SL_most')
-    g_settings['display_SL_recent'] = o.getSettingBool('display_SL_recent')
-    g_settings['display_utilities'] = o.getSettingBool('display_utilities')
-    g_settings['display_global_reports'] = o.getSettingBool('display_global_reports')
+    settings['display_main_filters'] = aobj.getSettingBool('display_main_filters')
+    settings['display_binary_filters'] = aobj.getSettingBool('display_binary_filters')
+    settings['display_catalog_filters'] = aobj.getSettingBool('display_catalog_filters')
+    settings['display_DAT_browser'] = aobj.getSettingBool('display_DAT_browser')
+    settings['display_SL_browser'] = aobj.getSettingBool('display_SL_browser')
+    settings['display_custom_filters'] = aobj.getSettingBool('display_custom_filters')
+    settings['display_ROLs'] = aobj.getSettingBool('display_ROLs')
+    settings['display_MAME_favs'] = aobj.getSettingBool('display_MAME_favs')
+    settings['display_MAME_most'] = aobj.getSettingBool('display_MAME_most')
+    settings['display_MAME_recent'] = aobj.getSettingBool('display_MAME_recent')
+    settings['display_SL_favs'] = aobj.getSettingBool('display_SL_favs')
+    settings['display_SL_most'] = aobj.getSettingBool('display_SL_most')
+    settings['display_SL_recent'] = aobj.getSettingBool('display_SL_recent')
+    settings['display_utilities'] = aobj.getSettingBool('display_utilities')
+    settings['display_global_reports'] = aobj.getSettingBool('display_global_reports')
 
     # --- Artwork / Assets ---
-    g_settings['display_hide_trailers'] = o.getSettingBool('display_hide_trailers')
-    g_settings['artwork_mame_icon'] = o.getSettingInt('artwork_mame_icon')
-    g_settings['artwork_mame_fanart'] = o.getSettingInt('artwork_mame_fanart')
-    g_settings['artwork_SL_icon'] = o.getSettingInt('artwork_SL_icon')
-    g_settings['artwork_SL_fanart'] = o.getSettingInt('artwork_SL_fanart')
+    settings['display_hide_trailers'] = aobj.getSettingBool('display_hide_trailers')
+    settings['artwork_mame_icon'] = aobj.getSettingInt('artwork_mame_icon')
+    settings['artwork_mame_fanart'] = aobj.getSettingInt('artwork_mame_fanart')
+    settings['artwork_SL_icon'] = aobj.getSettingInt('artwork_SL_icon')
+    settings['artwork_SL_fanart'] = aobj.getSettingInt('artwork_SL_fanart')
 
     # --- Advanced ---
-    g_settings['media_state_action'] = o.getSettingInt('media_state_action')
-    g_settings['delay_tempo'] = o.getSettingInt('delay_tempo')
-    g_settings['suspend_audio_engine'] = o.getSettingBool('suspend_audio_engine')
-    g_settings['suspend_screensaver'] = o.getSettingBool('suspend_screensaver')
-    g_settings['toggle_window'] = o.getSettingBool('toggle_window')
-    g_settings['log_level'] = o.getSettingInt('log_level')
-    g_settings['debug_enable_MAME_render_cache'] = o.getSettingBool('debug_enable_MAME_render_cache')
-    g_settings['debug_enable_MAME_asset_cache']  = o.getSettingBool('debug_enable_MAME_asset_cache')
-    g_settings['debug_MAME_item_data'] = o.getSettingBool('debug_MAME_item_data')
-    g_settings['debug_MAME_ROM_DB_data'] = o.getSettingBool('debug_MAME_ROM_DB_data')
-    g_settings['debug_MAME_Audit_DB_data'] = o.getSettingBool('debug_MAME_Audit_DB_data')
-    g_settings['debug_SL_item_data'] = o.getSettingBool('debug_SL_item_data')
-    g_settings['debug_SL_ROM_DB_data'] = o.getSettingBool('debug_SL_ROM_DB_data')
-    g_settings['debug_SL_Audit_DB_data'] = o.getSettingBool('debug_SL_Audit_DB_data')
+    settings['media_state_action'] = aobj.getSettingInt('media_state_action')
+    settings['delay_tempo'] = aobj.getSettingInt('delay_tempo')
+    settings['suspend_audio_engine'] = aobj.getSettingBool('suspend_audio_engine')
+    settings['suspend_screensaver'] = aobj.getSettingBool('suspend_screensaver')
+    settings['toggle_window'] = aobj.getSettingBool('toggle_window')
+    settings['log_level'] = aobj.getSettingInt('log_level')
+    settings['debug_enable_MAME_render_cache'] = aobj.getSettingBool('debug_enable_MAME_render_cache')
+    settings['debug_enable_MAME_asset_cache']  = aobj.getSettingBool('debug_enable_MAME_asset_cache')
+    settings['debug_MAME_item_data'] = aobj.getSettingBool('debug_MAME_item_data')
+    settings['debug_MAME_ROM_DB_data'] = aobj.getSettingBool('debug_MAME_ROM_DB_data')
+    settings['debug_MAME_Audit_DB_data'] = aobj.getSettingBool('debug_MAME_Audit_DB_data')
+    settings['debug_SL_item_data'] = aobj.getSettingBool('debug_SL_item_data')
+    settings['debug_SL_ROM_DB_data'] = aobj.getSettingBool('debug_SL_ROM_DB_data')
+    settings['debug_SL_Audit_DB_data'] = aobj.getSettingBool('debug_SL_Audit_DB_data')
 
     # --- Dump settings for DEBUG. Requires changes in run_plugin() to work ---
     # log_debug('Settings dump BEGIN')
-    # for key in sorted(g_settings):
-    #     log_debug('{} --> {:10s} {}'.format(key.rjust(21), str(g_settings[key]), type(g_settings[key])))
+    # for key in sorted(settings):
+    #     log_debug('{} --> {:10s} {}'.format(key.rjust(21), str(settings[key]), type(settings[key])))
     # log_debug('Settings dump END')
 
 #
 # Called after log is enabled. Process secondary settings.
 #
-def get_settings_log_enabled():
-    global g_settings
-    global g_mame_icon
-    global g_mame_fanart
-    global g_SL_icon
-    global g_SL_fanart
-
+def get_settings_log_enabled(cfg):
     # Additional settings.
-    g_settings['op_mode'] = OP_MODE_LIST[g_settings['op_mode_raw']]
-    g_settings['__addon_id__'] = __addon_id__
-    g_settings['__addon_version__'] = __addon_version__
+    cfg.settings['op_mode'] = OP_MODE_LIST[cfg.settings['op_mode_raw']]
 
     # Map AML artwork to Kodi standard artwork.
-    g_mame_icon = assets_get_asset_key_MAME_icon(g_settings['artwork_mame_icon'])
-    g_mame_fanart = assets_get_asset_key_MAME_fanart(g_settings['artwork_mame_fanart'])
-    g_SL_icon = assets_get_asset_key_SL_icon(g_settings['artwork_SL_icon'])
-    g_SL_fanart = assets_get_asset_key_SL_fanart(g_settings['artwork_SL_fanart'])
+    cfg.mame_icon = assets_get_asset_key_MAME_icon(cfg.settings['artwork_mame_icon'])
+    cfg.mame_fanart = assets_get_asset_key_MAME_fanart(cfg.settings['artwork_mame_fanart'])
+    cfg.SL_icon = assets_get_asset_key_SL_icon(cfg.settings['artwork_SL_icon'])
+    cfg.SL_fanart = assets_get_asset_key_SL_fanart(cfg.settings['artwork_SL_fanart'])
 
     # Enable or disable Software List depending on settings.
-    if g_settings['op_mode'] == OP_MODE_VANILLA and g_settings['enable_SL'] == True:
-        g_settings['global_enable_SL'] = True
-    elif g_settings['op_mode'] == OP_MODE_VANILLA and g_settings['enable_SL'] == False:
-        g_settings['global_enable_SL'] = False
-    elif g_settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
-        g_settings['global_enable_SL'] = False
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA and cfg.settings['enable_SL'] == True:
+        cfg.settings['global_enable_SL'] = True
+    elif cfg.settings['op_mode'] == OP_MODE_VANILLA and cfg.settings['enable_SL'] == False:
+        cfg.settings['global_enable_SL'] = False
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        cfg.settings['global_enable_SL'] = False
     else:
-        raise TypeError('Wrong g_settings["op_mode"] = {}'.format(g_settings['op_mode']))
+        raise TypeError('Wrong g_settings["op_mode"] = {}'.format(cfg.settings['op_mode']))
+
+# ---------------------------------------------------------------------------------------------
+# Misc URL building functions. Placed here because these functions are used for building
+# global read-only variables using in the addon.
+# NOTE '&' must be scaped to '%26' in all URLs
+# ---------------------------------------------------------------------------------------------
+# Functions used in xbmcplugin.addDirectoryItem()
+def misc_url(command):
+    command_escaped = command.replace('&', '%26')
+
+    return '{}?command={}'.format(g_base_url, command_escaped)
+
+def misc_url_1_arg(arg_name, arg_value):
+    arg_value_escaped = arg_value.replace('&', '%26')
+
+    return '{}?{}={}'.format(g_base_url, arg_name, arg_value_escaped)
+
+def misc_url_2_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2):
+    arg_value_1_escaped = arg_value_1.replace('&', '%26')
+    arg_value_2_escaped = arg_value_2.replace('&', '%26')
+
+    return '{}?{}={}&{}={}'.format(g_base_url,
+        arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped)
+
+def misc_url_3_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3):
+    arg_value_1_escaped = arg_value_1.replace('&', '%26')
+    arg_value_2_escaped = arg_value_2.replace('&', '%26')
+    arg_value_3_escaped = arg_value_3.replace('&', '%26')
+
+    return '{}?{}={}&{}={}&{}={}'.format(g_base_url,
+        arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped, arg_name_3, arg_value_3_escaped)
+
+def misc_url_4_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3, arg_name_4, arg_value_4):
+    arg_value_1_escaped = arg_value_1.replace('&', '%26')
+    arg_value_2_escaped = arg_value_2.replace('&', '%26')
+    arg_value_3_escaped = arg_value_3.replace('&', '%26')
+    arg_value_4_escaped = arg_value_4.replace('&', '%26')
+
+    return '{}?{}={}&{}={}&{}={}&{}={}'.format(g_base_url,
+        arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped,
+        arg_name_3, arg_value_3_escaped,arg_name_4, arg_value_4_escaped)
+
+# Functions used in context menus, in listitem.addContextMenuItems()
+def misc_url_RunPlugin(command):
+    command_esc = command.replace('&', '%26')
+
+    return 'RunPlugin({}?command={})'.format(g_base_url, command_esc)
+
+def misc_url_1_arg_RunPlugin(arg_n_1, arg_v_1):
+    arg_v_1_esc = arg_v_1.replace('&', '%26')
+
+    return 'RunPlugin({}?{}={})'.format(g_base_url, arg_n_1, arg_v_1_esc)
+
+def misc_url_2_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2):
+    arg_v_1_esc = arg_v_1.replace('&', '%26')
+    arg_v_2_esc = arg_v_2.replace('&', '%26')
+
+    return 'RunPlugin({}?{}={}&{}={})'.format(g_base_url,
+        arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc)
+
+def misc_url_3_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2, arg_n_3, arg_v_3):
+    arg_v_1_esc = arg_v_1.replace('&', '%26')
+    arg_v_2_esc = arg_v_2.replace('&', '%26')
+    arg_v_3_esc = arg_v_3.replace('&', '%26')
+
+    return 'RunPlugin({}?{}={}&{}={}&{}={})'.format(g_base_url,
+        arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc, arg_n_3, arg_v_3_esc)
+
+def misc_url_4_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2, arg_n_3, arg_v_3, arg_n_4, arg_v_4):
+    arg_v_1_esc = arg_v_1.replace('&', '%26')
+    arg_v_2_esc = arg_v_2.replace('&', '%26')
+    arg_v_3_esc = arg_v_3.replace('&', '%26')
+    arg_v_4_esc = arg_v_4.replace('&', '%26')
+
+    return 'RunPlugin({}?{}={}&{}={}&{}={}&{}={})'.format(g_base_url,
+        arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc, arg_n_3, arg_v_3_esc, arg_n_4, arg_v_4_esc)
 
 # ---------------------------------------------------------------------------------------------
 # Root menu rendering
 # ---------------------------------------------------------------------------------------------
-root_Main = {}
-root_Binary = {}
-root_categories = {}
-root_special = {}
-root_SL = {}
-root_special_CM = {}
+# Tuple: catalog_name, catalog_key, title, plot
+root_Main = {
+    # Main filter Catalog
+    'Main_Normal' : [
+        'Main', 'Normal',
+        'Machines with coin slot (Normal)',
+        ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
+         'slot[/COLOR] and normal controls. This list includes the machines you would '
+         'typically find in Europe and USA amusement arcades some decades ago.'),
+    ],
+    'Main_Unusual' : [
+        'Main', 'Unusual',
+        'Machines with coin slot (Unusual)',
+        ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
+         'slot[/COLOR] and Only buttons, Gambling, Hanafuda and Mahjong controls. '
+         'This corresponds to slot, gambling and Japanese card and mahjong machines.'),
+    ],
+    'Main_NoCoin' : [
+        'Main', 'NoCoin',
+        'Machines with no coin slot',
+        ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with no coin '
+         'slot[/COLOR]. Here you will find the good old MESS machines, including computers, '
+         'video game consoles, hand-held video game consoles, etc.'),
+    ],
+    'Main_Mechanical' : [
+        'Main', 'Mechanical',
+        'Mechanical machines',
+        ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]mechanical[/COLOR] MAME machines. '
+         'These machines have mechanical parts, for example pinballs, and currently do not work with MAME. '
+         'They are here for preservation and historical reasons.'),
+    ],
+    'Main_Dead' : [
+        'Main', 'Dead',
+        'Dead machines',
+        ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]dead[/COLOR] MAME machines. '
+         'Dead machines do not work and have no controls, so you cannot interact with them in any way.'),
+    ],
+    'Main_Devices' : [
+        'Main', 'Devices',
+        'Device machines',
+        ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]device machines[/COLOR]. '
+         'Device machines, for example the Zilog Z80 CPU, are components used by other machines '
+         'and cannot be run on their own.'),
+    ],
+}
 
-def set_render_root_data():
-    global root_Main
-    global root_Binary
-    global root_categories
-    global root_special
-    global root_SL
-    global root_special_CM
+# Tuple: catalog_name, catalog_key, title, plot
+root_Binary = {
+    # Binary filters Catalog
+    'BIOS' : [
+        'Binary', 'BIOS',
+        'Machines [BIOS]',
+        ('[COLOR orange]Binary filter[/COLOR] of [COLOR violet]BIOS[/COLOR] machines. Some BIOS '
+         'machines can be run and usually will display a message like "Game not found".'),
+    ],
+    'CHD' : [
+        'Binary', 'CHD',
+        'Machines [with CHDs]',
+        ('[COLOR orange]Binary filter[/COLOR] of machines that need one or more '
+         '[COLOR violet]CHDs[/COLOR] to run. They may also need ROMs and/or BIOS or not.'),
+    ],
+    'Samples' : [
+        'Binary', 'Samples',
+        'Machines [with Samples]',
+        ('[COLOR orange]Binary filter[/COLOR] of machines that require '
+         '[COLOR violet]samples[/COLOR]. Samples are optional and will increase the quality '
+         'of the emulated sound.'),
+    ],
+    'SoftwareLists' : [
+        'Binary', 'SoftwareLists',
+        'Machines [with Software Lists]',
+        ('[COLOR orange]Binary filter[/COLOR] of machines that have one or more '
+         '[COLOR violet]Software Lists[/COLOR] associated.'),
+    ],
+}
 
-    # Tuple: catalog_name, catalog_key, title, plot
-    root_Main = {
-        # Main filter Catalog
-        'Main_Normal' : [
-            'Main', 'Normal',
-            'Machines with coin slot (Normal)',
-            ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
-             'slot[/COLOR] and normal controls. This list includes the machines you would '
-             'typically find in Europe and USA amusement arcades some decades ago.'),
-        ],
-        'Main_Unusual' : [
-            'Main', 'Unusual',
-            'Machines with coin slot (Unusual)',
-            ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
-             'slot[/COLOR] and Only buttons, Gambling, Hanafuda and Mahjong controls. '
-             'This corresponds to slot, gambling and Japanese card and mahjong machines.'),
-        ],
-        'Main_NoCoin' : [
-            'Main', 'NoCoin',
-            'Machines with no coin slot',
-            ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with no coin '
-             'slot[/COLOR]. Here you will find the good old MESS machines, including computers, '
-             'video game consoles, hand-held video game consoles, etc.'),
-        ],
-        'Main_Mechanical' : [
-            'Main', 'Mechanical',
-            'Mechanical machines',
-            ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]mechanical[/COLOR] MAME machines. '
-             'These machines have mechanical parts, for example pinballs, and currently do not work with MAME. '
-             'They are here for preservation and historical reasons.'),
-        ],
-        'Main_Dead' : [
-            'Main', 'Dead',
-            'Dead machines',
-            ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]dead[/COLOR] MAME machines. '
-             'Dead machines do not work and have no controls, so you cannot interact with them in any way.'),
-        ],
-        'Main_Devices' : [
-            'Main', 'Devices',
-            'Device machines',
-            ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]device machines[/COLOR]. '
-             'Device machines, for example the Zilog Z80 CPU, are components used by other machines '
-             'and cannot be run on their own.'),
-        ],
-    }
+# Tuple: title, plot, URL
+root_categories = {
+    # Cataloged filters (optional DAT/INI files required)
+    'Catver' : [
+        'Machines by Category (Catver)',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
+         'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].'),
+        misc_url_1_arg('catalog', 'Catver'),
+    ],
+    'Catlist' : [
+        'Machines by Category (Catlist)',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
+         'This filter requires that you configure [COLOR violet]catlist.ini[/COLOR].'),
+        misc_url_1_arg('catalog', 'Catlist'),
+    ],
+    'Genre' : [
+        'Machines by Category (Genre)',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Genre. '
+         'This filter requires that you configure [COLOR violet]genre.ini[/COLOR].'),
+        misc_url_1_arg('catalog', 'Genre'),
+    ],
+    'Category' : [
+        'Machines by Category (MASH)',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Category. '
+         'This filter requires that you configure [COLOR violet]Category.ini[/COLOR] by MASH.'),
+        misc_url_1_arg('catalog', 'Category'),
+    ],
+    'NPlayers' : [
+        'Machines by Number of players',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the number of '
+         'players that can play simultaneously or alternatively. This filter requires '
+         'that you configure [COLOR violet]nplayers.ini[/COLOR].'),
+        misc_url_1_arg('catalog', 'NPlayers'),
+    ],
+    'Bestgames' : [
+        'Machines by Rating',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by rating. The rating '
+         'is subjective but is a good indicator about the quality of the games. '
+         'This filter requires that you configure [COLOR violet]bestgames.ini[/COLOR].'),
+        misc_url_1_arg('catalog', 'Bestgames'),
+    ],
+    'Series' : [
+        'Machines by Series',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by series. '
+         'This filter requires that you configure [COLOR violet]series.ini[/COLOR].'),
+        misc_url_1_arg('catalog', 'Series'),
+    ],
+    'Alltime' : [
+        'Machines by Alltime (MASH)',
+        ('[COLOR orange]Catalog filter[/COLOR] of a best-quality machine selection '
+         'sorted by year. '
+         'This filter requires that you configure [COLOR violet]Alltime.ini[/COLOR] by MASH.'),
+        misc_url_1_arg('catalog', 'Alltime'),
+    ],
+    'Artwork' : [
+        'Machines by Artwork (MASH)',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Artwork. '
+         'This filter requires that you configure [COLOR violet]Artwork.ini[/COLOR] by MASH.'),
+        misc_url_1_arg('catalog', 'Artwork'),
+    ],
+    'Version' : [
+        'Machines by Version Added (Catver)',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Version Added. '
+         'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].'),
+        misc_url_1_arg('catalog', 'Version'),
+    ],
 
-    # Tuple: catalog_name, catalog_key, title, plot
-    root_Binary = {
-        # Binary filters Catalog
-        'BIOS' : [
-            'Binary', 'BIOS',
-            'Machines [BIOS]',
-            ('[COLOR orange]Binary filter[/COLOR] of [COLOR violet]BIOS[/COLOR] machines. Some BIOS '
-             'machines can be run and usually will display a message like "Game not found".'),
-        ],
-        'CHD' : [
-            'Binary', 'CHD',
-            'Machines [with CHDs]',
-            ('[COLOR orange]Binary filter[/COLOR] of machines that need one or more '
-             '[COLOR violet]CHDs[/COLOR] to run. They may also need ROMs and/or BIOS or not.'),
-        ],
-        'Samples' : [
-            'Binary', 'Samples',
-            'Machines [with Samples]',
-            ('[COLOR orange]Binary filter[/COLOR] of machines that require '
-             '[COLOR violet]samples[/COLOR]. Samples are optional and will increase the quality '
-             'of the emulated sound.'),
-        ],
-        'SoftwareLists' : [
-            'Binary', 'SoftwareLists',
-            'Machines [with Software Lists]',
-            ('[COLOR orange]Binary filter[/COLOR] of machines that have one or more '
-             '[COLOR violet]Software Lists[/COLOR] associated.'),
-        ],
-    }
+    # Cataloged filters (always there, extracted from MAME XML)
+    # NOTE: use the same names as MAME executable
+    # -listdevices   list available devices                  XML tag <device_ref>
+    # -listslots     list available slots and slot devices   XML tag <slot>
+    # -listmedia     list available media for the system     XML tag <device>
+    'Controls_Expanded' : [
+        'Machines by Controls (Expanded)',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
+         'For each machine, all controls are included in the list.'),
+        misc_url_1_arg('catalog', 'Controls_Expanded'),
+    ],
+    'Controls_Compact' : [
+        'Machines by Controls (Compact)',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
+         'Machines may have additional controls.'),
+        misc_url_1_arg('catalog', 'Controls_Compact'),
+    ],
+    'Devices_Expanded' : [
+        'Machines by Pluggable Devices (Expanded)',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
+         'For each machine, all pluggable devices are included in the list.'),
+        misc_url_1_arg('catalog', 'Devices_Expanded'),
+    ],
+    'Devices_Compact' : [
+        'Machines by Pluggable Devices (Compact)',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
+         'Machines may have additional pluggable devices.'),
+        misc_url_1_arg('catalog', 'Devices_Compact'),
+    ],
+    'Display_Type' : [
+        'Machines by Display Type',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display type '
+         'and rotation.'),
+        misc_url_1_arg('catalog', 'Display_Type'),
+    ],
+    'Display_VSync' : [
+        'Machines by Display VSync freq',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the display '
+         'vertical synchronisation (VSync) frequency, also known as the display refresh rate or '
+         'frames per second (FPS).'),
+        misc_url_1_arg('catalog', 'Display_VSync'),
+    ],
+    'Display_Resolution' : [
+        'Machines by Display Resolution',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display resolution.'),
+        misc_url_1_arg('catalog', 'Display_Resolution'),
+    ],
+    'CPU' : [
+        'Machines by CPU',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the CPU used.'),
+        misc_url_1_arg('catalog', 'CPU'),
+    ],
+    'Driver' : [
+        'Machines by Driver',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by driver. '
+         'Brother machines have the same driver.'),
+        misc_url_1_arg('catalog', 'Driver'),
+    ],
+    'Manufacturer' : [
+        'Machines by Manufacturer',
+        ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted by '
+         'manufacturer.'),
+        misc_url_1_arg('catalog', 'Manufacturer'),
+    ],
+    'ShortName' : [
+        'Machines by MAME short name',
+        ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
+         'by the MAME short name. The short name originated during the old MS-DOS days '
+         'where filenames were restricted to 8 ASCII characters.'),
+        misc_url_1_arg('catalog', 'ShortName'),
+    ],
+    'LongName' : [
+        'Machines by MAME long name',
+        ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
+         'by the machine description or long name.'),
+        misc_url_1_arg('catalog', 'LongName'),
+    ],
+    'BySL' : [
+        'Machines by Software List',
+        ('[COLOR orange]Catalog filter[/COLOR] of the Software Lists and the machines '
+         'that run items belonging to that Software List.'),
+        misc_url_1_arg('catalog', 'BySL'),
+    ],
+    'Year' : [
+        'Machines by Year',
+        ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by release year.'),
+        misc_url_1_arg('catalog', 'Year'),
+    ],
+}
 
-    # Tuple: title, plot, URL
-    root_categories = {
-        # Cataloged filters (optional DAT/INI files required)
-        'Catver' : [
-            'Machines by Category (Catver)',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
-             'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].'),
-            misc_url_1_arg('catalog', 'Catver'),
-        ],
-        'Catlist' : [
-            'Machines by Category (Catlist)',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
-             'This filter requires that you configure [COLOR violet]catlist.ini[/COLOR].'),
-            misc_url_1_arg('catalog', 'Catlist'),
-        ],
-        'Genre' : [
-            'Machines by Category (Genre)',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Genre. '
-             'This filter requires that you configure [COLOR violet]genre.ini[/COLOR].'),
-            misc_url_1_arg('catalog', 'Genre'),
-        ],
-        'Category' : [
-            'Machines by Category (MASH)',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Category. '
-             'This filter requires that you configure [COLOR violet]Category.ini[/COLOR] by MASH.'),
-            misc_url_1_arg('catalog', 'Category'),
-        ],
-        'NPlayers' : [
-            'Machines by Number of players',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the number of '
-             'players that can play simultaneously or alternatively. This filter requires '
-             'that you configure [COLOR violet]nplayers.ini[/COLOR].'),
-            misc_url_1_arg('catalog', 'NPlayers'),
-        ],
-        'Bestgames' : [
-            'Machines by Rating',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by rating. The rating '
-             'is subjective but is a good indicator about the quality of the games. '
-             'This filter requires that you configure [COLOR violet]bestgames.ini[/COLOR].'),
-            misc_url_1_arg('catalog', 'Bestgames'),
-        ],
-        'Series' : [
-            'Machines by Series',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by series. '
-             'This filter requires that you configure [COLOR violet]series.ini[/COLOR].'),
-            misc_url_1_arg('catalog', 'Series'),
-        ],
-        'Alltime' : [
-            'Machines by Alltime (MASH)',
-            ('[COLOR orange]Catalog filter[/COLOR] of a best-quality machine selection '
-             'sorted by year. '
-             'This filter requires that you configure [COLOR violet]Alltime.ini[/COLOR] by MASH.'),
-            misc_url_1_arg('catalog', 'Alltime'),
-        ],
-        'Artwork' : [
-            'Machines by Artwork (MASH)',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Artwork. '
-             'This filter requires that you configure [COLOR violet]Artwork.ini[/COLOR] by MASH.'),
-            misc_url_1_arg('catalog', 'Artwork'),
-        ],
-        'Version' : [
-            'Machines by Version Added (Catver)',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Version Added. '
-             'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].'),
-            misc_url_1_arg('catalog', 'Version'),
-        ],
+# Tuple: title, plot, URL
+root_special = {
+    # DAT browser: history.dat, mameinfo.dat, gameinit.dat, command.dat.
+    'History' : [
+        'History DAT',
+        ('Browse the contents of [COLOR orange]history.dat[/COLOR]. Note that '
+         'history.dat is also available on the MAME machines and SL items context menu.'),
+        misc_url_1_arg('catalog', 'History'),
+    ],
+    'MAMEINFO' : [
+        'MAMEINFO DAT',
+        ('Browse the contents of [COLOR orange]mameinfo.dat[/COLOR]. Note that '
+         'mameinfo.dat is also available on the MAME machines context menu.'),
+        misc_url_1_arg('catalog', 'MAMEINFO'),
+    ],
+    'Gameinit' : [
+        'Gameinit DAT',
+        ('Browse the contents of [COLOR orange]gameinit.dat[/COLOR]. Note that '
+         'gameinit.dat is also available on the MAME machines context menu.'),
+        misc_url_1_arg('catalog', 'Gameinit'),
+    ],
+    'Command' : [
+        'Command DAT',
+        ('Browse the contents of [COLOR orange]command.dat[/COLOR]. Note that '
+         'command.dat is also available on the MAME machines context menu.'),
+        misc_url_1_arg('catalog', 'Command'),
+    ],
+}
 
-        # Cataloged filters (always there, extracted from MAME XML)
-        # NOTE: use the same names as MAME executable
-        # -listdevices   list available devices                  XML tag <device_ref>
-        # -listslots     list available slots and slot devices   XML tag <slot>
-        # -listmedia     list available media for the system     XML tag <device>
-        'Controls_Expanded' : [
-            'Machines by Controls (Expanded)',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
-             'For each machine, all controls are included in the list.'),
-            misc_url_1_arg('catalog', 'Controls_Expanded'),
-        ],
-        'Controls_Compact' : [
-            'Machines by Controls (Compact)',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
-             'Machines may have additional controls.'),
-            misc_url_1_arg('catalog', 'Controls_Compact'),
-        ],
-        'Devices_Expanded' : [
-            'Machines by Pluggable Devices (Expanded)',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
-             'For each machine, all pluggable devices are included in the list.'),
-            misc_url_1_arg('catalog', 'Devices_Expanded'),
-        ],
-        'Devices_Compact' : [
-            'Machines by Pluggable Devices (Compact)',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
-             'Machines may have additional pluggable devices.'),
-            misc_url_1_arg('catalog', 'Devices_Compact'),
-        ],
-        'Display_Type' : [
-            'Machines by Display Type',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display type '
-             'and rotation.'),
-            misc_url_1_arg('catalog', 'Display_Type'),
-        ],
-        'Display_VSync' : [
-            'Machines by Display VSync freq',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the display '
-             'vertical synchronisation (VSync) frequency, also known as the display refresh rate or '
-             'frames per second (FPS).'),
-            misc_url_1_arg('catalog', 'Display_VSync'),
-        ],
-        'Display_Resolution' : [
-            'Machines by Display Resolution',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display resolution.'),
-            misc_url_1_arg('catalog', 'Display_Resolution'),
-        ],
-        'CPU' : [
-            'Machines by CPU',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the CPU used.'),
-            misc_url_1_arg('catalog', 'CPU'),
-        ],
-        'Driver' : [
-            'Machines by Driver',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by driver. '
-             'Brother machines have the same driver.'),
-            misc_url_1_arg('catalog', 'Driver'),
-        ],
-        'Manufacturer' : [
-            'Machines by Manufacturer',
-            ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted by '
-             'manufacturer.'),
-            misc_url_1_arg('catalog', 'Manufacturer'),
-        ],
-        'ShortName' : [
-            'Machines by MAME short name',
-            ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
-             'by the MAME short name. The short name originated during the old MS-DOS days '
-             'where filenames were restricted to 8 ASCII characters.'),
-            misc_url_1_arg('catalog', 'ShortName'),
-        ],
-        'LongName' : [
-            'Machines by MAME long name',
-            ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
-             'by the machine description or long name.'),
-            misc_url_1_arg('catalog', 'LongName'),
-        ],
-        'BySL' : [
-            'Machines by Software List',
-            ('[COLOR orange]Catalog filter[/COLOR] of the Software Lists and the machines '
-             'that run items belonging to that Software List.'),
-            misc_url_1_arg('catalog', 'BySL'),
-        ],
-        'Year' : [
-            'Machines by Year',
-            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by release year.'),
-            misc_url_1_arg('catalog', 'Year'),
-        ],
-    }
+# Tuple: title, plot, URL
+root_SL = {
+    'SL' : [
+        'Software Lists (all)',
+        ('Display all [COLOR orange]Software Lists[/COLOR].'),
+        misc_url_1_arg('catalog', 'SL'),
+    ],
+    'SL_ROM' : [
+        'Software Lists (with ROMs)',
+        ('Display [COLOR orange]Software Lists[/COLOR] that have only ROMs and not CHDs (disks).'),
+        misc_url_1_arg('catalog', 'SL_ROM'),
+    ],
+    'SL_ROM_CHD' : [
+        'Software Lists (with ROMs and CHDs)',
+        ('Display [COLOR orange]Software Lists[/COLOR] that have both ROMs and CHDs.'),
+        misc_url_1_arg('catalog', 'SL_ROM_CHD'),
+    ],
+    'SL_CHD' : [
+        'Software Lists (with CHDs)',
+        ('Display [COLOR orange]Software Lists[/COLOR] that have only CHDs and not ROMs.'),
+        misc_url_1_arg('catalog', 'SL_CHD'),
+    ],
+    'SL_empty' : [
+        'Software Lists (no ROMs nor CHDs)',
+        ('Display [COLOR orange]Software Lists[/COLOR] with no ROMs nor CHDs.'),
+        misc_url_1_arg('catalog', 'SL_empty'),
+    ],
+}
 
-    # Tuple: title, plot, URL
-    root_special = {
-        # DAT browser: history.dat, mameinfo.dat, gameinit.dat, command.dat.
-        'History' : [
-            'History DAT',
-            ('Browse the contents of [COLOR orange]history.dat[/COLOR]. Note that '
-             'history.dat is also available on the MAME machines and SL items context menu.'),
-            misc_url_1_arg('catalog', 'History'),
-        ],
-        'MAMEINFO' : [
-            'MAMEINFO DAT',
-            ('Browse the contents of [COLOR orange]mameinfo.dat[/COLOR]. Note that '
-             'mameinfo.dat is also available on the MAME machines context menu.'),
-            misc_url_1_arg('catalog', 'MAMEINFO'),
-        ],
-        'Gameinit' : [
-            'Gameinit DAT',
-            ('Browse the contents of [COLOR orange]gameinit.dat[/COLOR]. Note that '
-             'gameinit.dat is also available on the MAME machines context menu.'),
-            misc_url_1_arg('catalog', 'Gameinit'),
-        ],
-        'Command' : [
-            'Command DAT',
-            ('Browse the contents of [COLOR orange]command.dat[/COLOR]. Note that '
-             'command.dat is also available on the MAME machines context menu.'),
-            misc_url_1_arg('catalog', 'Command'),
-        ],
-    }
+# Tuple: title, plot, URL, context_menu_list
+root_special_CM = {
+    'MAME_Favs' : [
+        '<Favourite MAME machines>',
+        ('Display your [COLOR orange]Favourite MAME machines[/COLOR]. '
+         'To add machines to the Favourite list use the context menu on any MAME machine list.'),
+        misc_url_1_arg('command', 'SHOW_MAME_FAVS'),
+        [('Manage Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_FAV'))],
+    ],
+    'MAME_Most' : [
+        '{Most Played MAME machines}',
+        ('Display the MAME machines that you play most, sorted by the number '
+         'of times you have launched them.'),
+        misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'),
+        [('Manage Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED'))],
+    ],
+    'MAME_Recent' : [
+        '{Recently Played MAME machines}',
+        ('Display the MAME machines that you have launched recently.'),
+        misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'),
+        [('Manage Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED'))],
+    ],
+    'SL_Favs' : [
+        '<Favourite Software Lists ROMs>',
+        ('Display your [COLOR orange]Favourite Software List items[/COLOR]. '
+         'To add machines to the SL Favourite list use the context menu on any SL item list.'),
+        misc_url_1_arg('command', 'SHOW_SL_FAVS'),
+        [('Manage SL Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_FAV'))],
+    ],
+    'SL_Most' : [
+        '{Most Played SL ROMs}',
+        ('Display the Software List itmes that you play most, sorted by the number '
+         'of times you have launched them.'),
+        misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'),
+        [('Manage SL Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED'))],
+    ],
+    'SL_Recent' : [
+        '{Recently Played SL ROMs}',
+        'Display the Software List items that you have launched recently.',
+        misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'),
+        [('Manage SL Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED'))],
+    ],
+    'Custom_Filters' : [
+        '[Custom MAME filters]',
+        ('[COLOR orange]Custom filters[/COLOR] allows to generate machine '
+         'listings perfectly tailored to your whises. For example, you can define a filter of all '
+         'the machines released in the 1980s that use a joystick. AML includes a fairly '
+         'complete default set of filters in XML format which can be edited.'),
+        misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'),
+        [('Setup custom filters', misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS'))],
+    ],
+}
 
-    # Tuple: title, plot, URL
-    root_SL = {
-        'SL' : [
-            'Software Lists (all)',
-            ('Display all [COLOR orange]Software Lists[/COLOR].'),
-            misc_url_1_arg('catalog', 'SL'),
-        ],
-        'SL_ROM' : [
-            'Software Lists (with ROMs)',
-            ('Display [COLOR orange]Software Lists[/COLOR] that have only ROMs and not CHDs (disks).'),
-            misc_url_1_arg('catalog', 'SL_ROM'),
-        ],
-        'SL_ROM_CHD' : [
-            'Software Lists (with ROMs and CHDs)',
-            ('Display [COLOR orange]Software Lists[/COLOR] that have both ROMs and CHDs.'),
-            misc_url_1_arg('catalog', 'SL_ROM_CHD'),
-        ],
-        'SL_CHD' : [
-            'Software Lists (with CHDs)',
-            ('Display [COLOR orange]Software Lists[/COLOR] that have only CHDs and not ROMs.'),
-            misc_url_1_arg('catalog', 'SL_CHD'),
-        ],
-        'SL_empty' : [
-            'Software Lists (no ROMs nor CHDs)',
-            ('Display [COLOR orange]Software Lists[/COLOR] with no ROMs nor CHDs.'),
-            misc_url_1_arg('catalog', 'SL_empty'),
-        ],
-    }
-
-    # Tuple: title, plot, URL, context_menu_list
-    root_special_CM = {
-        'MAME_Favs' : [
-            '<Favourite MAME machines>',
-            ('Display your [COLOR orange]Favourite MAME machines[/COLOR]. '
-             'To add machines to the Favourite list use the context menu on any MAME machine list.'),
-            misc_url_1_arg('command', 'SHOW_MAME_FAVS'),
-            [('Manage Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_FAV'))],
-        ],
-        'MAME_Most' : [
-            '{Most Played MAME machines}',
-            ('Display the MAME machines that you play most, sorted by the number '
-             'of times you have launched them.'),
-            misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'),
-            [('Manage Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED'))],
-        ],
-        'MAME_Recent' : [
-            '{Recently Played MAME machines}',
-            ('Display the MAME machines that you have launched recently.'),
-            misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'),
-            [('Manage Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED'))],
-        ],
-        'SL_Favs' : [
-            '<Favourite Software Lists ROMs>',
-            ('Display your [COLOR orange]Favourite Software List items[/COLOR]. '
-             'To add machines to the SL Favourite list use the context menu on any SL item list.'),
-            misc_url_1_arg('command', 'SHOW_SL_FAVS'),
-            [('Manage SL Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_FAV'))],
-        ],
-        'SL_Most' : [
-            '{Most Played SL ROMs}',
-            ('Display the Software List itmes that you play most, sorted by the number '
-             'of times you have launched them.'),
-            misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'),
-            [('Manage SL Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED'))],
-        ],
-        'SL_Recent' : [
-            '{Recently Played SL ROMs}',
-            'Display the Software List items that you have launched recently.',
-            misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'),
-            [('Manage SL Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED'))],
-        ],
-        'Custom_Filters' : [
-            '[Custom MAME filters]',
-            ('[COLOR orange]Custom filters[/COLOR] allows to generate machine '
-             'listings perfectly tailored to your whises. For example, you can define a filter of all '
-             'the machines released in the 1980s that use a joystick. AML includes a fairly '
-             'complete default set of filters in XML format which can be edited.'),
-            misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'),
-            [('Setup custom filters', misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS'))],
-        ],
-    }
-
-def render_root_list():
-    mame_view_mode = g_settings['mame_view_mode']
-    set_render_root_data()
+def render_root_list(cfg):
+    mame_view_mode = cfg.settings['mame_view_mode']
 
     # ----- MAME machine count -----
-    cache_index_dic = utils_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
+    cache_index_dic = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
 
     # Do not crash if cache_index_dic is corrupted or has missing fields (may happen in
     # upgrades). This function must never crash because the user must have always access to
@@ -1078,8 +1174,8 @@ def render_root_list():
     log_debug('render_root_list() MAME_counters_available = {}'.format(MAME_counters_available))
 
     # --- SL item count ---
-    if g_settings['global_enable_SL']:
-        SL_index_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+    if cfg.settings['global_enable_SL']:
+        SL_index_dic = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
         try:
             num_SL_all = 0
             num_SL_ROMs = 0
@@ -1176,15 +1272,15 @@ def render_root_list():
         root_SL['SL_empty'][0] += a.format(num_SL_empty)
 
     # If everything deactivated render the main filters so user has access to the context menu.
-    big_OR = g_settings['display_main_filters'] or g_settings['display_binary_filters'] or \
-        g_settings['display_catalog_filters'] or g_settings['display_DAT_browser'] or \
-        g_settings['display_SL_browser'] or g_settings['display_MAME_favs'] or \
-        g_settings['display_SL_favs'] or g_settings['display_custom_filters']
+    big_OR = cfg.settings['display_main_filters'] or cfg.settings['display_binary_filters'] or \
+        cfg.settings['display_catalog_filters'] or cfg.settings['display_DAT_browser'] or \
+        cfg.settings['display_SL_browser'] or cfg.settings['display_MAME_favs'] or \
+        cfg.settings['display_SL_favs'] or cfg.settings['display_custom_filters']
     if not big_OR:
-        g_settings['display_main_filters'] = True
+        cfg.settings['display_main_filters'] = True
 
     # Main filters (Virtual catalog 'Main')
-    if g_settings['display_main_filters']:
+    if cfg.settings['display_main_filters']:
         render_root_catalog_row(*root_Main['Main_Normal'])
         render_root_catalog_row(*root_Main['Main_Unusual'])
         render_root_catalog_row(*root_Main['Main_NoCoin'])
@@ -1193,14 +1289,14 @@ def render_root_list():
         render_root_catalog_row(*root_Main['Main_Devices'])
 
     # Binary filters (Virtual catalog 'Binary')
-    if g_settings['display_binary_filters']:
+    if cfg.settings['display_binary_filters']:
         render_root_catalog_row(*root_Binary['BIOS'])
         render_root_catalog_row(*root_Binary['CHD'])
         render_root_catalog_row(*root_Binary['Samples'])
         if g_settings['global_enable_SL']:
             render_root_catalog_row(*root_Binary['SoftwareLists'])
 
-    if g_settings['display_catalog_filters']:
+    if cfg.settings['display_catalog_filters']:
         # Optional cataloged filters (depend on a INI file)
         render_root_category_row(*root_categories['Catver'])
         render_root_category_row(*root_categories['Catlist'])
@@ -1231,7 +1327,7 @@ def render_root_list():
         render_root_category_row(*root_categories['Year'])
 
     # --- DAT browsers ---
-    if g_settings['display_DAT_browser']:
+    if cfg.settings['display_DAT_browser']:
         render_root_category_row(*root_special['History'])
         render_root_category_row(*root_special['MAMEINFO'])
         render_root_category_row(*root_special['Gameinit'])
@@ -1241,7 +1337,7 @@ def render_root_list():
     # If SL are globally disabled do not render SL browser.
     # If SL are globally enabled, SL databases are built but the user may choose to not
     # render the SL browser.
-    if g_settings['display_SL_browser'] and g_settings['global_enable_SL']:
+    if cfg.settings['display_SL_browser'] and cfg.settings['global_enable_SL']:
         render_root_category_row(*root_SL['SL'])
         render_root_category_row(*root_SL['SL_ROM'])
         render_root_category_row(*root_SL['SL_ROM_CHD'])
@@ -1250,10 +1346,10 @@ def render_root_list():
             render_root_category_row(*root_SL['SL_empty'])
 
     # --- Special launchers ---
-    if g_settings['display_custom_filters']:
+    if cfg.settings['display_custom_filters']:
         render_root_category_row_custom_CM(*root_special_CM['Custom_Filters'])
 
-    if g_settings['display_ROLs']:
+    if cfg.settings['display_ROLs']:
         ROLS_plot = ('[COLOR orange]AEL Read Only Launchers[/COLOR] are special launchers '
             'exported to AEL. You can select your Favourite MAME machines or setup a custom '
             'filter to enjoy your MAME games in AEL togheter with other emulators.')
@@ -1261,35 +1357,35 @@ def render_root_list():
         render_root_category_row('[AEL Read Only Launchers]', ROLS_plot, URL)
 
     # --- MAME Favourite stuff ---
-    if g_settings['display_MAME_favs']:
+    if cfg.settings['display_MAME_favs']:
         render_root_category_row_custom_CM(*root_special_CM['MAME_Favs'])
-    if g_settings['display_MAME_most']:
+    if cfg.settings['display_MAME_most']:
         render_root_category_row_custom_CM(*root_special_CM['MAME_Most'])
-    if g_settings['display_MAME_recent']:
+    if cfg.settings['display_MAME_recent']:
         render_root_category_row_custom_CM(*root_special_CM['MAME_Recent'])
 
     # --- SL Favourite stuff ---
-    if g_settings['display_SL_favs'] and g_settings['global_enable_SL']:
+    if cfg.settings['display_SL_favs'] and cfg.settings['global_enable_SL']:
         render_root_category_row_custom_CM(*root_special_CM['SL_Favs'])
-    if g_settings['display_SL_most'] and g_settings['global_enable_SL']:
+    if cfg.settings['display_SL_most'] and cfg.settings['global_enable_SL']:
         render_root_category_row_custom_CM(*root_special_CM['SL_Most'])
-    if g_settings['display_SL_recent'] and g_settings['global_enable_SL']:
+    if cfg.settings['display_SL_recent'] and cfg.settings['global_enable_SL']:
         render_root_category_row_custom_CM(*root_special_CM['SL_Recent'])
 
     # Utilities and Reports special menus.
-    if g_settings['display_utilities']:
+    if cfg.settings['display_utilities']:
         Utilities_plot = ('Execute several [COLOR orange]Utilities[/COLOR]. For example, to '
             'check you AML configuration.')
         URL = misc_url_1_arg('command', 'SHOW_UTILITIES_VLAUNCHERS')
         render_root_category_row('Utilities', Utilities_plot, URL)
-    if g_settings['display_global_reports']:
+    if cfg.settings['display_global_reports']:
         Global_Reports_plot = ('View the [COLOR orange]Global Reports[/COLOR] and '
             'machine and audit [COLOR orange]Statistics[/COLOR].')
         URL = misc_url_1_arg('command', 'SHOW_GLOBALREPORTS_VLAUNCHERS')
         render_root_category_row('Global Reports', Global_Reports_plot, URL)
 
-    # --- End of directory ---
-    xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
+    # End of directory.
+    xbmcplugin.endOfDirectory(handle = cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 #
 # These _render_skin_* functions used by skins to display widgets.
@@ -7922,100 +8018,21 @@ def run_after_execution():
 # List of sorting methods here http://mirrors.xbmc.org/docs/python-docs/16.x-jarvis/xbmcplugin.html#-setSetting
 def set_Kodi_unsorted_method():
     if g_addon_handle < 0: return
-    xbmcplugin.addSortMethod(handle=g_addon_handle, sortMethod=xbmcplugin.SORT_METHOD_UNSORTED)
+    xbmcplugin.addSortMethod(handle = g_addon_handle, sortMethod = xbmcplugin.SORT_METHOD_UNSORTED)
 
 def set_Kodi_all_sorting_methods():
     if g_addon_handle < 0: return
-    xbmcplugin.addSortMethod(handle=g_addon_handle, sortMethod=xbmcplugin.SORT_METHOD_LABEL_IGNORE_FOLDERS)
-    xbmcplugin.addSortMethod(handle=g_addon_handle, sortMethod=xbmcplugin.SORT_METHOD_VIDEO_YEAR)
-    xbmcplugin.addSortMethod(handle=g_addon_handle, sortMethod=xbmcplugin.SORT_METHOD_STUDIO)
-    xbmcplugin.addSortMethod(handle=g_addon_handle, sortMethod=xbmcplugin.SORT_METHOD_GENRE)
-    xbmcplugin.addSortMethod(handle=g_addon_handle, sortMethod=xbmcplugin.SORT_METHOD_UNSORTED)
+    xbmcplugin.addSortMethod(handle = g_addon_handle, sortMethod = xbmcplugin.SORT_METHOD_LABEL_IGNORE_FOLDERS)
+    xbmcplugin.addSortMethod(handle = g_addon_handle, sortMethod = xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+    xbmcplugin.addSortMethod(handle = g_addon_handle, sortMethod = xbmcplugin.SORT_METHOD_STUDIO)
+    xbmcplugin.addSortMethod(handle = g_addon_handle, sortMethod = xbmcplugin.SORT_METHOD_GENRE)
+    xbmcplugin.addSortMethod(handle = g_addon_handle, sortMethod = xbmcplugin.SORT_METHOD_UNSORTED)
 
 def set_Kodi_all_sorting_methods_and_size():
     if g_addon_handle < 0: return
-    xbmcplugin.addSortMethod(handle=g_addon_handle, sortMethod=xbmcplugin.SORT_METHOD_LABEL_IGNORE_FOLDERS)
-    xbmcplugin.addSortMethod(handle=g_addon_handle, sortMethod=xbmcplugin.SORT_METHOD_VIDEO_YEAR)
-    xbmcplugin.addSortMethod(handle=g_addon_handle, sortMethod=xbmcplugin.SORT_METHOD_STUDIO)
-    xbmcplugin.addSortMethod(handle=g_addon_handle, sortMethod=xbmcplugin.SORT_METHOD_GENRE)
-    xbmcplugin.addSortMethod(handle=g_addon_handle, sortMethod=xbmcplugin.SORT_METHOD_SIZE)
-    xbmcplugin.addSortMethod(handle=g_addon_handle, sortMethod=xbmcplugin.SORT_METHOD_UNSORTED)
-
-# ---------------------------------------------------------------------------------------------
-# Misc URL building functions
-# NOTE '&' must be scaped to '%26' in all URLs
-# ---------------------------------------------------------------------------------------------
-#
-# Functions used in xbmcplugin.addDirectoryItem()
-#
-def misc_url(command):
-    command_escaped = command.replace('&', '%26')
-
-    return '{}?command={}'.format(g_base_url, command_escaped)
-
-def misc_url_1_arg(arg_name, arg_value):
-    arg_value_escaped = arg_value.replace('&', '%26')
-
-    return '{}?{}={}'.format(g_base_url, arg_name, arg_value_escaped)
-
-def misc_url_2_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2):
-    arg_value_1_escaped = arg_value_1.replace('&', '%26')
-    arg_value_2_escaped = arg_value_2.replace('&', '%26')
-
-    return '{}?{}={}&{}={}'.format(g_base_url,
-        arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped)
-
-def misc_url_3_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3):
-    arg_value_1_escaped = arg_value_1.replace('&', '%26')
-    arg_value_2_escaped = arg_value_2.replace('&', '%26')
-    arg_value_3_escaped = arg_value_3.replace('&', '%26')
-
-    return '{}?{}={}&{}={}&{}={}'.format(g_base_url,
-        arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped, arg_name_3, arg_value_3_escaped)
-
-def misc_url_4_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3, arg_name_4, arg_value_4):
-    arg_value_1_escaped = arg_value_1.replace('&', '%26')
-    arg_value_2_escaped = arg_value_2.replace('&', '%26')
-    arg_value_3_escaped = arg_value_3.replace('&', '%26')
-    arg_value_4_escaped = arg_value_4.replace('&', '%26')
-
-    return '{}?{}={}&{}={}&{}={}&{}={}'.format(g_base_url,
-        arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped,
-        arg_name_3, arg_value_3_escaped,arg_name_4, arg_value_4_escaped)
-
-#
-# Functions used in context menus, in listitem.addContextMenuItems()
-#
-def misc_url_RunPlugin(command):
-    command_esc = command.replace('&', '%26')
-
-    return 'RunPlugin({}?command={})'.format(g_base_url, command_esc)
-
-def misc_url_1_arg_RunPlugin(arg_n_1, arg_v_1):
-    arg_v_1_esc = arg_v_1.replace('&', '%26')
-
-    return 'RunPlugin({}?{}={})'.format(g_base_url, arg_n_1, arg_v_1_esc)
-
-def misc_url_2_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2):
-    arg_v_1_esc = arg_v_1.replace('&', '%26')
-    arg_v_2_esc = arg_v_2.replace('&', '%26')
-
-    return 'RunPlugin({}?{}={}&{}={})'.format(g_base_url,
-        arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc)
-
-def misc_url_3_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2, arg_n_3, arg_v_3):
-    arg_v_1_esc = arg_v_1.replace('&', '%26')
-    arg_v_2_esc = arg_v_2.replace('&', '%26')
-    arg_v_3_esc = arg_v_3.replace('&', '%26')
-
-    return 'RunPlugin({}?{}={}&{}={}&{}={})'.format(g_base_url,
-        arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc, arg_n_3, arg_v_3_esc)
-
-def misc_url_4_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2, arg_n_3, arg_v_3, arg_n_4, arg_v_4):
-    arg_v_1_esc = arg_v_1.replace('&', '%26')
-    arg_v_2_esc = arg_v_2.replace('&', '%26')
-    arg_v_3_esc = arg_v_3.replace('&', '%26')
-    arg_v_4_esc = arg_v_4.replace('&', '%26')
-
-    return 'RunPlugin({}?{}={}&{}={}&{}={}&{}={})'.format(g_base_url,
-        arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc, arg_n_3, arg_v_3_esc, arg_n_4, arg_v_4_esc)
+    xbmcplugin.addSortMethod(handle = g_addon_handle, sortMethod = xbmcplugin.SORT_METHOD_LABEL_IGNORE_FOLDERS)
+    xbmcplugin.addSortMethod(handle = g_addon_handle, sortMethod = xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+    xbmcplugin.addSortMethod(handle = g_addon_handle, sortMethod = xbmcplugin.SORT_METHOD_STUDIO)
+    xbmcplugin.addSortMethod(handle = g_addon_handle, sortMethod = xbmcplugin.SORT_METHOD_GENRE)
+    xbmcplugin.addSortMethod(handle = g_addon_handle, sortMethod = xbmcplugin.SORT_METHOD_SIZE)
+    xbmcplugin.addSortMethod(handle = g_addon_handle, sortMethod = xbmcplugin.SORT_METHOD_UNSORTED)
