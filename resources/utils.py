@@ -825,8 +825,14 @@ else:
 
 # -------------------------------------------------------------------------------------------------
 # Kodi GUI error reporting.
-# Errors can be reported up in the function backtrace with `if not st_dic['status']: return` after
-# every function call.
+# * Errors can be reported up in the function backtrace with `if not st_dic['status']: return` after
+#   every function call.
+# * Warnings and non-fatal messages are printed in the callee function.
+# * If st_dic['status'] is True but st_dic['dialog'] is not KODI_MESSAGE_NONE then display
+#   the message but do not abort execution (success information message).
+# * When kodi_display_status_message() is used to display the last message on a chaing of
+#   function calls it is irrelevant its return value because addon always finishes.
+#
 # How to use:
 # def high_level_function():
 #     st_dic = kodi_new_status_dic()
@@ -846,37 +852,43 @@ KODI_MESSAGE_NOTIFY_WARN = 300
 # Kodi OK dialog to display a message.
 KODI_MESSAGE_DIALOG      = 400
 
-# If status_dic['status'] is True then everything is OK.
-# If status_dic['status'] is False then display the notification.
-def kodi_new_status_dic(message = ''):
+# If st_dic['abort'] is False then everything is OK.
+# If st_dic['abort'] is True then execution must be aborted and error displayed.
+# Success message can also be displayed (st_dic['abort'] False and 
+# st_dic['dialog'] is different from KODI_MESSAGE_NONE).
+def kodi_new_status_dic():
     return {
-        'status' : True,
-        'dialog' : KODI_MESSAGE_NOTIFY,
-        'msg'    : message,
+        'abort' : False,
+        'dialog' : KODI_MESSAGE_NONE,
+        'msg' : '',
     }
 
 # Display an error message in the GUI.
 # Returns True in case of error and addon must abort immediately.
 # Returns False if no error.
 def kodi_display_status_message(st_dic):
-    # If status field is True no error, return immediately False (no error).
-    if st_dic['status']: return False
-    # Display error message and return True (error).
-    if st_dic['dialog'] == KODI_MESSAGE_NOTIFY:
+    # Display (error) message and return status.
+    if st_dic['dialog'] == KODI_MESSAGE_NONE:
+        pass
+    elif st_dic['dialog'] == KODI_MESSAGE_NOTIFY:
         kodi_notify(st_dic['msg'])
-        return True
     elif st_dic['dialog'] == KODI_MESSAGE_NOTIFY_WARN:
         kodi_notify(st_dic['msg'])
-        return True
     elif st_dic['dialog'] == KODI_MESSAGE_DIALOG:
         kodi_dialog_OK(st_dic['msg'])
-        return True
     else:
         raise TypeError('st_dic["dialog"] = {}'.format(st_dic['dialog']))
+
+    return st_dic['status']
 
 # Utility function to write more compact code.
 # By default error messages are shown in modal OK dialogs.
 def kodi_set_error_status(st_dic, msg, dialog = KODI_MESSAGE_DIALOG):
-    st_dic['status'] = False
+    st_dic['abort'] = True
     st_dic['dialog'] = dialog
     st_dic['msg'] = msg
+
+def kodi_reset_status(st_dic):
+    st_dic['abort'] = False
+    st_dic['dialog'] = KODI_MESSAGE_NONE
+    st_dic['msg'] = ''
