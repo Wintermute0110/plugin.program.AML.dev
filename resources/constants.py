@@ -79,6 +79,9 @@ OP_MODE_LIST = [
     OP_MODE_RETRO_MAME2014,
 ]
 
+# In MAME 2003 Plus the MAME version is not found on the XML file.
+MAME2003PLUS_VERSION_RAW = '0.78 (RA2003Plus)'
+
 # Make sure these strings are equal to the ones in settings.xml or bad things will happen.
 VIEW_MODE_FLAT             = 0 # 'Flat'
 VIEW_MODE_PCLONE           = 1 # 'Parent/Clone'

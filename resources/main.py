@@ -86,8 +86,8 @@ class AML_Paths:
 
         # MAME XML, main database and main PClone list.
         self.MAME_XML_PATH = self.ADDON_DATA_DIR.pjoin('MAME.xml')
-        self.MAME_XML_CONTROL_PATH = self.ADDON_DATA_DIR.pjoin('MAME_control.json')
-        self.MAME_2003_PLUS_XML_CONTROL_PATH = self.ADDON_DATA_DIR.pjoin('MAME_2003_plus_control.json')
+        self.MAME_XML_CONTROL_PATH = self.ADDON_DATA_DIR.pjoin('XML_control_MAME.json')
+        self.MAME_2003_PLUS_XML_CONTROL_PATH = self.ADDON_DATA_DIR.pjoin('XML_control_MAME_2003_plus.json')
         self.MAIN_ASSETS_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_assets.json')
         self.MAIN_CONTROL_PATH = self.ADDON_DATA_DIR.pjoin('MAME_control_dic.json')
         self.DEVICES_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_DB_devices.json')
@@ -527,27 +527,23 @@ def run_plugin(addon_argv):
             ROM_name = args['ROM'][0] if 'ROM' in args else ''
             command_context_manage_SL_recent_played(SL_name, ROM_name)
 
-        # >> Custom filters
         elif command == 'SHOW_CUSTOM_FILTERS':
             command_show_custom_filters()
         elif command == 'SETUP_CUSTOM_FILTERS':
             command_context_setup_custom_filters()
 
-        # >> Utilities and global reports.
         elif command == 'SHOW_UTILITIES_VLAUNCHERS':
             render_Utilities_vlaunchers()
         elif command == 'SHOW_GLOBALREPORTS_VLAUNCHERS':
             render_GlobalReports_vlaunchers()
 
-        # >> Execute Utilities
         elif command == 'EXECUTE_UTILITY':
             which_utility = args['which'][0]
             command_exec_utility(which_utility)
 
-        # >> Execute View Reports
         elif command == 'EXECUTE_REPORT':
             which_report = args['which'][0]
-            command_exec_report(which_report)
+            command_exec_report(cfg, which_report)
 
         else:
             u = 'Unknown command "{}"'.format(command)
@@ -6548,9 +6544,12 @@ def command_exec_utility(which_utility):
             kodi_dialog_OK('MAME executable is not set.')
             return
 
-        # --- Check MAME version ---
+        # Check MAME version.
         mame_prog_FN = FileName(g_settings['mame_prog'])
-        mame_version_str = mame_extract_MAME_version(g_PATHS, mame_prog_FN)
+        if not mame_prog_FN.exists():
+            kodi_dialog_OK('Vanilla MAME executable not found.')
+            return
+        mame_version_str = mame_get_MAME_exe_version(g_PATHS, mame_prog_FN)
         kodi_dialog_OK('MAME version is {}'.format(mame_version_str))
 
     # Check AML configuration
@@ -7115,26 +7114,26 @@ def command_exec_utility(which_utility):
 #
 # Execute view reports.
 #
-def command_exec_report(which_report):
+def command_exec_report(cfg, which_report):
     log_debug('command_exec_report() which_report = "{}" starting ...'.format(which_report))
 
     if which_report == 'VIEW_EXEC_OUTPUT':
-        if not g_PATHS.MAME_OUTPUT_PATH.exists():
+        if not cfg.MAME_OUTPUT_PATH.exists():
             kodi_dialog_OK('MAME output file not found. Execute MAME and try again.')
             return
-        info_text = utils_load_file_to_str(g_PATHS.MAME_OUTPUT_PATH.getPath())
+        info_text = utils_load_file_to_str(cfg.MAME_OUTPUT_PATH.getPath())
         kodi_display_text_window_mono('MAME last execution output', info_text)
 
     # --- View database information and statistics stored in control dictionary ------------------
     elif which_report == 'VIEW_STATS_MAIN':
-        if not g_PATHS.MAIN_CONTROL_PATH.exists():
+        if not cfg.MAIN_CONTROL_PATH.exists():
             kodi_dialog_OK('MAME database not found. Please setup the addon first.')
             return
-        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
         if g_settings['op_mode'] == OP_MODE_VANILLA:
-            XML_ctrl_dic = utils_load_JSON_file_dic(g_PATHS.MAME_XML_CONTROL_PATH.getPath())
+            XML_ctrl_dic = utils_load_JSON_file_dic(cfg.MAME_XML_CONTROL_PATH.getPath())
         elif g_settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
-            XML_ctrl_dic = utils_load_JSON_file_dic(g_PATHS.MAME_2003_PLUS_XML_CONTROL_PATH.getPath())
+            XML_ctrl_dic = utils_load_JSON_file_dic(cfg.MAME_2003_PLUS_XML_CONTROL_PATH.getPath())
         else:
             XML_ctrl_dic = db_new_MAME_XML_control_dic()
         info_text = []
@@ -7142,42 +7141,42 @@ def command_exec_report(which_report):
         kodi_display_text_window_mono('Database main statistics', '\n'.join(info_text))
 
     elif which_report == 'VIEW_STATS_SCANNER':
-        if not g_PATHS.MAIN_CONTROL_PATH.exists():
+        if not cfg.MAIN_CONTROL_PATH.exists():
             kodi_dialog_OK('MAME database not found. Please setup the addon first.')
             return
-        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
         info_text = []
         mame_stats_scanner_print_slist(g_settings, info_text, control_dic)
         kodi_display_text_window_mono('Scanner statistics', '\n'.join(info_text))
 
     elif which_report == 'VIEW_STATS_AUDIT':
-        if not g_PATHS.MAIN_CONTROL_PATH.exists():
+        if not cfg.MAIN_CONTROL_PATH.exists():
             kodi_dialog_OK('MAME database not found. Please setup the addon first.')
             return
-        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
         info_text = []
         mame_stats_audit_print_slist(g_settings, info_text, control_dic)
         kodi_display_text_window_mono('Database information and statistics', '\n'.join(info_text))
 
     elif which_report == 'VIEW_STATS_TIMESTAMPS':
-        if not g_PATHS.MAIN_CONTROL_PATH.exists():
+        if not cfg.MAIN_CONTROL_PATH.exists():
             kodi_dialog_OK('MAME database not found. Please setup the addon first.')
             return
-        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
         info_text = []
         mame_stats_timestamps_slist(g_settings, info_text, control_dic)
         kodi_display_text_window_mono('Database information and statistics', '\n'.join(info_text))
 
     # --- All statistics ---
     elif which_report == 'VIEW_STATS_ALL':
-        if not g_PATHS.MAIN_CONTROL_PATH.exists():
+        if not cfg.MAIN_CONTROL_PATH.exists():
             kodi_dialog_OK('MAME database not found. Please setup the addon first.')
             return
-        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
         if g_settings['op_mode'] == OP_MODE_VANILLA:
-            XML_ctrl_dic = utils_load_JSON_file_dic(g_PATHS.MAME_XML_CONTROL_PATH.getPath())
+            XML_ctrl_dic = utils_load_JSON_file_dic(cfg.MAME_XML_CONTROL_PATH.getPath())
         elif g_settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
-            XML_ctrl_dic = utils_load_JSON_file_dic(g_PATHS.MAME_2003_PLUS_XML_CONTROL_PATH.getPath())
+            XML_ctrl_dic = utils_load_JSON_file_dic(cfg.MAME_2003_PLUS_XML_CONTROL_PATH.getPath())
         else:
             XML_ctrl_dic = db_new_MAME_XML_control_dic()
 
@@ -7192,32 +7191,32 @@ def command_exec_report(which_report):
         kodi_display_text_window_mono('Database full statistics', '\n'.join(info_text))
 
     elif which_report == 'VIEW_STATS_WRITE_FILE':
-        if not g_PATHS.MAIN_CONTROL_PATH.exists():
+        if not cfg.MAIN_CONTROL_PATH.exists():
             kodi_dialog_OK('MAME database not found. Please setup the addon first.')
             return
-        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        if g_settings['op_mode'] == OP_MODE_VANILLA:
-            XML_ctrl_dic = utils_load_JSON_file_dic(g_PATHS.MAME_XML_CONTROL_PATH.getPath())
-        elif g_settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
-            XML_ctrl_dic = utils_load_JSON_file_dic(g_PATHS.MAME_2003_PLUS_XML_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
+        if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+            XML_ctrl_dic = utils_load_JSON_file_dic(cfg.MAME_XML_CONTROL_PATH.getPath())
+        elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+            XML_ctrl_dic = utils_load_JSON_file_dic(cfg.MAME_2003_PLUS_XML_CONTROL_PATH.getPath())
         else:
             XML_ctrl_dic = db_new_MAME_XML_control_dic()
 
         # --- Generate stats string and remove Kodi colours ---
         info_text = []
-        mame_stats_main_print_slist(g_settings, info_text, control_dic, XML_ctrl_dic)
+        mame_stats_main_print_slist(cfg, info_text, control_dic, XML_ctrl_dic)
         info_text.append('')
-        mame_stats_scanner_print_slist(g_settings, info_text, control_dic)
+        mame_stats_scanner_print_slist(cfg, info_text, control_dic)
         info_text.append('')
-        mame_stats_audit_print_slist(g_settings, info_text, control_dic)
+        mame_stats_audit_print_slist(cfg, info_text, control_dic)
         info_text.append('')
-        mame_stats_timestamps_slist(g_settings, info_text, control_dic)
+        mame_stats_timestamps_slist(cfg, info_text, control_dic)
 
         # --- Write file to disk and inform user ---
         log_info('Writing AML statistics report...')
-        log_info('File "{}"'.format(g_PATHS.REPORT_STATS_PATH.getPath()))
+        log_info('File "{}"'.format(cfg.REPORT_STATS_PATH.getPath()))
         text_remove_color_tags_slist(info_text)
-        utils_write_slist_to_file(g_PATHS.REPORT_STATS_PATH.getPath(), info_text)
+        utils_write_slist_to_file(cfg.REPORT_STATS_PATH.getPath(), info_text)
         kodi_notify('Exported AML statistics')
 
     # --- MAME scanner reports -------------------------------------------------------------------

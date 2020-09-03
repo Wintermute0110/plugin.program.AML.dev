@@ -229,12 +229,11 @@ SL_better_name_dic = {
 # re.search() returns a MatchObject https://docs.python.org/2/library/re.html#re.MatchObject
 def mame_get_numerical_version(mame_version_str):
     log_verb('mame_get_numerical_version() mame_version_str = "{}"'.format(mame_version_str))
-    version_int = 0
+    mame_version_int = 0
     # Search for old version scheme x.yyybzz
     m_obj_old = re.search('^(\d+)\.(\d+)b(\d+)', mame_version_str)
     # Search for modern, consistent versioning system x.yyy
     m_obj_modern = re.search('^(\d+)\.(\d+)', mame_version_str)
-
     if m_obj_old:
         major = int(m_obj_old.group(1))
         minor = int(m_obj_old.group(2))
@@ -243,53 +242,49 @@ def mame_get_numerical_version(mame_version_str):
         # log_verb('mame_get_numerical_version() major = {}'.format(major))
         # log_verb('mame_get_numerical_version() minor = {}'.format(minor))
         # log_verb('mame_get_numerical_version() beta  = {}'.format(beta))
-        version_int = major * 1000000 + minor * 1000 + release_flag * 100 + beta
+        mame_version_int = major * 1000000 + minor * 1000 + release_flag * 100 + beta
     elif m_obj_modern:
         major = int(m_obj_modern.group(1))
         minor = int(m_obj_modern.group(2))
         release_flag = 5
         # log_verb('mame_get_numerical_version() major = {}'.format(major))
         # log_verb('mame_get_numerical_version() minor = {}'.format(minor))
-        version_int = major * 1000000 + minor * 1000 + release_flag * 100
+        mame_version_int = major * 1000000 + minor * 1000 + release_flag * 100
     else:
         log_error('MAME version "{}" cannot be parsed.'.format(mame_version_str))
         raise TypeError
-    log_verb('mame_get_numerical_version() version_int = {}'.format(version_int))
+    log_verb('mame_get_numerical_version() mame_version_int = {}'.format(mame_version_int))
 
-    return version_int
+    return mame_version_int
 
-def mame_get_MAME_exe_version(PATHS, mame_prog_FN):
+# Returns a string like ''.
+def mame_get_MAME_exe_version(cfg, mame_prog_FN):
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
-    log_info('mame_extract_MAME_version() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
-    log_info('mame_extract_MAME_version() mame_dir     "{}"'.format(mame_dir))
-    log_info('mame_extract_MAME_version() mame_exec    "{}"'.format(mame_exec))
-    with open(PATHS.MAME_STDOUT_VER_PATH.getPath(), 'wb') as out, open(PATHS.MAME_STDERR_VER_PATH.getPath(), 'wb') as err:
-        p = subprocess.Popen([mame_prog_FN.getPath(), '-?'], stdout=out, stderr=err, cwd=mame_dir)
+    log_info('mame_get_MAME_exe_version() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
+    log_info('mame_get_MAME_exe_version() mame_dir     "{}"'.format(mame_dir))
+    log_info('mame_get_MAME_exe_version() mame_exec    "{}"'.format(mame_exec))
+    stdout_f = cfg.MAME_STDOUT_VER_PATH.getPath()
+    err_f = cfg.MAME_STDERR_VER_PATH.getPath()
+    with open(stdout_f, 'wb') as out, open(err_f, 'wb') as err:
+        p = subprocess.Popen([mame_prog_FN.getPath(), '-?'], stdout = out, stderr = err, cwd = mame_dir)
         p.wait()
 
-    # --- Check if everything OK ---
-    # statinfo = os.stat(PATHS.MAME_XML_PATH.getPath())
-    # filesize = statinfo.st_size
-
-    # --- Read version ---
-    lines = utils_load_file_to_slist(PATHS.MAME_STDOUT_VER_PATH.getPath())
+    # Read MAME version.
+    lines = utils_load_file_to_slist(cfg.MAME_STDOUT_VER_PATH.getPath())
     version_str = ''
     for line in lines:
         m = re.search('^MAME v([0-9\.]+?) \(([a-z0-9]+?)\)$', line.strip())
         if m:
             version_str = m.group(1)
             break
+    log_debug('mame_get_MAME_exe_version() Returning "{}"'.format(version_str))
 
     return version_str
 
-#
-# Counts MAME machines in a modern MAME XML file.
-#
+# Counts MAME machines in MAME XML file.
 def mame_count_MAME_machines(XML_path_FN):
     log_debug('mame_count_MAME_machines_modern() BEGIN...')
     log_debug('XML "{}"'.format(XML_path_FN.getPath()))
-    pDialog = KodiProgressDialog()
-    pDialog.startProgress('Counting number of MAME machines...')
     num_machines_modern = 0
     num_machines_legacy = 0
     with open(XML_path_FN.getPath(), 'rt') as f:
@@ -300,13 +295,11 @@ def mame_count_MAME_machines(XML_path_FN):
             if line.find('<game name=') > 0:
                 num_machines_legacy += 1
                 continue
-    pDialog.endProgress()
     if num_machines_modern and num_machines_legacy:
         log_error('num_machines_modern = {}'.format(num_machines_modern))
         log_error('num_machines_legacy = {}'.format(num_machines_legacy))
         log_error('Both cannot be > 0!')
         raise TypeError
-        
     num_machines = num_machines_modern if num_machines_modern > num_machines_legacy else num_machines_legacy
 
     return num_machines
@@ -316,10 +309,7 @@ def mame_count_MAME_machines(XML_path_FN):
 # 3) Gets MAME version from the XML file.
 # 4) Creates MAME XML control file.
 def mame_extract_MAME_XML(cfg, st_dic):
-    # --- Check for errors ---
-    if not cfg.settings['mame_prog']:
-        kodi_set_error_status(st_dic, 'MAME executable is not set.')
-        return
+    pDialog = KodiProgressDialog()
 
     # Extract XML from MAME executable.
     mame_prog_FN = FileName(cfg.settings['mame_prog'])
@@ -328,9 +318,9 @@ def mame_extract_MAME_XML(cfg, st_dic):
     log_info('mame_extract_MAME_XML() Saving XML   "{}"'.format(cfg.MAME_XML_PATH.getPath()))
     log_info('mame_extract_MAME_XML() mame_dir     "{}"'.format(mame_dir))
     log_info('mame_extract_MAME_XML() mame_exec    "{}"'.format(mame_exec))
-    pDialog = KodiProgressDialog()
     pDialog.startProgress('Extracting MAME XML database. Progress bar is not accurate.')
-    with open(cfg.MAME_XML_PATH.getPath(), 'wb') as out, open(cfg.MAME_STDERR_PATH.getPath(), 'wb') as err:
+    XML_path_FN = cfg.MAME_XML_PATH
+    with open(XML_path_FN.getPath(), 'wb') as out, open(cfg.MAME_STDERR_PATH.getPath(), 'wb') as err:
         p = subprocess.Popen([mame_prog_FN.getPath(), '-listxml'], stdout=out, stderr=err, cwd=mame_dir)
         count = 0
         while p.poll() is None:
@@ -338,38 +328,61 @@ def mame_extract_MAME_XML(cfg, st_dic):
             count += 1
             pDialog.updateProgress(count)
     pDialog.endProgress()
+    time_extracting = time.time()
 
-    # --- Check if everything OK ---
-    statinfo = os.stat(cfg.MAME_XML_PATH.getPath())
-    filesize = statinfo.st_size
-    options_dic['filesize'] = filesize
-
-    # --- Count number of machines. Useful for progress dialogs ---
+    # Count number of machines. Useful for later progress dialogs and statistics.
     log_info('mame_extract_MAME_XML() Counting number of machines ...')
-    total_machines = mame_count_MAME_machines_modern(cfg.MAME_XML_PATH)
-    options_dic['total_machines'] = total_machines
+    pDialog.startProgress('Counting number of MAME machines...')
+    total_machines = mame_count_MAME_machines(cfg.MAME_XML_PATH)
+    pDialog.endProgress()
     log_info('mame_extract_MAME_XML() Found {} machines.'.format(total_machines))
-
-    # Reset MAME control dictionary completely
-    # db_safe_edit(control_dic, 't_XML_extraction', time.time())
-    # utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic, verbose = True)
-
-# 1) Counts number of MAME machines
-# 2) Creates MAME XML control file.
-def mame_preprocess_RETRO_MAME2003PLUS(cfg, st_dic):
-    # Count number of machines. Useful for progress dialogs and statistics.
-    log_info('mame_process_RETRO_MAME2003PLUS() Counting number of machines ...')
-    XML_path_FN = FileName(cfg.settings['xml_2003_path'])
-    total_machines = mame_count_MAME_machines(XML_path_FN)
-    log_info('mame_process_RETRO_MAME2003PLUS() Found {} machines.'.format(total_machines))
-
-    # Get MAME version from the XML (although we know is MAME 2003 Plus).
-    ver_mame = 0
-    ver_mame_str = ''
 
     # Get XML file stat info.
     # See https://docs.python.org/3/library/os.html#os.stat_result
     statinfo = os.stat(XML_path_FN.getPath())
+
+    # Get MAME version from the XML.
+    xml_f = open(XML_path_FN.getPath())
+    xml_iter = ET.iterparse(xml_f, events = ("start", "end"))
+    event, root = next(xml_iter)
+    xml_f.close()
+    ver_mame_str = root.attrib['build']
+    ver_mame_int = mame_get_numerical_version(ver_mame_str)
+
+    # Create the MAME XML control file. Only change used fields.
+    XML_control_dic = db_new_MAME_XML_control_dic()
+    db_safe_edit(XML_control_dic, 't_XML_extraction', time_extracting)
+    db_safe_edit(XML_control_dic, 't_XML_preprocessing', time.time())
+    db_safe_edit(XML_control_dic, 'total_machines', total_machines)
+    db_safe_edit(XML_control_dic, 'st_size', statinfo.st_size)
+    db_safe_edit(XML_control_dic, 'st_mtime', statinfo.st_mtime)
+    db_safe_edit(XML_control_dic, 'ver_mame_int', ver_mame_int)
+    db_safe_edit(XML_control_dic, 'ver_mame_str', ver_mame_str)
+    utils_write_JSON_file(cfg.MAME_XML_CONTROL_PATH.getPath(), XML_control_dic, verbose = True)
+
+# 1) Counts number of MAME machines
+# 2) Creates MAME XML control file.
+def mame_preprocess_RETRO_MAME2003PLUS(cfg, st_dic):
+    pDialog = KodiProgressDialog()
+    
+    # In MAME 2003 Plus MAME XML is already extracted.
+    XML_path_FN = FileName(cfg.settings['xml_2003_path'])
+
+    # Count number of machines. Useful for later progress dialogs and statistics.
+    log_info('mame_process_RETRO_MAME2003PLUS() Counting number of machines ...')
+    pDialog.startProgress('Counting number of MAME machines...')
+    total_machines = mame_count_MAME_machines(XML_path_FN)
+    pDialog.endProgress()
+    log_info('mame_process_RETRO_MAME2003PLUS() Found {} machines.'.format(total_machines))
+
+    # Get XML file stat info.
+    # See https://docs.python.org/3/library/os.html#os.stat_result
+    statinfo = os.stat(XML_path_FN.getPath())
+
+    # Get MAME version from the XML (although we know is MAME 2003 Plus).
+    # In MAME 2003 Plus the MAME version is not in the XML file.
+    ver_mame_str = MAME2003PLUS_VERSION_RAW
+    ver_mame_int = mame_get_numerical_version(ver_mame_str)
 
     # Create the MAME XML control file. Only change used fields.
     XML_control_dic = db_new_MAME_XML_control_dic()
@@ -377,7 +390,7 @@ def mame_preprocess_RETRO_MAME2003PLUS(cfg, st_dic):
     db_safe_edit(XML_control_dic, 'total_machines', total_machines)
     db_safe_edit(XML_control_dic, 'st_size', statinfo.st_size)
     db_safe_edit(XML_control_dic, 'st_mtime', statinfo.st_mtime)
-    db_safe_edit(XML_control_dic, 'ver_mame', ver_mame)
+    db_safe_edit(XML_control_dic, 'ver_mame_int', ver_mame_int)
     db_safe_edit(XML_control_dic, 'ver_mame_str', ver_mame_str)
     utils_write_JSON_file(cfg.MAME_2003_PLUS_XML_CONTROL_PATH.getPath(), XML_control_dic, verbose = True)
 
@@ -1778,14 +1791,13 @@ def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL
 
 # slist is a list of strings that will be joined like '\n'.join(slist)
 # slist is a list, so it is mutable and can be changed by reference.
-def mame_stats_main_print_slist(settings, slist, control_dic, XML_ctrl_dic):
+def mame_stats_main_print_slist(cfg, slist, control_dic, XML_ctrl_dic):
+    settings = cfg.settings
     ctrl = control_dic
-    AML_ver_str = settings['__addon_version__']
-    AML_ver_int = misc_addon_version_str_to_int(AML_ver_str)
     SL_str = 'enabled' if settings['global_enable_SL'] else 'disabled'
 
     slist.append('[COLOR orange]Main information[/COLOR]')
-    slist.append('AML version            {:,} [COLOR violet]{}[/COLOR]'.format(AML_ver_int, AML_ver_str))
+    slist.append('AML version            {:,} [COLOR violet]{}[/COLOR]'.format(cfg.__addon_version_int__, cfg.__addon_version__))
     slist.append('Database version       {:,} [COLOR violet]{}[/COLOR]'.format(ctrl['ver_AML_int'], ctrl['ver_AML_str']))
     slist.append('MAME version           {:,} [COLOR violet]{}[/COLOR]'.format(ctrl['ver_mame_int'], ctrl['ver_mame_str']))
     slist.append('Operation mode         [COLOR violet]{:s}[/COLOR]'.format(settings['op_mode']))
@@ -1936,7 +1948,8 @@ def mame_stats_main_print_slist(settings, slist, control_dic, XML_ctrl_dic):
         slist.append("SL items with ROMs  {:7,d}".format(control_dic['stats_SL_items_with_ROMs']))
         slist.append("SL items with CHDs  {:7,d}".format(control_dic['stats_SL_items_with_CHDs']))
 
-def mame_stats_scanner_print_slist(settings, slist, control_dic):
+def mame_stats_scanner_print_slist(cfg, slist, control_dic):
+    settings = cfg.settings
     # MAME statistics
     slist.append('[COLOR orange]MAME scanner information[/COLOR]')
     t_str = [
@@ -2128,7 +2141,8 @@ def mame_stats_scanner_print_slist(settings, slist, control_dic):
         ])
         slist.extend(text_render_table_str(t_str))
 
-def mame_stats_audit_print_slist(settings, slist, control_dic):
+def mame_stats_audit_print_slist(cfg, slist, control_dic):
+    settings = cfg.settings
     rom_set = ['Merged', 'Split', 'Non-merged'][settings['mame_rom_set']]
     chd_set = ['Merged', 'Split', 'Non-merged'][settings['mame_chd_set']]
 
@@ -2248,7 +2262,8 @@ def mame_stats_audit_print_slist(settings, slist, control_dic):
         table_str.append(table_row)
         slist.extend(text_render_table_str(table_str))
 
-def mame_stats_timestamps_slist(settings, slist, control_dic):
+def mame_stats_timestamps_slist(cfg, slist, control_dic):
+    settings = cfg.settings
     # DAT/INI file versions. Note than in some DAT/INIs the version is not available.
     slist.append('[COLOR orange]DAT/INI versions[/COLOR]')
     slist.append("Alltime.ini version   {}".format(control_dic['ver_alltime']))
@@ -3722,17 +3737,17 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
 # <softwarelist name="32x" description="Sega 32X cartridges">
 # <softwarelist name="vsmile_cart" description="VTech V.Smile cartridges">
 # <softwarelist name="vsmileb_cart" description="VTech V.Smile Baby cartridges">
-XML_READ_LINES = 600
-def mame_build_SL_names(PATHS, settings):
+def mame_build_SL_names(cfg):
+    XML_READ_LINES = 600
     log_debug('mame_build_SL_names() Starting...')
 
     # If MAME hash path is not configured then create and empty file
     SL_names_dic = {}
-    hash_dir_FN = FileName(settings['SL_hash_path'])
+    hash_dir_FN = FileName(cfg.settings['SL_hash_path'])
     if not hash_dir_FN.exists():
         log_info('mame_build_SL_names() MAME hash path does not exists.')
         log_info('mame_build_SL_names() Creating empty SL_NAMES_PATH')
-        utils_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
+        utils_write_JSON_file(cfg.SL_NAMES_PATH.getPath(), SL_names_dic)
         return
 
     # MAME hash path exists. Carry on.
@@ -3782,7 +3797,7 @@ def mame_build_SL_names(PATHS, settings):
             break
     # Save database
     log_debug('mame_build_SL_names() Extracted {} Software List names'.format(len(SL_names_dic)))
-    utils_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
+    utils_write_JSON_file(cfg.SL_NAMES_PATH.getPath(), SL_names_dic)
 
 # -------------------------------------------------------------------------------------------------
 # Reads and processes MAME.xml
@@ -3945,32 +3960,50 @@ def mame_build_MAME_main_database(cfg, st_dic):
     # 2) valid and verified for existence MAME_XML_path.
     log_info('Beginning extract/process of MAME.xml...')
     if cfg.settings['op_mode'] == OP_MODE_VANILLA:
-        # Check that MAME XML and the XML control file exist.
+        process_XML_flag = False
+        # In Vanilla MAME the XML file is extracted from the executable.
         MAME_XML_path = cfg.MAME_XML_PATH
-        
-        if not MAME_XML_path.exists():
-            # If MAME XML or the XML control file does not exists then:
-            # a) extract it.
-            # b) process it and create the XML control file.
-            
-            # Extract MAME XML.
-            mame_extract_MAME_XML(cfg, AML_version_str, options_dic)
-            if options_dic['abort']: return
-            # Create MAME XML JSON control file.
-            mame_preprocess_MAME_XML()
-            if options_dic['abort']: return
+        # Check that MAME executable exists.
+        if not cfg.settings['mame_prog']:
+            log_info('Vanilla MAME executable path is not set. Aborting.')
+            kodi_set_error_status(st_dic, 'Vanilla MAME executable path is not set.')
+            return
+        MAME_exe_path = FileName(cfg.settings['mame_prog'])
+        if not MAME_exe_path.exists():
+            log_info('Vanilla MAME executable file not found. Aborting.')
+            kodi_set_error_status(st_dic, 'Vanilla MAME executable file not found.')
+            return
+        log_info('Vanilla MAME executable found.')
+        # Check that the XML control file exists.
+        XML_control_FN = cfg.MAME_XML_CONTROL_PATH
+        if XML_control_FN.exists():
+            # Open the XML control file and check if the current version of the MAME executable
+            # is the same as in the XML control file.
+            # If so reset everything, if not use the cached information in the XML control file.
+            log_info('Vanilla MAME XML control file found.')
+            XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())
+            mame_exe_version_str = mame_get_MAME_exe_version(cfg, MAME_exe_path)
+            log_debug('XML_control_dic["ver_mame_str"] {}'.format(XML_control_dic['ver_mame_str']))
+            log_debug('mame_exe_version_str {}'.format(mame_exe_version_str))
+            if mame_exe_version_str != XML_control_dic['ver_mame_str']:
+                log_info('Vanilla MAME version is different than verion in the XML control file. '
+                    'Forcing new preprocessing.')
+                process_XML_flag = True
+            else:
+                log_info('XML control file up to date.')
+                process_XML_flag = False
         else:
-            # If MAME XML exists check if MAME executable version and XML control JSON version match.
-            version_str = mame_get_MAME_exe_version(mame_prog_FN)
-            
-
-            # Extract MAME.xml from MAME executable.
-            # Reset control_dic and count the number of MAME machines.
-            mame_extract_MAME_XML(cfg, AML_version_str, options_dic)
-
+            log_info('XML control file not found. Forcing XML preprocessing.')
+            process_XML_flag = True
+        # Only process MAME XML if needed.
+        if process_XML_flag:
+            # Extract, count number of machines and create XML control file.
+            mame_extract_MAME_XML(cfg, st_dic)
+            if st_dic['abort']: return
+        else:
+            log_info('Reusing previosly preprocessed Vanilla MAME XML.')
     elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
         process_XML_flag = False
-
         # Check that MAME 2003 Plus XML exists.
         if not cfg.settings['xml_2003_path']:
             log_info('MAME 2003 Plus XML path is not set. Aborting.')
@@ -3982,11 +4015,12 @@ def mame_build_MAME_main_database(cfg, st_dic):
             kodi_set_error_status(st_dic, 'MAME 2003 Plus XML file not found.')
             return
         log_info('MAME 2003 Plus XML found.')
+        # Check that the XML control file exists.
         XML_control_FN = cfg.MAME_2003_PLUS_XML_CONTROL_PATH
         if XML_control_FN.exists():
             # Open the XML control file and check if mtime of current file is older than
-            # the one stored in the XML control file. If so reset everything, if not
-            # use the cached information in the XML control file.
+            # the one stored in the XML control file.
+            # If so reset everything, if not use the cached information in the XML control file.
             log_info('MAME 2003 XML control file found.')
             XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())
             statinfo = os.stat(MAME_XML_path.getPath())
@@ -4001,7 +4035,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
         else:
             log_info('XML control file not found. Forcing XML preprocessing.')
             process_XML_flag = True
-
+        # Only process MAME XML if needed.
         if process_XML_flag:
             # Count number of machines and create XML control file.
             mame_preprocess_RETRO_MAME2003PLUS(cfg, st_dic)
@@ -4091,14 +4125,14 @@ def mame_build_MAME_main_database(cfg, st_dic):
     xml_iter = ET.iterparse(MAME_XML_path.getPath(), events = ("start", "end"))
     event, root = next(xml_iter)
     if cfg.settings['op_mode'] == OP_MODE_VANILLA:
-        mame_version_raw = root.attrib['build']
-        mame_version_int = mame_get_numerical_version(mame_version_raw)
+        mame_version_str = root.attrib['build']
+        mame_version_int = mame_get_numerical_version(mame_version_str)
     elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
-        mame_version_raw = '0.78 (RA2003Plus)'
-        mame_version_int = mame_get_numerical_version(mame_version_raw)
+        mame_version_str = '0.78 (RA2003Plus)'
+        mame_version_int = mame_get_numerical_version(mame_version_str)
     else:
         raise ValueError
-    log_info('mame_build_MAME_main_database() MAME str version "{}"'.format(mame_version_raw))
+    log_info('mame_build_MAME_main_database() MAME str version "{}"'.format(mame_version_str))
     log_info('mame_build_MAME_main_database() MAME numerical version {}'.format(mame_version_int))
 
     # --- Process MAME XML ---
@@ -4614,7 +4648,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
     # Addon and MAME version strings
     db_safe_edit(control_dic, 'ver_AML_str', cfg.__addon_version__)
     db_safe_edit(control_dic, 'ver_AML_int', cfg.__addon_version_int__)
-    db_safe_edit(control_dic, 'ver_mame_str', mame_version_raw)
+    db_safe_edit(control_dic, 'ver_mame_str', mame_version_str)
     db_safe_edit(control_dic, 'ver_mame_int', mame_version_int)
     # INI files
     db_safe_edit(control_dic, 'ver_alltime', alltime_dic['version'])
