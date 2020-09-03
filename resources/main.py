@@ -343,10 +343,6 @@ def run_plugin(addon_argv):
     if not cfg.SL_DB_DIR.exists(): cfg.SL_DB_DIR.makedirs()
     if not cfg.REPORTS_DIR.exists(): cfg.REPORTS_DIR.makedirs()
 
-    # --- If control_dic does not exists create an empty one ---
-    # Remove this code. If control_dic file does not exists return None when required.
-    if not cfg.MAIN_CONTROL_PATH.exists(): mame_create_empty_control_dic(cfg, __addon_version__)
-
     # --- Process URL ---
     cfg.base_url = addon_argv[0]
     cfg.addon_handle = int(addon_argv[1])
@@ -5349,6 +5345,13 @@ def check_MAME_DB_status(condition, control_dic):
     #         options_dic = {'msg' : '', 'condition' : True }
     #         log_debug('check_MAME_DB_status() Everything OK')
     #     return options_dic
+
+    if not control_dic:
+        t = ('MAME control file not found. You need to build the MAME main database '
+            'using the context menu "Setup plugin" in the AML main window.')
+        options_dic = {'msg' : t, 'condition' : False }
+        log_debug('check_MAME_DB_status() Control dictionary empty.')
+        return options_dic
 
     if condition == MAME_MAIN_DB_BUILT:
         test_MAIN_DB_BUILT = True if control_dic['t_MAME_DB_build'] > 0.0 else False

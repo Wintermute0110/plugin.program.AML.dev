@@ -35,7 +35,7 @@ import zipfile as z
 # -------------------------------------------------------------------------------------------------
 # Substitute notable drivers with a proper name
 # Drivers are located in https://github.com/mamedev/mame/blob/master/src/mame/drivers/<driver_name>.cpp
-mame_driver_name_dic = {
+mame_driver_better_name_dic = {
     # --- Atari ---
     'atari_s1.cpp' : 'Atari Generation/System 1',
     'atari_s2.cpp' : 'Atari Generation/System 2 and 3',
@@ -258,54 +258,6 @@ def mame_get_numerical_version(mame_version_str):
 
     return version_int
 
-def mame_create_empty_control_dic(PATHS, AML_version_str):
-    log_info('mame_create_empty_control_dic() Creating empty control_dic')
-    AML_version_int = misc_addon_version_str_to_int(AML_version_str)
-    log_info('mame_create_empty_control_dic() AML version str "{}"'.format(AML_version_str))
-    log_info('mame_create_empty_control_dic() AML version int {}'.format(AML_version_int))
-    main_window = xbmcgui.Window(10000)
-    AML_LOCK_PROPNAME = 'AML_instance_lock'
-    AML_LOCK_VALUE_LOCKED = 'True'
-    AML_LOCK_VALUE_RELEASED = ''
-
-    # Use Kodi properties to protect the file writing by several threads.
-    infinite_loop = True
-    num_waiting_cycles = 0
-    while infinite_loop and not xbmc.Monitor().abortRequested():
-        if main_window.getProperty(AML_LOCK_PROPNAME) == AML_LOCK_VALUE_LOCKED:
-            log_debug('mame_create_empty_control_dic() AML is locked')
-            # Wait some time so other AML threads finish writing the file.
-            xbmc.sleep(250)
-            num_waiting_cycles += 1
-            if num_waiting_cycles > 10:
-                # Force release lock
-                log_debug('mame_create_empty_control_dic() Releasing lock')
-                main_window.setProperty(AML_LOCK_PROPNAME, AML_LOCK_VALUE_RELEASED)
-        else:
-            log_debug('mame_create_empty_control_dic() AML not locked. Writing control_dic')
-            # Get the lock
-            main_window.setProperty(AML_LOCK_PROPNAME, AML_LOCK_VALUE_LOCKED)
-
-            # Write control_dic
-            control_dic = fs_new_control_dic()
-            db_safe_edit(control_dic, 'ver_AML', AML_version_int)
-            db_safe_edit(control_dic, 'ver_AML_str', AML_version_str)
-            utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-
-            # Release lock and exit
-            log_debug('mame_create_empty_control_dic() Releasing lock')
-            main_window.setProperty(AML_LOCK_PROPNAME, AML_LOCK_VALUE_RELEASED)
-            infinite_loop = False
-    log_debug('mame_create_empty_control_dic() Exiting function')
-
-def mame_new_XML_control_dic():
-    return {
-        'ver_AML_int' : 0,
-        'ver_AML_str' : '',
-        'stats_total_machines' : 0,
-        't_XML_extraction' : 0,
-    }
-
 def mame_get_MAME_exe_version(PATHS, mame_prog_FN):
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
     log_info('mame_extract_MAME_version() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
@@ -363,24 +315,22 @@ def mame_count_MAME_machines(XML_path_FN):
 # 2) Counts number of MAME machines.
 # 3) Gets MAME version from the XML file.
 # 4) Creates MAME XML control file.
-def mame_extract_MAME_XML(PATHS, settings, st_dic):
-
+def mame_extract_MAME_XML(cfg, st_dic):
     # --- Check for errors ---
-    if not settings['mame_prog']:
-        options_dic['abort'] = True
-        options_dic['msg'] = 'MAME executable is not set.'
+    if not cfg.settings['mame_prog']:
+        kodi_set_error_status(st_dic, 'MAME executable is not set.')
         return
 
     # Extract XML from MAME executable.
-    mame_prog_FN = FileName(settings['mame_prog'])
+    mame_prog_FN = FileName(cfg.settings['mame_prog'])
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
     log_info('mame_extract_MAME_XML() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
-    log_info('mame_extract_MAME_XML() Saving XML   "{}"'.format(PATHS.MAME_XML_PATH.getPath()))
+    log_info('mame_extract_MAME_XML() Saving XML   "{}"'.format(cfg.MAME_XML_PATH.getPath()))
     log_info('mame_extract_MAME_XML() mame_dir     "{}"'.format(mame_dir))
     log_info('mame_extract_MAME_XML() mame_exec    "{}"'.format(mame_exec))
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Extracting MAME XML database. Progress bar is not accurate.')
-    with open(PATHS.MAME_XML_PATH.getPath(), 'wb') as out, open(PATHS.MAME_STDERR_PATH.getPath(), 'wb') as err:
+    with open(cfg.MAME_XML_PATH.getPath(), 'wb') as out, open(cfg.MAME_STDERR_PATH.getPath(), 'wb') as err:
         p = subprocess.Popen([mame_prog_FN.getPath(), '-listxml'], stdout=out, stderr=err, cwd=mame_dir)
         count = 0
         while p.poll() is None:
@@ -390,26 +340,26 @@ def mame_extract_MAME_XML(PATHS, settings, st_dic):
     pDialog.endProgress()
 
     # --- Check if everything OK ---
-    statinfo = os.stat(PATHS.MAME_XML_PATH.getPath())
+    statinfo = os.stat(cfg.MAME_XML_PATH.getPath())
     filesize = statinfo.st_size
     options_dic['filesize'] = filesize
 
     # --- Count number of machines. Useful for progress dialogs ---
     log_info('mame_extract_MAME_XML() Counting number of machines ...')
-    total_machines = mame_count_MAME_machines_modern(PATHS.MAME_XML_PATH)
+    total_machines = mame_count_MAME_machines_modern(cfg.MAME_XML_PATH)
     options_dic['total_machines'] = total_machines
     log_info('mame_extract_MAME_XML() Found {} machines.'.format(total_machines))
 
     # Reset MAME control dictionary completely
-    db_safe_edit(control_dic, 't_XML_extraction', time.time())
-    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic, verbose = True)
+    # db_safe_edit(control_dic, 't_XML_extraction', time.time())
+    # utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic, verbose = True)
 
 # 1) Counts number of MAME machines
 # 2) Creates MAME XML control file.
-def mame_preprocess_RETRO_MAME2003PLUS(PATHS, settings, st_dic):
+def mame_preprocess_RETRO_MAME2003PLUS(cfg, st_dic):
     # Count number of machines. Useful for progress dialogs and statistics.
     log_info('mame_process_RETRO_MAME2003PLUS() Counting number of machines ...')
-    XML_path_FN = FileName(settings['xml_2003_path'])
+    XML_path_FN = FileName(cfg.settings['xml_2003_path'])
     total_machines = mame_count_MAME_machines(XML_path_FN)
     log_info('mame_process_RETRO_MAME2003PLUS() Found {} machines.'.format(total_machines))
 
@@ -429,7 +379,7 @@ def mame_preprocess_RETRO_MAME2003PLUS(PATHS, settings, st_dic):
     db_safe_edit(XML_control_dic, 'st_mtime', statinfo.st_mtime)
     db_safe_edit(XML_control_dic, 'ver_mame', ver_mame)
     db_safe_edit(XML_control_dic, 'ver_mame_str', ver_mame_str)
-    utils_write_JSON_file(PATHS.MAME_2003_PLUS_XML_CONTROL_PATH.getPath(), XML_control_dic, verbose = True)
+    utils_write_JSON_file(cfg.MAME_2003_PLUS_XML_CONTROL_PATH.getPath(), XML_control_dic, verbose = True)
 
 # -------------------------------------------------------------------------------------------------
 # Loading of data files
@@ -4055,7 +4005,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
         if process_XML_flag:
             # Count number of machines and create XML control file.
             mame_preprocess_RETRO_MAME2003PLUS(cfg, st_dic)
-            if not st_dic['status']: return
+            if st_dic['abort']: return
         else:
             log_info('Reusing previosly preprocessed MAME 2003 XML.')
     else:
@@ -5837,7 +5787,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, control_dic,
         if render['isDevice']: continue # Skip device machines in catalogs.
         c_key = machines[parent_name]['sourcefile']
         # Some drivers get a prettier name.
-        c_key = mame_driver_name_dic[c_key] if c_key in mame_driver_name_dic else c_key
+        c_key = mame_driver_better_name_dic[c_key] if c_key in mame_driver_better_name_dic else c_key
         catalog_key_list = [c_key]
         for catalog_key in catalog_key_list:
             if catalog_key in catalog_parents:
