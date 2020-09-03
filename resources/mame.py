@@ -288,8 +288,8 @@ def mame_create_empty_control_dic(PATHS, AML_version_str):
 
             # Write control_dic
             control_dic = fs_new_control_dic()
-            change_control_dic(control_dic, 'ver_AML', AML_version_int)
-            change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
+            db_safe_edit(control_dic, 'ver_AML', AML_version_int)
+            db_safe_edit(control_dic, 'ver_AML_str', AML_version_str)
             utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
             # Release lock and exit
@@ -401,7 +401,7 @@ def mame_extract_MAME_XML(PATHS, settings, st_dic):
     log_info('mame_extract_MAME_XML() Found {} machines.'.format(total_machines))
 
     # Reset MAME control dictionary completely
-    change_control_dic(control_dic, 't_XML_extraction', time.time())
+    db_safe_edit(control_dic, 't_XML_extraction', time.time())
     utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic, verbose = True)
 
 # 1) Counts number of MAME machines
@@ -423,12 +423,12 @@ def mame_preprocess_RETRO_MAME2003PLUS(PATHS, settings, st_dic):
 
     # Create the MAME XML control file. Only change used fields.
     XML_control_dic = db_new_MAME_XML_control_dic()
-    change_control_dic(XML_control_dic, 't_XML_preprocessing', time.time())
-    change_control_dic(XML_control_dic, 'total_machines', total_machines)
-    change_control_dic(XML_control_dic, 'st_size', statinfo.st_size)
-    change_control_dic(XML_control_dic, 'st_mtime', statinfo.st_mtime)
-    change_control_dic(XML_control_dic, 'ver_mame', ver_mame)
-    change_control_dic(XML_control_dic, 'ver_mame_str', ver_mame_str)
+    db_safe_edit(XML_control_dic, 't_XML_preprocessing', time.time())
+    db_safe_edit(XML_control_dic, 'total_machines', total_machines)
+    db_safe_edit(XML_control_dic, 'st_size', statinfo.st_size)
+    db_safe_edit(XML_control_dic, 'st_mtime', statinfo.st_mtime)
+    db_safe_edit(XML_control_dic, 'ver_mame', ver_mame)
+    db_safe_edit(XML_control_dic, 'ver_mame_str', ver_mame_str)
     utils_write_JSON_file(PATHS.MAME_2003_PLUS_XML_CONTROL_PATH.getPath(), XML_control_dic, verbose = True)
 
 # -------------------------------------------------------------------------------------------------
@@ -2731,12 +2731,12 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
     pDialog.endProgress()
 
     # Timestamp, save the MAME asset database. Save control_dic at the end.
-    change_control_dic(control_dic, 't_MAME_plots_build', time.time())
+    db_safe_edit(control_dic, 't_MAME_plots_build', time.time())
     db_files = [
         (assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()),
         (control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()),
     ]
-    fs_save_files(db_files)
+    db_save_files(db_files)
 
 # ---------------------------------------------------------------------------------------------
 # Generate plot for Software Lists
@@ -2790,7 +2790,7 @@ def mame_build_SL_plots(PATHS, settings, control_dic,
     pDialog.endProgress()
 
     # --- Timestamp ---
-    change_control_dic(control_dic, 't_SL_plots_build', time.time())
+    db_safe_edit(control_dic, 't_SL_plots_build', time.time())
     utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
@@ -3536,25 +3536,25 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
     pDialog.endProgress()
 
     # Update MAME audit statistics.
-    change_control_dic(control_dic, 'audit_MAME_machines_with_arch', audit_MAME_machines_with_arch)
-    change_control_dic(control_dic, 'audit_MAME_machines_with_arch_OK', audit_MAME_machines_with_arch_OK)
-    change_control_dic(control_dic, 'audit_MAME_machines_with_arch_BAD', audit_MAME_machines_with_arch_BAD)
-    change_control_dic(control_dic, 'audit_MAME_machines_without', audit_MAME_machines_without)
-    change_control_dic(control_dic, 'audit_MAME_machines_with_ROMs', audit_MAME_machines_with_ROMs)
-    change_control_dic(control_dic, 'audit_MAME_machines_with_ROMs_OK', audit_MAME_machines_with_ROMs_OK)
-    change_control_dic(control_dic, 'audit_MAME_machines_with_ROMs_BAD', audit_MAME_machines_with_ROMs_BAD)
-    change_control_dic(control_dic, 'audit_MAME_machines_without_ROMs', audit_MAME_machines_without_ROMs)
-    change_control_dic(control_dic, 'audit_MAME_machines_with_SAMPLES', audit_MAME_machines_with_SAMPLES)
-    change_control_dic(control_dic, 'audit_MAME_machines_with_SAMPLES_OK', audit_MAME_machines_with_SAMPLES_OK)
-    change_control_dic(control_dic, 'audit_MAME_machines_with_SAMPLES_BAD', audit_MAME_machines_with_SAMPLES_BAD)
-    change_control_dic(control_dic, 'audit_MAME_machines_without_SAMPLES', audit_MAME_machines_without_SAMPLES)
-    change_control_dic(control_dic, 'audit_MAME_machines_with_CHDs', audit_MAME_machines_with_CHDs)
-    change_control_dic(control_dic, 'audit_MAME_machines_with_CHDs_OK', audit_MAME_machines_with_CHDs_OK)
-    change_control_dic(control_dic, 'audit_MAME_machines_with_CHDs_BAD', audit_MAME_machines_with_CHDs_BAD)
-    change_control_dic(control_dic, 'audit_MAME_machines_without_CHDs', audit_MAME_machines_without_CHDs)
+    db_safe_edit(control_dic, 'audit_MAME_machines_with_arch', audit_MAME_machines_with_arch)
+    db_safe_edit(control_dic, 'audit_MAME_machines_with_arch_OK', audit_MAME_machines_with_arch_OK)
+    db_safe_edit(control_dic, 'audit_MAME_machines_with_arch_BAD', audit_MAME_machines_with_arch_BAD)
+    db_safe_edit(control_dic, 'audit_MAME_machines_without', audit_MAME_machines_without)
+    db_safe_edit(control_dic, 'audit_MAME_machines_with_ROMs', audit_MAME_machines_with_ROMs)
+    db_safe_edit(control_dic, 'audit_MAME_machines_with_ROMs_OK', audit_MAME_machines_with_ROMs_OK)
+    db_safe_edit(control_dic, 'audit_MAME_machines_with_ROMs_BAD', audit_MAME_machines_with_ROMs_BAD)
+    db_safe_edit(control_dic, 'audit_MAME_machines_without_ROMs', audit_MAME_machines_without_ROMs)
+    db_safe_edit(control_dic, 'audit_MAME_machines_with_SAMPLES', audit_MAME_machines_with_SAMPLES)
+    db_safe_edit(control_dic, 'audit_MAME_machines_with_SAMPLES_OK', audit_MAME_machines_with_SAMPLES_OK)
+    db_safe_edit(control_dic, 'audit_MAME_machines_with_SAMPLES_BAD', audit_MAME_machines_with_SAMPLES_BAD)
+    db_safe_edit(control_dic, 'audit_MAME_machines_without_SAMPLES', audit_MAME_machines_without_SAMPLES)
+    db_safe_edit(control_dic, 'audit_MAME_machines_with_CHDs', audit_MAME_machines_with_CHDs)
+    db_safe_edit(control_dic, 'audit_MAME_machines_with_CHDs_OK', audit_MAME_machines_with_CHDs_OK)
+    db_safe_edit(control_dic, 'audit_MAME_machines_with_CHDs_BAD', audit_MAME_machines_with_CHDs_BAD)
+    db_safe_edit(control_dic, 'audit_MAME_machines_without_CHDs', audit_MAME_machines_without_CHDs)
 
     # Update timestamp of ROM audit.
-    change_control_dic(control_dic, 't_MAME_audit', time.time())
+    db_safe_edit(control_dic, 't_MAME_audit', time.time())
     utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
@@ -3743,22 +3743,22 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
     pDialog.endProgress()
 
     # Update SL audit statistics.
-    change_control_dic(control_dic, 'audit_SL_items_runnable', audit_SL_items_runnable)
-    change_control_dic(control_dic, 'audit_SL_items_with_arch', audit_SL_items_with_arch)
-    change_control_dic(control_dic, 'audit_SL_items_with_arch_OK', audit_SL_items_with_arch_OK)
-    change_control_dic(control_dic, 'audit_SL_items_with_arch_BAD', audit_SL_items_with_arch_BAD)
-    change_control_dic(control_dic, 'audit_SL_items_without_arch', audit_SL_items_without_arch)
-    change_control_dic(control_dic, 'audit_SL_items_with_arch_ROM', audit_SL_items_with_arch_ROM)
-    change_control_dic(control_dic, 'audit_SL_items_with_arch_ROM_OK', audit_SL_items_with_arch_ROM_OK)
-    change_control_dic(control_dic, 'audit_SL_items_with_arch_ROM_BAD', audit_SL_items_with_arch_ROM_BAD)
-    change_control_dic(control_dic, 'audit_SL_items_without_arch_ROM', audit_SL_items_without_arch_ROM)
-    change_control_dic(control_dic, 'audit_SL_items_with_CHD', audit_SL_items_with_CHD)
-    change_control_dic(control_dic, 'audit_SL_items_with_CHD_OK', audit_SL_items_with_CHD_OK)
-    change_control_dic(control_dic, 'audit_SL_items_with_CHD_BAD', audit_SL_items_with_CHD_BAD)
-    change_control_dic(control_dic, 'audit_SL_items_without_CHD', audit_SL_items_without_CHD)
+    db_safe_edit(control_dic, 'audit_SL_items_runnable', audit_SL_items_runnable)
+    db_safe_edit(control_dic, 'audit_SL_items_with_arch', audit_SL_items_with_arch)
+    db_safe_edit(control_dic, 'audit_SL_items_with_arch_OK', audit_SL_items_with_arch_OK)
+    db_safe_edit(control_dic, 'audit_SL_items_with_arch_BAD', audit_SL_items_with_arch_BAD)
+    db_safe_edit(control_dic, 'audit_SL_items_without_arch', audit_SL_items_without_arch)
+    db_safe_edit(control_dic, 'audit_SL_items_with_arch_ROM', audit_SL_items_with_arch_ROM)
+    db_safe_edit(control_dic, 'audit_SL_items_with_arch_ROM_OK', audit_SL_items_with_arch_ROM_OK)
+    db_safe_edit(control_dic, 'audit_SL_items_with_arch_ROM_BAD', audit_SL_items_with_arch_ROM_BAD)
+    db_safe_edit(control_dic, 'audit_SL_items_without_arch_ROM', audit_SL_items_without_arch_ROM)
+    db_safe_edit(control_dic, 'audit_SL_items_with_CHD', audit_SL_items_with_CHD)
+    db_safe_edit(control_dic, 'audit_SL_items_with_CHD_OK', audit_SL_items_with_CHD_OK)
+    db_safe_edit(control_dic, 'audit_SL_items_with_CHD_BAD', audit_SL_items_with_CHD_BAD)
+    db_safe_edit(control_dic, 'audit_SL_items_without_CHD', audit_SL_items_without_CHD)
 
     # Update timestamp and save control_dic.
-    change_control_dic(control_dic, 't_SL_audit', time.time())
+    db_safe_edit(control_dic, 't_SL_audit', time.time())
     utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
@@ -3940,11 +3940,11 @@ def _update_stats(stats, machine, m_render, runnable):
             else:
                 stats['dead_parents'] += 1
 
-def mame_build_MAME_main_database(PATHS, settings, st_dic):
+def mame_build_MAME_main_database(cfg, st_dic):
     # Use for debug purposes. This number must be much bigger than the actual number of machines
     # when releasing.
     STOP_AFTER_MACHINES = 250000
-    DATS_dir_FN = FileName(settings['dats_path'])
+    DATS_dir_FN = FileName(cfg.settings['dats_path'])
     ALLTIME_FN = DATS_dir_FN.pjoin(ALLTIME_INI)
     ARTWORK_FN = DATS_dir_FN.pjoin(ARTWORK_INI)
     BESTGAMES_FN = DATS_dir_FN.pjoin(BESTGAMES_INI)
@@ -3963,15 +3963,15 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
     # --- Print user configuration for debug ---
     log_info('mame_build_MAME_main_database() Starting...')
     log_info('--- Paths ---')
-    log_info('mame_prog      = "{}"'.format(settings['mame_prog']))
-    log_info('ROM_path       = "{}"'.format(settings['rom_path']))
-    log_info('assets_path    = "{}"'.format(settings['assets_path']))
-    log_info('DATs_path      = "{}"'.format(settings['dats_path']))
-    log_info('CHD_path       = "{}"'.format(settings['chd_path']))
-    log_info('samples_path   = "{}"'.format(settings['samples_path']))
-    log_info('SL_hash_path   = "{}"'.format(settings['SL_hash_path']))
-    log_info('SL_rom_path    = "{}"'.format(settings['SL_rom_path']))
-    log_info('SL_chd_path    = "{}"'.format(settings['SL_chd_path']))
+    log_info('mame_prog      = "{}"'.format(cfg.settings['mame_prog']))
+    log_info('ROM_path       = "{}"'.format(cfg.settings['rom_path']))
+    log_info('assets_path    = "{}"'.format(cfg.settings['assets_path']))
+    log_info('DATs_path      = "{}"'.format(cfg.settings['dats_path']))
+    log_info('CHD_path       = "{}"'.format(cfg.settings['chd_path']))
+    log_info('samples_path   = "{}"'.format(cfg.settings['samples_path']))
+    log_info('SL_hash_path   = "{}"'.format(cfg.settings['SL_hash_path']))
+    log_info('SL_rom_path    = "{}"'.format(cfg.settings['SL_rom_path']))
+    log_info('SL_chd_path    = "{}"'.format(cfg.settings['SL_chd_path']))
     log_info('--- INI paths ---')
     log_info('alltime_path   = "{}"'.format(ALLTIME_FN.getPath()))
     log_info('artwork_path   = "{}"'.format(ARTWORK_FN.getPath()))
@@ -3994,9 +3994,9 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
     # 1) a valid XML_control_dic 
     # 2) valid and verified for existence MAME_XML_path.
     log_info('Beginning extract/process of MAME.xml...')
-    if settings['op_mode'] == OP_MODE_VANILLA:
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
         # Check that MAME XML and the XML control file exist.
-        MAME_XML_path = PATHS.MAME_XML_PATH
+        MAME_XML_path = cfg.MAME_XML_PATH
         
         if not MAME_XML_path.exists():
             # If MAME XML or the XML control file does not exists then:
@@ -4004,7 +4004,7 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
             # b) process it and create the XML control file.
             
             # Extract MAME XML.
-            mame_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic)
+            mame_extract_MAME_XML(cfg, AML_version_str, options_dic)
             if options_dic['abort']: return
             # Create MAME XML JSON control file.
             mame_preprocess_MAME_XML()
@@ -4016,23 +4016,23 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
 
             # Extract MAME.xml from MAME executable.
             # Reset control_dic and count the number of MAME machines.
-            mame_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic)
+            mame_extract_MAME_XML(cfg, AML_version_str, options_dic)
 
-    elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
         process_XML_flag = False
 
         # Check that MAME 2003 Plus XML exists.
-        if not settings['xml_2003_path']:
+        if not cfg.settings['xml_2003_path']:
             log_info('MAME 2003 Plus XML path is not set. Aborting.')
             kodi_set_error_status(st_dic, 'MAME 2003 Plus XML path is not set.')
             return
-        MAME_XML_path = FileName(settings['xml_2003_path'])
+        MAME_XML_path = FileName(cfg.settings['xml_2003_path'])
         if not MAME_XML_path.exists():
             log_info('MAME 2003 Plus XML file not found. Aborting.')
             kodi_set_error_status(st_dic, 'MAME 2003 Plus XML file not found.')
             return
         log_info('MAME 2003 Plus XML found.')
-        XML_control_FN = PATHS.MAME_2003_PLUS_XML_CONTROL_PATH
+        XML_control_FN = cfg.MAME_2003_PLUS_XML_CONTROL_PATH
         if XML_control_FN.exists():
             # Open the XML control file and check if mtime of current file is older than
             # the one stored in the XML control file. If so reset everything, if not
@@ -4054,13 +4054,13 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
 
         if process_XML_flag:
             # Count number of machines and create XML control file.
-            mame_preprocess_RETRO_MAME2003PLUS(PATHS, settings, st_dic)
+            mame_preprocess_RETRO_MAME2003PLUS(cfg, st_dic)
             if not st_dic['status']: return
         else:
             log_info('Reusing previosly preprocessed MAME 2003 XML.')
     else:
-        log_error('mame_build_MAME_main_database() Unknown op_mode "{}"'.format(settings['op_mode']))
-        kodi_set_error_status(st_dic, 'Unknown operation mode {}'.format(settings['op_mode']))
+        log_error('mame_build_MAME_main_database() Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
+        kodi_set_error_status(st_dic, 'Unknown operation mode {}'.format(cfg.settings['op_mode']))
         return
     # Ensure that XML_control_dic that has been newly created or reused exists.
     XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())            
@@ -4069,9 +4069,9 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
     pDialog = KodiProgressDialog()
 
     # --- Build SL_NAMES_PATH if available, to be used later in the catalog building ---
-    if settings['global_enable_SL']:
+    if cfg.settings['global_enable_SL']:
         pDialog.startProgress('Creating list of Software List names...')
-        mame_build_SL_names(PATHS, settings)
+        mame_build_SL_names(cfg)
         pDialog.endProgress()
     else:
         log_info('SL globally disabled, not creating SL names.')
@@ -4140,10 +4140,10 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
     log_info('Loading XML "{}"'.format(MAME_XML_path.getPath()))
     xml_iter = ET.iterparse(MAME_XML_path.getPath(), events = ("start", "end"))
     event, root = next(xml_iter)
-    if settings['op_mode'] == OP_MODE_VANILLA:
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
         mame_version_raw = root.attrib['build']
         mame_version_int = mame_get_numerical_version(mame_version_raw)
-    elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
         mame_version_raw = '0.78 (RA2003Plus)'
         mame_version_int = mame_get_numerical_version(mame_version_raw)
     else:
@@ -4184,7 +4184,7 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
             m_name = elem.attrib['name']
 
             # In modern MAME sourcefile attribute is always present
-            if settings['op_mode'] == OP_MODE_VANILLA:
+            if cfg.settings['op_mode'] == OP_MODE_VANILLA:
                 # sourcefile #IMPLIED attribute
                 if 'sourcefile' not in elem.attrib:
                     log_error('sourcefile attribute not found in <machine> tag.')
@@ -4192,7 +4192,7 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
                 # Remove trailing '.cpp' from driver name
                 machine['sourcefile'] = elem.attrib['sourcefile']
             # In MAME 2003 Plus sourcefile attribute does not exists.
-            elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+            elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
                 machine['sourcefile'] = '[ Not set ]'
             else:
                 raise ValueError
@@ -4478,7 +4478,7 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
         # --- <machine>/<game> tag closing. Add new machine to database ---
         elif event == 'end' and (elem.tag == 'machine' or elem.tag == 'game'):
             # Checks in modern MAME
-            if settings['op_mode'] == OP_MODE_VANILLA:
+            if cfg.settings['op_mode'] == OP_MODE_VANILLA:
                 # Assumption 1: isdevice = True if and only if runnable = False
                 if m_render['isDevice'] == runnable:
                     log_error("Machine {}: machine['isDevice'] == runnable".format(m_name))
@@ -4495,7 +4495,7 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
                 #     log_error("Machine {}: num_displays == 0 and not machine['ismechanical']".format(m_name))
                 #     raise ValueError
             # Checks in Retroarch MAME 2003 Plus
-            elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+            elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
                 # In MAME 2003 Plus XML some <year> tags are empty.
                 # Set a default value.
                 if not m_render['year']: m_render['year'] = '[ Not set ]'
@@ -4562,9 +4562,9 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
     # Initialise asset list
     # ---------------------------------------------------------------------------------------------
     log_debug('Initializing MAME asset database...')
-    log_debug('Option generate_history_infolabel is {}'.format(settings['generate_history_infolabel']))
+    log_debug('Option generate_history_infolabel is {}'.format(cfg.settings['generate_history_infolabel']))
     assets_dic = {key : fs_new_MAME_asset() for key in machines}
-    if settings['generate_history_infolabel'] and history_idx_dic:
+    if cfg.settings['generate_history_infolabel'] and history_idx_dic:
         log_debug('Adding History.DAT to MAME asset database.')
         for m_name, asset in assets_dic.items():
             asset['flags'] = fs_initial_flags(machines[m_name], machines_render[m_name], machines_roms[m_name])
@@ -4606,7 +4606,7 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
     # --- History DAT categories are Software List names ---
     if history_idx_dic:
         log_debug('Updating History DAT categories and machine names ...')
-        SL_names_dic = utils_load_JSON_file_dic(PATHS.SL_NAMES_PATH.getPath())
+        SL_names_dic = utils_load_JSON_file_dic(cfg.SL_NAMES_PATH.getPath())
         for cat_name in history_idx_dic:
             if cat_name == 'mame':
                 # Improve MAME machine names
@@ -4652,79 +4652,78 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
     # The XML control file is required to create the new control_dic.
     # ---------------------------------------------------------------------------------------------
     log_info('Creating new control_dic.')
-    AML_version_int = misc_addon_version_str_to_int(settings['__addon_version__'])
-    log_info('AML version str "{}"'.format(settings['__addon_version__']))
-    log_info('AML version int {}'.format(AML_version_int))
+    log_info('AML version str "{}"'.format(cfg.__addon_version__))
+    log_info('AML version int {}'.format(cfg.__addon_version_int__))
     control_dic = db_new_control_dic()
-    change_control_dic(control_dic, 'op_mode_raw', settings['op_mode_raw'])
-    change_control_dic(control_dic, 'op_mode', settings['op_mode'])
+    db_safe_edit(control_dic, 'op_mode_raw', cfg.settings['op_mode_raw'])
+    db_safe_edit(control_dic, 'op_mode', cfg.settings['op_mode'])
 
     # Information from the XML control file.
-    change_control_dic(control_dic, 'stats_total_machines', total_machines)
+    db_safe_edit(control_dic, 'stats_total_machines', total_machines)
 
     # Addon and MAME version strings
-    change_control_dic(control_dic, 'ver_AML_str', settings['__addon_version__'])
-    change_control_dic(control_dic, 'ver_AML_int', AML_version_int)
-    change_control_dic(control_dic, 'ver_mame_str', mame_version_raw)
-    change_control_dic(control_dic, 'ver_mame_int', mame_version_int)
+    db_safe_edit(control_dic, 'ver_AML_str', cfg.__addon_version__)
+    db_safe_edit(control_dic, 'ver_AML_int', cfg.__addon_version_int__)
+    db_safe_edit(control_dic, 'ver_mame_str', mame_version_raw)
+    db_safe_edit(control_dic, 'ver_mame_int', mame_version_int)
     # INI files
-    change_control_dic(control_dic, 'ver_alltime', alltime_dic['version'])
-    change_control_dic(control_dic, 'ver_artwork', artwork_dic['version'])
-    change_control_dic(control_dic, 'ver_bestgames', bestgames_dic['version'])
-    change_control_dic(control_dic, 'ver_category', category_dic['version'])
-    change_control_dic(control_dic, 'ver_catlist', catlist_dic['version'])
-    change_control_dic(control_dic, 'ver_catver', catver_dic['version'])
-    change_control_dic(control_dic, 'ver_genre', genre_dic['version'])
-    change_control_dic(control_dic, 'ver_mature', mature_dic['version'])
-    change_control_dic(control_dic, 'ver_nplayers', nplayers_dic['version'])
-    change_control_dic(control_dic, 'ver_series', series_dic['version'])
+    db_safe_edit(control_dic, 'ver_alltime', alltime_dic['version'])
+    db_safe_edit(control_dic, 'ver_artwork', artwork_dic['version'])
+    db_safe_edit(control_dic, 'ver_bestgames', bestgames_dic['version'])
+    db_safe_edit(control_dic, 'ver_category', category_dic['version'])
+    db_safe_edit(control_dic, 'ver_catlist', catlist_dic['version'])
+    db_safe_edit(control_dic, 'ver_catver', catver_dic['version'])
+    db_safe_edit(control_dic, 'ver_genre', genre_dic['version'])
+    db_safe_edit(control_dic, 'ver_mature', mature_dic['version'])
+    db_safe_edit(control_dic, 'ver_nplayers', nplayers_dic['version'])
+    db_safe_edit(control_dic, 'ver_series', series_dic['version'])
     # DAT files
-    change_control_dic(control_dic, 'ver_command', command_version)
-    change_control_dic(control_dic, 'ver_gameinit', gameinit_version)
-    change_control_dic(control_dic, 'ver_history', history_version)
-    change_control_dic(control_dic, 'ver_mameinfo', mameinfo_version)
+    db_safe_edit(control_dic, 'ver_command', command_version)
+    db_safe_edit(control_dic, 'ver_gameinit', gameinit_version)
+    db_safe_edit(control_dic, 'ver_history', history_version)
+    db_safe_edit(control_dic, 'ver_mameinfo', mameinfo_version)
 
     # Statistics
-    change_control_dic(control_dic, 'stats_processed_machines', processed_machines)
-    change_control_dic(control_dic, 'stats_parents', stats['parents'])
-    change_control_dic(control_dic, 'stats_clones', stats['clones'])
-    change_control_dic(control_dic, 'stats_runnable', stats['runnable'])
-    change_control_dic(control_dic, 'stats_runnable_parents', stats['runnable_parents'])
-    change_control_dic(control_dic, 'stats_runnable_clones', stats['runnable_clones'])
+    db_safe_edit(control_dic, 'stats_processed_machines', processed_machines)
+    db_safe_edit(control_dic, 'stats_parents', stats['parents'])
+    db_safe_edit(control_dic, 'stats_clones', stats['clones'])
+    db_safe_edit(control_dic, 'stats_runnable', stats['runnable'])
+    db_safe_edit(control_dic, 'stats_runnable_parents', stats['runnable_parents'])
+    db_safe_edit(control_dic, 'stats_runnable_clones', stats['runnable_clones'])
     # Main filters
-    change_control_dic(control_dic, 'stats_coin', stats['coin'])
-    change_control_dic(control_dic, 'stats_coin_parents', stats['coin_parents'])
-    change_control_dic(control_dic, 'stats_coin_clones', stats['coin_clones'])
-    change_control_dic(control_dic, 'stats_nocoin', stats['nocoin'])
-    change_control_dic(control_dic, 'stats_nocoin_parents', stats['nocoin_parents'])
-    change_control_dic(control_dic, 'stats_nocoin_clones', stats['nocoin_clones'])
-    change_control_dic(control_dic, 'stats_mechanical', stats['mechanical'])
-    change_control_dic(control_dic, 'stats_mechanical_parents', stats['mechanical_parents'])
-    change_control_dic(control_dic, 'stats_mechanical_clones', stats['mechanical_clones'])
-    change_control_dic(control_dic, 'stats_dead', stats['dead'])
-    change_control_dic(control_dic, 'stats_dead_parents', stats['dead_parents'])
-    change_control_dic(control_dic, 'stats_dead_clones', stats['dead_clones'])
-    change_control_dic(control_dic, 'stats_devices', stats['devices'])
-    change_control_dic(control_dic, 'stats_devices_parents', stats['devices_parents'])
-    change_control_dic(control_dic, 'stats_devices_clones', stats['devices_clones'])
+    db_safe_edit(control_dic, 'stats_coin', stats['coin'])
+    db_safe_edit(control_dic, 'stats_coin_parents', stats['coin_parents'])
+    db_safe_edit(control_dic, 'stats_coin_clones', stats['coin_clones'])
+    db_safe_edit(control_dic, 'stats_nocoin', stats['nocoin'])
+    db_safe_edit(control_dic, 'stats_nocoin_parents', stats['nocoin_parents'])
+    db_safe_edit(control_dic, 'stats_nocoin_clones', stats['nocoin_clones'])
+    db_safe_edit(control_dic, 'stats_mechanical', stats['mechanical'])
+    db_safe_edit(control_dic, 'stats_mechanical_parents', stats['mechanical_parents'])
+    db_safe_edit(control_dic, 'stats_mechanical_clones', stats['mechanical_clones'])
+    db_safe_edit(control_dic, 'stats_dead', stats['dead'])
+    db_safe_edit(control_dic, 'stats_dead_parents', stats['dead_parents'])
+    db_safe_edit(control_dic, 'stats_dead_clones', stats['dead_clones'])
+    db_safe_edit(control_dic, 'stats_devices', stats['devices'])
+    db_safe_edit(control_dic, 'stats_devices_parents', stats['devices_parents'])
+    db_safe_edit(control_dic, 'stats_devices_clones', stats['devices_clones'])
     # Binary filters
-    change_control_dic(control_dic, 'stats_BIOS', stats['BIOS'])
-    change_control_dic(control_dic, 'stats_BIOS_parents', stats['BIOS_parents'])
-    change_control_dic(control_dic, 'stats_BIOS_clones', stats['BIOS_clones'])
-    change_control_dic(control_dic, 'stats_samples', stats['samples'])
-    change_control_dic(control_dic, 'stats_samples_parents', stats['samples_parents'])
-    change_control_dic(control_dic, 'stats_samples_clones', stats['samples_clones'])
+    db_safe_edit(control_dic, 'stats_BIOS', stats['BIOS'])
+    db_safe_edit(control_dic, 'stats_BIOS_parents', stats['BIOS_parents'])
+    db_safe_edit(control_dic, 'stats_BIOS_clones', stats['BIOS_clones'])
+    db_safe_edit(control_dic, 'stats_samples', stats['samples'])
+    db_safe_edit(control_dic, 'stats_samples_parents', stats['samples_parents'])
+    db_safe_edit(control_dic, 'stats_samples_clones', stats['samples_clones'])
 
     # --- Timestamp ---
-    change_control_dic(control_dic, 't_MAME_DB_build', time.time())
+    db_safe_edit(control_dic, 't_MAME_DB_build', time.time())
 
     # ---------------------------------------------------------------------------------------------
     # Build main distributed hashed database
     # ---------------------------------------------------------------------------------------------
     # This saves the hash files in the database directory.
     # At this point the main hashed database is complete but the asset hashed DB is empty.
-    fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_render)
-    fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic)
+    db_build_main_hashed_db(cfg, control_dic, machines, machines_render)
+    db_build_asset_hashed_db(cfg, control_dic, assets_dic)
 
     # --- Save databases ---
     log_info('Saving database JSON files ...')
@@ -4735,31 +4734,31 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
         json_write_func = utils_write_JSON_file
         log_debug('Using utils_write_JSON_file() JSON writer')
     db_files = [
-        [machines, 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
-        [machines_render, 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
-        [machines_roms, 'MAME machine ROMs', PATHS.ROMS_DB_PATH.getPath()],
-        [machines_devices, 'MAME machine Devices', PATHS.DEVICES_DB_PATH.getPath()],
-        [assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
-        [main_pclone_dic, 'MAME PClone dictionary', PATHS.MAIN_PCLONE_DIC_PATH.getPath()],
-        [roms_sha1_dic, 'MAME ROMs SHA1 dictionary', PATHS.SHA1_HASH_DB_PATH.getPath()],
+        [machines, 'MAME machines Main', cfg.MAIN_DB_PATH.getPath()],
+        [machines_render, 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
+        [machines_roms, 'MAME machine ROMs', cfg.ROMS_DB_PATH.getPath()],
+        [machines_devices, 'MAME machine Devices', cfg.DEVICES_DB_PATH.getPath()],
+        [assets_dic, 'MAME machine assets', cfg.MAIN_ASSETS_DB_PATH.getPath()],
+        [main_pclone_dic, 'MAME PClone dictionary', cfg.MAIN_PCLONE_DIC_PATH.getPath()],
+        [roms_sha1_dic, 'MAME ROMs SHA1 dictionary', cfg.SHA1_HASH_DB_PATH.getPath()],
         # --- DAT files ---
-        [history_idx_dic, 'History DAT index', PATHS.HISTORY_IDX_PATH.getPath()],
-        [history_dic, 'History DAT database', PATHS.HISTORY_DB_PATH.getPath()],
-        [mameinfo_idx_dic, 'MAMEInfo DAT index', PATHS.MAMEINFO_IDX_PATH.getPath()],
-        [mameinfo_dic, 'MAMEInfo DAT database', PATHS.MAMEINFO_DB_PATH.getPath()],
-        [gameinit_idx_dic, 'Gameinit DAT index', PATHS.GAMEINIT_IDX_PATH.getPath()],
-        [gameinit_dic, 'Gameinit DAT database', PATHS.GAMEINIT_DB_PATH.getPath()],
-        [command_idx_dic, 'Command DAT index', PATHS.COMMAND_IDX_PATH.getPath()],
-        [command_dic, 'Command DAT database', PATHS.COMMAND_DB_PATH.getPath()],
+        [history_idx_dic, 'History DAT index', cfg.HISTORY_IDX_PATH.getPath()],
+        [history_dic, 'History DAT database', cfg.HISTORY_DB_PATH.getPath()],
+        [mameinfo_idx_dic, 'MAMEInfo DAT index', cfg.MAMEINFO_IDX_PATH.getPath()],
+        [mameinfo_dic, 'MAMEInfo DAT database', cfg.MAMEINFO_DB_PATH.getPath()],
+        [gameinit_idx_dic, 'Gameinit DAT index', cfg.GAMEINIT_IDX_PATH.getPath()],
+        [gameinit_dic, 'Gameinit DAT database', cfg.GAMEINIT_DB_PATH.getPath()],
+        [command_idx_dic, 'Command DAT index', cfg.COMMAND_IDX_PATH.getPath()],
+        [command_dic, 'Command DAT database', cfg.COMMAND_DB_PATH.getPath()],
         # --- Save control_dic after everything is saved ---
-        [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+        [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
-    db_dic = fs_save_files(db_files, json_write_func)
+    db_dic = db_save_files(db_files, json_write_func)
 
     # Return an dictionary with reference to the objects just in case they are needed after
     # this function (in "Build everything", for example. This saves time (databases do not
     # need to be reloaded) and apparently memory as well.
-    data_dic = {
+    return {
         'machines' : machines,
         'render' : machines_render,
         'devices' : machines_devices,
@@ -4771,9 +4770,8 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
         'gameinit_idx_list' : gameinit_idx_dic,
         'command_idx_list' : command_idx_dic,
         'history_dic' : history_dic,
+        'control_dic' : control_dic,
     }
-
-    return data_dic
 
 # -------------------------------------------------------------------------------------------------
 # Generates the ROM audit database. This database contains invalid ROMs also to display information
@@ -4785,8 +4783,7 @@ def _get_ROM_type(rom):
     elif     rom['bios'] and not rom['merge']: r_type = ROM_TYPE_XROM
     elif not rom['bios'] and     rom['merge']: r_type = ROM_TYPE_MROM
     elif not rom['bios'] and not rom['merge']: r_type = ROM_TYPE_ROM
-    else:
-        r_type = ROM_TYPE_ERROR
+    else:                                      r_type = ROM_TYPE_ERROR
 
     return r_type
 
@@ -5005,13 +5002,11 @@ def _get_CHD_location(chd_set, disk, m_name, machines, machines_render, machine_
 # options_dic['abort'] is always present.
 # 
 #
-def mame_check_before_build_ROM_audit_databases(PATHS, settings, control_dic):
-    options_dic = {}
-    options_dic['abort'] = False
+def mame_check_before_build_ROM_audit_databases(cfg, st_dic, control_dic):
+    kodi_reset_status(st_dic)
 
     # --- Check that MAME database have been built ---
-
-    return options_dic
+    pass
 
 #
 # Builds the ROM/CHD/Samples audit database and more things.
@@ -5080,16 +5075,16 @@ def mame_check_before_build_ROM_audit_databases(PATHS, settings, control_dic):
 #     ROM_SET_SAM_LIST_DB_PATH
 #     MAIN_CONTROL_PATH
 #
-def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
+def mame_build_ROM_audit_databases(cfg, st_dic, control_dic,
     machines, machines_render, devices_db_dic, machine_roms):
     log_info('mame_build_ROM_audit_databases() Initialising ...')
 
     # --- Initialise ---
     # This must match the values defined in settings.xml, "ROM sets" tab.
-    rom_set = ['MERGED', 'SPLIT', 'NONMERGED', 'FULLYNONMERGED'][settings['mame_rom_set']]
-    rom_set_str = ['Merged', 'Split', 'Non-merged', 'Fully Non-merged'][settings['mame_rom_set']]
-    chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_chd_set']]
-    chd_set_str = ['Merged', 'Split', 'Non-merged'][settings['mame_chd_set']]
+    rom_set = ['MERGED', 'SPLIT', 'NONMERGED', 'FULLYNONMERGED'][cfg.settings['mame_rom_set']]
+    rom_set_str = ['Merged', 'Split', 'Non-merged', 'Fully Non-merged'][cfg.settings['mame_rom_set']]
+    chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][cfg.settings['mame_chd_set']]
+    chd_set_str = ['Merged', 'Split', 'Non-merged'][cfg.settings['mame_chd_set']]
     log_info('mame_build_ROM_audit_databases() ROM set is {}'.format(rom_set))
     log_info('mame_build_ROM_audit_databases() CHD set is {}'.format(chd_set))
 
@@ -5287,31 +5282,31 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     pDialog.endProgress()
 
     # ---------------------------------------------------------------------------------------------
-    # Update MAME control dictionary
+    # Update control dictionary.
     # ---------------------------------------------------------------------------------------------
-    change_control_dic(control_dic, 'stats_audit_MAME_machines_runnable', stats_audit_MAME_machines_runnable)
-    change_control_dic(control_dic, 'stats_audit_MAME_ROM_ZIP_files', len(ROM_ZIP_list))
-    change_control_dic(control_dic, 'stats_audit_MAME_Sample_ZIP_files', len(Sample_ZIP_list))
-    change_control_dic(control_dic, 'stats_audit_MAME_CHD_files', len(CHD_archive_list))
-    change_control_dic(control_dic, 'stats_audit_machine_archives_ROM', machine_archives_ROM)
-    change_control_dic(control_dic, 'stats_audit_machine_archives_ROM_parents', machine_archives_ROM_parents)
-    change_control_dic(control_dic, 'stats_audit_machine_archives_ROM_clones', machine_archives_ROM_clones)
-    change_control_dic(control_dic, 'stats_audit_machine_archives_CHD', machine_archives_CHD)
-    change_control_dic(control_dic, 'stats_audit_machine_archives_CHD_parents', machine_archives_CHD_parents)
-    change_control_dic(control_dic, 'stats_audit_machine_archives_CHD_clones', machine_archives_CHD_clones)
-    change_control_dic(control_dic, 'stats_audit_machine_archives_Samples', machine_archives_Samples)
-    change_control_dic(control_dic, 'stats_audit_machine_archives_Samples_parents', machine_archives_Samples_parents)
-    change_control_dic(control_dic, 'stats_audit_machine_archives_Samples_clones', machine_archives_Samples_clones)
-    change_control_dic(control_dic, 'stats_audit_archive_less', archive_less)
-    change_control_dic(control_dic, 'stats_audit_archive_less_parents', archive_less_parents)
-    change_control_dic(control_dic, 'stats_audit_archive_less_clones', archive_less_clones)
-    change_control_dic(control_dic, 'stats_audit_ROMs_total', ROMs_total)
-    change_control_dic(control_dic, 'stats_audit_ROMs_valid', ROMs_valid)
-    change_control_dic(control_dic, 'stats_audit_ROMs_invalid', ROMs_invalid)
-    change_control_dic(control_dic, 'stats_audit_CHDs_total', CHDs_total)
-    change_control_dic(control_dic, 'stats_audit_CHDs_valid', CHDs_valid)
-    change_control_dic(control_dic, 'stats_audit_CHDs_invalid', CHDs_invalid)
-    change_control_dic(control_dic, 't_MAME_Audit_DB_build', time.time())
+    db_safe_edit(control_dic, 'stats_audit_MAME_machines_runnable', stats_audit_MAME_machines_runnable)
+    db_safe_edit(control_dic, 'stats_audit_MAME_ROM_ZIP_files', len(ROM_ZIP_list))
+    db_safe_edit(control_dic, 'stats_audit_MAME_Sample_ZIP_files', len(Sample_ZIP_list))
+    db_safe_edit(control_dic, 'stats_audit_MAME_CHD_files', len(CHD_archive_list))
+    db_safe_edit(control_dic, 'stats_audit_machine_archives_ROM', machine_archives_ROM)
+    db_safe_edit(control_dic, 'stats_audit_machine_archives_ROM_parents', machine_archives_ROM_parents)
+    db_safe_edit(control_dic, 'stats_audit_machine_archives_ROM_clones', machine_archives_ROM_clones)
+    db_safe_edit(control_dic, 'stats_audit_machine_archives_CHD', machine_archives_CHD)
+    db_safe_edit(control_dic, 'stats_audit_machine_archives_CHD_parents', machine_archives_CHD_parents)
+    db_safe_edit(control_dic, 'stats_audit_machine_archives_CHD_clones', machine_archives_CHD_clones)
+    db_safe_edit(control_dic, 'stats_audit_machine_archives_Samples', machine_archives_Samples)
+    db_safe_edit(control_dic, 'stats_audit_machine_archives_Samples_parents', machine_archives_Samples_parents)
+    db_safe_edit(control_dic, 'stats_audit_machine_archives_Samples_clones', machine_archives_Samples_clones)
+    db_safe_edit(control_dic, 'stats_audit_archive_less', archive_less)
+    db_safe_edit(control_dic, 'stats_audit_archive_less_parents', archive_less_parents)
+    db_safe_edit(control_dic, 'stats_audit_archive_less_clones', archive_less_clones)
+    db_safe_edit(control_dic, 'stats_audit_ROMs_total', ROMs_total)
+    db_safe_edit(control_dic, 'stats_audit_ROMs_valid', ROMs_valid)
+    db_safe_edit(control_dic, 'stats_audit_ROMs_invalid', ROMs_invalid)
+    db_safe_edit(control_dic, 'stats_audit_CHDs_total', CHDs_total)
+    db_safe_edit(control_dic, 'stats_audit_CHDs_valid', CHDs_valid)
+    db_safe_edit(control_dic, 'stats_audit_CHDs_invalid', CHDs_invalid)
+    db_safe_edit(control_dic, 't_MAME_Audit_DB_build', time.time())
 
     # --- Save databases ---
     if OPTION_LOWMEM_WRITE_JSON:
@@ -5321,27 +5316,25 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
         json_write_func = utils_write_JSON_file
         log_debug('Using utils_write_JSON_file() JSON writer')
     db_files = [
-        [audit_roms_dic, 'MAME ROM Audit', PATHS.ROM_AUDIT_DB_PATH.getPath()],
-        [machine_archives_dic, 'Machine file list', PATHS.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
-        [ROM_ZIP_list, 'ROM ZIP list', PATHS.ROM_SET_ROM_LIST_DB_PATH.getPath()],
-        [Sample_ZIP_list, 'Sample ZIP list', PATHS.ROM_SET_SAM_LIST_DB_PATH.getPath()],
-        [CHD_archive_list, 'CHD list', PATHS.ROM_SET_CHD_LIST_DB_PATH.getPath()],
+        [audit_roms_dic, 'MAME ROM Audit', cfg.ROM_AUDIT_DB_PATH.getPath()],
+        [machine_archives_dic, 'Machine file list', cfg.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
+        [ROM_ZIP_list, 'ROM ZIP list', cfg.ROM_SET_ROM_LIST_DB_PATH.getPath()],
+        [Sample_ZIP_list, 'Sample ZIP list', cfg.ROM_SET_SAM_LIST_DB_PATH.getPath()],
+        [CHD_archive_list, 'CHD list', cfg.ROM_SET_CHD_LIST_DB_PATH.getPath()],
         # --- Save control_dic after everything is saved ---
-        [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+        [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
-    db_dic = fs_save_files(db_files, json_write_func)
+    db_dic = db_save_files(db_files, json_write_func)
 
     # Return an dictionary with reference to the objects just in case they are needed after
     # this function (in "Build everything", for example.
-    audit_dic = {
+    return {
         'audit_roms' : audit_roms_dic,
         'machine_archives' : machine_archives_dic,
         'ROM_ZIP_list' : ROM_ZIP_list,
         'Sample_ZIP_list' : Sample_ZIP_list,
         'CHD_archive_list' : CHD_archive_list,
     }
-
-    return audit_dic
 
 #
 # Checks for errors before scanning for SL ROMs.
@@ -5350,13 +5343,11 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
 # options_dic['abort'] is always present.
 # 
 #
-def mame_check_before_build_MAME_catalogs(PATHS, settings, control_dic):
-    options_dic = {}
-    options_dic['abort'] = False
+def mame_check_before_build_MAME_catalogs(cfg, st_dic, control_dic):
+    kodi_reset_status(st_dic)
 
     # --- Check that database exists ---
-
-    return options_dic
+    pass
 
 #
 # A) Builds the following catalog files
@@ -5387,9 +5378,8 @@ def mame_check_before_build_MAME_catalogs(PATHS, settings, control_dic):
 #        }, ...
 #    }
 #
-def mame_build_MAME_catalogs(PATHS, settings, control_dic,
+def mame_build_MAME_catalogs(cfg, st_dic, control_dic,
     machines, machines_render, machine_roms, main_pclone_dic, assets_dic):
-
     # --- Machine count ---
     cache_index_dic = {
         # Virtual Main filter catalog
@@ -5560,8 +5550,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Build ROM cache index and save Main catalog JSON file ---
     mame_cache_index_builder('Main', cache_index_dic, main_catalog_all, main_catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_MAIN_ALL_PATH.getPath(), main_catalog_all)
-    utils_write_JSON_file(PATHS.CATALOG_MAIN_PARENT_PATH.getPath(), main_catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_MAIN_ALL_PATH.getPath(), main_catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_MAIN_PARENT_PATH.getPath(), main_catalog_parents)
     processed_filters += 1
 
     # ---------------------------------------------------------------------------------------------
@@ -5627,8 +5617,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # Build cache index and save Binary catalog JSON file
     mame_cache_index_builder('Binary', cache_index_dic, binary_catalog_all, binary_catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_BINARY_ALL_PATH.getPath(), binary_catalog_all)
-    utils_write_JSON_file(PATHS.CATALOG_BINARY_PARENT_PATH.getPath(), binary_catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_BINARY_ALL_PATH.getPath(), binary_catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_BINARY_PARENT_PATH.getPath(), binary_catalog_parents)
     processed_filters += 1
 
     # ---------------------------------------------------------------------------------------------
@@ -5641,8 +5631,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Catver)
     mame_cache_index_builder('Catver', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_CATVER_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_CATVER_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_CATVER_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_CATVER_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Catlist catalog ---
@@ -5652,8 +5642,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Catlist)
     mame_cache_index_builder('Catlist', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_CATLIST_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_CATLIST_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_CATLIST_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Genre catalog ---
@@ -5663,8 +5653,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Genre)
     mame_cache_index_builder('Genre', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_GENRE_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_GENRE_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_GENRE_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_GENRE_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Category catalog ---
@@ -5674,8 +5664,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Category)
     mame_cache_index_builder('Category', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_CATEGORY_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_CATEGORY_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_CATEGORY_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_CATEGORY_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Nplayers catalog ---
@@ -5685,8 +5675,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines_render, machines_render, main_pclone_dic, mame_catalog_key_NPlayers)
     mame_cache_index_builder('NPlayers', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_NPLAYERS_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_NPLAYERS_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Bestgames catalog ---
@@ -5696,8 +5686,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Bestgames)
     mame_cache_index_builder('Bestgames', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_BESTGAMES_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_BESTGAMES_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Series catalog ---
@@ -5707,8 +5697,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Series)
     mame_cache_index_builder('Series', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_SERIES_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_SERIES_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_SERIES_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_SERIES_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Alltime catalog ---
@@ -5718,8 +5708,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Alltime)
     mame_cache_index_builder('Alltime', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_ALLTIME_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_ALLTIME_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_ALLTIME_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_ALLTIME_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Artwork catalog ---
@@ -5729,8 +5719,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Artwork)
     mame_cache_index_builder('Artwork', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_ARTWORK_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_ARTWORK_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_ARTWORK_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_ARTWORK_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Version catalog ---
@@ -5740,8 +5730,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_VerAdded)
     mame_cache_index_builder('Version', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_VERADDED_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_VERADDED_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_VERADDED_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_VERADDED_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Control catalog (Expanded) ---
@@ -5751,8 +5741,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Controls_Expanded)
     mame_cache_index_builder('Controls_Expanded', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Control catalog (Compact) ---
@@ -5764,8 +5754,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Controls_Compact)
     mame_cache_index_builder('Controls_Compact', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- <device> / Device Expanded catalog ---
@@ -5775,8 +5765,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Devices_Expanded)
     mame_cache_index_builder('Devices_Expanded', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- <device> / Device Compact catalog ---
@@ -5786,8 +5776,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Devices_Compact)
     mame_cache_index_builder('Devices_Compact', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Display Type catalog ---
@@ -5797,8 +5787,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Display_Type)
     mame_cache_index_builder('Display_Type', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Display VSync catalog ---
@@ -5808,8 +5798,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Display_VSync)
     mame_cache_index_builder('Display_VSync', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_DISPLAY_VSYNC_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_DISPLAY_VSYNC_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_DISPLAY_VSYNC_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_DISPLAY_VSYNC_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Display Resolution catalog ---
@@ -5819,8 +5809,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Display_Resolution)
     mame_cache_index_builder('Display_Resolution', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_DISPLAY_RES_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_DISPLAY_RES_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_DISPLAY_RES_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_DISPLAY_RES_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- CPU catalog ---
@@ -5830,8 +5820,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_CPU)
     mame_cache_index_builder('CPU', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_CPU_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_CPU_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_CPU_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_CPU_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Driver catalog ---
@@ -5859,8 +5849,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
             for clone_name in main_pclone_dic[parent_name]:
                 catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
     mame_cache_index_builder('Driver', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_DRIVER_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_DRIVER_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_DRIVER_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Manufacturer catalog ---
@@ -5870,8 +5860,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Manufacturer)
     mame_cache_index_builder('Manufacturer', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_MANUFACTURER_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_MANUFACTURER_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- MAME short name catalog ---
@@ -5895,8 +5885,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
             t = '{} "{}"'.format(clone_name, machines_render[clone_name]['description'])
             catalog_all[catalog_key][clone_name] = t
     mame_cache_index_builder('ShortName', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_SHORTNAME_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_SHORTNAME_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- MAME long name catalog ---
@@ -5906,8 +5896,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_LongName)
     mame_cache_index_builder('LongName', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_LONGNAME_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_LONGNAME_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Software List (BySL) catalog ---
@@ -5915,7 +5905,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Software List catalog'))
     log_info('Making Software List catalog ...')
     # Load proper Software List proper names, if available
-    SL_names_dic = utils_load_JSON_file_dic(PATHS.SL_NAMES_PATH.getPath())
+    SL_names_dic = utils_load_JSON_file_dic(cfg.SL_NAMES_PATH.getPath())
     catalog_parents, catalog_all = {}, {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
@@ -5933,8 +5923,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
                 catalog_all[catalog_key] = { parent_name : render['description'] }
             mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
     mame_cache_index_builder('BySL', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Year catalog ---
@@ -5944,8 +5934,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     mame_build_catalog_helper(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, mame_catalog_key_Year)
     mame_cache_index_builder('Year', cache_index_dic, catalog_all, catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_YEAR_PARENT_PATH.getPath(), catalog_parents)
-    utils_write_JSON_file(PATHS.CATALOG_YEAR_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(cfg.CATALOG_YEAR_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(cfg.CATALOG_YEAR_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # Close progress dialog.
@@ -5961,7 +5951,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     #     for category_name in sorted(catalog_dic):
     #         prop_key = '{} - {}'.format(catalog_name, category_name)
     #         mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_PCLONE}
-    # utils_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
+    # utils_write_JSON_file(cfg.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
     # log_info('mame_properties_dic has {} entries'.format(len(mame_properties_dic)))
 
     # --- Compute main filter statistics ---
@@ -6091,57 +6081,57 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     pDialog.endProgress()
 
     # --- Update statistics ---
-    change_control_dic(control_dic, 'stats_MF_Normal_Total', stats_MF_Normal_Total)
-    change_control_dic(control_dic, 'stats_MF_Normal_Good', stats_MF_Normal_Good)
-    change_control_dic(control_dic, 'stats_MF_Normal_Imperfect', stats_MF_Normal_Imperfect)
-    change_control_dic(control_dic, 'stats_MF_Normal_Nonworking', stats_MF_Normal_Nonworking)
-    change_control_dic(control_dic, 'stats_MF_Unusual_Total', stats_MF_Unusual_Total)
-    change_control_dic(control_dic, 'stats_MF_Unusual_Good', stats_MF_Unusual_Good)
-    change_control_dic(control_dic, 'stats_MF_Unusual_Imperfect', stats_MF_Unusual_Imperfect)
-    change_control_dic(control_dic, 'stats_MF_Unusual_Nonworking', stats_MF_Unusual_Nonworking)
-    change_control_dic(control_dic, 'stats_MF_Nocoin_Total', stats_MF_Nocoin_Total)
-    change_control_dic(control_dic, 'stats_MF_Nocoin_Good', stats_MF_Nocoin_Good)
-    change_control_dic(control_dic, 'stats_MF_Nocoin_Imperfect', stats_MF_Nocoin_Imperfect)
-    change_control_dic(control_dic, 'stats_MF_Nocoin_Nonworking', stats_MF_Nocoin_Nonworking)
-    change_control_dic(control_dic, 'stats_MF_Mechanical_Total', stats_MF_Mechanical_Total)
-    change_control_dic(control_dic, 'stats_MF_Mechanical_Good', stats_MF_Mechanical_Good)
-    change_control_dic(control_dic, 'stats_MF_Mechanical_Imperfect', stats_MF_Mechanical_Imperfect)
-    change_control_dic(control_dic, 'stats_MF_Mechanical_Nonworking', stats_MF_Mechanical_Nonworking)
-    change_control_dic(control_dic, 'stats_MF_Dead_Total', stats_MF_Dead_Total)
-    change_control_dic(control_dic, 'stats_MF_Dead_Good', stats_MF_Dead_Good)
-    change_control_dic(control_dic, 'stats_MF_Dead_Imperfect', stats_MF_Dead_Imperfect)
-    change_control_dic(control_dic, 'stats_MF_Dead_Nonworking', stats_MF_Dead_Nonworking)
+    db_safe_edit(control_dic, 'stats_MF_Normal_Total', stats_MF_Normal_Total)
+    db_safe_edit(control_dic, 'stats_MF_Normal_Good', stats_MF_Normal_Good)
+    db_safe_edit(control_dic, 'stats_MF_Normal_Imperfect', stats_MF_Normal_Imperfect)
+    db_safe_edit(control_dic, 'stats_MF_Normal_Nonworking', stats_MF_Normal_Nonworking)
+    db_safe_edit(control_dic, 'stats_MF_Unusual_Total', stats_MF_Unusual_Total)
+    db_safe_edit(control_dic, 'stats_MF_Unusual_Good', stats_MF_Unusual_Good)
+    db_safe_edit(control_dic, 'stats_MF_Unusual_Imperfect', stats_MF_Unusual_Imperfect)
+    db_safe_edit(control_dic, 'stats_MF_Unusual_Nonworking', stats_MF_Unusual_Nonworking)
+    db_safe_edit(control_dic, 'stats_MF_Nocoin_Total', stats_MF_Nocoin_Total)
+    db_safe_edit(control_dic, 'stats_MF_Nocoin_Good', stats_MF_Nocoin_Good)
+    db_safe_edit(control_dic, 'stats_MF_Nocoin_Imperfect', stats_MF_Nocoin_Imperfect)
+    db_safe_edit(control_dic, 'stats_MF_Nocoin_Nonworking', stats_MF_Nocoin_Nonworking)
+    db_safe_edit(control_dic, 'stats_MF_Mechanical_Total', stats_MF_Mechanical_Total)
+    db_safe_edit(control_dic, 'stats_MF_Mechanical_Good', stats_MF_Mechanical_Good)
+    db_safe_edit(control_dic, 'stats_MF_Mechanical_Imperfect', stats_MF_Mechanical_Imperfect)
+    db_safe_edit(control_dic, 'stats_MF_Mechanical_Nonworking', stats_MF_Mechanical_Nonworking)
+    db_safe_edit(control_dic, 'stats_MF_Dead_Total', stats_MF_Dead_Total)
+    db_safe_edit(control_dic, 'stats_MF_Dead_Good', stats_MF_Dead_Good)
+    db_safe_edit(control_dic, 'stats_MF_Dead_Imperfect', stats_MF_Dead_Imperfect)
+    db_safe_edit(control_dic, 'stats_MF_Dead_Nonworking', stats_MF_Dead_Nonworking)
 
-    change_control_dic(control_dic, 'stats_MF_Normal_Total_parents', stats_MF_Normal_Total_parents)
-    change_control_dic(control_dic, 'stats_MF_Normal_Good_parents', stats_MF_Normal_Good_parents)
-    change_control_dic(control_dic, 'stats_MF_Normal_Imperfect_parents', stats_MF_Normal_Imperfect_parents)
-    change_control_dic(control_dic, 'stats_MF_Normal_Nonworking_parents', stats_MF_Normal_Nonworking_parents)
-    change_control_dic(control_dic, 'stats_MF_Unusual_Total_parents', stats_MF_Unusual_Total_parents)
-    change_control_dic(control_dic, 'stats_MF_Unusual_Good_parents', stats_MF_Unusual_Good_parents)
-    change_control_dic(control_dic, 'stats_MF_Unusual_Imperfect_parents', stats_MF_Unusual_Imperfect_parents)
-    change_control_dic(control_dic, 'stats_MF_Unusual_Nonworking_parents', stats_MF_Unusual_Nonworking_parents)
-    change_control_dic(control_dic, 'stats_MF_Nocoin_Total_parents', stats_MF_Nocoin_Total_parents)
-    change_control_dic(control_dic, 'stats_MF_Nocoin_Good_parents', stats_MF_Nocoin_Good_parents)
-    change_control_dic(control_dic, 'stats_MF_Nocoin_Imperfect_parents', stats_MF_Nocoin_Imperfect_parents)
-    change_control_dic(control_dic, 'stats_MF_Nocoin_Nonworking_parents', stats_MF_Nocoin_Nonworking_parents)
-    change_control_dic(control_dic, 'stats_MF_Mechanical_Total_parents', stats_MF_Mechanical_Total_parents)
-    change_control_dic(control_dic, 'stats_MF_Mechanical_Good_parents', stats_MF_Mechanical_Good_parents)
-    change_control_dic(control_dic, 'stats_MF_Mechanical_Imperfect_parents', stats_MF_Mechanical_Imperfect_parents)
-    change_control_dic(control_dic, 'stats_MF_Mechanical_Nonworking_parents', stats_MF_Mechanical_Nonworking_parents)
-    change_control_dic(control_dic, 'stats_MF_Dead_Total_parents', stats_MF_Dead_Total_parents)
-    change_control_dic(control_dic, 'stats_MF_Dead_Good_parents', stats_MF_Dead_Good_parents)
-    change_control_dic(control_dic, 'stats_MF_Dead_Imperfect_parents', stats_MF_Dead_Imperfect_parents)
-    change_control_dic(control_dic, 'stats_MF_Dead_Nonworking_parents', stats_MF_Dead_Nonworking_parents)
+    db_safe_edit(control_dic, 'stats_MF_Normal_Total_parents', stats_MF_Normal_Total_parents)
+    db_safe_edit(control_dic, 'stats_MF_Normal_Good_parents', stats_MF_Normal_Good_parents)
+    db_safe_edit(control_dic, 'stats_MF_Normal_Imperfect_parents', stats_MF_Normal_Imperfect_parents)
+    db_safe_edit(control_dic, 'stats_MF_Normal_Nonworking_parents', stats_MF_Normal_Nonworking_parents)
+    db_safe_edit(control_dic, 'stats_MF_Unusual_Total_parents', stats_MF_Unusual_Total_parents)
+    db_safe_edit(control_dic, 'stats_MF_Unusual_Good_parents', stats_MF_Unusual_Good_parents)
+    db_safe_edit(control_dic, 'stats_MF_Unusual_Imperfect_parents', stats_MF_Unusual_Imperfect_parents)
+    db_safe_edit(control_dic, 'stats_MF_Unusual_Nonworking_parents', stats_MF_Unusual_Nonworking_parents)
+    db_safe_edit(control_dic, 'stats_MF_Nocoin_Total_parents', stats_MF_Nocoin_Total_parents)
+    db_safe_edit(control_dic, 'stats_MF_Nocoin_Good_parents', stats_MF_Nocoin_Good_parents)
+    db_safe_edit(control_dic, 'stats_MF_Nocoin_Imperfect_parents', stats_MF_Nocoin_Imperfect_parents)
+    db_safe_edit(control_dic, 'stats_MF_Nocoin_Nonworking_parents', stats_MF_Nocoin_Nonworking_parents)
+    db_safe_edit(control_dic, 'stats_MF_Mechanical_Total_parents', stats_MF_Mechanical_Total_parents)
+    db_safe_edit(control_dic, 'stats_MF_Mechanical_Good_parents', stats_MF_Mechanical_Good_parents)
+    db_safe_edit(control_dic, 'stats_MF_Mechanical_Imperfect_parents', stats_MF_Mechanical_Imperfect_parents)
+    db_safe_edit(control_dic, 'stats_MF_Mechanical_Nonworking_parents', stats_MF_Mechanical_Nonworking_parents)
+    db_safe_edit(control_dic, 'stats_MF_Dead_Total_parents', stats_MF_Dead_Total_parents)
+    db_safe_edit(control_dic, 'stats_MF_Dead_Good_parents', stats_MF_Dead_Good_parents)
+    db_safe_edit(control_dic, 'stats_MF_Dead_Imperfect_parents', stats_MF_Dead_Imperfect_parents)
+    db_safe_edit(control_dic, 'stats_MF_Dead_Nonworking_parents', stats_MF_Dead_Nonworking_parents)
 
     # --- Update timestamp ---
-    change_control_dic(control_dic, 't_MAME_Catalog_build', time.time())
+    db_safe_edit(control_dic, 't_MAME_Catalog_build', time.time())
 
     # --- Save stuff ------------------------------------------------------------------------------
     db_files = [
-        [cache_index_dic, 'MAME cache index', PATHS.CACHE_INDEX_PATH.getPath()],
-        [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+        [cache_index_dic, 'MAME cache index', cfg.CACHE_INDEX_PATH.getPath()],
+        [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
-    db_dic = fs_save_files(db_files)
+    db_dic = db_save_files(db_files)
 
     # Return an dictionary with reference to the objects just in case they are needed after
     # this function (in "Build everything", for example. This saves time (databases do not
@@ -6661,32 +6651,24 @@ def _get_SL_CHD_location(chd_set, SL_name, SL_item_name, disk_dic, SL_Items):
 #
 # Checks for errors before scanning for SL ROMs.
 # Display a Kodi dialog if an error is found.
-# Returns a dictionary of settings:
-# options_dic['abort'] is always present.
-# 
 #
-def mame_check_before_build_SL_databases(PATHS, settings, control_dic):
-    options_dic = {}
-    options_dic['abort'] = False
+def mame_check_before_build_SL_databases(cfg, st_dic, control_dic):
+    kodi_reset_status(st_dic)
 
     # --- Error checks ---
     if not settings['SL_hash_path']:
         t = ('Software Lists hash path not set. '
              'Open AML addon settings and configure the location of the MAME hash path in the '
              '"Paths" tab.')
-        kodi_dialog_OK(t)
-        options_dic['abort'] = True
-        return options_dic
+        kodi_set_error_status(st_dic, t)
+        return
 
-    if not PATHS.MAIN_DB_PATH.exists():
+    if not cfg.MAIN_DB_PATH.exists():
         t = ('MAME Main database not found. '
             'Open AML addon settings and configure the location of the MAME executable in the '
             '"Paths" tab.')
-        kodi_dialog_OK(t)
-        options_dic['abort'] = True
-        return options_dic
-
-    return options_dic
+        kodi_set_error_status(st_dic, t)
+        return
 
 # SL_catalog_dic = { 'name' : {
 #     'display_name': u'',
@@ -6708,7 +6690,7 @@ def mame_check_before_build_SL_databases(PATHS, settings, control_dic):
 # per-SL ROM audit database             (32x_ROM_audit.json)
 # per-SL item archives (ROMs and CHDs)  (32x_ROM_archives.json)
 #
-def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, machines_render):
+def mame_build_SoftwareLists_databases(cfg, control_dic, machines, machines_render):
     SL_dir_FN = FileName(settings['SL_hash_path'])
     log_debug('mame_build_SoftwareLists_databases() SL_dir_FN "{}"'.format(SL_dir_FN.getPath()))
 
@@ -6734,9 +6716,9 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # log_debug('mame_build_SoftwareLists_databases() Processing "{}"'.format(file))
         SL_path_FN = FileName(file)
         SLData = _mame_load_SL_XML(SL_path_FN.getPath())
-        utils_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_items.json').getPath(),
+        utils_write_JSON_file(cfg.SL_DB_DIR.pjoin(FN.getBase_noext() + '_items.json').getPath(),
             SLData['items'], verbose = False)
-        utils_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(),
+        utils_write_JSON_file(cfg.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(),
             SLData['SL_roms'], verbose = False)
 
         # Add software list to catalog
@@ -6779,10 +6761,10 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
 
         # Filenames of the databases
         # log_debug('mame_build_SoftwareLists_databases() Processing "{}"'.format(file))
-        SL_Items_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_items.json')
-        SL_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json')
-        SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_audit.json')
-        SL_Soft_Archives_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_archives.json')
+        SL_Items_DB_FN = cfg.SL_DB_DIR.pjoin(FN.getBase_noext() + '_items.json')
+        SL_ROMs_DB_FN = cfg.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json')
+        SL_ROM_Audit_DB_FN = cfg.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_audit.json')
+        SL_Soft_Archives_DB_FN = cfg.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_archives.json')
         SL_Items = utils_load_JSON_file_dic(SL_Items_DB_FN.getPath(), verbose = False)
         SL_ROMs = utils_load_JSON_file_dic(SL_ROMs_DB_FN.getPath(), verbose = False)
 
@@ -6886,7 +6868,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(diag_line, sl_name))
         total_SL_XML_files += 1
         pclone_dic = {}
-        SL_database_FN = PATHS.SL_DB_DIR.pjoin(sl_name + '_items.json')
+        SL_database_FN = cfg.SL_DB_DIR.pjoin(sl_name + '_items.json')
         ROMs = utils_load_JSON_file_dic(SL_database_FN.getPath(), verbose = False)
         for rom_name in ROMs:
             total_SL_software_items += 1
@@ -6936,10 +6918,10 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
 
         # --- Load SL databases ---
         file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
-        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+        SL_DB_FN = cfg.SL_DB_DIR.pjoin(file_name)
         SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
         assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
-        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+        SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
 
         # --- Second pass: substitute artwork ---
         SL_assets_dic = {}
@@ -6960,7 +6942,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     #     # 'vm' : VIEW_MODE_NORMAL or VIEW_MODE_ALL
     #     prop_dic = {'vm' : VIEW_MODE_NORMAL}
     #     SL_properties_dic[sl_name] = prop_dic
-    # utils_write_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath(), SL_properties_dic)
+    # utils_write_JSON_file(cfg.SL_MACHINES_PROP_PATH.getPath(), SL_properties_dic)
     # log_info('SL_properties_dic has {} items'.format(len(SL_properties_dic)))
 
     # >> One of the MAME catalogs has changed, and so the property names.
@@ -6971,26 +6953,26 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     #     for category_name in sorted(catalog_dic):
     #         prop_key = '{} - {}'.format(catalog_name, category_name)
     #         mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_NORMAL}
-    # utils_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
+    # utils_write_JSON_file(cfg.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
     # log_info('mame_properties_dic has {} items'.format(len(mame_properties_dic)))
 
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
     # -----------------------------------------------------------------------------
     # --- SL item database ---
-    change_control_dic(control_dic, 'stats_SL_XML_files', total_SL_XML_files)
-    change_control_dic(control_dic, 'stats_SL_software_items', total_SL_software_items)
-    change_control_dic(control_dic, 'stats_SL_items_with_ROMs', num_SL_with_ROMs)
-    change_control_dic(control_dic, 'stats_SL_items_with_CHDs', num_SL_with_CHDs)
+    db_safe_edit(control_dic, 'stats_SL_XML_files', total_SL_XML_files)
+    db_safe_edit(control_dic, 'stats_SL_software_items', total_SL_software_items)
+    db_safe_edit(control_dic, 'stats_SL_items_with_ROMs', num_SL_with_ROMs)
+    db_safe_edit(control_dic, 'stats_SL_items_with_CHDs', num_SL_with_CHDs)
 
     # --- SL audit database statistics ---
-    change_control_dic(control_dic, 'stats_audit_SL_items_runnable', stats_audit_SL_items_runnable)
-    change_control_dic(control_dic, 'stats_audit_SL_items_with_arch', stats_audit_SL_items_with_arch)
-    change_control_dic(control_dic, 'stats_audit_SL_items_with_arch_ROM', stats_audit_SL_items_with_arch_ROM)
-    change_control_dic(control_dic, 'stats_audit_SL_items_with_CHD', stats_audit_SL_items_with_CHD)
+    db_safe_edit(control_dic, 'stats_audit_SL_items_runnable', stats_audit_SL_items_runnable)
+    db_safe_edit(control_dic, 'stats_audit_SL_items_with_arch', stats_audit_SL_items_with_arch)
+    db_safe_edit(control_dic, 'stats_audit_SL_items_with_arch_ROM', stats_audit_SL_items_with_arch_ROM)
+    db_safe_edit(control_dic, 'stats_audit_SL_items_with_CHD', stats_audit_SL_items_with_CHD)
 
     # --- SL build timestamp ---
-    change_control_dic(control_dic, 't_SL_DB_build', time.time())
+    db_safe_edit(control_dic, 't_SL_DB_build', time.time())
 
     # --- Save modified/created stuff in this function ---
     if OPTION_LOWMEM_WRITE_JSON:
@@ -7001,13 +6983,13 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         log_debug('Using utils_write_JSON_file() JSON writer')
     db_files = [
         # Fix this list of files!!!
-        [SL_catalog_dic, 'Software Lists index', PATHS.SL_INDEX_PATH.getPath()],
-        [SL_PClone_dic, 'Software Lists P/Clone', PATHS.SL_PCLONE_DIC_PATH.getPath()],
-        [SL_machines_dic, 'Software Lists Machines', PATHS.SL_MACHINES_PATH.getPath()],
+        [SL_catalog_dic, 'Software Lists index', cfg.SL_INDEX_PATH.getPath()],
+        [SL_PClone_dic, 'Software Lists P/Clone', cfg.SL_PCLONE_DIC_PATH.getPath()],
+        [SL_machines_dic, 'Software Lists Machines', cfg.SL_MACHINES_PATH.getPath()],
         # --- Save control_dic after everything is saved ---
-        [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+        [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
-    db_dic = fs_save_files(db_files, json_write_func)
+    db_dic = db_save_files(db_files, json_write_func)
 
     # Return an dictionary with reference to the objects just in case they are needed after
     # this function (in "Build everything", for example. This saves time (databases do not
@@ -7026,25 +7008,19 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
 #
 # Checks for errors before scanning for SL ROMs.
 # Display a Kodi dialog if an error is found.
-# Returns a dictionary of settings:
-# options_dic['abort'] is always present.
-# 
 #
-def mame_check_before_scan_MAME_ROMs(PATHS, settings, control_dic):
-    log_info('mame_check_before_scan_MAME_ROMs() Starting ...')
-    options_dic = {}
-    options_dic['abort'] = False
+def mame_check_before_scan_MAME_ROMs(cfg, st_dic, options_dic, control_dic):
+    log_info('mame_check_before_scan_MAME_ROMs() Starting...')
+    kodi_reset_status(st_dic)
 
-    # >> Get paths and check they exist
+    # Get paths and check they exist.
     if not settings['rom_path']:
-        kodi_dialog_OK('ROM directory not configured. Aborting.')
-        options_dic['abort'] = True
-        return options_dic
+        kodi_set_error_status(st_dic, 'ROM directory not configured. Aborting.')
+        return
     ROM_path_FN = FileName(settings['rom_path'])
     if not ROM_path_FN.isdir():
-        kodi_dialog_OK('ROM directory does not exist. Aborting.')
-        options_dic['abort'] = True
-        return options_dic
+        kodi_set_error_status(st_dic, 'ROM directory does not exist. Aborting.')
+        return
 
     # Scanning of CHDs is optional.
     if settings['chd_path']:
@@ -7070,8 +7046,6 @@ def mame_check_before_scan_MAME_ROMs(PATHS, settings, control_dic):
         kodi_dialog_OK('Samples directory not configured. Samples scanning disabled.')
         options_dic['scan_Samples'] = False
 
-    return options_dic
-
 #
 # Saves control_dic and assets_dic.
 #
@@ -7084,10 +7058,10 @@ def mame_check_before_scan_MAME_ROMs(PATHS, settings, control_dic):
 #   MAME_DIR/samples/MM1_keyboard/beep.wav
 #   MAME_DIR/samples/MM1_keyboard/power_switch.wav
 #
-def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
+def mame_scan_MAME_ROMs(cfg, control_dic, options_dic,
     machines, machines_render, assets_dic, machine_archives_dic,
     ROM_ZIP_list, Sample_ZIP_list, CHD_list):
-    log_info('mame_scan_MAME_ROMs() Starting ...')
+    log_info('mame_scan_MAME_ROMs() Starting...')
 
     # At this point paths have been verified and exists.
     ROM_path_FN = FileName(settings['rom_path'])
@@ -7274,7 +7248,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     # Write MAME scanner reports
     reports_total = 3
     pDialog.startProgress('Saving scanner reports...', reports_total)
-    log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
+    log_info('Writing report "{}"'.format(cfg.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
     report_slist = [
         '*** Advanced MAME Launcher MAME machines scanner report ***',
         'This report shows all the scanned MAME machines.',
@@ -7285,10 +7259,10 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         '',
     ]
     report_slist.extend(r_full_list)
-    utils_write_slist_to_file(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), report_slist)
+    utils_write_slist_to_file(cfg.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), report_slist)
 
     pDialog.updateProgress(1)
-    log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
+    log_info('Writing report "{}"'.format(cfg.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
     report_slist = [
         '*** Advanced MAME Launcher MAME machines scanner report ***',
         'This reports shows MAME machines that have all the required',
@@ -7303,10 +7277,10 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     if not r_have_list:
         r_have_list.append('Ouch!!! You do not have any ROM ZIP files and/or CHDs.')
     report_slist.extend(r_have_list)
-    utils_write_slist_to_file(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), report_slist)
+    utils_write_slist_to_file(cfg.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), report_slist)
   
     pDialog.updateProgress(2)
-    log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
+    log_info('Writing report "{}"'.format(cfg.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
     report_slist = [
         '*** Advanced MAME Launcher MAME machines scanner report ***',
         'This reports shows MAME machines that miss all or some of the required',
@@ -7321,7 +7295,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     if not r_miss_list:
         r_miss_list.append('Congratulations!!! You have no missing ROM ZIP and/or CHDs files.')
     report_slist.extend(r_miss_list)
-    utils_write_slist_to_file(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), report_slist)
+    utils_write_slist_to_file(cfg.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), report_slist)
     pDialog.endProgress()
 
     # --- ROM ZIP file list ---
@@ -7349,10 +7323,10 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             scan_ROM_ZIP_files_missing += 1
             r_list.append('Missing ROM {}'.format(rom_name))
     pDialog.endProgress()
-    log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath()))
+    log_info('Writing report "{}"'.format(cfg.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath()))
     if scan_ROM_ZIP_files_missing == 0:
         r_list.append('Congratulations!!! You have no missing ROM ZIP files.')
-    utils_write_slist_to_file(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), r_list)
+    utils_write_slist_to_file(cfg.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), r_list)
 
     # --- Sample ZIP file list ---
     scan_Samples_ZIP_total = 0
@@ -7379,10 +7353,10 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             scan_Samples_ZIP_missing += 1
             r_list.append('Missing Sample {}'.format(sample_name))
     pDialog.endProgress()
-    log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath()))
+    log_info('Writing report "{}"'.format(cfg.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath()))
     if scan_Samples_ZIP_missing == 0:
         r_list.append('Congratulations!!! You have no missing Sample ZIP files.')
-    utils_write_slist_to_file(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath(), r_list)
+    utils_write_slist_to_file(cfg.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath(), r_list)
 
     # --- CHD file list ---
     scan_CHD_files_total = 0
@@ -7409,41 +7383,41 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             scan_CHD_files_missing += 1
             r_list.append('Missing CHD {}'.format(chd_name))
     pDialog.endProgress()
-    log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath()))
+    log_info('Writing report "{}"'.format(cfg.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath()))
     if scan_CHD_files_missing == 0:
         r_list.append('Congratulations!!! You have no missing CHD files.')
-    utils_write_slist_to_file(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), r_list)
+    utils_write_slist_to_file(cfg.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), r_list)
 
     # --- Update statistics ---
-    change_control_dic(control_dic, 'scan_machine_archives_ROM_total', scan_march_ROM_total)
-    change_control_dic(control_dic, 'scan_machine_archives_ROM_have', scan_march_ROM_have)
-    change_control_dic(control_dic, 'scan_machine_archives_ROM_missing', scan_march_ROM_missing)
-    change_control_dic(control_dic, 'scan_machine_archives_Samples_total', scan_march_SAM_total)
-    change_control_dic(control_dic, 'scan_machine_archives_Samples_have', scan_march_SAM_have)
-    change_control_dic(control_dic, 'scan_machine_archives_Samples_missing', scan_march_SAM_missing)
-    change_control_dic(control_dic, 'scan_machine_archives_CHD_total', scan_march_CHD_total)
-    change_control_dic(control_dic, 'scan_machine_archives_CHD_have', scan_march_CHD_have)
-    change_control_dic(control_dic, 'scan_machine_archives_CHD_missing', scan_march_CHD_missing)
+    db_safe_edit(control_dic, 'scan_machine_archives_ROM_total', scan_march_ROM_total)
+    db_safe_edit(control_dic, 'scan_machine_archives_ROM_have', scan_march_ROM_have)
+    db_safe_edit(control_dic, 'scan_machine_archives_ROM_missing', scan_march_ROM_missing)
+    db_safe_edit(control_dic, 'scan_machine_archives_Samples_total', scan_march_SAM_total)
+    db_safe_edit(control_dic, 'scan_machine_archives_Samples_have', scan_march_SAM_have)
+    db_safe_edit(control_dic, 'scan_machine_archives_Samples_missing', scan_march_SAM_missing)
+    db_safe_edit(control_dic, 'scan_machine_archives_CHD_total', scan_march_CHD_total)
+    db_safe_edit(control_dic, 'scan_machine_archives_CHD_have', scan_march_CHD_have)
+    db_safe_edit(control_dic, 'scan_machine_archives_CHD_missing', scan_march_CHD_missing)
 
-    change_control_dic(control_dic, 'scan_ROM_ZIP_files_total', scan_ROM_ZIP_files_total)
-    change_control_dic(control_dic, 'scan_ROM_ZIP_files_have', scan_ROM_ZIP_files_have)
-    change_control_dic(control_dic, 'scan_ROM_ZIP_files_missing', scan_ROM_ZIP_files_missing)
-    change_control_dic(control_dic, 'scan_Samples_ZIP_total', scan_Samples_ZIP_total)
-    change_control_dic(control_dic, 'scan_Samples_ZIP_have', scan_Samples_ZIP_have)
-    change_control_dic(control_dic, 'scan_Samples_ZIP_missing', scan_Samples_ZIP_missing)
-    change_control_dic(control_dic, 'scan_CHD_files_total', scan_CHD_files_total)
-    change_control_dic(control_dic, 'scan_CHD_files_have', scan_CHD_files_have)
-    change_control_dic(control_dic, 'scan_CHD_files_missing', scan_CHD_files_missing)
+    db_safe_edit(control_dic, 'scan_ROM_ZIP_files_total', scan_ROM_ZIP_files_total)
+    db_safe_edit(control_dic, 'scan_ROM_ZIP_files_have', scan_ROM_ZIP_files_have)
+    db_safe_edit(control_dic, 'scan_ROM_ZIP_files_missing', scan_ROM_ZIP_files_missing)
+    db_safe_edit(control_dic, 'scan_Samples_ZIP_total', scan_Samples_ZIP_total)
+    db_safe_edit(control_dic, 'scan_Samples_ZIP_have', scan_Samples_ZIP_have)
+    db_safe_edit(control_dic, 'scan_Samples_ZIP_missing', scan_Samples_ZIP_missing)
+    db_safe_edit(control_dic, 'scan_CHD_files_total', scan_CHD_files_total)
+    db_safe_edit(control_dic, 'scan_CHD_files_have', scan_CHD_files_have)
+    db_safe_edit(control_dic, 'scan_CHD_files_missing', scan_CHD_files_missing)
 
     # --- Scanner timestamp ---
-    change_control_dic(control_dic, 't_MAME_ROMs_scan', time.time())
+    db_safe_edit(control_dic, 't_MAME_ROMs_scan', time.time())
 
     # --- Save databases ---
     db_files = [
-        [assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
-        [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+        [assets_dic, 'MAME machine assets', cfg.MAIN_ASSETS_DB_PATH.getPath()],
+        [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
-    db_dic = fs_save_files(db_files)
+    db_dic = db_save_files(db_files)
 
 # -------------------------------------------------------------------------------------------------
 #
@@ -7453,42 +7427,37 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
 # options_dic['abort'] is always present.
 # options_dic['scan_SL_CHDs'] scanning of CHDs is optional.
 #
-def mame_check_before_scan_SL_ROMs(PATHS, settings, control_dic):
-    options_dic = {}
-    options_dic['abort'] = False
+def mame_check_before_scan_SL_ROMs(cfg, st_dic, options_dic, control_dic):
+    kodi_reset_status(st_dic)
 
-    # >> Abort if SL hash path not configured.
+    # Abort if SL hash path not configured.
     if not settings['SL_hash_path']:
-        kodi_dialog_OK('Software Lists hash path not set. Scanning aborted.')
-        options_dic['abort'] = True
-        return options_dic
+        kodi_set_error_status(st_dic, 'Software Lists hash path not set. Scanning aborted.')
+        return
 
-    # >> Abort if SL ROM dir not configured.
+    # Abort if SL ROM dir not configured.
     if not settings['SL_rom_path']:
-        kodi_dialog_OK('Software Lists ROM path not set. Scanning aborted.')
-        options_dic['abort'] = True
-        return options_dic
+        kodi_set_error_status(st_dic, 'Software Lists ROM path not set. Scanning aborted.')
+        return
 
-    # >> SL CHDs scanning is optional
+    # SL CHDs scanning is optional
     if settings['SL_chd_path']:
         SL_CHD_path_FN = FileName(settings['SL_chd_path'])
         if not SL_CHD_path_FN.isdir():
-            options_dic['scan_SL_CHDs'] = False
             kodi_dialog_OK('SL CHD directory does not exist. SL CHD scanning disabled.')
+            options_dic['scan_SL_CHDs'] = False
         else:
             options_dic['scan_SL_CHDs'] = True
     else:
         kodi_dialog_OK('SL CHD directory not configured. SL CHD scanning disabled.')
         options_dic['scan_SL_CHDs'] = False
 
-    return options_dic
-
 # Saves SL JSON databases, MAIN_CONTROL_PATH.
-def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic):
-    log_info('mame_scan_SL_ROMs() Starting ...')
+def mame_scan_SL_ROMs(cfg, control_dic, options_dic, SL_catalog_dic):
+    log_info('mame_scan_SL_ROMs() Starting...')
 
     # Paths have been verified at this point
-    SL_hash_dir_FN = PATHS.SL_DB_DIR
+    SL_hash_dir_FN = cfg.SL_DB_DIR
     log_info('mame_scan_SL_ROMs() SL hash dir OP {}'.format(SL_hash_dir_FN.getOriginalPath()))
     log_info('mame_scan_SL_ROMs() SL hash dir  P {}'.format(SL_hash_dir_FN.getPath()))
 
@@ -7629,18 +7598,18 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
     reports_total = 3
     pDialog.startProgress('Writing scanner reports...', reports_total)
     log_info('Writing SL ROM ZIPs/CHDs FULL report')
-    log_info('Report file "{}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
+    log_info('Report file "{}"'.format(cfg.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
     sl = [
         '*** Advanced MAME Launcher Software Lists scanner report ***',
         'This report shows all the scanned SL items',
         '',
     ]
     sl.extend(r_all_list)
-    utils_write_slist_to_file(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), sl)
+    utils_write_slist_to_file(cfg.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), sl)
 
     pDialog.updateProgressInc()
     log_info('Writing SL ROM ZIPs and/or CHDs HAVE report')
-    log_info('Report file "{}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
+    log_info('Report file "{}"'.format(cfg.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
     sl = [
         '*** Advanced MAME Launcher Software Lists scanner report ***',
         'This reports shows the SL items with ROM ZIPs and/or CHDs with HAVE status',
@@ -7650,11 +7619,11 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
         sl.extend(r_have_list)
     else:
         sl.append('You do not have any ROM ZIP or CHD files!')
-    utils_write_slist_to_file(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), sl)
+    utils_write_slist_to_file(cfg.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), sl)
 
     pDialog.updateProgressInc()
     log_info('Writing SL ROM ZIPs/CHDs MISS report')
-    log_info('Report file "{}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
+    log_info('Report file "{}"'.format(cfg.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
     sl = [
         '*** Advanced MAME Launcher Software Lists scanner report ***',
         'This reports shows the SL items with ROM ZIPs and/or CHDs with MISSING status',
@@ -7664,40 +7633,34 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
         sl.extend(r_miss_list)
     else:
         sl.append('Congratulations! No missing SL ROM ZIP or CHD files.')
-    utils_write_slist_to_file(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), sl)
+    utils_write_slist_to_file(cfg.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), sl)
     pDialog.endProgress()
 
     # Update statistics, timestamp and save control_dic.
-    change_control_dic(control_dic, 'scan_SL_archives_ROM_total', SL_ROMs_total)
-    change_control_dic(control_dic, 'scan_SL_archives_ROM_have', SL_ROMs_have)
-    change_control_dic(control_dic, 'scan_SL_archives_ROM_missing', SL_ROMs_missing)
-    change_control_dic(control_dic, 'scan_SL_archives_CHD_total', SL_CHDs_total)
-    change_control_dic(control_dic, 'scan_SL_archives_CHD_have', SL_CHDs_have)
-    change_control_dic(control_dic, 'scan_SL_archives_CHD_missing', SL_CHDs_missing)
-    change_control_dic(control_dic, 't_SL_ROMs_scan', time.time())
-    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    db_safe_edit(control_dic, 'scan_SL_archives_ROM_total', SL_ROMs_total)
+    db_safe_edit(control_dic, 'scan_SL_archives_ROM_have', SL_ROMs_have)
+    db_safe_edit(control_dic, 'scan_SL_archives_ROM_missing', SL_ROMs_missing)
+    db_safe_edit(control_dic, 'scan_SL_archives_CHD_total', SL_CHDs_total)
+    db_safe_edit(control_dic, 'scan_SL_archives_CHD_have', SL_CHDs_have)
+    db_safe_edit(control_dic, 'scan_SL_archives_CHD_missing', SL_CHDs_missing)
+    db_safe_edit(control_dic, 't_SL_ROMs_scan', time.time())
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 #
 # Checks for errors before scanning for SL assets.
-# Display a Kodi dialog if an error is found and returns True if scanning must be aborted.
-# Returns False if no errors.
+# Caller function displays a Kodi dialog if an error is found and scanning must be aborted.
 #
-def mame_check_before_scan_MAME_assets(PATHS, settings, control_dic):
-    options_dic = {}
-    options_dic['abort'] = False
+def mame_check_before_scan_MAME_assets(cfg, st_dic, control_dic):
+    kodi_reset_status(st_dic)
 
     # Get assets directory. Abort if not configured/found.
     if not settings['assets_path']:
-        kodi_dialog_OK('Asset directory not configured. Aborting.')
-        options_dic['abort'] = True
-        return options_dic
+        kodi_set_error_status(st_dic, 'Asset directory not configured. Aborting.')
+        return
     Asset_path_FN = FileName(settings['assets_path'])
     if not Asset_path_FN.isdir():
-        kodi_dialog_OK('Asset directory does not exist. Aborting.')
-        options_dic['abort'] = True
-        return options_dic
-
-    return options_dic
+        kodi_set_error_status(st_dic, 'Asset directory does not exist. Aborting.')
+        return
 
 #
 # Note that MAME is able to use clone artwork from parent machines. Mr. Do's Artwork ZIP files
@@ -7707,8 +7670,7 @@ def mame_check_before_scan_MAME_assets(PATHS, settings, control_dic):
 #   A) A clone may use assets from parent.
 #   B) A parent may use assets from a clone.
 #
-def mame_scan_MAME_assets(PATHS, settings, control_dic,
-    assets_dic, machines_render, main_pclone_dic):
+def mame_scan_MAME_assets(cfg, st_dic, control_dic, assets_dic, machines_render, main_pclone_dic):
     Asset_path_FN = FileName(settings['assets_path'])
     log_info('mame_scan_MAME_assets() Asset path {}'.format(Asset_path_FN.getPath()))
 
@@ -7853,87 +7815,82 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
     report_slist.append('')
     table_str_list = text_render_table_str(table_str)
     report_slist.extend(table_str_list)
-    log_info('Writing MAME asset report file "{}"'.format(PATHS.REPORT_MAME_ASSETS_PATH.getPath()))
-    utils_write_slist_to_file(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), report_slist)
+    log_info('Writing MAME asset report file "{}"'.format(cfg.REPORT_MAME_ASSETS_PATH.getPath()))
+    utils_write_slist_to_file(cfg.REPORT_MAME_ASSETS_PATH.getPath(), report_slist)
     pDialog.endProgress()
 
     # Update control_dic by assigment (will be saved in caller)
-    change_control_dic(control_dic, 'assets_num_MAME_machines', total_machines)
-    change_control_dic(control_dic, 'assets_3dbox_have', box3D[0])
-    change_control_dic(control_dic, 'assets_3dbox_missing', box3D[1])
-    change_control_dic(control_dic, 'assets_3dbox_alternate', box3D[2])
-    change_control_dic(control_dic, 'assets_artpreview_have', Artp[0])
-    change_control_dic(control_dic, 'assets_artpreview_missing', Artp[1])
-    change_control_dic(control_dic, 'assets_artpreview_alternate', Artp[2])
-    change_control_dic(control_dic, 'assets_artwork_have', Art[0])
-    change_control_dic(control_dic, 'assets_artwork_missing', Art[1])
-    change_control_dic(control_dic, 'assets_artwork_alternate', Art[2])
-    change_control_dic(control_dic, 'assets_cabinets_have', Cab[0])
-    change_control_dic(control_dic, 'assets_cabinets_missing', Cab[1])
-    change_control_dic(control_dic, 'assets_cabinets_alternate', Cab[2])
-    change_control_dic(control_dic, 'assets_clearlogos_have', Clr[0])
-    change_control_dic(control_dic, 'assets_clearlogos_missing', Clr[1])
-    change_control_dic(control_dic, 'assets_clearlogos_alternate', Clr[2])
-    change_control_dic(control_dic, 'assets_cpanels_have', CPan[0])
-    change_control_dic(control_dic, 'assets_cpanels_missing', CPan[1])
-    change_control_dic(control_dic, 'assets_cpanels_alternate', CPan[2])
-    change_control_dic(control_dic, 'assets_fanarts_have', Fan[0])
-    change_control_dic(control_dic, 'assets_fanarts_missing', Fan[1])
-    change_control_dic(control_dic, 'assets_fanarts_alternate', Fan[2])
-    change_control_dic(control_dic, 'assets_flyers_have', Fly[0])
-    change_control_dic(control_dic, 'assets_flyers_missing', Fly[1])
-    change_control_dic(control_dic, 'assets_flyers_alternate', Fly[2])
-    change_control_dic(control_dic, 'assets_manuals_have', Man[0])
-    change_control_dic(control_dic, 'assets_manuals_missing', Man[1])
-    change_control_dic(control_dic, 'assets_manuals_alternate', Man[2])
-    change_control_dic(control_dic, 'assets_marquees_have', Mar[0])
-    change_control_dic(control_dic, 'assets_marquees_missing', Mar[1])
-    change_control_dic(control_dic, 'assets_marquees_alternate', Mar[2])
-    change_control_dic(control_dic, 'assets_PCBs_have', PCB[0])
-    change_control_dic(control_dic, 'assets_PCBs_missing', PCB[1])
-    change_control_dic(control_dic, 'assets_PCBs_alternate', PCB[2])
-    change_control_dic(control_dic, 'assets_snaps_have', Snap[0])
-    change_control_dic(control_dic, 'assets_snaps_missing', Snap[1])
-    change_control_dic(control_dic, 'assets_snaps_alternate', Snap[2])
-    change_control_dic(control_dic, 'assets_titles_have', Tit[0])
-    change_control_dic(control_dic, 'assets_titles_missing', Tit[1])
-    change_control_dic(control_dic, 'assets_titles_alternate', Tit[2])
-    change_control_dic(control_dic, 'assets_trailers_have', Tra[0])
-    change_control_dic(control_dic, 'assets_trailers_missing', Tra[1])
-    change_control_dic(control_dic, 'assets_trailers_alternate', Tra[2])
-    change_control_dic(control_dic, 't_MAME_assets_scan', time.time())
+    db_safe_edit(control_dic, 'assets_num_MAME_machines', total_machines)
+    db_safe_edit(control_dic, 'assets_3dbox_have', box3D[0])
+    db_safe_edit(control_dic, 'assets_3dbox_missing', box3D[1])
+    db_safe_edit(control_dic, 'assets_3dbox_alternate', box3D[2])
+    db_safe_edit(control_dic, 'assets_artpreview_have', Artp[0])
+    db_safe_edit(control_dic, 'assets_artpreview_missing', Artp[1])
+    db_safe_edit(control_dic, 'assets_artpreview_alternate', Artp[2])
+    db_safe_edit(control_dic, 'assets_artwork_have', Art[0])
+    db_safe_edit(control_dic, 'assets_artwork_missing', Art[1])
+    db_safe_edit(control_dic, 'assets_artwork_alternate', Art[2])
+    db_safe_edit(control_dic, 'assets_cabinets_have', Cab[0])
+    db_safe_edit(control_dic, 'assets_cabinets_missing', Cab[1])
+    db_safe_edit(control_dic, 'assets_cabinets_alternate', Cab[2])
+    db_safe_edit(control_dic, 'assets_clearlogos_have', Clr[0])
+    db_safe_edit(control_dic, 'assets_clearlogos_missing', Clr[1])
+    db_safe_edit(control_dic, 'assets_clearlogos_alternate', Clr[2])
+    db_safe_edit(control_dic, 'assets_cpanels_have', CPan[0])
+    db_safe_edit(control_dic, 'assets_cpanels_missing', CPan[1])
+    db_safe_edit(control_dic, 'assets_cpanels_alternate', CPan[2])
+    db_safe_edit(control_dic, 'assets_fanarts_have', Fan[0])
+    db_safe_edit(control_dic, 'assets_fanarts_missing', Fan[1])
+    db_safe_edit(control_dic, 'assets_fanarts_alternate', Fan[2])
+    db_safe_edit(control_dic, 'assets_flyers_have', Fly[0])
+    db_safe_edit(control_dic, 'assets_flyers_missing', Fly[1])
+    db_safe_edit(control_dic, 'assets_flyers_alternate', Fly[2])
+    db_safe_edit(control_dic, 'assets_manuals_have', Man[0])
+    db_safe_edit(control_dic, 'assets_manuals_missing', Man[1])
+    db_safe_edit(control_dic, 'assets_manuals_alternate', Man[2])
+    db_safe_edit(control_dic, 'assets_marquees_have', Mar[0])
+    db_safe_edit(control_dic, 'assets_marquees_missing', Mar[1])
+    db_safe_edit(control_dic, 'assets_marquees_alternate', Mar[2])
+    db_safe_edit(control_dic, 'assets_PCBs_have', PCB[0])
+    db_safe_edit(control_dic, 'assets_PCBs_missing', PCB[1])
+    db_safe_edit(control_dic, 'assets_PCBs_alternate', PCB[2])
+    db_safe_edit(control_dic, 'assets_snaps_have', Snap[0])
+    db_safe_edit(control_dic, 'assets_snaps_missing', Snap[1])
+    db_safe_edit(control_dic, 'assets_snaps_alternate', Snap[2])
+    db_safe_edit(control_dic, 'assets_titles_have', Tit[0])
+    db_safe_edit(control_dic, 'assets_titles_missing', Tit[1])
+    db_safe_edit(control_dic, 'assets_titles_alternate', Tit[2])
+    db_safe_edit(control_dic, 'assets_trailers_have', Tra[0])
+    db_safe_edit(control_dic, 'assets_trailers_missing', Tra[1])
+    db_safe_edit(control_dic, 'assets_trailers_alternate', Tra[2])
+    db_safe_edit(control_dic, 't_MAME_assets_scan', time.time())
 
     # --- Save databases ---
     db_files = [
-        [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
-        [assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+        [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
+        [assets_dic, 'MAME machine assets', cfg.MAIN_ASSETS_DB_PATH.getPath()],
     ]
-    db_dic = fs_save_files(db_files)
+    db_dic = db_save_files(db_files)
 
 #
 # Checks for errors before scanning for SL assets.
 # Display a Kodi dialog if an error is found and returns True if scanning must be aborted.
 # Returns False if no errors.
 #
-def mame_check_before_scan_SL_assets(PATHS, settings, control_dic):
-    options_dic = {}
-    options_dic['abort'] = False
+def mame_check_before_scan_SL_assets(cfg, st_dic, control_dic):
+    kodi_reset_status(st_dic)
 
     # Get assets directory. Abort if not configured/found.
     if not settings['assets_path']:
-        kodi_dialog_OK('Asset directory not configured. Aborting.')
-        options_dic['abort'] = True
-        return options_dic
+        kodi_set_error_status(st_dic, 'Asset directory not configured. Aborting.')
+        return
     Asset_path_FN = FileName(settings['assets_path'])
     if not Asset_path_FN.isdir():
-        kodi_dialog_OK('Asset directory does not exist. Aborting.')
-        options_dic['abort'] = True
-        return options_dic
+        kodi_set_error_status(st_dic, 'Asset directory does not exist. Aborting.')
+        return
 
-    return options_dic
-
-def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_dic):
-    log_debug('mame_scan_SL_assets() Starting ...')
+def mame_scan_SL_assets(cfg, st_dic, control_dic, SL_index_dic, SL_pclone_dic):
+    log_debug('mame_scan_SL_assets() Starting...')
 
     # At this point assets_path is configured and the directory exists.
     Asset_path_FN = FileName(settings['assets_path'])
@@ -7959,7 +7916,7 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
 
         # --- Load SL databases ---
         file_name = SL_index_dic[SL_name]['rom_DB_noext'] + '_items.json'
-        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+        SL_DB_FN = cfg.SL_DB_DIR.pjoin(file_name)
         SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
 
         # --- Cache files ---
@@ -7975,7 +7932,7 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
 
         # --- First pass: scan for on-disk assets ---
         assets_file_name = SL_index_dic[SL_name]['rom_DB_noext'] + '_assets.json'
-        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+        SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
         # log_info('Assets JSON "{}"'.format(SL_asset_DB_FN.getPath()))
         ondisk_assets_dic = {}
         for rom_key in sorted(SL_roms):
@@ -8070,33 +8027,33 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
     report_slist.append('')
     table_str_list = text_render_table_str(table_str)
     report_slist.extend(table_str_list)
-    log_info('Writing SL asset report file "{}"'.format(PATHS.REPORT_SL_ASSETS_PATH.getPath()))
+    log_info('Writing SL asset report file "{}"'.format(cfg.REPORT_SL_ASSETS_PATH.getPath()))
     pDialog.startProgress('Creating SL asset report...')
-    utils_write_slist_to_file(PATHS.REPORT_SL_ASSETS_PATH.getPath(), report_slist)
+    utils_write_slist_to_file(cfg.REPORT_SL_ASSETS_PATH.getPath(), report_slist)
     pDialog.endProgress()
 
     # Update control_dic by assigment (will be saved in caller) and save JSON.
-    change_control_dic(control_dic, 'assets_SL_num_items', SL_item_count)
-    change_control_dic(control_dic, 'assets_SL_3dbox_have', _3db[0])
-    change_control_dic(control_dic, 'assets_SL_3dbox_missing', _3db[1])
-    change_control_dic(control_dic, 'assets_SL_3dbox_alternate', _3db[2])
-    change_control_dic(control_dic, 'assets_SL_titles_have', Tit[0])
-    change_control_dic(control_dic, 'assets_SL_titles_missing', Tit[1])
-    change_control_dic(control_dic, 'assets_SL_titles_alternate', Tit[2])
-    change_control_dic(control_dic, 'assets_SL_snaps_have', Snap[0])
-    change_control_dic(control_dic, 'assets_SL_snaps_missing', Snap[1])
-    change_control_dic(control_dic, 'assets_SL_snaps_alternate', Snap[2])
-    change_control_dic(control_dic, 'assets_SL_boxfronts_have', Boxf[0])
-    change_control_dic(control_dic, 'assets_SL_boxfronts_missing', Boxf[1])
-    change_control_dic(control_dic, 'assets_SL_boxfronts_alternate', Boxf[2])
-    change_control_dic(control_dic, 'assets_SL_fanarts_have', Fan[0])
-    change_control_dic(control_dic, 'assets_SL_fanarts_missing', Fan[1])
-    change_control_dic(control_dic, 'assets_SL_fanarts_alternate', Fan[2])
-    change_control_dic(control_dic, 'assets_SL_trailers_have', Tra[0])
-    change_control_dic(control_dic, 'assets_SL_trailers_missing', Tra[1])
-    change_control_dic(control_dic, 'assets_SL_trailers_alternate', Tra[2])
-    change_control_dic(control_dic, 'assets_SL_manuals_have', Man[0])
-    change_control_dic(control_dic, 'assets_SL_manuals_missing', Man[1])
-    change_control_dic(control_dic, 'assets_SL_manuals_alternate', Man[2])
-    change_control_dic(control_dic, 't_SL_assets_scan', time.time())
-    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    db_safe_edit(control_dic, 'assets_SL_num_items', SL_item_count)
+    db_safe_edit(control_dic, 'assets_SL_3dbox_have', _3db[0])
+    db_safe_edit(control_dic, 'assets_SL_3dbox_missing', _3db[1])
+    db_safe_edit(control_dic, 'assets_SL_3dbox_alternate', _3db[2])
+    db_safe_edit(control_dic, 'assets_SL_titles_have', Tit[0])
+    db_safe_edit(control_dic, 'assets_SL_titles_missing', Tit[1])
+    db_safe_edit(control_dic, 'assets_SL_titles_alternate', Tit[2])
+    db_safe_edit(control_dic, 'assets_SL_snaps_have', Snap[0])
+    db_safe_edit(control_dic, 'assets_SL_snaps_missing', Snap[1])
+    db_safe_edit(control_dic, 'assets_SL_snaps_alternate', Snap[2])
+    db_safe_edit(control_dic, 'assets_SL_boxfronts_have', Boxf[0])
+    db_safe_edit(control_dic, 'assets_SL_boxfronts_missing', Boxf[1])
+    db_safe_edit(control_dic, 'assets_SL_boxfronts_alternate', Boxf[2])
+    db_safe_edit(control_dic, 'assets_SL_fanarts_have', Fan[0])
+    db_safe_edit(control_dic, 'assets_SL_fanarts_missing', Fan[1])
+    db_safe_edit(control_dic, 'assets_SL_fanarts_alternate', Fan[2])
+    db_safe_edit(control_dic, 'assets_SL_trailers_have', Tra[0])
+    db_safe_edit(control_dic, 'assets_SL_trailers_missing', Tra[1])
+    db_safe_edit(control_dic, 'assets_SL_trailers_alternate', Tra[2])
+    db_safe_edit(control_dic, 'assets_SL_manuals_have', Man[0])
+    db_safe_edit(control_dic, 'assets_SL_manuals_missing', Man[1])
+    db_safe_edit(control_dic, 'assets_SL_manuals_alternate', Man[2])
+    db_safe_edit(control_dic, 't_SL_assets_scan', time.time())
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)

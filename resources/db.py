@@ -643,16 +643,8 @@ def db_new_control_dic():
         'assets_SL_manuals_alternate'   : 0,
     }
 
-# Safe way of edit control_dic to avoid creating new fields not defined in db_new_control_dic().
-# NOTE Deprecated, use db_safe_edit_dic()
-def change_control_dic(control_dic, field, value):
-    if field in control_dic:
-        control_dic[field] = value
-    else:
-        raise TypeError('Field {} not in control_dic'.format(field))
-
 # Safe way of change a dictionary without adding new fields.
-def db_safe_edit_dic(my_dic, field, value):
+def db_safe_edit(my_dic, field, value):
     if field in my_dic:
         my_dic[field] = value
     else:
@@ -929,8 +921,8 @@ def fs_set_Sample_flag(m_dic, new_Sample_flag):
 # MAME hashed databases. Useful when only one item in a big dictionary is required.
 # -------------------------------------------------------------------------------------------------
 # Hash database with 256 elements (2 hex digits)
-def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_render):
-    log_info('fs_build_main_hashed_db() Building main hashed database...')
+def db_build_main_hashed_db(cfg, control_dic, machines, machines_render):
+    log_info('db_build_main_hashed_db() Building main hashed database...')
 
     # machine_name -> MD5 -> take two letters -> aa.json, ab.json, ...
     # A) First create an index
@@ -965,30 +957,30 @@ def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_ren
                 machine_dic.update(machines_render[key])
                 hashed_db_dic[key] = machine_dic
         # --- Save JSON file ---
-        hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(db_prefix + '_machines.json')
+        hash_DB_FN = cfg.MAIN_DB_HASH_DIR.pjoin(db_prefix + '_machines.json')
         utils_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic, verbose = False)
     pDialog.endProgress()
 
     # Update timestamp in control_dic.
-    change_control_dic(control_dic, 't_MAME_machine_hash', time.time())
-    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    db_safe_edit(control_dic, 't_MAME_machine_hash', time.time())
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 #
 # Retrieves machine from distributed database.
 # This is very quick for retrieving individual machines, very slow for multiple machines.
 #
-def fs_get_machine_main_db_hash(PATHS, machine_name):
-    log_debug('fs_get_machine_main_db_hash() machine {}'.format(machine_name))
+def db_get_machine_main_hashed_db(PATHS, machine_name):
+    log_debug('db_get_machine_main_hashed_db() machine {}'.format(machine_name))
     md5_str = hashlib.md5(machine_name.encode('utf-8')).hexdigest()
     # WARNING Python slicing does not work like in C/C++!
-    hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_machines.json')
+    hash_DB_FN = cfg.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_machines.json')
     hashed_db_dic = utils_load_JSON_file_dic(hash_DB_FN.getPath())
 
     return hashed_db_dic[machine_name]
 
 # MAME hash database with 256 elements (2 hex digits)
-def fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic):
-    log_info('fs_build_asset_hashed_db() Building assets hashed database ...')
+def db_build_asset_hashed_db(cfg, control_dic, assets_dic):
+    log_info('db_build_asset_hashed_db() Building assets hashed database ...')
 
     # machine_name -> MD5 -> take two letters -> aa.json, ab.json, ...
     pDialog = KodiProgressDialog()
@@ -1014,22 +1006,22 @@ def fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic):
         for key in db_main_hash_idx:
             if db_main_hash_idx[key] == db_prefix:
                 hashed_db_dic[key] = assets_dic[key]
-        hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(db_prefix + '_assets.json')
+        hash_DB_FN = cfg.MAIN_DB_HASH_DIR.pjoin(db_prefix + '_assets.json')
         utils_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic, verbose = False)
     pDialog.endProgress()
 
     # --- Timestamp ---
-    change_control_dic(control_dic, 't_MAME_asset_hash', time.time())
-    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    db_safe_edit(control_dic, 't_MAME_asset_hash', time.time())
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 #
-# Retrieves machine from distributed database.
-# This is very quick for retrieving individual machines, very slow for multiple machines.
+# Retrieves machine from distributed hashed database.
+# This is very quick for retrieving individual machines, slow for multiple machines.
 #
-def fs_get_machine_assets_db_hash(PATHS, machine_name):
-    log_debug('fs_get_machine_assets_db_hash() machine {}'.format(machine_name))
+def db_get_machine_assets_hashed_db(cfg, machine_name):
+    log_debug('db_get_machine_assets_hash_db() machine {}'.format(machine_name))
     md5_str = hashlib.md5(machine_name.encode('utf-8')).hexdigest()
-    hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_assets.json')
+    hash_DB_FN = cfg.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_assets.json')
     hashed_db_dic = utils_load_JSON_file_dic(hash_DB_FN.getPath())
 
     return hashed_db_dic[machine_name]
@@ -1039,24 +1031,27 @@ def fs_get_machine_assets_db_hash(PATHS, machine_name):
 # Creates a separate MAME render and assets databases for each catalog to speed up
 # access of ListItems when rendering machine lists.
 # -------------------------------------------------------------------------------------------------
-def fs_render_cache_get_hash(catalog_name, category_name):
+def db_cache_get_key(catalog_name, category_name):
     return hashlib.md5('{} - {}'.format(catalog_name, category_name).encode('utf-8')).hexdigest()
 
-def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machines_render):
-    log_info('fs_build_render_cache() Initialising...')
+def db_build_render_cache(cfg, control_dic, cache_index_dic, machines_render):
+    if cfg.settings['debug_enable_MAME_render_cache']:
+        log_info('db_build_render_cache() Render cache disabled.')
+        return
+    log_info('db_build_render_cache() Initialising...')
 
     # --- Clean 'cache' directory JSON ROM files ---
-    log_info('Cleaning dir "{}"'.format(PATHS.CACHE_DIR.getPath()))
+    log_info('Cleaning dir "{}"'.format(cfg.CACHE_DIR.getPath()))
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Listing render cache JSON files...')
-    file_list = os.listdir(PATHS.CACHE_DIR.getPath())
+    file_list = os.listdir(cfg.CACHE_DIR.getPath())
     log_info('Found {} files'.format(len(file_list)))
     deleted_items = 0
     pDialog.resetProgress('Cleaning render cache JSON files...', len(file_list))
     for file in file_list:
         pDialog.updateProgressInc()
         if not file.endswith('_render.json'): continue
-        full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
+        full_path = os.path.join(cfg.CACHE_DIR.getPath(), file)
         # log_debug('UNLINK "{}"'.format(full_path))
         os.unlink(full_path)
         deleted_items += 1
@@ -1069,7 +1064,7 @@ def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machine
     pDialog.startProgress('Building MAME render cache')
     for catalog_name in sorted(cache_index_dic):
         catalog_index_dic = cache_index_dic[catalog_name]
-        catalog_all = fs_get_cataloged_dic_all(PATHS, catalog_name)
+        catalog_all = fs_get_cataloged_dic_all(cfg, catalog_name)
         diag_t = 'Building MAME {} render cache ({} of {})...'.format(catalog_name, catalog_count, num_catalogs)
         pDialog.resetProgress(diag_t, len(catalog_index_dic))
         for catalog_key in catalog_index_dic:
@@ -1082,39 +1077,42 @@ def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machine
             m_render_all_dic = {}
             for machine_name in catalog_all[catalog_key]:
                 m_render_all_dic[machine_name] = machines_render[machine_name]
-            ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_render.json')
+            ROMs_all_FN = cfg.CACHE_DIR.pjoin(hash_str + '_render.json')
             utils_write_JSON_file(ROMs_all_FN.getPath(), m_render_all_dic, verbose = False)
         catalog_count += 1
     pDialog.endProgress()
 
     # --- Timestamp ---
-    change_control_dic(control_dic, 't_MAME_render_cache_build', time.time())
-    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    db_safe_edit(control_dic, 't_MAME_render_cache_build', time.time())
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
-def fs_load_render_dic_all(PATHS, cache_index_dic, catalog_name, category_name):
+def db_get_render_cache_row(cfg, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
-    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_render.json')
+    ROMs_all_FN = cfg.CACHE_DIR.pjoin(hash_str + '_render.json')
 
     return utils_load_JSON_file_dic(ROMs_all_FN.getPath())
 
 # -------------------------------------------------------------------------------------------------
 # MAME asset cache
 # -------------------------------------------------------------------------------------------------
-def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_dic):
-    log_info('fs_build_asset_cache() Initialising...')
+def db_build_asset_cache(cfg, control_dic, cache_index_dic, assets_dic):
+    if cfg.settings['debug_enable_MAME_asset_cache']:
+        log_info('db_build_asset_cache() Asset cache disabled.')
+        return
+    log_info('db_build_asset_cache() Initialising...')
 
     # --- Clean 'cache' directory JSON Asset files ---
-    log_info('Cleaning dir "{}"'.format(PATHS.CACHE_DIR.getPath()))
+    log_info('Cleaning dir "{}"'.format(cfg.CACHE_DIR.getPath()))
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Listing asset cache JSON files...')
-    file_list = os.listdir(PATHS.CACHE_DIR.getPath())
+    file_list = os.listdir(cfg.CACHE_DIR.getPath())
     log_info('Found {} files'.format(len(file_list)))
     deleted_items = 0
     pDialog.resetProgress('Cleaning asset cache JSON files...', len(file_list))
     for file in file_list:
         pDialog.updateProgressInc()
         if not file.endswith('_assets.json'): continue
-        full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
+        full_path = os.path.join(cfg.CACHE_DIR.getPath(), file)
         # log_debug('UNLINK "{}"'.format(full_path))
         os.unlink(full_path)
         deleted_items += 1
@@ -1127,31 +1125,31 @@ def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_d
     pDialog.startProgress('Building MAME asset cache')
     for catalog_name in sorted(cache_index_dic):
         catalog_index_dic = cache_index_dic[catalog_name]
-        catalog_all = fs_get_cataloged_dic_all(PATHS, catalog_name)
+        catalog_all = fs_get_cataloged_dic_all(cfg, catalog_name)
         diag_t = 'Building MAME {} asset cache ({} of {})...'.format(catalog_name, catalog_count, num_catalogs)
         pDialog.resetProgress(diag_t, len(catalog_index_dic))
         for catalog_key in catalog_index_dic:
             pDialog.updateProgressInc()
             hash_str = catalog_index_dic[catalog_key]['hash']
-            # log_verb('fs_build_asset_cache() Catalog "{}" --- Key "{}"'.format(catalog_name, catalog_key))
-            # log_verb('fs_build_asset_cache() hash {}'.format(hash_str))
+            # log_verb('db_build_asset_cache() Catalog "{}" --- Key "{}"'.format(catalog_name, catalog_key))
+            # log_verb('db_build_asset_cache() hash {}'.format(hash_str))
 
             # Build all machines cache
             m_assets_all_dic = {}
             for machine_name in catalog_all[catalog_key]:
                 m_assets_all_dic[machine_name] = assets_dic[machine_name]
-            ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets.json')
+            ROMs_all_FN = cfg.CACHE_DIR.pjoin(hash_str + '_assets.json')
             utils_write_JSON_file(ROMs_all_FN.getPath(), m_assets_all_dic, verbose = False)
         catalog_count += 1
     pDialog.endProgress()
 
     # Update timestamp and save control_dic.
-    change_control_dic(control_dic, 't_MAME_asset_cache_build', time.time())
-    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    db_safe_edit(control_dic, 't_MAME_asset_cache_build', time.time())
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
-def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
+def db_load_assets_all(cfg, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
-    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets.json')
+    ROMs_all_FN = cfg.CACHE_DIR.pjoin(hash_str + '_assets.json')
 
     return utils_load_JSON_file_dic(ROMs_all_FN.getPath())
 
@@ -1162,8 +1160,8 @@ def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
 # Accepts a list of JSON files to be loaded. Displays a progress dialog.
 # Returns a dictionary with the context of the loaded files.
 #
-def fs_load_files(db_files):
-    log_debug('fs_load_files() Loading {} JSON database files...'.format(len(db_files)))
+def db_load_files(db_files):
+    log_debug('db_load_files() Loading {} JSON database files...'.format(len(db_files)))
     db_dic = {}
     d_text = 'Loading databases...'
     pDialog = KodiProgressDialog()
@@ -1176,8 +1174,8 @@ def fs_load_files(db_files):
 
     return db_dic
 
-def fs_save_files(db_files, json_write_func = utils_write_JSON_file):
-    log_debug('fs_save_files() Saving {} JSON database files...'.format(len(db_files)))
+def db_save_files(db_files, json_write_func = utils_write_JSON_file):
+    log_debug('db_save_files() Saving {} JSON database files...'.format(len(db_files)))
     d_text = 'Saving databases...'
     pDialog = KodiProgressDialog()
     pDialog.startProgress(d_text, len(db_files))
@@ -1190,21 +1188,21 @@ def fs_save_files(db_files, json_write_func = utils_write_JSON_file):
 # -------------------------------------------------------------------------------------------------
 # Export stuff
 # -------------------------------------------------------------------------------------------------
-def fs_export_Read_Only_Launcher(export_FN, catalog_dic, machines, machines_render, assets_dic):
-    log_verb('fs_export_Read_Only_Launcher() File "{}"'.format(export_FN.getPath()))
+def db_export_Read_Only_Launcher(export_FN, catalog_dic, machines, machines_render, assets_dic):
+    log_verb('db_export_Read_Only_Launcher() File "{}"'.format(export_FN.getPath()))
 
     # Create list of strings.
-    slist = []
-    slist.append('<?xml version="1.0" encoding="utf-8" standalone="yes"?>')
-    slist.append('<!-- Exported by AML on {} -->'.format(time.strftime("%Y-%m-%d %H:%M:%S")))
-    slist.append('<advanced_MAME_launcher_virtual_launcher>')
+    sl = []
+    sl.append('<?xml version="1.0" encoding="utf-8" standalone="yes"?>')
+    sl.append('<!-- Exported by AML on {} -->'.format(time.strftime("%Y-%m-%d %H:%M:%S")))
+    sl.append('<advanced_MAME_launcher_virtual_launcher>')
     for m_name, r_name in catalog_dic.items():
-        slist.append('<machine>')
-        slist.append(XML_text('name', m_name))
-        slist.append(XML_text('description', machines_render[m_name]['description']))
-        slist.append(XML_text('genre', machines_render[m_name]['genre']))
-        slist.append(XML_text('year', machines_render[m_name]['year']))
-        slist.append(XML_text('cabinet', assets_dic[m_name]['cabinet']))
-        slist.append('</machine>')
-    slist.append('</advanced_MAME_launcher_virtual_launcher>')
-    utils_write_str_list_to_file(slist, export_FN)
+        sl.append('<machine>')
+        sl.append(XML_text('name', m_name))
+        sl.append(XML_text('description', machines_render[m_name]['description']))
+        sl.append(XML_text('genre', machines_render[m_name]['genre']))
+        sl.append(XML_text('year', machines_render[m_name]['year']))
+        sl.append(XML_text('cabinet', assets_dic[m_name]['cabinet']))
+        sl.append('</machine>')
+    sl.append('</advanced_MAME_launcher_virtual_launcher>')
+    utils_write_str_list_to_file(sl, export_FN)

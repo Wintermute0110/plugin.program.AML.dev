@@ -762,7 +762,7 @@ def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
 
     # Update MAME Fanart build timestamp
     control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
-    change_control_dic(control_dic, 't_MAME_fanart_build', time.time())
+    db_safe_edit(control_dic, 't_MAME_fanart_build', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     # assets_dic has changed. Rebuild hashed database.
@@ -928,7 +928,7 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
     pDialog.endProgress()
 
     # Update SL Fanart build timestamp
-    change_control_dic(control_dic, 't_SL_fanart_build', time.time())
+    db_safe_edit(control_dic, 't_SL_fanart_build', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     # Inform user.
@@ -1016,7 +1016,7 @@ def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
 
     # --- MAME Fanart build timestamp ---
     control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
-    change_control_dic(control_dic, 't_MAME_3dbox_build', time.time())
+    db_safe_edit(control_dic, 't_MAME_3dbox_build', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     # --- assets_dic has changed. Rebuild hashed database ---
@@ -1125,7 +1125,7 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
     pDialog.endProgress()
 
     # --- SL Fanart build timestamp ---
-    change_control_dic(control_dic, 't_SL_3dbox_build', time.time())
+    db_safe_edit(control_dic, 't_SL_3dbox_build', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     # --- Inform user ---

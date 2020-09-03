@@ -443,7 +443,7 @@ def run_plugin(addon_argv):
             url = misc_url_3_arg('catalog', 'SL', 'category', category_name, 'parent', machine_name)
             xbmc.executebuiltin('Container.Update({})'.format(url))
 
-        # >> If location is not present in the URL default to standard.
+        # If location is not present in the URL default to standard.
         elif command == 'LAUNCH':
             machine  = args['machine'][0]
             location = args['location'][0] if 'location' in args else LOCATION_STANDARD
@@ -459,10 +459,8 @@ def run_plugin(addon_argv):
         elif command == 'SETUP_PLUGIN':
             command_context_setup_plugin(cfg)
 
-        #
         # Not used at the moment.
         # Instead of per-catalog display mode settings there are global settings.
-        #
         elif command == 'DISPLAY_SETTINGS_MAME':
             catalog_name = args['catalog'][0]
             category_name = args['category'][0] if 'category' in args else ''
@@ -668,6 +666,9 @@ def get_settings(cfg):
 # Called after log is enabled. Process secondary settings.
 #
 def get_settings_log_enabled(cfg):
+    # Convenience data
+    cfg.__addon_version_int__ = misc_addon_version_str_to_int(cfg.__addon_version__)
+
     # Additional settings.
     cfg.settings['op_mode'] = OP_MODE_LIST[cfg.settings['op_mode_raw']]
 
@@ -4109,7 +4110,7 @@ def command_context_manage_mame_fav(machine_name):
         db_files = [
             ['fav_machines', 'MAME Favourite machines', g_PATHS.FAV_MACHINES_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
 
         # --- Ask user for confirmation ---
         desc = db_dic['fav_machines'][machine_name]['description']
@@ -4130,7 +4131,7 @@ def command_context_manage_mame_fav(machine_name):
         db_files = [
             ['fav_machines', 'MAME Favourite machines', g_PATHS.FAV_MACHINES_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
 
         # Confirm with user
         ret = kodi_dialog_yesno(
@@ -4159,7 +4160,7 @@ def command_context_manage_mame_fav(machine_name):
             ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
             ['fav_machines', 'MAME Favourite machines', g_PATHS.FAV_MACHINES_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
 
         # --- Delete missing MAME machines ---
         num_deleted_machines = 0
@@ -4243,7 +4244,7 @@ def command_context_manage_mame_most_played(machine_name):
         db_files = [
             ['most_played_roms', 'MAME Most Played machines', g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
 
         # --- Ask user for confirmation ---
         desc = db_dic['most_played_roms'][machine_name]['description']
@@ -4264,7 +4265,7 @@ def command_context_manage_mame_most_played(machine_name):
         db_files = [
             ['most_played_roms', 'MAME Most Played machines', g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
 
         # Confirm with user
         num_machines = len(db_dic['most_played_roms'])
@@ -4294,7 +4295,7 @@ def command_context_manage_mame_most_played(machine_name):
             ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
             ['most_played_roms', 'MAME Most Played machines', g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
 
         # --- Delete missing MAME machines ---
         num_deleted_machines = 0
@@ -4429,7 +4430,7 @@ def command_context_manage_mame_recent_played(machine_name):
         db_files = [
             ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
         recent_roms_list = fs_load_JSON_file_list(g_PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
 
         # --- Delete missing MAME machines ---
@@ -5086,7 +5087,7 @@ def command_context_setup_custom_filters():
             ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
             ['machine_archives', 'Machine archives list', g_PATHS.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
         # Compatibility with "All in one" code.
         audit_dic = { 'machine_archives' : db_dic['machine_archives'] }
 
@@ -5129,7 +5130,7 @@ def command_context_setup_custom_filters():
             ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
             ['machine_archives', 'Machine archives list', g_PATHS.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
 
         # --- Make a dictionary of machines to be filtered ---
         # This currently includes all MAME parent machines.
@@ -5522,7 +5523,7 @@ def check_SL_DB_before_rendering_machines(g_PATHS, g_settings, control_dic):
 # -------------------------------------------------------------------------------------------------
 # Setup plugin databases
 # -------------------------------------------------------------------------------------------------
-def command_context_setup_plugin():
+def command_context_setup_plugin(cfg):
     menu_item = xbmcgui.Dialog().select('Setup plugin', [
         'All in one (Build, Scan, Plots, Filters)',
         'All in one (Build, Scan, Plots, Filters, Audit)',
@@ -5668,23 +5669,25 @@ def command_context_setup_plugin():
             kodi_notify('Finished extracting, DB build, scanning and filters')
 
     # --- Build everything ---
+    # NOTE This chunk of code is the example for the new error reporting.
     elif menu_item == 2:
         log_info('command_context_setup_plugin() Build everything starting...')
-        st_dic = kodi_new_status_dic()
 
         # --- Build main MAME database, PClone list and hashed database (mandatory) ---
-        # Extract/process MAME.xml, creates XML control file and resets control_dic.
-        db_dic = mame_build_MAME_main_database(g_PATHS, g_settings, st_dic)
+        # Extract/process MAME.xml, creates XML control file, resets control_dic and creates
+        # main MAME databases.
+        st_dic = kodi_new_status_dic()
+        db_dic = mame_build_MAME_main_database(cfg, st_dic)
         if kodi_display_status_message(st_dic): return
-        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
 
         # --- Build ROM audit/scanner databases (mandatory) ---
-        options_dic = mame_check_before_build_ROM_audit_databases(g_PATHS, g_settings, control_dic)
-        if options_dic['abort']: return
-        audit_dic = mame_build_ROM_audit_databases(g_PATHS, g_settings, control_dic,
+        mame_check_before_build_ROM_audit_databases(cfg, st_dic, db_dic['control_dic'])
+        if kodi_display_status_message(st_dic): return
+        audit_dic = mame_build_ROM_audit_databases(cfg, st_dic, db_dic['control_dic'],
             db_dic['machines'], db_dic['render'], db_dic['devices'], db_dic['roms'])
+        if kodi_display_status_message(st_dic): return
 
-        # --- Release some memory before building the catalog ---
+        # --- Release some memory before building the catalogs ---
         del db_dic['devices']
         del db_dic['history_idx_dic']
         del db_dic['mameinfo_idx_dic']
@@ -5697,19 +5700,16 @@ def command_context_setup_plugin():
         del audit_dic['CHD_archive_list']
 
         # --- Build MAME catalogs (mandatory) ---
-        options_dic = mame_check_before_build_MAME_catalogs(g_PATHS, g_settings, control_dic)
-        if options_dic['abort']: return
-        db_dic['cache_index'] = mame_build_MAME_catalogs(g_PATHS, g_settings, control_dic,
+        mame_check_before_build_MAME_catalogs(cfg, st_dic, db_dic['control_dic'])
+        if kodi_display_status_message(st_dic): return
+        db_dic['cache_index'] = mame_build_MAME_catalogs(cfg, st_dic, db_dic['control_dic'],
             db_dic['machines'], db_dic['render'], db_dic['roms'],
             db_dic['main_pclone_dic'], db_dic['assets'])
 
         # --- Regenerate the render and assets cache ---
-        if g_settings['debug_enable_MAME_render_cache']:
-            fs_build_render_cache(g_PATHS, g_settings, control_dic,
-                db_dic['cache_index'], db_dic['render'])
-        if g_settings['debug_enable_MAME_asset_cache']:
-            fs_build_asset_cache(g_PATHS, g_settings, control_dic,
-                db_dic['cache_index'], db_dic['assets'])
+        # Check wheter cache must be rebuilt is done internally.
+        db_build_render_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['render'])
+        db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assets'])
 
         # --- Release some memory before building the SL databases ---
         del db_dic['roms']
@@ -5718,13 +5718,13 @@ def command_context_setup_plugin():
         del db_dic['cache_index']
 
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs (optional) ---
-        if g_settings['global_enable_SL']:
-            options_dic = mame_check_before_build_SL_databases(g_PATHS, g_settings, control_dic)
-            if not options_dic['abort']:
-                SL_dic = mame_build_SoftwareLists_databases(g_PATHS, g_settings, control_dic,
-                    db_dic['machines'], db_dic['render'])
+        if cfg.settings['global_enable_SL']:
+            mame_check_before_build_SL_databases(cfg, st_dic, db_dic['control_dic'])
+            if kodi_display_status_message(st_dic):
+                log_info('Error detected. Skipping mame_build_SoftwareLists_databases().')
             else:
-                log_info('Skipping mame_build_SoftwareLists_databases()')
+                SL_dic = mame_build_SoftwareLists_databases(cfg, st_dic, db_dic['control_dic'],
+                    db_dic['machines'], db_dic['render'])
         else:
             log_info('SL globally disabled. Skipping mame_build_SoftwareLists_databases()')
 
@@ -5752,7 +5752,7 @@ def command_context_setup_plugin():
             ['gameinit_idx_list', 'Gameinit DAT index', g_PATHS.GAMEINIT_IDX_PATH.getPath()],
             ['command_idx_list', 'Command DAT index', g_PATHS.COMMAND_IDX_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
         # For compatibility with "All in one step" and "Step by step" functions.
         control_dic = db_dic['control_dic']
         audit_dic = {
@@ -5802,7 +5802,7 @@ def command_context_setup_plugin():
                 ['SL_PClone_dic', 'Software Lists Parent/Clone database', g_PATHS.SL_PCLONE_DIC_PATH.getPath()],
                 ['SL_machines', 'Software Lists machines', g_PATHS.SL_MACHINES_PATH.getPath()],
             ]
-            SL_dic = fs_load_files(db_files)
+            SL_dic = db_load_files(db_files)
 
             # --- Scan SL ROMs/CHDs (optional) ---
             options_dic = mame_check_before_scan_SL_ROMs(g_PATHS, g_settings, control_dic)
@@ -5879,7 +5879,7 @@ def command_context_setup_plugin():
             ['render', 'MAME machines Render', g_PATHS.RENDER_DB_PATH.getPath()],
             ['audit_roms', 'MAME ROM Audit', g_PATHS.ROM_AUDIT_DB_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
 
         # --- Audit all MAME machines ---
         # 1) Updates control_dic statistics and timestamp.
@@ -5986,7 +5986,7 @@ def command_context_setup_plugin():
                 ['devices', 'MAME machine Devices', g_PATHS.DEVICES_DB_PATH.getPath()],
                 ['roms', 'MAME machine ROMs', g_PATHS.ROMS_DB_PATH.getPath()],
             ]
-            db_dic = fs_load_files(db_files)
+            db_dic = db_load_files(db_files)
 
             # --- Generate ROM databases ---
             # 1) Updates control_dic and t_MAME_Audit_DB_build timestamp and saves it.
@@ -6011,7 +6011,7 @@ def command_context_setup_plugin():
                 ['main_pclone_dic', 'MAME PClone dictionary', g_PATHS.MAIN_PCLONE_DIC_PATH.getPath()],
                 ['assets', 'MAME machine Assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
             ]
-            db_dic = fs_load_files(db_files)
+            db_dic = db_load_files(db_files)
 
             # --- Build MAME catalog ---
             # At this time the asset database will be empty (scanner has not been run). However,
@@ -6046,7 +6046,7 @@ def command_context_setup_plugin():
                 ['machines', 'MAME machines Main', g_PATHS.MAIN_DB_PATH.getPath()],
                 ['render', 'MAME machines Render', g_PATHS.RENDER_DB_PATH.getPath()],
             ]
-            db_dic = fs_load_files(db_files)
+            db_dic = db_load_files(db_files)
 
             # --- Build SL databases ---
             # 1) Modifies and saves control_dic
@@ -6074,7 +6074,7 @@ def command_context_setup_plugin():
                 ['CHD_archive_list', 'CHD list index', g_PATHS.ROM_SET_CHD_LIST_DB_PATH.getPath()],
                 ['cache_index', 'MAME cache index', g_PATHS.CACHE_INDEX_PATH.getPath()],
             ]
-            db_dic = fs_load_files(db_files)
+            db_dic = db_load_files(db_files)
             # For compatibility with "All in one step" menu option
             audit_dic = {
                 'machine_archives' : db_dic['machine_archives'],
@@ -6114,7 +6114,7 @@ def command_context_setup_plugin():
                 ['main_pclone_dic', 'MAME PClone dictionary', g_PATHS.MAIN_PCLONE_DIC_PATH.getPath()],
                 ['cache_index', 'MAME cache index', g_PATHS.CACHE_INDEX_PATH.getPath()],
             ]
-            db_dic = fs_load_files(db_files)
+            db_dic = db_load_files(db_files)
 
             # --- Scan MAME assets ---
             # 1) Mutates assets_dic and control_dic (timestamp and stats)
@@ -6142,7 +6142,7 @@ def command_context_setup_plugin():
             db_files = [
                 ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
             ]
-            SL_dic = fs_load_files(db_files)
+            SL_dic = db_load_files(db_files)
 
             # 1) Mutates control_dic (timestamp and statistics)
             # 2) Saves control_dic
@@ -6165,7 +6165,7 @@ def command_context_setup_plugin():
                 ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
                 ['SL_PClone_dic', 'Software Lists Parent/Clone database', g_PATHS.SL_PCLONE_DIC_PATH.getPath()],
             ]
-            SL_dic = fs_load_files(db_files)
+            SL_dic = db_load_files(db_files)
 
             # --- Scan SL ---
             # 1) Mutates control_dic (timestamp and statistics) and saves it.
@@ -6190,7 +6190,7 @@ def command_context_setup_plugin():
                 ['gameinit_idx_list', 'Gameinit DAT index', g_PATHS.GAMEINIT_IDX_PATH.getPath()],
                 ['command_idx_list', 'Command DAT index', g_PATHS.COMMAND_IDX_PATH.getPath()],
             ]
-            db_dic = fs_load_files(db_files)
+            db_dic = db_load_files(db_files)
 
             # --- Traverse MAME machines and build plot ---
             # 1) Mutates and saves the assets database
@@ -6217,7 +6217,7 @@ def command_context_setup_plugin():
                 ['SL_machines', 'Software Lists machines', g_PATHS.SL_MACHINES_PATH.getPath()],
                 ['history_idx_dic', 'History DAT index', g_PATHS.HISTORY_IDX_PATH.getPath()],
             ]
-            db_dic = fs_load_files(db_files)
+            db_dic = db_load_files(db_files)
             # For compatibility with "All in one step" menu option
             SL_dic = {
                 'SL_index'    : db_dic['SL_index'],
@@ -6240,7 +6240,7 @@ def command_context_setup_plugin():
                 ['render', 'MAME machines Render', g_PATHS.RENDER_DB_PATH.getPath()],
                 ['assets', 'MAME machine Assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
             ]
-            db_dic = fs_load_files(db_files)
+            db_dic = db_load_files(db_files)
 
             # --- Regenerate ROM and asset caches ---
             fs_build_render_cache(g_PATHS, g_settings, db_dic['control_dic'],
@@ -6797,7 +6797,7 @@ def command_exec_utility(which_utility):
             ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
             ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
 
         mame_update_MAME_Fav_objects(
             g_PATHS, control_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
@@ -6829,7 +6829,7 @@ def command_exec_utility(which_utility):
             ['machine_roms', 'MAME machine ROMs', g_PATHS.ROMS_DB_PATH.getPath()],
             ['roms_sha1_dic', 'MAME ROMs SHA1 dictionary', g_PATHS.SHA1_HASH_DB_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
 
         # Detect implicit ROM merging using the SHA1 hash and check for CRC32 collisions for
         # non-implicit merged ROMs.
@@ -6985,7 +6985,7 @@ def command_exec_utility(which_utility):
             ['roms', 'MAME machine ROMs', g_PATHS.ROMS_DB_PATH.getPath()],
             # ['audit_roms', 'MAME ROM Audit', g_PATHS.ROM_AUDIT_DB_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
 
         # { mname : size (int), ... }
         m_size_dic = {}
@@ -7049,7 +7049,7 @@ def command_exec_utility(which_utility):
             ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
             ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
         mame_write_MAME_ROM_Billyc999_XML(g_PATHS, g_settings, control_dic, FileName(dir_path), db_dic)
 
     # Export a MAME ROM DAT XML file with Logiqx format.
@@ -7070,7 +7070,7 @@ def command_exec_utility(which_utility):
             ['audit_roms', 'MAME ROM Audit', g_PATHS.ROM_AUDIT_DB_PATH.getPath()],
             ['roms_sha1_dic', 'MAME ROMs SHA1 dictionary', g_PATHS.SHA1_HASH_DB_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
 
         # Write MAME ROM dat. Notifies the user if successful.
         mame_write_MAME_ROM_XML_DAT(g_PATHS, g_settings, control_dic, FileName(dir_path), db_dic)
@@ -7091,7 +7091,7 @@ def command_exec_utility(which_utility):
             ['render', 'MAME machines Render', g_PATHS.RENDER_DB_PATH.getPath()],
             ['audit_roms', 'MAME ROM Audit', g_PATHS.ROM_AUDIT_DB_PATH.getPath()],
         ]
-        db_dic = fs_load_files(db_files)
+        db_dic = db_load_files(db_files)
 
         # Write MAME ROM dat. Notifies the user if successful.
         mame_write_MAME_CHD_XML_DAT(g_PATHS, g_settings, control_dic, FileName(dir_path), db_dic)

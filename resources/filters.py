@@ -1559,7 +1559,7 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
     pDialog.endProgress()
 
     # --- Update timestamp ---
-    change_control_dic(control_dic, 't_Custom_Filter_build', time.time())
+    db_safe_edit(control_dic, 't_Custom_Filter_build', time.time())
     utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     # --- Write MAME scanner reports ---

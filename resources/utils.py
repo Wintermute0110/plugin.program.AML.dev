@@ -879,7 +879,7 @@ def kodi_display_status_message(st_dic):
     else:
         raise TypeError('st_dic["dialog"] = {}'.format(st_dic['dialog']))
 
-    return st_dic['status']
+    return st_dic['abort']
 
 # Utility function to write more compact code.
 # By default error messages are shown in modal OK dialogs.
