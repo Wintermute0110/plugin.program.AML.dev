@@ -96,7 +96,6 @@ ROMSET_SL_SPLIT            = 1 # 'Split'
 # Advanced MAME Launcher constants
 # -------------------------------------------------------------------------------------------------
 # Database status. Status it determined with timestamps in control_dic
-MAME_XML_EXTRACTED    = 100
 MAME_MAIN_DB_BUILT    = 200
 MAME_AUDIT_DB_BUILT   = 300
 MAME_CATALOG_BUILT    = 400

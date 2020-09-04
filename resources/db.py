@@ -1065,7 +1065,8 @@ def db_build_render_cache(cfg, control_dic, cache_index_dic, machines_render):
     for catalog_name in sorted(cache_index_dic):
         catalog_index_dic = cache_index_dic[catalog_name]
         catalog_all = fs_get_cataloged_dic_all(cfg, catalog_name)
-        diag_t = 'Building MAME {} render cache ({} of {})...'.format(catalog_name, catalog_count, num_catalogs)
+        diag_t = 'Building MAME [COLOR orange]{}[/COLOR] render cache ({} of {})...'.format(
+            catalog_name, catalog_count, num_catalogs)
         pDialog.resetProgress(diag_t, len(catalog_index_dic))
         for catalog_key in catalog_index_dic:
             pDialog.updateProgressInc()
@@ -1126,7 +1127,8 @@ def db_build_asset_cache(cfg, control_dic, cache_index_dic, assets_dic):
     for catalog_name in sorted(cache_index_dic):
         catalog_index_dic = cache_index_dic[catalog_name]
         catalog_all = fs_get_cataloged_dic_all(cfg, catalog_name)
-        diag_t = 'Building MAME {} asset cache ({} of {})...'.format(catalog_name, catalog_count, num_catalogs)
+        diag_t = 'Building MAME [COLOR orange]{}[/COLOR] asset cache ({} of {})...'.format(
+            catalog_name, catalog_count, num_catalogs)
         pDialog.resetProgress(diag_t, len(catalog_index_dic))
         for catalog_key in catalog_index_dic:
             pDialog.updateProgressInc()
@@ -1168,7 +1170,7 @@ def db_load_files(db_files):
     pDialog.startProgress(d_text, len(db_files))
     for f_item in db_files:
         dict_key, db_name, db_path = f_item
-        pDialog.updateProgressInc('{}\nDatabase {}'.format(d_text, db_name))
+        pDialog.updateProgressInc('{}\nDatabase [COLOR orange]{}[/COLOR]'.format(d_text, db_name))
         db_dic[dict_key] = utils_load_JSON_file_dic(db_path)
     pDialog.endProgress()
 
@@ -1181,7 +1183,7 @@ def db_save_files(db_files, json_write_func = utils_write_JSON_file):
     pDialog.startProgress(d_text, len(db_files))
     for f_item in db_files:
         dict_data, db_name, db_path = f_item
-        pDialog.updateProgressInc('{}\nDatabase {}'.format(d_text, db_name))
+        pDialog.updateProgressInc('{}\nDatabase [COLOR orange]{}[/COLOR]'.format(d_text, db_name))
         json_write_func(db_path, dict_data)
     pDialog.endProgress()
 

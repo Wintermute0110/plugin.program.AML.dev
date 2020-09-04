@@ -165,15 +165,12 @@ SL_better_name_dic = {
     'Amiga ECS disk images' : 'Commodore Amiga ECS disk images',
     'Amiga OCS disk images' : 'Commodore Amiga OCS disk images',
     'CC-40 cartridges' : 'Texas Instruments CC-40 cartridges',
-    'CD-i CD-ROMs' : 'Philips / Sony CD-i CD-ROMs',
+    'CD-i CD-ROMs' : 'Philips/Sony CD-i CD-ROMs',
     'COMX-35 diskettes' : 'COMX COMX-35 diskettes',
     'EPSON PX-4 ROM capsules' : 'Epson PX-4 ROM capsules',
     'EPSON PX-8 ROM capsules' : 'Epson PX-8 ROM capsules',
-    # Unicode here causes trouble. I have to investigate why.
-    # 'IQ-151 cartridges' : 'ZPA Nový Bor IQ-151 cartridges',
-    # 'IQ-151 disk images' : 'ZPA Nový Bor IQ-151 disk images',
-    'IQ-151 cartridges' : 'ZPA Novy Bor IQ-151 cartridges',
-    'IQ-151 disk images' : 'ZPA Novy Bor IQ-151 disk images',
+    'IQ-151 cartridges' : 'ZPA Nový Bor IQ-151 cartridges',
+    'IQ-151 disk images' : 'ZPA Nový Bor IQ-151 disk images',
     'Mac Harddisks' : 'Apple Mac Harddisks',
     'Macintosh 400K/800K Disk images' : 'Apple Macintosh 400K/800K Disk images',
     'Macintosh High Density Disk images' : 'Apple Macintosh High Density Disk images',
@@ -184,8 +181,8 @@ SL_better_name_dic = {
     'MZ-2000 cassettes' : 'Sharp MZ-2000 cassettes',
     'MZ-2000 disk images' : 'Sharp MZ-2000 disk images',
     'MZ-2500 disk images' : 'Sharp MZ-2500 disk images',
-    'Pippin CD-ROMs' : 'Apple / Bandai Pippin CD-ROMs',
-    'Pippin disk images' : 'Apple / Bandai Pippin disk images',
+    'Pippin CD-ROMs' : 'Apple/Bandai Pippin CD-ROMs',
+    'Pippin disk images' : 'Apple/Bandai Pippin disk images',
     'SEGA Computer 3000 cartridges' : 'Sega Computer 3000 cartridges',
     'SEGA Computer 3000 cassettes' : 'Sega Computer 3000 cassettes',
     'Z88 ROM cartridges' : 'Cambridge Computer Z88 ROM cartridges',
@@ -6320,6 +6317,7 @@ def _new_SL_Data_dic():
 
 # Get ROMs in dataarea.
 def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
+    __DEBUG_SL_ROM_PROCESSING = False
     dataarea_num_roms = 0
     for dataarea_child in part_child:
         rom_dic = { 'name' : '', 'size' : '', 'crc'  : '', 'sha1' : '' }
@@ -6355,12 +6353,15 @@ def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
         if 'status' in dataarea_child.attrib:
             status = dataarea_child.attrib['status']
             if status == 'nodump':
-                log_debug('SL {}, Item {}, status="nodump". Skipping ROM.'.format(SL_name, item_name))
+                if __DEBUG_SL_ROM_PROCESSING:
+                    log_debug('SL "{}" item "{}" status="nodump". Skipping ROM.'.format(SL_name, item_name))
                 continue
             elif status == 'baddump':
+                if __DEBUG_SL_ROM_PROCESSING:
+                    log_debug('SL "{}" item "{}" status="baddump".'.format(SL_name, item_name))
                 pass
             else:
-                log_error('SL {}, Item {}, Unknown status = {}'.format(SL_name, item_name, status))
+                log_error('SL "{}" item "{}" Unknown status = {}'.format(SL_name, item_name, status))
                 raise CriticalError('DEBUG')
 
         # Fix "fake" SL ROMs with loadflag="continue".
@@ -6370,32 +6371,38 @@ def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
             if loadflag == 'continue':
                 # This ROM is not valid (not a valid ROM file).
                 # Size must be added to previous ROM.
-                # log_debug('SL {} / Item {} / loadflag="continue" case. Adding size {} to previous ROM.'.format(
-                #     SL_name, item_name, rom_dic['size']))
+                if __DEBUG_SL_ROM_PROCESSING:
+                    log_debug('SL "{}" item "{}" loadflag="continue" case. Adding size {} to previous ROM.'.format(
+                        SL_name, item_name, rom_dic['size']))
                 previous_rom = dataarea_dic['roms'][-1]
                 previous_rom['size'] += rom_dic['size']
                 continue
             elif loadflag == 'ignore':
                 if rom_dic['size'] > 0:
-                    # log_debug('SL {}, Item {}, loadflag="ignore" case. Adding size {} to previous ROM.'.format(
-                    #     SL_name, item_name, rom_dic['size']))
+                    if __DEBUG_SL_ROM_PROCESSING:
+                        log_debug('SL "{}" item "{}" loadflag="ignore" case. Adding size {} to previous ROM.'.format(
+                            SL_name, item_name, rom_dic['size']))
                     previous_rom = dataarea_dic['roms'][-1]
                     previous_rom['size'] += rom_dic['size']
-                # else:
-                    # log_debug('SL {}, Item {}, loadflag="ignore" case and size = 0. Skipping ROM.'.format(
-                    #     SL_name, item_name))
+                else:
+                    if __DEBUG_SL_ROM_PROCESSING:
+                        log_debug('SL "{}" item "{}" loadflag="ignore" case and size = 0. Skipping ROM.'.format(
+                            SL_name, item_name))
                 continue
             elif loadflag == 'reload':
-                # log_debug('SL {}, Item {}, loadflag="reload" case. Skipping ROM.'.format(
-                #     SL_name, item_name))
+                if __DEBUG_SL_ROM_PROCESSING:
+                    log_debug('SL "{}" item "{}" loadflag="reload" case. Skipping ROM.'.format(
+                        SL_name, item_name))
                 continue
             elif loadflag == 'reload_plain':
-                # log_debug('SL {}, Item {}, loadflag="reload_plain" case. Skipping ROM.'.format(
-                #     SL_name, item_name))
+                if __DEBUG_SL_ROM_PROCESSING:
+                    log_debug('SL "{}" item "{}" loadflag="reload_plain" case. Skipping ROM.'.format(
+                        SL_name, item_name))
                 continue
             elif loadflag == 'fill':
-                # log_debug('SL {}, Item {}, loadflag="fill" case. Skipping ROM.'.format(
-                #     SL_name, item_name))
+                if __DEBUG_SL_ROM_PROCESSING:
+                    log_debug('SL "{}" item "{}" loadflag="fill" case. Skipping ROM.'.format(
+                        SL_name, item_name))
                 continue
             elif loadflag == 'load16_word_swap':
                 pass
@@ -6408,9 +6415,9 @@ def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
             elif loadflag == 'load32_word_swap':
                 pass
             else:
-                # log_error('SL {}, Item {}, Unknown loadflag = "{}"'.format(
-                #     SL_name, item_name, loadflag))
-                raise CriticalError('DEBUG')
+                t = 'SL "{}" item "{}" unknown loadflag="{}"'.format(SL_name, item_name, loadflag)
+                log_error(t)
+                raise ValueError(t)
 
         # --- Add ROM to DB ---
         dataarea_dic['roms'].append(rom_dic)
@@ -6440,11 +6447,11 @@ def _mame_load_SL_XML(xml_filename):
     __debug_xml_parser = False
     SLData = _new_SL_Data_dic()
 
-    # --- If file does not exist return empty dictionary ---
+    # If file does not exist return empty dictionary.
     if not os.path.isfile(xml_filename): return SLData
     (head, SL_name) = os.path.split(xml_filename)
 
-    # --- Parse using cElementTree ---
+    # Parse using ElementTree.
     # If XML has errors (invalid characters, etc.) this will rais exception 'err'
     # log_debug('fs_load_SL_XML() Loading XML file "{}"'.format(xml_filename))
     try:
@@ -6660,7 +6667,7 @@ def mame_check_before_build_SL_databases(cfg, st_dic, control_dic):
     kodi_reset_status(st_dic)
 
     # --- Error checks ---
-    if not settings['SL_hash_path']:
+    if not cfg.settings['SL_hash_path']:
         t = ('Software Lists hash path not set. '
              'Open AML addon settings and configure the location of the MAME hash path in the '
              '"Paths" tab.')
@@ -6694,12 +6701,12 @@ def mame_check_before_build_SL_databases(cfg, st_dic, control_dic):
 # per-SL ROM audit database             (32x_ROM_audit.json)
 # per-SL item archives (ROMs and CHDs)  (32x_ROM_archives.json)
 #
-def mame_build_SoftwareLists_databases(cfg, control_dic, machines, machines_render):
-    SL_dir_FN = FileName(settings['SL_hash_path'])
+def mame_build_SoftwareLists_databases(cfg, st_dic, control_dic, machines, machines_render):
+    SL_dir_FN = FileName(cfg.settings['SL_hash_path'])
     log_debug('mame_build_SoftwareLists_databases() SL_dir_FN "{}"'.format(SL_dir_FN.getPath()))
 
     # --- Scan all XML files in Software Lists directory and save SL catalog and SL databases ---
-    log_info('Processing Software List XML files ...')
+    log_info('Processing Software List XML files...')
     SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
     # DEBUG code for development, only process first SL file (32x).
     # SL_file_list = [ sorted(SL_file_list)[0] ]
@@ -6714,7 +6721,8 @@ def mame_build_SoftwareLists_databases(cfg, control_dic, machines, machines_rend
     for file in sorted(SL_file_list):
         # Progress dialog
         FN = FileName(file)
-        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(diag_line, FN.getBase()))
+        pDialog.updateProgress(processed_files, '{}\nSoftware List [COLOR orange]{}[/COLOR]'.format(
+            diag_line, FN.getBase()))
 
         # Open software list XML and parse it. Then, save data fields we want in JSON.
         # log_debug('mame_build_SoftwareLists_databases() Processing "{}"'.format(file))
@@ -6745,8 +6753,8 @@ def mame_build_SoftwareLists_databases(cfg, control_dic, machines, machines_rend
 
     # --- Make the SL ROM/CHD unified Audit databases ---
     log_info('Building Software List ROM Audit database...')
-    rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['SL_rom_set']]
-    chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['SL_chd_set']]
+    rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][cfg.settings['SL_rom_set']]
+    chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][cfg.settings['SL_chd_set']]
     log_info('mame_build_SoftwareLists_databases() SL ROM set is {}'.format(rom_set))
     log_info('mame_build_SoftwareLists_databases() SL CHD set is {}'.format(chd_set))
     total_files = len(SL_file_list)
@@ -6761,7 +6769,8 @@ def mame_build_SoftwareLists_databases(cfg, control_dic, machines, machines_rend
         # Update progress
         FN = FileName(file)
         SL_name = FN.getBase_noext()
-        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(diag_line, FN.getBase()))
+        pDialog.updateProgress(processed_files, '{}\nSoftware List [COLOR orange]{}[/COLOR]'.format(
+            diag_line, FN.getBase()))
 
         # Filenames of the databases
         # log_debug('mame_build_SoftwareLists_databases() Processing "{}"'.format(file))
@@ -6860,7 +6869,7 @@ def mame_build_SoftwareLists_databases(cfg, control_dic, machines, machines_rend
     pDialog.endProgress()
 
     # --- Make SL Parent/Clone databases ---
-    log_info('Building Software List PClone list ...')
+    log_info('Building Software List PClone list...')
     total_files = len(SL_catalog_dic)
     processed_files = 0
     SL_PClone_dic = {}
@@ -6869,7 +6878,8 @@ def mame_build_SoftwareLists_databases(cfg, control_dic, machines, machines_rend
     diag_line = 'Building Software List PClone list...'
     pDialog.startProgress(diag_line, total_files)
     for sl_name in sorted(SL_catalog_dic):
-        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(diag_line, sl_name))
+        pDialog.updateProgress(processed_files, '{}\nSoftware List [COLOR orange]{}[/COLOR]'.format(
+            diag_line, sl_name))
         total_SL_XML_files += 1
         pclone_dic = {}
         SL_database_FN = cfg.SL_DB_DIR.pjoin(sl_name + '_items.json')
@@ -6895,7 +6905,8 @@ def mame_build_SoftwareLists_databases(cfg, control_dic, machines, machines_rend
     diag_line = 'Building Software List machine list...'
     pDialog.startProgress(diag_line, total_SL)
     for SL_name in sorted(SL_catalog_dic):
-        pDialog.updateProgress(processed_SL, '{}\nSoftware List {}'.format(diag_line, SL_name))
+        pDialog.updateProgress(processed_SL, '{}\nSoftware List [COLOR orange]{}[/COLOR]'.format(
+            diag_line, SL_name))
         SL_machine_list = []
         for machine_name in machines:
             # if not machines[machine_name]['softwarelists']: continue
@@ -6918,7 +6929,8 @@ def mame_build_SoftwareLists_databases(cfg, control_dic, machines, machines_rend
     diag_line = 'Building Software List (empty) asset databases...'
     pDialog.startProgress(diag_line, total_SL)
     for SL_name in sorted(SL_catalog_dic):
-        pDialog.updateProgress(processed_SL, '{}\nSoftware List {}'.format(diag_line, SL_name))
+        pDialog.updateProgress(processed_SL, '{}\nSoftware List [COLOR orange]{}[/COLOR]'.format(
+            diag_line, SL_name))
 
         # --- Load SL databases ---
         file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
@@ -6990,7 +7002,7 @@ def mame_build_SoftwareLists_databases(cfg, control_dic, machines, machines_rend
         [SL_catalog_dic, 'Software Lists index', cfg.SL_INDEX_PATH.getPath()],
         [SL_PClone_dic, 'Software Lists P/Clone', cfg.SL_PCLONE_DIC_PATH.getPath()],
         [SL_machines_dic, 'Software Lists Machines', cfg.SL_MACHINES_PATH.getPath()],
-        # --- Save control_dic after everything is saved ---
+        # Save control_dic after everything is saved.
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
     db_dic = db_save_files(db_files, json_write_func)

@@ -287,7 +287,7 @@ def utils_load_JSON_file_dic(json_filename, verbose = True):
         return data_dic
     if verbose:
         log_debug('utils_load_JSON_file_dic() "{}"'.format(json_filename))
-    with io.open(json_filename) as file:
+    with io.open(json_filename, 'rt', encoding = 'utf-8') as file:
         data_dic = json.load(file)
 
     return data_dic
@@ -300,7 +300,7 @@ def utils_load_JSON_file_list(json_filename, verbose = True):
         return data_list
     if verbose:
         log_debug('utils_load_JSON_file_list() "{}"'.format(json_filename))
-    with io.open(json_filename) as file:
+    with io.open(json_filename, 'rt', encoding = 'utf-8') as file:
         data_list = json.load(file)
 
     return data_list
@@ -336,7 +336,7 @@ def utils_write_JSON_file_pprint(json_filename, json_data, verbose = True):
     if verbose:
         log_debug('utils_write_JSON_file_pprint() "{}"'.format(json_filename))
     try:
-        with io.open(json_filename, 'wt', encoding='utf-8') as file:
+        with io.open(json_filename, 'wt', encoding = 'utf-8') as file:
             file.write(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
                 indent = 1, separators = (', ', ' : ')))
     except OSError:
@@ -361,7 +361,7 @@ def utils_write_JSON_file_lowmem(json_filename, json_data, verbose = True):
             jobj = json.JSONEncoder(ensure_ascii = False, sort_keys = True,
                 indent = 1, separators = (',', ':'))
         # --- Chunk by chunk JSON writer ---
-        with io.open(json_filename, 'wt', encoding='utf-8') as file:
+        with io.open(json_filename, 'wt', encoding = 'utf-8') as file:
             for chunk in jobj.iterencode(json_data):
                 file.write(str(chunk))
     except OSError:
