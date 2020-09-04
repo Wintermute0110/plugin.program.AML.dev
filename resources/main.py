@@ -5679,11 +5679,10 @@ def command_context_setup_plugin(cfg):
 
     # --- Scan everything ---
     elif menu_item == 3:
-        log_info('command_setup_plugin() Scanning everything starting ...')
+        log_info('command_setup_plugin() Scanning everything starting...')
 
         # --- MAME -------------------------------------------------------------------------------
         db_files = [
-            ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
             ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
             ['render', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
             ['main_pclone_dic', 'MAME PClone dictionary', cfg.MAIN_PCLONE_DIC_PATH.getPath()],
@@ -5697,6 +5696,7 @@ def command_context_setup_plugin(cfg):
             ['mameinfo_idx_dic', 'Mameinfo DAT index', cfg.MAMEINFO_IDX_PATH.getPath()],
             ['gameinit_idx_list', 'Gameinit DAT index', cfg.GAMEINIT_IDX_PATH.getPath()],
             ['command_idx_list', 'Command DAT index', cfg.COMMAND_IDX_PATH.getPath()],
+            ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
         # For compatibility with "All in one step" and "Step by step" functions.
@@ -5708,37 +5708,37 @@ def command_context_setup_plugin(cfg):
             'CHD_archive_list' : db_dic['CHD_archive_list'],
         }
 
-        # --- Scan ROMs/CHDs/Samples and updates ROM status (optional) ---
-        options_dic = mame_check_before_scan_MAME_ROMs(g_PATHS, cfg.settings, control_dic)
-        if not options_dic['abort']:
-            mame_scan_MAME_ROMs(g_PATHS, cfg.settings, control_dic, options_dic,
-                db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'],
-                audit_dic['ROM_ZIP_list'], audit_dic['Sample_ZIP_list'], audit_dic['CHD_archive_list'])
-        else:
-            log_info('Skipping mame_scan_MAME_ROMs()')
+        # --- Scan MAME ROMs/CHDs/Samples and updates ROM status (optional) ---
+        st_dic = kodi_new_status_dic()
+        options_dic = {}
+        mame_check_before_scan_MAME_ROMs(cfg, st_dic, options_dic, control_dic)
+        if kodi_display_status_message(st_dic): return
+        mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
+            db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'],
+            audit_dic['ROM_ZIP_list'], audit_dic['Sample_ZIP_list'], audit_dic['CHD_archive_list'])
 
         # --- Scans MAME assets/artwork (optional) ---
-        options_dic = mame_check_before_scan_MAME_assets(g_PATHS, cfg.settings, control_dic)
+        options_dic = {}
+        mame_check_before_scan_MAME_assets(cfg, st_dic, options_dic, control_dic)
         if not options_dic['abort']:
-            mame_scan_MAME_assets(g_PATHS, cfg.settings, control_dic,
+            mame_scan_MAME_assets(cfg, st_dic, control_dic,
                 db_dic['assets'], db_dic['render'], db_dic['main_pclone_dic'])
         else:
+            log_info(options_dic['abort'])
             log_info('Skipping mame_scan_MAME_assets()')
 
         # --- Build MAME machines plot (mandatory) ---
-        mame_build_MAME_plots(g_PATHS, cfg.settings, control_dic,
+        mame_build_MAME_plots(cfg, control_dic,
             db_dic['machines'], db_dic['render'], db_dic['assets'],
             db_dic['history_idx_dic'], db_dic['mameinfo_idx_dic'],
             db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
 
         # --- Regenerate asset hashed database ---
-        fs_build_asset_hashed_db(g_PATHS, cfg.settings, control_dic, db_dic['assets'])
+        fs_build_asset_hashed_db(cfg, control_dic, db_dic['assets'])
 
         # --- Regenerate MAME asset cache ---
         # Note that scanning only changes the assets, never the machines or render DB.
-        if cfg.settings['debug_enable_MAME_asset_cache']:
-            fs_build_asset_cache(g_PATHS, cfg.settings, control_dic,
-                db_dic['cache_index'], db_dic['assets'])
+        fs_build_asset_cache(cfg, control_dic, db_dic['cache_index'], db_dic['assets'])
 
         # --- Software Lists ---------------------------------------------------------------------
         if cfg.settings['global_enable_SL']:
@@ -5751,23 +5751,21 @@ def command_context_setup_plugin(cfg):
             SL_dic = db_load_files(db_files)
 
             # --- Scan SL ROMs/CHDs (optional) ---
-            options_dic = mame_check_before_scan_SL_ROMs(g_PATHS, cfg.settings, control_dic)
+            options_dic = mame_check_before_scan_SL_ROMs(cfg, control_dic)
             if not options_dic['abort']:
-                mame_scan_SL_ROMs(g_PATHS, cfg.settings, control_dic,
-                    options_dic, SL_dic['SL_index'])
+                mame_scan_SL_ROMs(cfg, control_dic, options_dic, SL_dic['SL_index'])
             else:
                 log_info('Skipping mame_scan_SL_ROMs()')
 
             # --- Scan SL assets/artwork (optional) ---
-            options_dic = mame_check_before_scan_SL_assets(g_PATHS, cfg.settings, control_dic)
+            options_dic = mame_check_before_scan_SL_assets(cfg, control_dic)
             if not options_dic['abort']:
-                mame_scan_SL_assets(g_PATHS, cfg.settings, control_dic,
-                    SL_dic['SL_index'], SL_dic['SL_PClone_dic'])
+                mame_scan_SL_assets(cfg, control_dic, SL_dic['SL_index'], SL_dic['SL_PClone_dic'])
             else:
                 log_info('Skipping mame_scan_SL_assets()')
 
             # --- Buils Software List items plot (mandatory) ---
-            mame_build_SL_plots(g_PATHS, cfg.settings, control_dic,
+            mame_build_SL_plots(cfg, control_dic,
                 SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
         else:
             log_info('SL globally disabled. Skipping SL scanning and plot building.')

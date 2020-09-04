@@ -321,7 +321,7 @@ def mame_extract_MAME_XML(cfg, st_dic):
     pDialog.startProgress('Extracting MAME XML database. Progress bar is not accurate.')
     XML_path_FN = cfg.MAME_XML_PATH
     with open(XML_path_FN.getPath(), 'wb') as out, open(cfg.MAME_STDERR_PATH.getPath(), 'wb') as err:
-        p = subprocess.Popen([mame_prog_FN.getPath(), '-listxml'], stdout=out, stderr=err, cwd=mame_dir)
+        p = subprocess.Popen([mame_prog_FN.getPath(), '-listxml'], stdout = out, stderr = err, cwd = mame_dir)
         count = 0
         while p.poll() is None:
             time.sleep(1)
@@ -7029,18 +7029,19 @@ def mame_check_before_scan_MAME_ROMs(cfg, st_dic, options_dic, control_dic):
     log_info('mame_check_before_scan_MAME_ROMs() Starting...')
     kodi_reset_status(st_dic)
 
+    # ROM scanning is mandatory, even if ROM directory is empty.
     # Get paths and check they exist.
-    if not settings['rom_path']:
-        kodi_set_error_status(st_dic, 'ROM directory not configured. Aborting.')
+    if not cfg.settings['rom_path']:
+        kodi_set_error_status(st_dic, 'ROM directory not configured. Aborting scanner.')
         return
-    ROM_path_FN = FileName(settings['rom_path'])
+    ROM_path_FN = FileName(cfg.settings['rom_path'])
     if not ROM_path_FN.isdir():
-        kodi_set_error_status(st_dic, 'ROM directory does not exist. Aborting.')
+        kodi_set_error_status(st_dic, 'ROM directory does not exist. Aborting scanner.')
         return
 
     # Scanning of CHDs is optional.
-    if settings['chd_path']:
-        CHD_path_FN = FileName(settings['chd_path'])
+    if cfg.settings['chd_path']:
+        CHD_path_FN = FileName(cfg.settings['chd_path'])
         if not CHD_path_FN.isdir():
             kodi_dialog_OK('CHD directory does not exist. CHD scanning disabled.')
             options_dic['scan_CHDs'] = False
@@ -7051,8 +7052,8 @@ def mame_check_before_scan_MAME_ROMs(cfg, st_dic, options_dic, control_dic):
         options_dic['scan_CHDs'] = False
 
     # Scanning of Samples is optional.
-    if settings['samples_path']:
-        Samples_path_FN = FileName(settings['samples_path'])
+    if cfg.settings['samples_path']:
+        Samples_path_FN = FileName(cfg.settings['samples_path'])
         if not Samples_path_FN.isdir():
             kodi_dialog_OK('Samples directory does not exist. Samples scanning disabled.')
             options_dic['scan_Samples'] = False
@@ -7074,18 +7075,19 @@ def mame_check_before_scan_MAME_ROMs(cfg, st_dic, options_dic, control_dic):
 #   MAME_DIR/samples/MM1_keyboard/beep.wav
 #   MAME_DIR/samples/MM1_keyboard/power_switch.wav
 #
-def mame_scan_MAME_ROMs(cfg, control_dic, options_dic,
+def mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
     machines, machines_render, assets_dic, machine_archives_dic,
     ROM_ZIP_list, Sample_ZIP_list, CHD_list):
     log_info('mame_scan_MAME_ROMs() Starting...')
+    kodi_reset_status(st_dic)
 
     # At this point paths have been verified and exists.
-    ROM_path_FN = FileName(settings['rom_path'])
+    ROM_path_FN = FileName(cfg.settings['rom_path'])
     log_info('mame_scan_MAME_ROMs() ROM dir OP {}'.format(ROM_path_FN.getOriginalPath()))
     log_info('mame_scan_MAME_ROMs() ROM dir  P {}'.format(ROM_path_FN.getPath()))
 
     if options_dic['scan_CHDs']:
-        CHD_path_FN = FileName(settings['chd_path'])
+        CHD_path_FN = FileName(cfg.settings['chd_path'])
         log_info('mame_scan_MAME_ROMs() CHD dir OP {}'.format(CHD_path_FN.getOriginalPath()))
         log_info('mame_scan_MAME_ROMs() CHD dir  P {}'.format(CHD_path_FN.getPath()))
     else:
@@ -7093,7 +7095,7 @@ def mame_scan_MAME_ROMs(cfg, control_dic, options_dic,
         log_info('Scan of CHDs disabled.')
 
     if options_dic['scan_Samples']:
-        Samples_path_FN = FileName(settings['samples_path'])
+        Samples_path_FN = FileName(cfg.settings['samples_path'])
         log_info('mame_scan_MAME_ROMs() Samples OP {}'.format(Samples_path_FN.getOriginalPath()))
         log_info('mame_scan_MAME_ROMs() Samples P  {}'.format(Samples_path_FN.getPath()))
     else:
@@ -7666,16 +7668,18 @@ def mame_scan_SL_ROMs(cfg, control_dic, options_dic, SL_catalog_dic):
 # Checks for errors before scanning for SL assets.
 # Caller function displays a Kodi dialog if an error is found and scanning must be aborted.
 #
-def mame_check_before_scan_MAME_assets(cfg, st_dic, control_dic):
+def mame_check_before_scan_MAME_assets(cfg, st_dic, options_dic, control_dic):
     kodi_reset_status(st_dic)
 
     # Get assets directory. Abort if not configured/found.
-    if not settings['assets_path']:
-        kodi_set_error_status(st_dic, 'Asset directory not configured. Aborting.')
+    if not cfg.settings['assets_path']:
+        options_dic['abort'] = 'MAME asset directory not configured. Aborting.'
+        options_dic['abort'] = True
         return
-    Asset_path_FN = FileName(settings['assets_path'])
+    Asset_path_FN = FileName(cfg.settings['assets_path'])
     if not Asset_path_FN.isdir():
-        kodi_set_error_status(st_dic, 'Asset directory does not exist. Aborting.')
+        options_dic['abort'] = 'MAME asset directory does not exist. Aborting.'
+        options_dic['abort'] = True
         return
 
 #
