@@ -251,33 +251,36 @@ def mame_get_numerical_version(mame_version_str):
         # log_verb('mame_get_numerical_version() minor = {}'.format(minor))
         mame_version_int = major * 1000000 + minor * 1000 + release_flag * 100
     else:
-        log_error('MAME version "{}" cannot be parsed.'.format(mame_version_str))
-        raise TypeError
+        t = 'MAME version "{}" cannot be parsed.'.format(mame_version_str)
+        log_error(t)
+        raise TypeError(t)
     log_verb('mame_get_numerical_version() mame_version_int = {}'.format(mame_version_int))
 
     return mame_version_int
 
-# Returns a string like ''.
+# Returns a string like '0.224 (mame0224)'.
 def mame_get_MAME_exe_version(cfg, mame_prog_FN):
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
     log_info('mame_get_MAME_exe_version() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
-    log_info('mame_get_MAME_exe_version() mame_dir     "{}"'.format(mame_dir))
-    log_info('mame_get_MAME_exe_version() mame_exec    "{}"'.format(mame_exec))
+    # log_info('mame_get_MAME_exe_version() mame_dir     "{}"'.format(mame_dir))
+    # log_info('mame_get_MAME_exe_version() mame_exec    "{}"'.format(mame_exec))
     stdout_f = cfg.MAME_STDOUT_VER_PATH.getPath()
     err_f = cfg.MAME_STDERR_VER_PATH.getPath()
     with open(stdout_f, 'wb') as out, open(err_f, 'wb') as err:
-        p = subprocess.Popen([mame_prog_FN.getPath(), '-?'], stdout = out, stderr = err, cwd = mame_dir)
+        p = subprocess.Popen([mame_prog_FN.getPath(), '-version'], stdout = out, stderr = err, cwd = mame_dir)
         p.wait()
 
     # Read MAME version.
     lines = utils_load_file_to_slist(cfg.MAME_STDOUT_VER_PATH.getPath())
-    version_str = ''
-    for line in lines:
-        m = re.search('^MAME v([0-9\.]+?) \(([a-z0-9]+?)\)$', line.strip())
-        if m:
-            version_str = m.group(1)
-            break
-    log_debug('mame_get_MAME_exe_version() Returning "{}"'.format(version_str))
+    # log_debug('mame_get_MAME_exe_version() Number of lines {}'.format(len(lines)))
+    version_str = lines[0]
+    # version_str = ''
+    # for line in lines:
+    #     m = re.search('^([0-9\.]+?) \(([a-z0-9]+?)\)$', line.strip())
+    #     if m:
+    #         version_str = m.group(1)
+    #         break
+    # log_debug('mame_get_MAME_exe_version() Returning "{}"'.format(version_str))
 
     return version_str
 
@@ -393,6 +396,110 @@ def mame_preprocess_RETRO_MAME2003PLUS(cfg, st_dic):
     db_safe_edit(XML_control_dic, 'ver_mame_int', ver_mame_int)
     db_safe_edit(XML_control_dic, 'ver_mame_str', ver_mame_str)
     utils_write_JSON_file(cfg.MAME_2003_PLUS_XML_CONTROL_PATH.getPath(), XML_control_dic, verbose = True)
+
+# After this function of code we have:
+# 1) a valid XML_control_dic and the XML control file is created and/or current.
+# 2) valid and verified for existence MAME_XML_path.
+#
+# Returns tuple (MAME_XML_path [FileName object], XML_control_FN [FileName object])
+def mame_init_MAME_XML(cfg, st_dic):
+    log_info('mame_init_MAME_XML() Beginning extract/process of MAME.xml...')
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        process_XML_flag = False
+        MAME_exe_path = FileName(cfg.settings['mame_prog'])
+        MAME_XML_path = cfg.MAME_XML_PATH
+        XML_control_FN = cfg.MAME_XML_CONTROL_PATH
+        # Check that MAME executable exists.
+        if not cfg.settings['mame_prog']:
+            log_info('Vanilla MAME executable path is not set. Aborting.')
+            kodi_set_error_status(st_dic, 'Vanilla MAME executable path is not set.')
+            return
+        if not MAME_exe_path.exists():
+            log_info('Vanilla MAME executable file not found. Aborting.')
+            kodi_set_error_status(st_dic, 'Vanilla MAME executable file not found.')
+            return
+        log_info('Vanilla MAME executable found.')
+        # Check that extracted MAME XML exists.
+        # In Vanilla MAME the XML file is extracted from the executable.
+        if MAME_XML_path.exists():
+            log_info('Vanilla MAME XML file found.')
+            # Check that the XML control file exists.
+            if XML_control_FN.exists():
+                # Open the XML control file and check if the current version of the MAME executable
+                # is the same as in the XML control file.
+                # If so reset everything, if not use the cached information in the XML control file.
+                log_info('Vanilla MAME XML control file found.')
+                XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())
+                mame_exe_version_str = mame_get_MAME_exe_version(cfg, MAME_exe_path)
+                log_debug('XML_control_dic["ver_mame_str"] "{}"'.format(XML_control_dic['ver_mame_str']))
+                log_debug('mame_exe_version_str "{}"'.format(mame_exe_version_str))
+                if mame_exe_version_str != XML_control_dic['ver_mame_str']:
+                    log_info('Vanilla MAME version is different than verion in the XML control file. '
+                        'Forcing new preprocessing.')
+                    process_XML_flag = True
+                else:
+                    log_info('XML control file up to date.')
+                    process_XML_flag = False
+            else:
+                log_info('XML control file NOT found. Forcing XML preprocessing.')
+                process_XML_flag = True
+        else:
+            log_info('Vanilla MAME XML file NOT found. Forcing XML preprocessing.')
+            process_XML_flag = True
+        # Only process MAME XML if needed.
+        if process_XML_flag:
+            # Extract, count number of machines and create XML control file.
+            mame_extract_MAME_XML(cfg, st_dic)
+            if st_dic['abort']: return
+        else:
+            log_info('Reusing previosly preprocessed Vanilla MAME XML.')
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        process_XML_flag = False
+        MAME_XML_path = FileName(cfg.settings['xml_2003_path'])
+        XML_control_FN = cfg.MAME_2003_PLUS_XML_CONTROL_PATH
+        # Check that MAME 2003 Plus XML exists.
+        if not cfg.settings['xml_2003_path']:
+            log_info('MAME 2003 Plus XML path is not set. Aborting.')
+            kodi_set_error_status(st_dic, 'MAME 2003 Plus XML path is not set.')
+            return
+
+        if not MAME_XML_path.exists():
+            log_info('MAME 2003 Plus XML file not found. Aborting.')
+            kodi_set_error_status(st_dic, 'MAME 2003 Plus XML file not found.')
+            return
+        log_info('MAME 2003 Plus XML found.')
+        # Check that the XML control file exists.
+        if XML_control_FN.exists():
+            # Open the XML control file and check if mtime of current file is older than
+            # the one stored in the XML control file.
+            # If so reset everything, if not use the cached information in the XML control file.
+            log_info('MAME 2003 XML control file found.')
+            XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())
+            statinfo = os.stat(MAME_XML_path.getPath())
+            log_debug('XML_control_dic["st_mtime"] "{}"'.format(XML_control_dic['st_mtime']))
+            log_debug('statinfo.st_mtime "{}"'.format(statinfo.st_mtime))
+            if statinfo.st_mtime > XML_control_dic['st_mtime']:
+                log_info('XML file is more recent than last preprocessing. Forcing new preprocessing.')
+                process_XML_flag = True
+            else:
+                log_info('XML control up to date.')
+                process_XML_flag = False
+        else:
+            log_info('XML control file not found. Forcing XML preprocessing.')
+            process_XML_flag = True
+        # Only process MAME XML if needed.
+        if process_XML_flag:
+            # Count number of machines and create XML control file.
+            mame_preprocess_RETRO_MAME2003PLUS(cfg, st_dic)
+            if st_dic['abort']: return
+        else:
+            log_info('Reusing previosly preprocessed MAME 2003 XML.')
+    else:
+        log_error('mame_build_MAME_main_database() Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
+        kodi_set_error_status(st_dic, 'Unknown operation mode {}'.format(cfg.settings['op_mode']))
+        return
+
+    return MAME_XML_path, XML_control_FN
 
 # -------------------------------------------------------------------------------------------------
 # Loading of data files
@@ -3956,98 +4063,11 @@ def mame_build_MAME_main_database(cfg, st_dic):
 
     # --- Automatically extract and/or process MAME XML ---
     # After this block of code we have:
-    # 1) a valid XML_control_dic 
+    # 1) a valid XML_control_dic and the XML control file is created and/or current.
     # 2) valid and verified for existence MAME_XML_path.
-    log_info('Beginning extract/process of MAME.xml...')
-    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
-        process_XML_flag = False
-        # In Vanilla MAME the XML file is extracted from the executable.
-        MAME_XML_path = cfg.MAME_XML_PATH
-        # Check that MAME executable exists.
-        if not cfg.settings['mame_prog']:
-            log_info('Vanilla MAME executable path is not set. Aborting.')
-            kodi_set_error_status(st_dic, 'Vanilla MAME executable path is not set.')
-            return
-        MAME_exe_path = FileName(cfg.settings['mame_prog'])
-        if not MAME_exe_path.exists():
-            log_info('Vanilla MAME executable file not found. Aborting.')
-            kodi_set_error_status(st_dic, 'Vanilla MAME executable file not found.')
-            return
-        log_info('Vanilla MAME executable found.')
-        # Check that the XML control file exists.
-        XML_control_FN = cfg.MAME_XML_CONTROL_PATH
-        if XML_control_FN.exists():
-            # Open the XML control file and check if the current version of the MAME executable
-            # is the same as in the XML control file.
-            # If so reset everything, if not use the cached information in the XML control file.
-            log_info('Vanilla MAME XML control file found.')
-            XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())
-            mame_exe_version_str = mame_get_MAME_exe_version(cfg, MAME_exe_path)
-            log_debug('XML_control_dic["ver_mame_str"] {}'.format(XML_control_dic['ver_mame_str']))
-            log_debug('mame_exe_version_str {}'.format(mame_exe_version_str))
-            if mame_exe_version_str != XML_control_dic['ver_mame_str']:
-                log_info('Vanilla MAME version is different than verion in the XML control file. '
-                    'Forcing new preprocessing.')
-                process_XML_flag = True
-            else:
-                log_info('XML control file up to date.')
-                process_XML_flag = False
-        else:
-            log_info('XML control file not found. Forcing XML preprocessing.')
-            process_XML_flag = True
-        # Only process MAME XML if needed.
-        if process_XML_flag:
-            # Extract, count number of machines and create XML control file.
-            mame_extract_MAME_XML(cfg, st_dic)
-            if st_dic['abort']: return
-        else:
-            log_info('Reusing previosly preprocessed Vanilla MAME XML.')
-    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
-        process_XML_flag = False
-        # Check that MAME 2003 Plus XML exists.
-        if not cfg.settings['xml_2003_path']:
-            log_info('MAME 2003 Plus XML path is not set. Aborting.')
-            kodi_set_error_status(st_dic, 'MAME 2003 Plus XML path is not set.')
-            return
-        MAME_XML_path = FileName(cfg.settings['xml_2003_path'])
-        if not MAME_XML_path.exists():
-            log_info('MAME 2003 Plus XML file not found. Aborting.')
-            kodi_set_error_status(st_dic, 'MAME 2003 Plus XML file not found.')
-            return
-        log_info('MAME 2003 Plus XML found.')
-        # Check that the XML control file exists.
-        XML_control_FN = cfg.MAME_2003_PLUS_XML_CONTROL_PATH
-        if XML_control_FN.exists():
-            # Open the XML control file and check if mtime of current file is older than
-            # the one stored in the XML control file.
-            # If so reset everything, if not use the cached information in the XML control file.
-            log_info('MAME 2003 XML control file found.')
-            XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())
-            statinfo = os.stat(MAME_XML_path.getPath())
-            log_debug('XML_control_dic["st_mtime"] {}'.format(XML_control_dic['st_mtime']))
-            log_debug('statinfo.st_mtime {}'.format(statinfo.st_mtime))
-            if statinfo.st_mtime > XML_control_dic['st_mtime']:
-                log_info('XML file is more recent than last preprocessing. Forcing new preprocessing.')
-                process_XML_flag = True
-            else:
-                log_info('XML control up to date.')
-                process_XML_flag = False
-        else:
-            log_info('XML control file not found. Forcing XML preprocessing.')
-            process_XML_flag = True
-        # Only process MAME XML if needed.
-        if process_XML_flag:
-            # Count number of machines and create XML control file.
-            mame_preprocess_RETRO_MAME2003PLUS(cfg, st_dic)
-            if st_dic['abort']: return
-        else:
-            log_info('Reusing previosly preprocessed MAME 2003 XML.')
-    else:
-        log_error('mame_build_MAME_main_database() Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
-        kodi_set_error_status(st_dic, 'Unknown operation mode {}'.format(cfg.settings['op_mode']))
-        return
-    # Ensure that XML_control_dic that has been newly created or reused exists.
-    XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())            
+    MAME_XML_path, XML_control_FN = mame_init_MAME_XML(cfg, st_dic)
+    if st_dic['abort']: return
+    XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())
 
     # Main progress dialog.
     pDialog = KodiProgressDialog()

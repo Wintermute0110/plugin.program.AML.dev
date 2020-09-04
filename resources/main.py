@@ -19,10 +19,10 @@
 
 # --- Modules/packages in this plugin ---
 # Addon module dependencies:
-#   main <-- mame <-- disk_IO <-- assets, misc, utils, utils_kodi, constants
-#   mame <-- filters <-- misc, utils, utils_kodi, constants
-#   manuals <- misc, utils, utils_kodi, constants
-#   graphics <- misc, utils, utils_kodi, constants
+#   main <-- mame <-- disk_IO <-- assets, misc, utils, constants
+#   mame <-- filters <-- misc, utils, constants
+#   manuals <- misc, utils, constants
+#   graphics <- misc, utils, constants
 from .constants import *
 from .assets import *
 from .utils import *
@@ -5903,9 +5903,9 @@ def command_context_setup_plugin(cfg):
     elif menu_item == 7:
         submenu = xbmcgui.Dialog().select('Setup plugin (step by step)', [
             'Extract/Process MAME.xml',
-            'Build MAME databases',
-            'Build MAME Audit/Scanner databases',
-            'Build MAME Catalogs',
+            'Build MAME main database',
+            'Build MAME audit/scanner databases',
+            'Build MAME catalogs',
             'Build Software List databases',
             'Scan MAME ROMs/CHDs/Samples',
             'Scan MAME assets/artwork',
@@ -5918,32 +5918,18 @@ def command_context_setup_plugin(cfg):
         if submenu < 0: return
 
         # --- Extract/Process MAME.xml ---
-        # This piece of code is the beginning of mame_build_MAME_main_database()
-        if menu_item == 0:
-            log_info('command_context_setup_plugin() Extract/Process MAME.xml starting ...')
-            options_dic = {}
-            if g_settings['op_mode'] == OP_MODE_EXTERNAL:
-                # Extract MAME.xml from MAME executable.
-                # Reset control_dic and count the number of MAME machines.
-                mame_extract_MAME_XML(g_PATHS, g_settings, __addon_version__, options_dic)
-            elif g_settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
-                # For MAME 2003 Plus the XML is already there.
-                # Reset control_dic and count the number of machines.
-                mame_process_RETRO_MAME2003PLUS(g_PATHS, g_settings, __addon_version__, options_dic)
-            else:
-                log_error('command_context_setup_plugin() Unknown op_mode "{}"'.format(g_settings['op_mode']))
-                kodi_notify_warn('Database not built')
-                return
-            if options_dic['abort']:
-                kodi_dialog_OK(options_dic['msg'])
-                return
-
-            # Inform user everything went well.
-            size_MB = options_dic['filesize'] / 1000000
-            num_m = options_dic['total_machines']
-            kodi_dialog_OK(
-                'Extracted MAME XML database. '
-                'Size is {} MB and there are {} machines.'.format(size_MB, num_m))
+        if submenu == 0:
+            st_dic = kodi_new_status_dic()
+            MAME_XML_path, XML_control_FN = mame_init_MAME_XML(cfg, st_dic)
+            if kodi_display_status_message(st_dic): return
+            XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())
+            # Give user some data.
+            mame_v_str = XML_control_dic['ver_mame_str']
+            size_MB = int(XML_control_dic['st_size'] / 1000000)
+            num_m = XML_control_dic['total_machines']
+            t = ('MAME XML version [COLOR orange]{}[/COLOR], size is [COLOR orange]{}[/COLOR] MB '
+                'and there are [COLOR orange]{:,}[/COLOR] machines.')
+            kodi_dialog_OK(t.format(mame_v_str, size_MB, num_m))
 
         # --- Build main MAME database, PClone list and hashed database ---
         elif submenu == 1:
