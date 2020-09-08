@@ -6083,16 +6083,14 @@ def command_context_setup_plugin(cfg):
 
         # --- Build MAME machines plot ---
         elif submenu == 9:
-            log_debug('Rebuilding MAME machine plots ...')
-
-            # --- Check for requirements/errors ---
+            log_debug('Rebuilding MAME machine plots...')
 
             # --- Load databases ---
             db_files = [
                 ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
                 ['machines', 'MAME machines Main', cfg.MAIN_DB_PATH.getPath()],
                 ['render', 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
-                ['assets', 'MAME machine Assets', cfg.MAIN_ASSETS_DB_PATH.getPath()],
+                ['assets', 'MAME machine Assets', cfg.ASSETS_DB_PATH.getPath()],
                 ['cache_index', 'MAME cache index', cfg.CACHE_INDEX_PATH.getPath()],
                 ['history_idx_dic', 'History DAT index', cfg.HISTORY_IDX_PATH.getPath()],
                 ['mameinfo_idx_dic', 'Mameinfo DAT index', cfg.MAMEINFO_IDX_PATH.getPath()],
@@ -6101,23 +6099,20 @@ def command_context_setup_plugin(cfg):
             ]
             db_dic = db_load_files(db_files)
 
+            # --- Check for requirements/errors ---
+
             # --- Traverse MAME machines and build plot ---
             # 1) Mutates and saves the assets database
             # 2) Requires rebuilding of the MAME asset hashed DB.
             # 3) Requires rebuilding if the MAME asset cache.
-            mame_build_MAME_plots(g_PATHS, cfg.settings, db_dic['control_dic'],
-                db_dic['machines'], db_dic['render'], db_dic['assets'],
-                db_dic['history_idx_dic'], db_dic['mameinfo_idx_dic'],
-                db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
-            fs_build_asset_hashed_db(g_PATHS, cfg.settings, db_dic['control_dic'], db_dic['assets'])
-            if cfg.settings['debug_enable_MAME_asset_cache']:
-                fs_build_asset_cache(g_PATHS, cfg.settings, db_dic['control_dic'],
-                    db_dic['cache_index'], db_dic['assets'])
+            mame_build_MAME_plots(cfg, db_dic)
+            db_build_asset_hashed_db(cfg, db_dic['control_dic'], db_dic['assets'])
+            db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assets'])
             kodi_notify('MAME machines plot generation finished')
 
         # --- Buils Software List items plot ---
         elif submenu == 10:
-            log_debug('Rebuilding Software List items plots ...')
+            log_debug('Rebuilding Software List items plots...')
 
             # --- Load databases ---
             db_files = [
@@ -6129,13 +6124,13 @@ def command_context_setup_plugin(cfg):
             db_dic = db_load_files(db_files)
             # For compatibility with "All in one step" menu option
             SL_dic = {
+                'control_dic' : db_dic['control_dic'],
                 'SL_index'    : db_dic['SL_index'],
                 'SL_machines' : db_dic['SL_machines'],
             }
 
-            # --- Build plots ---
-            mame_build_SL_plots(g_PATHS, cfg.settings, db_dic['control_dic'],
-                SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
+            # --- Build SL plots ---
+            mame_build_SL_plots(cfg, SL_dic)
             kodi_notify('SL item plot generation finished')
 
         # --- Regenerate MAME machine render and assets cache ---
@@ -6147,15 +6142,13 @@ def command_context_setup_plugin(cfg):
                 ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
                 ['cache_index', 'Cache index', cfg.CACHE_INDEX_PATH.getPath()],
                 ['render', 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
-                ['assets', 'MAME machine Assets', cfg.MAIN_ASSETS_DB_PATH.getPath()],
+                ['assets', 'MAME machine Assets', cfg.ASSETS_DB_PATH.getPath()],
             ]
             db_dic = db_load_files(db_files)
 
             # --- Regenerate ROM and asset caches ---
-            fs_build_render_cache(g_PATHS, cfg.settings, db_dic['control_dic'],
-                db_dic['cache_index'], db_dic['render'])
-            fs_build_asset_cache(g_PATHS, cfg.settings, db_dic['control_dic'],
-                db_dic['cache_index'], db_dic['assets'])
+            db_build_render_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['render'], force_build = True)
+            db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assets'], force_build = True)
             kodi_notify('MAME machine and asset caches rebuilt')
 
         else:

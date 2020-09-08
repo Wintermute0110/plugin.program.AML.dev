@@ -2778,10 +2778,16 @@ def mame_MAME_plot_slits(mname, m, assets_dic,
     return plot_str_list
 
 # Setting id="MAME_plot" values="Info|History DAT|Info + History DAT"
-def mame_build_MAME_plots(PATHS, settings, control_dic,
-    machines, machines_render, assets_dic,
-    history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic):
+def mame_build_MAME_plots(cfg, db_dic_in):
     log_info('mame_build_MAME_plots() Building machine plots/descriptions ...')
+    control_dic = db_dic_in['control_dic']
+    machines = db_dic_in['machines']
+    machines_render = db_dic_in['render']
+    assets_dic = db_dic_in['assets']
+    history_idx_dic = db_dic_in['history_idx_dic']
+    mameinfo_idx_dic = db_dic_in['mameinfo_idx_dic']
+    gameinit_idx_dic = db_dic_in['gameinit_idx_list']
+    command_idx_dic = db_dic_in['command_idx_list']
 
     # Do not crash if DAT files are not configured.
     history_info_set  = {m for m in history_idx_dic['mame']['machines']} if history_idx_dic else set()
@@ -2802,8 +2808,8 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
     # Timestamp, save the MAME asset database. Save control_dic at the end.
     db_safe_edit(control_dic, 't_MAME_plots_build', time.time())
     db_files = [
-        (assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()),
-        (control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()),
+        (assets_dic, 'MAME machine assets', cfg.ASSETS_DB_PATH.getPath()),
+        (control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()),
     ]
     db_save_files(db_files)
 
@@ -2814,8 +2820,12 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
 # Line 3) Manual, History
 # Line 4) Machines: machine list ...
 # ---------------------------------------------------------------------------------------------
-def mame_build_SL_plots(PATHS, settings, control_dic,
-    SL_index_dic, SL_machines_dic, History_idx_dic):
+def mame_build_SL_plots(cfg, SL_dic):
+    control_dic = SL_dic['control_dic']
+    SL_index_dic = SL_dic['SL_index']
+    SL_machines_dic = SL_dic['SL_machines']
+    History_idx_dic = SL_dic['history_idx_dic']
+
     d_text = 'Generating SL item plots ...'
     pDialog = KodiProgressDialog()
     pDialog.startProgress(d_text, len(SL_index_dic))
@@ -2824,11 +2834,11 @@ def mame_build_SL_plots(PATHS, settings, control_dic,
 
         # Open database
         SL_DB_prefix = SL_index_dic[SL_name]['rom_DB_noext']
-        SL_ROMs_FN      = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '_items.json')
-        SL_assets_FN    = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '_assets.json')
-        SL_ROM_audit_FN = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '_ROM_audit.json')
-        SL_roms          = utils_load_JSON_file_dic(SL_ROMs_FN.getPath(), verbose = False)
-        SL_assets_dic    = utils_load_JSON_file_dic(SL_assets_FN.getPath(), verbose = False)
+        SL_ROMs_FN = cfg.SL_DB_DIR.pjoin(SL_DB_prefix + '_items.json')
+        SL_assets_FN = cfg.SL_DB_DIR.pjoin(SL_DB_prefix + '_assets.json')
+        SL_ROM_audit_FN = cfg.SL_DB_DIR.pjoin(SL_DB_prefix + '_ROM_audit.json')
+        SL_roms = utils_load_JSON_file_dic(SL_ROMs_FN.getPath(), verbose = False)
+        SL_assets_dic = utils_load_JSON_file_dic(SL_assets_FN.getPath(), verbose = False)
         SL_ROM_audit_dic = utils_load_JSON_file_dic(SL_ROM_audit_FN.getPath(), verbose = False)
         History_SL_set  = {m for m in History_idx_dic[SL_name]['machines']} if SL_name in History_idx_dic else set()
         # Machine_list = [ m['machine'] for m in SL_machines_dic[SL_name] ]
@@ -2860,7 +2870,7 @@ def mame_build_SL_plots(PATHS, settings, control_dic,
 
     # --- Timestamp ---
     db_safe_edit(control_dic, 't_SL_plots_build', time.time())
-    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
 # MAME ROM/CHD audit code
