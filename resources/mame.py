@@ -4735,12 +4735,12 @@ def mame_build_MAME_main_database(cfg, st_dic):
         json_write_func = utils_write_JSON_file
         log_debug('Using utils_write_JSON_file() JSON writer')
     db_files = [
-        [machines, 'MAME machines Main', cfg.MAIN_DB_PATH.getPath()],
-        [machines_render, 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
+        [machines, 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
+        [machines_render, 'MAME machines eender', cfg.RENDER_DB_PATH.getPath()],
+        [assets_dic, 'MAME machine assets', cfg.ASSETS_DB_PATH.getPath()],
         [machines_roms, 'MAME machine ROMs', cfg.ROMS_DB_PATH.getPath()],
-        [machines_devices, 'MAME machine Devices', cfg.DEVICES_DB_PATH.getPath()],
-        [assets_dic, 'MAME machine assets', cfg.MAIN_ASSETS_DB_PATH.getPath()],
-        [main_pclone_dic, 'MAME PClone dictionary', cfg.MAIN_PCLONE_DIC_PATH.getPath()],
+        [machines_devices, 'MAME machine devices', cfg.DEVICES_DB_PATH.getPath()],
+        [main_pclone_dic, 'MAME PClone dictionary', cfg.MAIN_PCLONE_DB_PATH.getPath()],
         [roms_sha1_dic, 'MAME ROMs SHA1 dictionary', cfg.SHA1_HASH_DB_PATH.getPath()],
         # --- DAT files ---
         [history_idx_dic, 'History DAT index', cfg.HISTORY_IDX_PATH.getPath()],
@@ -4756,16 +4756,16 @@ def mame_build_MAME_main_database(cfg, st_dic):
     ]
     db_dic = db_save_files(db_files, json_write_func)
 
-    # Return an dictionary with reference to the objects just in case they are needed after
-    # this function (in "Build everything", for example. This saves time (databases do not
-    # need to be reloaded) and apparently memory as well.
+    # Return a dictionary with references to the objects just in case they are needed after
+    # this function (in "Build everything", for example). This saves time, because databases do not
+    # need to be reloaded, and apparently memory as well.
     return {
         'machines' : machines,
         'render' : machines_render,
-        'devices' : machines_devices,
-        'roms' : machines_roms,
-        'main_pclone_dic' : main_pclone_dic,
         'assets' : assets_dic,
+        'roms' : machines_roms,
+        'devices' : machines_devices,
+        'main_pclone_dic' : main_pclone_dic,
         'history_idx_dic' : history_idx_dic,
         'mameinfo_idx_dic' : mameinfo_idx_dic,
         'gameinit_idx_list' : gameinit_idx_dic,
@@ -4996,6 +4996,29 @@ def _get_CHD_location(chd_set, disk, m_name, machines, machines_render, machine_
 
     return location
 
+# Makes a unique and alphabetically sorted list of ROM ZIP files.
+# This list is different depending on the ROM set (Merged, Split or Non-merged).
+def mame_get_ROM_ZIP_list(machine_archives_dic):
+    rom_list = []
+    for key, machine in machine_archives_dic.items():
+        rom_list.extend(machine['ROMs'])
+
+    return list(sorted(set(rom_list)))
+
+def mame_get_Sample_ZIP_list(machine_archives_dic):
+    rom_list = []
+    for key, machine in machine_archives_dic.items():
+        rom_list.extend(machine['Samples'])
+
+    return list(sorted(set(rom_list)))
+
+def mame_get_CHD_list(machine_archives_dic):
+    rom_list = []
+    for key, machine in machine_archives_dic.items():
+        rom_list.extend(machine['CHDs'])
+
+    return list(sorted(set(rom_list)))
+
 #
 # Checks for errors before scanning for SL ROMs.
 # Display a Kodi dialog if an error is found.
@@ -5056,31 +5079,20 @@ def mame_check_before_build_ROM_audit_databases(cfg, st_dic, control_dic):
 #     }, ...
 # }
 #
-# This function builds the ROM ZIP list, the CHD list and the Samples ZIP list.
-#
-# A) Used by the ROM scanner to determine how many ROM ZIP/CHD/SampleZIP files you have or not.
-# B) The three lists have unique elements. Instead of Python lists there should be Python sets.
-#    However, sets are not serializable with JSON.
-# C) A ROM ZIP/CHD/Sample ZIP exists if and only if it has valid ROMs (CRC/SHA1 exists).
-#    Invalid ROMs are excluded.
-#
-# ROM_archive_list = [ name1, name2, ..., nameN ]
-# CHD_archive_list = [ dir1/name1, dir2/name2, ..., dirN/nameN ]
-# SAM_archive_list = [ name1, name2, ..., nameN ]
-#
 # Saved files:
 #     ROM_AUDIT_DB_PATH
 #     ROM_SET_MACHINE_FILES_DB_PATH
-#     ROM_SET_ROM_LIST_DB_PATH
-#     ROM_SET_CHD_LIST_DB_PATH
-#     ROM_SET_SAM_LIST_DB_PATH
-#     MAIN_CONTROL_PATH
+#     MAIN_CONTROL_PATH (control_dic)
 #
-def mame_build_ROM_audit_databases(cfg, st_dic, control_dic,
-    machines, machines_render, devices_db_dic, machine_roms):
+def mame_build_ROM_audit_databases(cfg, st_dic, db_dic):
     log_info('mame_build_ROM_audit_databases() Initialising ...')
+    control_dic = db_dic['control_dic']
+    machines = db_dic['machines']
+    machines_render = db_dic['render']
+    devices_db_dic = db_dic['devices']
+    machine_roms = db_dic['roms']
 
-    # --- Initialise ---
+    # --- Initialize ---
     # This must match the values defined in settings.xml, "ROM sets" tab.
     rom_set = ['MERGED', 'SPLIT', 'NONMERGED', 'FULLYNONMERGED'][cfg.settings['mame_rom_set']]
     rom_set_str = ['Merged', 'Split', 'Non-merged', 'Fully Non-merged'][cfg.settings['mame_rom_set']]
@@ -5095,7 +5107,7 @@ def mame_build_ROM_audit_databases(cfg, st_dic, control_dic,
     log_info('mame_build_ROM_audit_databases() Starting...')
     log_info('Building {} ROM/Sample audit database...'.format(rom_set_str))
     pDialog = KodiProgressDialog()
-    pDialog.startProgress('Building {} ROM set ...'.format(rom_set_str), len(machines))
+    pDialog.startProgress('Building {} ROM set...'.format(rom_set_str), len(machines))
     stats_audit_MAME_machines_runnable = 0
     audit_roms_dic = {}
     for m_name in sorted(machines):
@@ -5257,10 +5269,6 @@ def mame_build_ROM_audit_databases(cfg, st_dic, control_dic,
             else:
                 archive_less_parents += 1
     pDialog.endProgress()
-    # Sort lists alphabetically
-    ROM_ZIP_list     = list(sorted(full_ROM_archive_set))
-    Sample_ZIP_list  = list(sorted(full_Sample_archive_set))
-    CHD_archive_list = list(sorted(full_CHD_archive_set))
 
     # ---------------------------------------------------------------------------------------------
     # machine_roms dictionary is passed as argument and not save in this function.
@@ -5286,9 +5294,9 @@ def mame_build_ROM_audit_databases(cfg, st_dic, control_dic,
     # Update control dictionary.
     # ---------------------------------------------------------------------------------------------
     db_safe_edit(control_dic, 'stats_audit_MAME_machines_runnable', stats_audit_MAME_machines_runnable)
-    db_safe_edit(control_dic, 'stats_audit_MAME_ROM_ZIP_files', len(ROM_ZIP_list))
-    db_safe_edit(control_dic, 'stats_audit_MAME_Sample_ZIP_files', len(Sample_ZIP_list))
-    db_safe_edit(control_dic, 'stats_audit_MAME_CHD_files', len(CHD_archive_list))
+    db_safe_edit(control_dic, 'stats_audit_MAME_ROM_ZIP_files', len(full_ROM_archive_set))
+    db_safe_edit(control_dic, 'stats_audit_MAME_Sample_ZIP_files', len(full_Sample_archive_set))
+    db_safe_edit(control_dic, 'stats_audit_MAME_CHD_files', len(full_CHD_archive_set))
     db_safe_edit(control_dic, 'stats_audit_machine_archives_ROM', machine_archives_ROM)
     db_safe_edit(control_dic, 'stats_audit_machine_archives_ROM_parents', machine_archives_ROM_parents)
     db_safe_edit(control_dic, 'stats_audit_machine_archives_ROM_clones', machine_archives_ROM_clones)
@@ -5319,9 +5327,6 @@ def mame_build_ROM_audit_databases(cfg, st_dic, control_dic,
     db_files = [
         [audit_roms_dic, 'MAME ROM Audit', cfg.ROM_AUDIT_DB_PATH.getPath()],
         [machine_archives_dic, 'Machine file list', cfg.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
-        [ROM_ZIP_list, 'ROM ZIP list', cfg.ROM_SET_ROM_LIST_DB_PATH.getPath()],
-        [Sample_ZIP_list, 'Sample ZIP list', cfg.ROM_SET_SAM_LIST_DB_PATH.getPath()],
-        [CHD_archive_list, 'CHD list', cfg.ROM_SET_CHD_LIST_DB_PATH.getPath()],
         # --- Save control_dic after everything is saved ---
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
@@ -5332,9 +5337,6 @@ def mame_build_ROM_audit_databases(cfg, st_dic, control_dic,
     return {
         'audit_roms' : audit_roms_dic,
         'machine_archives' : machine_archives_dic,
-        'ROM_ZIP_list' : ROM_ZIP_list,
-        'Sample_ZIP_list' : Sample_ZIP_list,
-        'CHD_archive_list' : CHD_archive_list,
     }
 
 #
@@ -5379,8 +5381,14 @@ def mame_check_before_build_MAME_catalogs(cfg, st_dic, control_dic):
 #        }, ...
 #    }
 #
-def mame_build_MAME_catalogs(cfg, st_dic, control_dic,
-    machines, machines_render, machine_roms, main_pclone_dic, assets_dic):
+def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
+    control_dic = db_dic_in['control_dic']
+    machines = db_dic_in['machines']
+    machines_render = db_dic_in['render']
+    machine_roms = db_dic_in['roms']
+    main_pclone_dic = db_dic_in['main_pclone_dic']
+    assets_dic = db_dic_in['assets']
+
     # --- Machine count ---
     cache_index_dic = {
         # Virtual Main filter catalog
@@ -6134,10 +6142,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, control_dic,
     ]
     db_dic = db_save_files(db_files)
 
-    # Return an dictionary with reference to the objects just in case they are needed after
-    # this function (in "Build everything", for example. This saves time (databases do not
-    # need to be reloaded) and apparently memory as well.
-
+    # Here we only need to return cache_index_dic.
     return cache_index_dic
 
 # -------------------------------------------------------------------------------------------------
@@ -6701,7 +6706,11 @@ def mame_check_before_build_SL_databases(cfg, st_dic, control_dic):
 # per-SL ROM audit database             (32x_ROM_audit.json)
 # per-SL item archives (ROMs and CHDs)  (32x_ROM_archives.json)
 #
-def mame_build_SoftwareLists_databases(cfg, st_dic, control_dic, machines, machines_render):
+def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
+    control_dic = db_dic_in['control_dic']
+    machines = db_dic_in['machines']
+    machines_render = db_dic_in['render']
+
     SL_dir_FN = FileName(cfg.settings['SL_hash_path'])
     log_debug('mame_build_SoftwareLists_databases() SL_dir_FN "{}"'.format(SL_dir_FN.getPath()))
 
@@ -6721,8 +6730,8 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, control_dic, machines, machi
     for file in sorted(SL_file_list):
         # Progress dialog
         FN = FileName(file)
-        pDialog.updateProgress(processed_files, '{}\nSoftware List [COLOR orange]{}[/COLOR]'.format(
-            diag_line, FN.getBase()))
+        pDialog.updateProgress(processed_files,
+            '{}\nSoftware List [COLOR orange]{}[/COLOR]'.format(diag_line, FN.getBase()))
 
         # Open software list XML and parse it. Then, save data fields we want in JSON.
         # log_debug('mame_build_SoftwareLists_databases() Processing "{}"'.format(file))
@@ -7075,9 +7084,17 @@ def mame_check_before_scan_MAME_ROMs(cfg, st_dic, options_dic, control_dic):
 #   MAME_DIR/samples/MM1_keyboard/beep.wav
 #   MAME_DIR/samples/MM1_keyboard/power_switch.wav
 #
-def mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
-    machines, machines_render, assets_dic, machine_archives_dic,
-    ROM_ZIP_list, Sample_ZIP_list, CHD_list):
+def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
+    # --- Convenient variables for databases ---
+    control_dic = db_dic_in['control_dic']
+    machines = db_dic_in['machines']
+    renders = db_dic_in['render']
+    assets = db_dic_in['assets']
+    machine_archives_dic = db_dic_in['machine_archives']
+    # ROM_ZIP_list = db_dic_in['ROM_ZIP_list']
+    # Sample_ZIP_list = db_dic_in['Sample_ZIP_list']
+    # CHD_list = db_dic_in['CHD_archive_list']
+
     log_info('mame_scan_MAME_ROMs() Starting...')
     kodi_reset_status(st_dic)
 
@@ -7102,16 +7119,25 @@ def mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
         Samples_path_FN = FileName('')
         log_info('Scan of Samples disabled.')
 
-    # --- Create a cache of assets ---
-    # >> utils_file_cache_add_dir() creates a set with all files in a given directory.
-    # >> That set is stored in a function internal cache associated with the path.
-    # >> Files in the cache can be searched with misc_search_file_cache()
-    # >> utils_file_cache_add_dir() accepts invalid/empty paths, just do not add them to the cache.
+    # --- Create auxiliary databases ---
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Creating auxiliary databases...', 3)
+    ROM_ZIP_list = mame_get_ROM_ZIP_list(machine_archives_dic)
+    pDialog.updateProgressInc()
+    Sample_ZIP_list = mame_get_Sample_ZIP_list(machine_archives_dic)
+    pDialog.updateProgressInc()
+    CHD_list = mame_get_CHD_list(machine_archives_dic)
+    pDialog.endProgress()
+
+    # --- Create a cache of files ---
+    # utils_file_cache_add_dir() creates a set with all files in a given directory.
+    # That set is stored in a function internal cache associated with the path.
+    # Files in the cache can be searched with misc_search_file_cache()
+    # utils_file_cache_add_dir() accepts invalid/empty paths, just do not add them to the cache.
     ROM_path_str = ROM_path_FN.getPath()
     CHD_path_str = CHD_path_FN.getPath()
     Samples_path_str = Samples_path_FN.getPath()
     STUFF_PATH_LIST = [ROM_path_str, CHD_path_str, Samples_path_str]
-    pDialog = KodiProgressDialog()
     pDialog.startProgress('Listing files in ROM/CHD/Samples directories...', len(STUFF_PATH_LIST))
     utils_file_cache_clear()
     for asset_dir in STUFF_PATH_LIST:
@@ -7134,13 +7160,13 @@ def mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
     r_have_list = []
     r_miss_list = []
     dial_line = 'Scanning MAME machine archives (ROMs, CHDs and Samples)...'
-    pDialog.startProgress(dial_line, len(machines_render))
-    for key in sorted(machines_render):
+    pDialog.startProgress(dial_line, len(renders))
+    for key in sorted(renders):
         pDialog.updateProgressInc()
 
         # --- Initialise machine ---
         # log_info('mame_scan_MAME_ROMs() Checking machine {}'.format(key))
-        if machines_render[key]['isDevice']: continue # Skip Devices
+        if renders[key]['isDevice']: continue # Skip Devices
         m_have_str_list = []
         m_miss_str_list = []
 
@@ -7170,7 +7196,7 @@ def mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
                 ROM_flag = 'r'
         else:
             ROM_flag = '-'
-        fs_set_ROM_flag(assets_dic[key], ROM_flag)
+        fs_set_ROM_flag(assets[key], ROM_flag)
 
         # --- Samples ---
         sample_list = machine_archives_dic[key]['Samples']
@@ -7196,7 +7222,7 @@ def mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
             Sample_flag = 's'
         else:
             Sample_flag = '-'
-        fs_set_Sample_flag(assets_dic[key], Sample_flag)
+        fs_set_Sample_flag(assets[key], Sample_flag)
 
         # --- Disks ---
         # Machines with CHDs: 2spicy, sfiii2
@@ -7228,13 +7254,13 @@ def mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
             CHD_flag = 'c'
         else:
             CHD_flag = '-'
-        fs_set_CHD_flag(assets_dic[key], CHD_flag)
+        fs_set_CHD_flag(assets[key], CHD_flag)
 
         # Build FULL, HAVE and MISSING reports.
-        r_full_list.append('Machine {} "{}"'.format(key, machines_render[key]['description']))
-        if machines_render[key]['cloneof']:
-            cloneof = machines_render[key]['cloneof']
-            r_full_list.append('cloneof {} "{}"'.format(cloneof, machines_render[cloneof]['description']))
+        r_full_list.append('Machine {} "{}"'.format(key, renders[key]['description']))
+        if renders[key]['cloneof']:
+            cloneof = renders[key]['cloneof']
+            r_full_list.append('cloneof {} "{}"'.format(cloneof, renders[cloneof]['description']))
         if not rom_list and not sample_list and not chd_list:
             r_full_list.append('Machine has no ROMs, Samples and/or CHDs')
         else:
@@ -7244,20 +7270,20 @@ def mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
 
         # In the HAVE report include machines if and only if every required file is there.
         if m_have_str_list and not m_miss_str_list:
-            r_have_list.append('Machine {} "{}"'.format(key, machines_render[key]['description']))
-            if machines_render[key]['cloneof']:
-                cloneof = machines_render[key]['cloneof']
-                r_have_list.append('cloneof {} "{}"'.format(cloneof, machines_render[cloneof]['description']))
+            r_have_list.append('Machine {} "{}"'.format(key, renders[key]['description']))
+            if renders[key]['cloneof']:
+                cloneof = renders[key]['cloneof']
+                r_have_list.append('cloneof {} "{}"'.format(cloneof, renders[cloneof]['description']))
             r_have_list.extend(m_have_str_list)
             r_have_list.extend(m_miss_str_list)
             r_have_list.append('')
 
         # In the MISSING report include machines if anything is missing.
         if m_miss_str_list:
-            r_miss_list.append('Machine {} "{}"'.format(key, machines_render[key]['description']))
-            if machines_render[key]['cloneof']:
-                cloneof = machines_render[key]['cloneof']
-                r_miss_list.append('cloneof {} "{}"'.format(cloneof, machines_render[cloneof]['description']))
+            r_miss_list.append('Machine {} "{}"'.format(key, renders[key]['description']))
+            if renders[key]['cloneof']:
+                cloneof = renders[key]['cloneof']
+                r_miss_list.append('cloneof {} "{}"'.format(cloneof, renders[cloneof]['description']))
             r_miss_list.extend(m_have_str_list)
             r_miss_list.extend(m_miss_str_list)
             r_miss_list.append('')
@@ -7330,7 +7356,7 @@ def mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
         'MAME CHD path     "{}"'.format(CHD_path_str),
         '',
     ]
-    pDialog.startProgress('Scanning MAME ROM ZIPs...', len(machines_render))
+    pDialog.startProgress('Scanning MAME ROM ZIPs...', len(ROM_ZIP_list))
     for rom_name in ROM_ZIP_list:
         pDialog.updateProgressInc()
         scan_ROM_ZIP_files_total += 1
@@ -7360,7 +7386,7 @@ def mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
         'MAME CHD path     "{}"'.format(CHD_path_str),
         '',
     ]
-    pDialog.startProgress('Scanning MAME Sample ZIPs...', len(machines_render))
+    pDialog.startProgress('Scanning MAME Sample ZIPs...', len(Sample_ZIP_list))
     for sample_name in Sample_ZIP_list:
         pDialog.updateProgressInc()
         scan_Samples_ZIP_total += 1
@@ -7390,7 +7416,7 @@ def mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
         'MAME CHD path     "{}"'.format(CHD_path_str),
         '',
     ]
-    pDialog.startProgress('Scanning MAME CHDs...', len(machines_render))
+    pDialog.startProgress('Scanning MAME CHDs...', len(CHD_list))
     for chd_name in CHD_list:
         pDialog.updateProgressInc()
         scan_CHD_files_total += 1
@@ -7432,254 +7458,25 @@ def mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
 
     # --- Save databases ---
     db_files = [
-        [assets_dic, 'MAME machine assets', cfg.MAIN_ASSETS_DB_PATH.getPath()],
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
+        [assets, 'MAME machine assets', cfg.ASSETS_DB_PATH.getPath()],
     ]
     db_dic = db_save_files(db_files)
-
-# -------------------------------------------------------------------------------------------------
-#
-# Checks for errors before scanning for SL ROMs.
-# Display a Kodi dialog if an error is found.
-# Returns a dictionary of settings:
-# options_dic['abort'] is always present.
-# options_dic['scan_SL_CHDs'] scanning of CHDs is optional.
-#
-def mame_check_before_scan_SL_ROMs(cfg, st_dic, options_dic, control_dic):
-    kodi_reset_status(st_dic)
-
-    # Abort if SL hash path not configured.
-    if not settings['SL_hash_path']:
-        kodi_set_error_status(st_dic, 'Software Lists hash path not set. Scanning aborted.')
-        return
-
-    # Abort if SL ROM dir not configured.
-    if not settings['SL_rom_path']:
-        kodi_set_error_status(st_dic, 'Software Lists ROM path not set. Scanning aborted.')
-        return
-
-    # SL CHDs scanning is optional
-    if settings['SL_chd_path']:
-        SL_CHD_path_FN = FileName(settings['SL_chd_path'])
-        if not SL_CHD_path_FN.isdir():
-            kodi_dialog_OK('SL CHD directory does not exist. SL CHD scanning disabled.')
-            options_dic['scan_SL_CHDs'] = False
-        else:
-            options_dic['scan_SL_CHDs'] = True
-    else:
-        kodi_dialog_OK('SL CHD directory not configured. SL CHD scanning disabled.')
-        options_dic['scan_SL_CHDs'] = False
-
-# Saves SL JSON databases, MAIN_CONTROL_PATH.
-def mame_scan_SL_ROMs(cfg, control_dic, options_dic, SL_catalog_dic):
-    log_info('mame_scan_SL_ROMs() Starting...')
-
-    # Paths have been verified at this point
-    SL_hash_dir_FN = cfg.SL_DB_DIR
-    log_info('mame_scan_SL_ROMs() SL hash dir OP {}'.format(SL_hash_dir_FN.getOriginalPath()))
-    log_info('mame_scan_SL_ROMs() SL hash dir  P {}'.format(SL_hash_dir_FN.getPath()))
-
-    SL_ROM_dir_FN = FileName(settings['SL_rom_path'])
-    log_info('mame_scan_SL_ROMs() SL ROM dir OP {}'.format(SL_ROM_dir_FN.getOriginalPath()))
-    log_info('mame_scan_SL_ROMs() SL ROM dir  P {}'.format(SL_ROM_dir_FN.getPath()))
-
-    if options_dic['scan_SL_CHDs']:
-        SL_CHD_path_FN = FileName(settings['SL_chd_path'])
-        log_info('mame_scan_SL_ROMs() SL CHD dir OP {}'.format(SL_CHD_path_FN.getOriginalPath()))
-        log_info('mame_scan_SL_ROMs() SL CHD dir  P {}'.format(SL_CHD_path_FN.getPath()))
-    else:
-        SL_CHD_path_FN = FileName('')
-        log_info('Scan of SL CHDs disabled.')
-
-    # --- Add files to cache ---
-    SL_ROM_path_str = SL_ROM_dir_FN.getPath()
-    SL_CHD_path_str = SL_CHD_path_FN.getPath()
-    pDialog = KodiProgressDialog()
-    d_text = 'Listing Sofware Lists ROM ZIPs and CHDs...'
-    pDialog.startProgress('{}\n{}'.format(d_text, 'Listing SL ROM ZIP path'), 2)
-    utils_file_cache_clear()
-    utils_file_cache_add_dir(SL_ROM_path_str, verbose = True)
-    pDialog.updateProgress(1, '{}\n{}'.format(d_text, 'Listing SL CHD path'))
-    utils_file_cache_add_dir(SL_CHD_path_str, verbose = True)
-    pDialog.endProgress()
-
-    # --- SL ROM ZIP archives and CHDs ---
-    # Traverse the Software Lists, check if ROMs ZIPs and CHDs exists for every SL item, 
-    # update and save database.
-    SL_ROMs_have = 0
-    SL_ROMs_missing = 0
-    SL_ROMs_total = 0
-    SL_CHDs_have = 0
-    SL_CHDs_missing = 0
-    SL_CHDs_total = 0
-    r_all_list = []
-    r_have_list = []
-    r_miss_list = []
-    d_text = 'Scanning Sofware Lists ROM ZIPs and CHDs ...'
-    pDialog.startProgress(d_text, len(SL_catalog_dic))
-    for SL_name in sorted(SL_catalog_dic):
-        pDialog.updateProgressInc('{}\nSoftware List {}'.format(d_text, SL_name))
-
-        # Load SL databases
-        SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_items.json')
-        SL_SOFT_ARCHIVES_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_ROM_archives.json')
-        sl_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
-        soft_archives = utils_load_JSON_file_dic(SL_SOFT_ARCHIVES_DB_FN.getPath(), verbose = False)
-
-        # Scan
-        for rom_key in sorted(sl_roms):
-            m_have_str_list = []
-            m_miss_str_list = []
-            rom = sl_roms[rom_key]
-
-            # --- ROMs ---
-            rom_list = soft_archives[rom_key]['ROMs']
-            if rom_list:
-                have_rom_list = [False] * len(rom_list)
-                for i, rom_file in enumerate(rom_list):
-                    SL_ROMs_total += 1
-                    SL_ROM_FN = utils_file_cache_search(SL_ROM_path_str, rom_file, SL_ROM_EXTS)
-                    # ROM_path = SL_ROM_path_str + '/' + rom_file
-                    if SL_ROM_FN:
-                        have_rom_list[i] = True
-                        m_have_str_list.append('HAVE ROM {}'.format(rom_file))
-                    else:
-                        m_miss_str_list.append('MISS ROM {}'.format(rom_file))
-                if all(have_rom_list):
-                    rom['status_ROM'] = 'R'
-                    SL_ROMs_have += 1
-                else:
-                    rom['status_ROM'] = 'r'
-                    SL_ROMs_missing += 1
-            else:
-                rom['status_ROM'] = '-'
-
-            # --- Disks ---
-            chd_list = soft_archives[rom_key]['CHDs']
-            if chd_list:
-                if options_dic['scan_SL_CHDs']:
-                    SL_CHDs_total += 1
-                    has_chd_list = [False] * len(chd_list)
-                    for idx, chd_file in enumerate(chd_list):
-                        SL_CHD_FN = utils_file_cache_search(SL_CHD_path_str, chd_file, SL_CHD_EXTS)
-                        # CHD_path = SL_CHD_path_str + '/' + chd_file
-                        if SL_CHD_FN:
-                            has_chd_list[idx] = True
-                            m_have_str_list.append('HAVE CHD {}'.format(chd_file))
-                        else:
-                            m_miss_str_list.append('MISS CHD {}'.format(chd_file))
-                    if all(has_chd_list):
-                        rom['status_CHD'] = 'C'
-                        SL_CHDs_have += 1
-                    else:
-                        rom['status_CHD'] = 'c'
-                        SL_CHDs_missing += 1
-                else:
-                    rom['status_CHD'] = 'c'
-                    SL_CHDs_missing += 1
-            else:
-                rom['status_CHD'] = '-'
-
-            # --- Build report ---
-            description = sl_roms[rom_key]['description']
-            clone_name = sl_roms[rom_key]['cloneof']
-            r_all_list.append('SL {} item {} "{}"'.format(SL_name, rom_key, description))
-            if clone_name:
-                clone_description = sl_roms[clone_name]['description']
-                r_all_list.append('cloneof {} "{}"'.format(clone_name, clone_description))
-            if m_have_str_list:
-                r_all_list.extend(m_have_str_list)
-            if m_miss_str_list:
-                r_all_list.extend(m_miss_str_list)
-            r_all_list.append('')
-
-            if m_have_str_list:
-                r_have_list.append('SL {} item {} "{}"'.format(SL_name, rom_key, description))
-                if clone_name:
-                    r_have_list.append('cloneof {} "{}"'.format(clone_name, clone_description))
-                r_have_list.extend(m_have_str_list)
-                if m_miss_str_list: r_have_list.extend(m_miss_str_list)
-                r_have_list.append('')
-
-            if m_miss_str_list:
-                r_miss_list.append('SL {} item {} "{}"'.format(SL_name, rom_key, description))
-                if clone_name:
-                    r_miss_list.append('cloneof {} "{}"'.format(clone_name, clone_description))
-                r_miss_list.extend(m_miss_str_list)
-                if m_have_str_list: r_miss_list.extend(m_have_str_list)
-                r_miss_list.append('')
-        # Save SL database to update flags and update progress.
-        utils_write_JSON_file(SL_DB_FN.getPath(), sl_roms, verbose = False)
-    pDialog.endProgress()
-
-    # Write SL scanner reports
-    reports_total = 3
-    pDialog.startProgress('Writing scanner reports...', reports_total)
-    log_info('Writing SL ROM ZIPs/CHDs FULL report')
-    log_info('Report file "{}"'.format(cfg.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
-    sl = [
-        '*** Advanced MAME Launcher Software Lists scanner report ***',
-        'This report shows all the scanned SL items',
-        '',
-    ]
-    sl.extend(r_all_list)
-    utils_write_slist_to_file(cfg.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), sl)
-
-    pDialog.updateProgressInc()
-    log_info('Writing SL ROM ZIPs and/or CHDs HAVE report')
-    log_info('Report file "{}"'.format(cfg.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
-    sl = [
-        '*** Advanced MAME Launcher Software Lists scanner report ***',
-        'This reports shows the SL items with ROM ZIPs and/or CHDs with HAVE status',
-        '',
-    ]
-    if r_have_list:
-        sl.extend(r_have_list)
-    else:
-        sl.append('You do not have any ROM ZIP or CHD files!')
-    utils_write_slist_to_file(cfg.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), sl)
-
-    pDialog.updateProgressInc()
-    log_info('Writing SL ROM ZIPs/CHDs MISS report')
-    log_info('Report file "{}"'.format(cfg.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
-    sl = [
-        '*** Advanced MAME Launcher Software Lists scanner report ***',
-        'This reports shows the SL items with ROM ZIPs and/or CHDs with MISSING status',
-        '',
-    ]
-    if r_miss_list:
-        sl.extend(r_miss_list)
-    else:
-        sl.append('Congratulations! No missing SL ROM ZIP or CHD files.')
-    utils_write_slist_to_file(cfg.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), sl)
-    pDialog.endProgress()
-
-    # Update statistics, timestamp and save control_dic.
-    db_safe_edit(control_dic, 'scan_SL_archives_ROM_total', SL_ROMs_total)
-    db_safe_edit(control_dic, 'scan_SL_archives_ROM_have', SL_ROMs_have)
-    db_safe_edit(control_dic, 'scan_SL_archives_ROM_missing', SL_ROMs_missing)
-    db_safe_edit(control_dic, 'scan_SL_archives_CHD_total', SL_CHDs_total)
-    db_safe_edit(control_dic, 'scan_SL_archives_CHD_have', SL_CHDs_have)
-    db_safe_edit(control_dic, 'scan_SL_archives_CHD_missing', SL_CHDs_missing)
-    db_safe_edit(control_dic, 't_SL_ROMs_scan', time.time())
-    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 #
 # Checks for errors before scanning for SL assets.
 # Caller function displays a Kodi dialog if an error is found and scanning must be aborted.
 #
-def mame_check_before_scan_MAME_assets(cfg, st_dic, options_dic, control_dic):
+def mame_check_before_scan_MAME_assets(cfg, st_dic, control_dic):
     kodi_reset_status(st_dic)
 
     # Get assets directory. Abort if not configured/found.
     if not cfg.settings['assets_path']:
-        options_dic['abort'] = 'MAME asset directory not configured. Aborting.'
-        options_dic['abort'] = True
+        kodi_set_error_status(st_dic, 'MAME asset directory not configured. Aborting.')
         return
     Asset_path_FN = FileName(cfg.settings['assets_path'])
     if not Asset_path_FN.isdir():
-        options_dic['abort'] = 'MAME asset directory does not exist. Aborting.'
-        options_dic['abort'] = True
+        kodi_set_error_status(st_dic, 'MAME asset directory does not exist. Aborting.')
         return
 
 #
@@ -7690,8 +7487,13 @@ def mame_check_before_scan_MAME_assets(cfg, st_dic, options_dic, control_dic):
 #   A) A clone may use assets from parent.
 #   B) A parent may use assets from a clone.
 #
-def mame_scan_MAME_assets(cfg, st_dic, control_dic, assets_dic, machines_render, main_pclone_dic):
-    Asset_path_FN = FileName(settings['assets_path'])
+def mame_scan_MAME_assets(cfg, st_dic, db_dic_in):
+    control_dic = db_dic_in['control_dic']
+    machines_render = db_dic_in['render']
+    assets_dic = db_dic_in['assets']
+    main_pclone_dic = db_dic_in['main_pclone_dic']
+
+    Asset_path_FN = FileName(cfg.settings['assets_path'])
     log_info('mame_scan_MAME_assets() Asset path {}'.format(Asset_path_FN.getPath()))
 
     # Iterate machines, check if assets/artwork exist.
@@ -7888,9 +7690,243 @@ def mame_scan_MAME_assets(cfg, st_dic, control_dic, assets_dic, machines_render,
     # --- Save databases ---
     db_files = [
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
-        [assets_dic, 'MAME machine assets', cfg.MAIN_ASSETS_DB_PATH.getPath()],
+        [assets_dic, 'MAME machine assets', cfg.ASSETS_DB_PATH.getPath()],
     ]
     db_dic = db_save_files(db_files)
+
+# -------------------------------------------------------------------------------------------------
+#
+# Checks for errors before scanning for SL ROMs.
+# Display a Kodi dialog if an error is found.
+# Returns a dictionary of settings:
+# options_dic['abort'] is always present.
+# options_dic['scan_SL_CHDs'] scanning of CHDs is optional.
+#
+def mame_check_before_scan_SL_ROMs(cfg, st_dic, options_dic, control_dic):
+    kodi_reset_status(st_dic)
+
+    # Abort if SL are globally disabled.
+    if not cfg.settings['global_enable_SL']:
+        kodi_set_error_status(st_dic, 'Software Lists globally disabled. SL ROM scanning aborted.')
+        return
+
+    # Abort if SL hash path not configured.
+    if not cfg.settings['SL_hash_path']:
+        kodi_set_error_status(st_dic, 'Software Lists hash path not set. SL ROM scanning aborted.')
+        return
+
+    # Abort if SL ROM dir not configured.
+    if not cfg.settings['SL_rom_path']:
+        kodi_set_error_status(st_dic, 'Software Lists ROM path not set. SL ROM scanning aborted.')
+        return
+
+    # SL CHDs scanning is optional
+    if cfg.settings['SL_chd_path']:
+        SL_CHD_path_FN = FileName(cfg.settings['SL_chd_path'])
+        if not SL_CHD_path_FN.isdir():
+            kodi_dialog_OK('SL CHD directory does not exist. SL CHD scanning disabled.')
+            options_dic['scan_SL_CHDs'] = False
+        else:
+            options_dic['scan_SL_CHDs'] = True
+    else:
+        kodi_dialog_OK('SL CHD directory not configured. SL CHD scanning disabled.')
+        options_dic['scan_SL_CHDs'] = False
+
+# Saves SL JSON databases, MAIN_CONTROL_PATH.
+def mame_scan_SL_ROMs(cfg, st_dic, options_dic, SL_dic):
+    log_info('mame_scan_SL_ROMs() Starting...')
+    control_dic = SL_dic['control_dic']
+    SL_index_dic = SL_dic['SL_index']
+
+    # Paths have been verified at this point
+    SL_hash_dir_FN = cfg.SL_DB_DIR
+    log_info('mame_scan_SL_ROMs() SL hash dir OP {}'.format(SL_hash_dir_FN.getOriginalPath()))
+    log_info('mame_scan_SL_ROMs() SL hash dir  P {}'.format(SL_hash_dir_FN.getPath()))
+
+    SL_ROM_dir_FN = FileName(cfg.settings['SL_rom_path'])
+    log_info('mame_scan_SL_ROMs() SL ROM dir OP {}'.format(SL_ROM_dir_FN.getOriginalPath()))
+    log_info('mame_scan_SL_ROMs() SL ROM dir  P {}'.format(SL_ROM_dir_FN.getPath()))
+
+    if options_dic['scan_SL_CHDs']:
+        SL_CHD_path_FN = FileName(cfg.settings['SL_chd_path'])
+        log_info('mame_scan_SL_ROMs() SL CHD dir OP {}'.format(SL_CHD_path_FN.getOriginalPath()))
+        log_info('mame_scan_SL_ROMs() SL CHD dir  P {}'.format(SL_CHD_path_FN.getPath()))
+    else:
+        SL_CHD_path_FN = FileName('')
+        log_info('Scan of SL CHDs disabled.')
+
+    # --- Add files to cache ---
+    SL_ROM_path_str = SL_ROM_dir_FN.getPath()
+    SL_CHD_path_str = SL_CHD_path_FN.getPath()
+    pDialog = KodiProgressDialog()
+    d_text = 'Listing Sofware Lists ROM ZIPs and CHDs...'
+    pDialog.startProgress('{}\n{}'.format(d_text, 'Listing SL ROM ZIP path'), 2)
+    utils_file_cache_clear()
+    utils_file_cache_add_dir(SL_ROM_path_str, verbose = True)
+    pDialog.updateProgress(1, '{}\n{}'.format(d_text, 'Listing SL CHD path'))
+    utils_file_cache_add_dir(SL_CHD_path_str, verbose = True)
+    pDialog.endProgress()
+
+    # --- SL ROM ZIP archives and CHDs ---
+    # Traverse the Software Lists, check if ROMs ZIPs and CHDs exists for every SL item, 
+    # update and save database.
+    SL_ROMs_have = 0
+    SL_ROMs_missing = 0
+    SL_ROMs_total = 0
+    SL_CHDs_have = 0
+    SL_CHDs_missing = 0
+    SL_CHDs_total = 0
+    r_all_list = []
+    r_have_list = []
+    r_miss_list = []
+    d_text = 'Scanning Sofware Lists ROM ZIPs and CHDs ...'
+    pDialog.startProgress(d_text, len(SL_index_dic))
+    for SL_name in sorted(SL_index_dic):
+        pDialog.updateProgressInc('{}\nSoftware List [COLOR orange]{}[/COLOR]'.format(d_text, SL_name))
+
+        # Load SL databases
+        SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_items.json')
+        SL_SOFT_ARCHIVES_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_ROM_archives.json')
+        sl_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+        soft_archives = utils_load_JSON_file_dic(SL_SOFT_ARCHIVES_DB_FN.getPath(), verbose = False)
+
+        # Scan
+        for rom_key in sorted(sl_roms):
+            m_have_str_list = []
+            m_miss_str_list = []
+            rom = sl_roms[rom_key]
+
+            # --- ROMs ---
+            rom_list = soft_archives[rom_key]['ROMs']
+            if rom_list:
+                have_rom_list = [False] * len(rom_list)
+                for i, rom_file in enumerate(rom_list):
+                    SL_ROMs_total += 1
+                    SL_ROM_FN = utils_file_cache_search(SL_ROM_path_str, rom_file, SL_ROM_EXTS)
+                    # ROM_path = SL_ROM_path_str + '/' + rom_file
+                    if SL_ROM_FN:
+                        have_rom_list[i] = True
+                        m_have_str_list.append('HAVE ROM {}'.format(rom_file))
+                    else:
+                        m_miss_str_list.append('MISS ROM {}'.format(rom_file))
+                if all(have_rom_list):
+                    rom['status_ROM'] = 'R'
+                    SL_ROMs_have += 1
+                else:
+                    rom['status_ROM'] = 'r'
+                    SL_ROMs_missing += 1
+            else:
+                rom['status_ROM'] = '-'
+
+            # --- Disks ---
+            chd_list = soft_archives[rom_key]['CHDs']
+            if chd_list:
+                if options_dic['scan_SL_CHDs']:
+                    SL_CHDs_total += 1
+                    has_chd_list = [False] * len(chd_list)
+                    for idx, chd_file in enumerate(chd_list):
+                        SL_CHD_FN = utils_file_cache_search(SL_CHD_path_str, chd_file, SL_CHD_EXTS)
+                        # CHD_path = SL_CHD_path_str + '/' + chd_file
+                        if SL_CHD_FN:
+                            has_chd_list[idx] = True
+                            m_have_str_list.append('HAVE CHD {}'.format(chd_file))
+                        else:
+                            m_miss_str_list.append('MISS CHD {}'.format(chd_file))
+                    if all(has_chd_list):
+                        rom['status_CHD'] = 'C'
+                        SL_CHDs_have += 1
+                    else:
+                        rom['status_CHD'] = 'c'
+                        SL_CHDs_missing += 1
+                else:
+                    rom['status_CHD'] = 'c'
+                    SL_CHDs_missing += 1
+            else:
+                rom['status_CHD'] = '-'
+
+            # --- Build report ---
+            description = sl_roms[rom_key]['description']
+            clone_name = sl_roms[rom_key]['cloneof']
+            r_all_list.append('SL {} item {} "{}"'.format(SL_name, rom_key, description))
+            if clone_name:
+                clone_description = sl_roms[clone_name]['description']
+                r_all_list.append('cloneof {} "{}"'.format(clone_name, clone_description))
+            if m_have_str_list:
+                r_all_list.extend(m_have_str_list)
+            if m_miss_str_list:
+                r_all_list.extend(m_miss_str_list)
+            r_all_list.append('')
+
+            if m_have_str_list:
+                r_have_list.append('SL {} item {} "{}"'.format(SL_name, rom_key, description))
+                if clone_name:
+                    r_have_list.append('cloneof {} "{}"'.format(clone_name, clone_description))
+                r_have_list.extend(m_have_str_list)
+                if m_miss_str_list: r_have_list.extend(m_miss_str_list)
+                r_have_list.append('')
+
+            if m_miss_str_list:
+                r_miss_list.append('SL {} item {} "{}"'.format(SL_name, rom_key, description))
+                if clone_name:
+                    r_miss_list.append('cloneof {} "{}"'.format(clone_name, clone_description))
+                r_miss_list.extend(m_miss_str_list)
+                if m_have_str_list: r_miss_list.extend(m_have_str_list)
+                r_miss_list.append('')
+        # Save SL database to update flags and update progress.
+        utils_write_JSON_file(SL_DB_FN.getPath(), sl_roms, verbose = False)
+    pDialog.endProgress()
+
+    # Write SL scanner reports
+    reports_total = 3
+    pDialog.startProgress('Writing scanner reports...', reports_total)
+    log_info('Writing SL ROM ZIPs/CHDs FULL report')
+    log_info('Report file "{}"'.format(cfg.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
+    sl = [
+        '*** Advanced MAME Launcher Software Lists scanner report ***',
+        'This report shows all the scanned SL items',
+        '',
+    ]
+    sl.extend(r_all_list)
+    utils_write_slist_to_file(cfg.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), sl)
+
+    pDialog.updateProgressInc()
+    log_info('Writing SL ROM ZIPs and/or CHDs HAVE report')
+    log_info('Report file "{}"'.format(cfg.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
+    sl = [
+        '*** Advanced MAME Launcher Software Lists scanner report ***',
+        'This reports shows the SL items with ROM ZIPs and/or CHDs with HAVE status',
+        '',
+    ]
+    if r_have_list:
+        sl.extend(r_have_list)
+    else:
+        sl.append('You do not have any ROM ZIP or CHD files!')
+    utils_write_slist_to_file(cfg.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), sl)
+
+    pDialog.updateProgressInc()
+    log_info('Writing SL ROM ZIPs/CHDs MISS report')
+    log_info('Report file "{}"'.format(cfg.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
+    sl = [
+        '*** Advanced MAME Launcher Software Lists scanner report ***',
+        'This reports shows the SL items with ROM ZIPs and/or CHDs with MISSING status',
+        '',
+    ]
+    if r_miss_list:
+        sl.extend(r_miss_list)
+    else:
+        sl.append('Congratulations! No missing SL ROM ZIP or CHD files.')
+    utils_write_slist_to_file(cfg.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), sl)
+    pDialog.endProgress()
+
+    # Update statistics, timestamp and save control_dic.
+    db_safe_edit(control_dic, 'scan_SL_archives_ROM_total', SL_ROMs_total)
+    db_safe_edit(control_dic, 'scan_SL_archives_ROM_have', SL_ROMs_have)
+    db_safe_edit(control_dic, 'scan_SL_archives_ROM_missing', SL_ROMs_missing)
+    db_safe_edit(control_dic, 'scan_SL_archives_CHD_total', SL_CHDs_total)
+    db_safe_edit(control_dic, 'scan_SL_archives_CHD_have', SL_CHDs_have)
+    db_safe_edit(control_dic, 'scan_SL_archives_CHD_missing', SL_CHDs_missing)
+    db_safe_edit(control_dic, 't_SL_ROMs_scan', time.time())
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 #
 # Checks for errors before scanning for SL assets.
@@ -7900,20 +7936,28 @@ def mame_scan_MAME_assets(cfg, st_dic, control_dic, assets_dic, machines_render,
 def mame_check_before_scan_SL_assets(cfg, st_dic, control_dic):
     kodi_reset_status(st_dic)
 
+    # Abort if SL are globally disabled.
+    if not cfg.settings['global_enable_SL']:
+        kodi_set_error_status(st_dic, 'Software Lists globally disabled. SL ROM scanning aborted.')
+        return
+
     # Get assets directory. Abort if not configured/found.
-    if not settings['assets_path']:
+    if not cfg.settings['assets_path']:
         kodi_set_error_status(st_dic, 'Asset directory not configured. Aborting.')
         return
-    Asset_path_FN = FileName(settings['assets_path'])
+    Asset_path_FN = FileName(cfg.settings['assets_path'])
     if not Asset_path_FN.isdir():
         kodi_set_error_status(st_dic, 'Asset directory does not exist. Aborting.')
         return
 
-def mame_scan_SL_assets(cfg, st_dic, control_dic, SL_index_dic, SL_pclone_dic):
+def mame_scan_SL_assets(cfg, st_dic, SL_dic):
     log_debug('mame_scan_SL_assets() Starting...')
+    control_dic = SL_dic['control_dic']
+    SL_index_dic = SL_dic['SL_index']
+    SL_pclone_dic = SL_dic['SL_PClone_dic']
 
     # At this point assets_path is configured and the directory exists.
-    Asset_path_FN = FileName(settings['assets_path'])
+    Asset_path_FN = FileName(cfg.settings['assets_path'])
     log_info('mame_scan_SL_assets() SL asset path {}'.format(Asset_path_FN.getPath()))
 
     # --- Traverse Software List, check if ROM exists, update and save database ---
@@ -7932,7 +7976,7 @@ def mame_scan_SL_assets(cfg, st_dic, control_dic, SL_index_dic, SL_pclone_dic):
     pDialog = KodiProgressDialog()
     pDialog.startProgress(d_text, len(SL_index_dic))
     for SL_name in sorted(SL_index_dic):
-        pDialog.updateProgressInc('{}\nSoftware List {}'.format(d_text, SL_name))
+        pDialog.updateProgressInc('{}\nSoftware List [COLOR orange]{}[/COLOR]'.format(d_text, SL_name))
 
         # --- Load SL databases ---
         file_name = SL_index_dic[SL_name]['rom_DB_noext'] + '_items.json'
@@ -8034,6 +8078,7 @@ def mame_scan_SL_assets(cfg, st_dic, control_dic, SL_index_dic, SL_pclone_dic):
     Fan  = (have_count_list[4], SL_item_count - have_count_list[4], alternate_count_list[4])
     Tra  = (have_count_list[5], SL_item_count - have_count_list[5], alternate_count_list[5])
     Man  = (have_count_list[6], SL_item_count - have_count_list[6], alternate_count_list[6])
+    pDialog.startProgress('Creating SL asset report...')
     report_slist = []
     report_slist.append('*** Advanced MAME Launcher Software List asset scanner report ***')
     report_slist.append('Total SL items {}'.format(SL_item_count))
@@ -8048,7 +8093,6 @@ def mame_scan_SL_assets(cfg, st_dic, control_dic, SL_index_dic, SL_pclone_dic):
     table_str_list = text_render_table_str(table_str)
     report_slist.extend(table_str_list)
     log_info('Writing SL asset report file "{}"'.format(cfg.REPORT_SL_ASSETS_PATH.getPath()))
-    pDialog.startProgress('Creating SL asset report...')
     utils_write_slist_to_file(cfg.REPORT_SL_ASSETS_PATH.getPath(), report_slist)
     pDialog.endProgress()
 

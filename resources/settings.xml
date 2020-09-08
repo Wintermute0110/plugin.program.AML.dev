@@ -1,19 +1,19 @@
 <settings>
 <category label="Main operation">
     <setting label="Mode" type="enum" id="op_mode_raw" default="0" values="Vanilla MAME|Retroarch MAME 2003 Plus" />
+    <setting label="MAME ROMs path" type="folder" id="rom_path" source="" />
 
-    <setting id="separator" type="lsep" label="Vanilla MAME" />
+    <setting id="separator" type="lsep" label="Vanilla MAME settings" />
     <setting label="Enable Software Lists" type="bool" id="enable_SL" default="true" />
     <setting label="MAME executable path" type="file" id="mame_prog" />
     <setting label="Software Lists hash path" type="folder" id="SL_hash_path" source="" />
 
-    <setting id="separator" type="lsep" label="Retroarch MAME 2003 Plus" />
+    <setting id="separator" type="lsep" label="Retroarch MAME 2003 Plus settings" />
     <setting label="Retroarch executable path" type="file" id="retroarch_prog" />
     <setting label="Libretro path" type="folder" id="libretro_dir" source="" />
     <setting label="MAME XML path" type="file" id="xml_2003_path" />
 </category>
 <category label="Optional paths">
-    <setting label="MAME ROMs path" type="folder" id="rom_path" source="" />
     <setting label="MAME Assets path" type="folder" id="assets_path" source="" />
     <setting label="MAME INI/DAT path" type="folder" id="dats_path" source="" />
     <setting label="MAME CHDs path" type="folder" id="chd_path" source="" />
