@@ -7033,7 +7033,7 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
         # Fix this list of files!!!
         [SL_catalog_dic, 'Software Lists index', cfg.SL_INDEX_PATH.getPath()],
         [SL_PClone_dic, 'Software Lists P/Clone', cfg.SL_PCLONE_DIC_PATH.getPath()],
-        [SL_machines_dic, 'Software Lists Machines', cfg.SL_MACHINES_PATH.getPath()],
+        [SL_machines_dic, 'Software Lists machines', cfg.SL_MACHINES_PATH.getPath()],
         # Save control_dic after everything is saved.
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]

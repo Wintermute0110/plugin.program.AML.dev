@@ -1036,12 +1036,16 @@ def db_cache_get_key(catalog_name, category_name):
 
 def db_build_render_cache(cfg, control_dic, cache_index_dic, machines_render, force_build = False):
     log_info('db_build_render_cache() Initialising...')
-    if cfg.settings['debug_enable_MAME_render_cache'] and not force_build:
+    log_debug('debug_enable_MAME_render_cache is {}'.format(cfg.settings['debug_enable_MAME_render_cache']))
+    log_debug('force_build is {}'.format(force_build))
+    if not cfg.settings['debug_enable_MAME_render_cache'] and not force_build:
         log_info('db_build_render_cache() Render cache disabled.')
         return
     # Notify user this is a forced build.
-    if cfg.settings['debug_enable_MAME_render_cache'] and force_build:
-        kodi_dialog_OK('MAME render cache disabled but force rebuilding.')
+    if not cfg.settings['debug_enable_MAME_render_cache'] and force_build:
+        t = 'MAME render cache disabled but force rebuilding.'
+        log_info(t)
+        kodi_dialog_OK(t)
 
     # --- Clean 'cache' directory JSON ROM files ---
     log_info('Cleaning dir "{}"'.format(cfg.CACHE_DIR.getPath()))
@@ -1101,12 +1105,16 @@ def db_get_render_cache_row(cfg, cache_index_dic, catalog_name, category_name):
 # -------------------------------------------------------------------------------------------------
 def db_build_asset_cache(cfg, control_dic, cache_index_dic, assets_dic, force_build = False):
     log_info('db_build_asset_cache() Initialising...')
-    if cfg.settings['debug_enable_MAME_asset_cache'] and not force_build:
+    log_debug('debug_enable_MAME_asset_cache is {}'.format(cfg.settings['debug_enable_MAME_asset_cache']))
+    log_debug('force_build is {}'.format(force_build))
+    if not cfg.settings['debug_enable_MAME_asset_cache'] and not force_build:
         log_info('db_build_asset_cache() Asset cache disabled.')
         return
     # Notify user this is a forced build.
-    if cfg.settings['debug_enable_MAME_render_cache'] and force_build:
-        kodi_dialog_OK('MAME asset cache disabled but force rebuilding.')
+    if not cfg.settings['debug_enable_MAME_render_cache'] and force_build:
+        t = 'MAME asset cache disabled but force rebuilding.'
+        log_info(t)
+        kodi_dialog_OK(t)
 
     # --- Clean 'cache' directory JSON Asset files ---
     log_info('Cleaning dir "{}"'.format(cfg.CACHE_DIR.getPath()))

@@ -2013,10 +2013,10 @@ def render_catalog_parent_list(cfg, catalog_name, category_name):
         assets_db_dic = fs_load_assets_all(cfg, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME asset cache disabled.')
-        assets_db_dic = utils_load_JSON_file_dic(cfg.MAIN_ASSETS_DB_PATH.getPath())
+        assets_db_dic = utils_load_JSON_file_dic(cfg.ASSETS_DB_PATH.getPath())
     l_assets_db_end = time.time()
     l_pclone_dic_start = time.time()
-    main_pclone_dic = utils_load_JSON_file_dic(cfg.MAIN_PCLONE_DIC_PATH.getPath())
+    main_pclone_dic = utils_load_JSON_file_dic(cfg.MAIN_PCLONE_DB_PATH.getPath())
     l_pclone_dic_end = time.time()
     l_favs_start = time.time()
     fav_machines = utils_load_JSON_file_dic(cfg.FAV_MACHINES_PATH.getPath())
@@ -5473,8 +5473,8 @@ def check_SL_DB_before_rendering_machines(cfg, control_dic):
 # -------------------------------------------------------------------------------------------------
 def command_context_setup_plugin(cfg):
     menu_item = xbmcgui.Dialog().select('Setup plugin', [
-        'All in one (Build, Scan, Plots, Filters)',
-        'All in one (Build, Scan, Plots, Filters, Audit)',
+        'All in one (Build DB, Scan, Plots, Filters)',
+        'All in one (Build DB, Scan, Plots, Filters, Audit)',
         'Build all databases',
         'Scan everything and build plots',
         'Build missing Fanarts and 3D boxes',
@@ -5589,15 +5589,11 @@ def command_context_setup_plugin(cfg):
             log_info('Custom XML filters not built.')
 
         # --- Regenerate MAME asset hashed database ---
-        fs_build_asset_hashed_db(g_PATHS, cfg.settings, control_dic, db_dic['assets'])
+        db_build_asset_hashed_db(cfg, control_dic, db_dic['assets'])
 
         # --- Regenerate MAME machine render and assets cache ---
-        if cfg.settings['debug_enable_MAME_render_cache']:
-            fs_build_render_cache(g_PATHS, cfg.settings, control_dic,
-                db_dic['cache_index'], db_dic['render'])
-        if cfg.settings['debug_enable_MAME_asset_cache']:
-            fs_build_asset_cache(g_PATHS, cfg.settings, control_dic,
-                db_dic['cache_index'], db_dic['assets'])
+        db_build_render_cache(cfg, control_dic, db_dic['cache_index'], db_dic['render'])
+        db_build_asset_cache(cfg, control_dic, db_dic['cache_index'], db_dic['assets'])
 
         if DO_AUDIT:
             # --- MAME audit ---
