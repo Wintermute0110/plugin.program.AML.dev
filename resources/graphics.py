@@ -310,8 +310,8 @@ SL_layout_assets = {
 # Rebuild Fanart for a given MAME machine.
 # Returns True if the Fanart was built succesfully, False if error.
 #
-def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
-    Fanart_FN, CANVAS_COLOR = (0, 0, 0), test_flag = False):
+def graphs_build_MAME_Fanart(cfg, layout, m_name, assets_dic, Fanart_FN,
+    CANVAS_COLOR = (0, 0, 0), test_flag = False):
     global font_mono
     global font_mono_debug
     canvas_size = (1920, 1080)
@@ -333,12 +333,12 @@ def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
     # --- If font object does not exists open font an cache it. ---
     if not font_mono:
         log_debug('graphs_build_MAME_Fanart() Creating font_mono object')
-        log_debug('graphs_build_MAME_Fanart() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout['MachineName']['fontsize'])
+        log_debug('graphs_build_MAME_Fanart() Loading "{}"'.format(cfg.MONO_FONT_PATH.getPath()))
+        font_mono = ImageFont.truetype(cfg.MONO_FONT_PATH.getPath(), layout['MachineName']['fontsize'])
     if not font_mono_debug:
         log_debug('graphs_build_MAME_Fanart() Creating font_mono_debug object')
-        log_debug('graphs_build_MAME_Fanart() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono_debug = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 44)
+        log_debug('graphs_build_MAME_Fanart() Loading "{}"'.format(cfg.MONO_FONT_PATH.getPath()))
+        font_mono_debug = ImageFont.truetype(cfg.MONO_FONT_PATH.getPath(), 44)
 
     # --- Create fanart canvas ---
     fanart_img = Image.new('RGB', canvas_size, canvas_bg_color)
@@ -416,8 +416,8 @@ def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
 # Rebuild Fanart for a given SL item
 # Returns True if the Fanart was built succesfully, False if error.
 #
-def graphs_build_SL_Fanart(PATHS, layout, SL_name, m_name, assets_dic,
-    Fanart_FN, CANVAS_COLOR = (0, 0, 0), test_flag = False):
+def graphs_build_SL_Fanart(cfg, layout, SL_name, m_name, assets_dic, Fanart_FN,
+    CANVAS_COLOR = (0, 0, 0), test_flag = False):
     global font_mono_SL
     global font_mono_item
     global font_mono_debug
@@ -440,16 +440,16 @@ def graphs_build_SL_Fanart(PATHS, layout, SL_name, m_name, assets_dic,
     # If font object does not exists open font an cache it.
     if not font_mono_SL:
         log_debug('graphs_build_SL_Fanart() Creating font_mono_SL object')
-        log_debug('graphs_build_SL_Fanart() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono_SL = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout['SLName']['fontsize'])
+        log_debug('graphs_build_SL_Fanart() Loading "{}"'.format(cfg.MONO_FONT_PATH.getPath()))
+        font_mono_SL = ImageFont.truetype(cfg.MONO_FONT_PATH.getPath(), layout['SLName']['fontsize'])
     if not font_mono_item:
         log_debug('graphs_build_SL_Fanart() Creating font_mono_item object')
-        log_debug('graphs_build_SL_Fanart() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono_item = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout['ItemName']['fontsize'])
+        log_debug('graphs_build_SL_Fanart() Loading "{}"'.format(cfg.MONO_FONT_PATH.getPath()))
+        font_mono_item = ImageFont.truetype(cfg.MONO_FONT_PATH.getPath(), layout['ItemName']['fontsize'])
     if not font_mono_debug:
         log_debug('graphs_build_SL_Fanart() Creating font_mono_debug object')
-        log_debug('graphs_build_SL_Fanart() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono_debug = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 44)
+        log_debug('graphs_build_SL_Fanart() Loading "{}"'.format(cfg.MONO_FONT_PATH.getPath()))
+        font_mono_debug = ImageFont.truetype(cfg.MONO_FONT_PATH.getPath(), 44)
 
     # --- Create fanart canvas ---
     fanart_img = Image.new('RGB', canvas_size, canvas_bg_color)
@@ -506,8 +506,8 @@ def graphs_build_SL_Fanart(PATHS, layout, SL_name, m_name, assets_dic,
 #
 # Builds a MAME or SL 3D Box.
 #
-def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
-    image_FN, CANVAS_COLOR = (0, 0, 0), test_flag = False):
+def graphs_build_MAME_3DBox(cfg, coord_dic, SL_name, m_name, assets_dic, image_FN,
+    CANVAS_COLOR = (0, 0, 0), test_flag = False):
     global font_mono
     global font_mono_debug
     FONT_SIZE = 90
@@ -516,17 +516,17 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
     CANVAS_BG_COLOR = (0, 0, 0)
     FRONTBOX_BG_COLOR = (200, 100, 100)
     SPINE_BG_COLOR = (100, 200, 100)
-    MAME_logo_FN = PATHS.ADDON_CODE_DIR.pjoin('media/MAME_clearlogo.png')
+    MAME_logo_FN = cfg.ADDON_CODE_DIR.pjoin('media/MAME_clearlogo.png')
 
     # --- If font object does not exists open font an cache it. ---
     if not font_mono:
         log_debug('graphs_build_MAME_3DBox() Creating font_mono object')
-        log_debug('graphs_build_MAME_3DBox() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 90)
+        log_debug('graphs_build_MAME_3DBox() Loading "{}"'.format(cfg.MONO_FONT_PATH.getPath()))
+        font_mono = ImageFont.truetype(cfg.MONO_FONT_PATH.getPath(), 90)
     if test_flag and not font_mono_debug:
         log_debug('graphs_build_MAME_3DBox() Creating font_mono_debug object')
-        log_debug('graphs_build_MAME_3DBox() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono_debug = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 40)
+        log_debug('graphs_build_MAME_3DBox() Loading "{}"'.format(cfg.MONO_FONT_PATH.getPath()))
+        font_mono_debug = ImageFont.truetype(cfg.MONO_FONT_PATH.getPath(), 40)
 
     # --- Open assets ---
     # MAME 3D Box requires Flyer and (Clearlogo or Marquee)
@@ -680,20 +680,20 @@ def graphs_load_MAME_Fanart_template(Template_FN):
 
 # Returns a dictionary with all the data necessary to build the fanarts.
 # The dictionary has the 'abort' field if an error was detected.
-def graphs_load_MAME_Fanart_stuff(PATHS, settings, BUILD_MISSING):
+def graphs_load_MAME_Fanart_stuff(cfg, BUILD_MISSING):
     data_dic = {
         'abort' : False,
         'BUILD_MISSING' : BUILD_MISSING,
     }
 
     # If artwork directory not configured abort.
-    if not settings['assets_path']:
+    if not cfg.settings['assets_path']:
         kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
         data_dic['abort'] = True
         return data_dic
 
     # --- If fanart directory doesn't exist create it ---
-    Asset_path_FN = FileName(settings['assets_path'])
+    Asset_path_FN = FileName(cfg.settings['assets_path'])
     Fanart_path_FN = Asset_path_FN.pjoin('fanarts')
     if not Fanart_path_FN.isdir():
         log_info('Creating MAME Fanart dir "{}"'.format(Fanart_path_FN.getPath()))
@@ -701,7 +701,7 @@ def graphs_load_MAME_Fanart_stuff(PATHS, settings, BUILD_MISSING):
     data_dic['Fanart_path_FN'] = Fanart_path_FN
 
     # --- Load Fanart template from XML file ---
-    Template_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
+    Template_FN = cfg.ADDON_CODE_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
     layout = graphs_load_MAME_Fanart_template(Template_FN)
     # log_debug(str(layout))
     if not layout:
@@ -714,14 +714,14 @@ def graphs_load_MAME_Fanart_stuff(PATHS, settings, BUILD_MISSING):
     # --- Load Assets DB ---
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Loading MAME asset database...')
-    assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+    assets_dic = utils_load_JSON_file_dic(cfg.ASSET_DB_PATH.getPath())
     pDialog.endProgress()
     data_dic['assets_dic'] = assets_dic
 
     return data_dic
 
 # Builds or rebuilds missing MAME Fanarts.
-def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
+def graphs_build_MAME_Fanart_all(cfg, data_dic):
     # Traverse all machines and build fanart from other pieces of artwork
     pDialog_canceled = False
     pDialog = KodiProgressDialog()
@@ -743,11 +743,11 @@ def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
                 data_dic['assets_dic'][m_name]['fanart'] = Fanart_FN.getPath()
                 build_OK_flag = False
             else:
-                build_OK_flag = graphs_build_MAME_Fanart(
-                    PATHS, data_dic['layout'], m_name, data_dic['assets_dic'], Fanart_FN)
+                build_OK_flag = graphs_build_MAME_Fanart(cfg,
+                    data_dic['layout'], m_name, data_dic['assets_dic'], Fanart_FN)
         else:
-            build_OK_flag = graphs_build_MAME_Fanart(
-                PATHS, data_dic['layout'], m_name, data_dic['assets_dic'], Fanart_FN)
+            build_OK_flag = graphs_build_MAME_Fanart(cfg,
+                data_dic['layout'], m_name, data_dic['assets_dic'], Fanart_FN)
         processed_machines += 1
         build_time_end = time.time()
         build_time = build_time_end - build_time_start
@@ -757,21 +757,20 @@ def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
 
     # Save assets DB
     pDialog.startProgress('Saving MAME asset database...')
-    fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), data_dic['assets_dic'])
+    utils_write_JSON_file(cfg.ASSET_DB_PATH.getPath(), data_dic['assets_dic'])
     pDialog.endProgress()
 
     # Update MAME Fanart build timestamp
-    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+    control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
     db_safe_edit(control_dic, 't_MAME_fanart_build', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     # assets_dic has changed. Rebuild hashed database.
-    fs_build_asset_hashed_db(PATHS, settings, control_dic, data_dic['assets_dic'])
+    db_build_asset_hashed_db(cfg, control_dic, data_dic['assets_dic'])
 
     # Rebuild MAME asset cache.
-    if settings['debug_enable_MAME_asset_cache']:
-        cache_index = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-        fs_build_asset_cache(PATHS, settings, control_dic, cache_index, data_dic['assets_dic'])
+    cache_index = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
+    db_build_asset_cache(cfg, control_dic, cache_index, data_dic['assets_dic'])
 
     # Inform user.
     if pDialog_canceled:
@@ -830,7 +829,7 @@ def graphs_load_SL_Fanart_template(Template_FN):
 
 # Returns a dictionary with all the data necessary to build the fanarts.
 # The dictionary has the 'abort' field if an error was detected.
-def graphs_load_SL_Fanart_stuff(PATHS, settings, BUILD_MISSING):
+def graphs_load_SL_Fanart_stuff(cfg, BUILD_MISSING):
     data_dic = {
         'abort' : False,
         'BUILD_MISSING' : BUILD_MISSING,
@@ -838,13 +837,13 @@ def graphs_load_SL_Fanart_stuff(PATHS, settings, BUILD_MISSING):
 
     # If artwork directory not configured abort.
     # SL Fanart directories are created later in graphs_build_SL_Fanart_all()
-    if not settings['assets_path']:
+    if not cfg.settings['assets_path']:
         kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
         data_dic['abort'] = True
         return
 
     # --- Load Fanart template from XML file ---
-    Template_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
+    Template_FN = cfg.ADDON_CODE_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
     layout = graphs_load_SL_Fanart_template(Template_FN)
     # log_debug(str(layout))
     if not layout:
@@ -855,14 +854,14 @@ def graphs_load_SL_Fanart_stuff(PATHS, settings, BUILD_MISSING):
         data_dic['layout'] = layout
 
     # --- Load SL index ---
-    SL_index = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
+    SL_index = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
     data_dic['SL_index'] = SL_index
 
     return data_dic
 
 # Builds or rebuilds missing SL Fanarts.
-def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
-    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+def graphs_build_SL_Fanart_all(cfg, data_dic):
+    control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
 
     # Traverse all SL and on each SL every item
     pDialog_canceled = False
@@ -878,7 +877,7 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
         pDialog.resetProgress(dtext)
 
         # If fanart directory doesn't exist create it.
-        Asset_path_FN = FileName(settings['assets_path'])
+        Asset_path_FN = FileName(cfg.settings['assets_path'])
         Fanart_path_FN = Asset_path_FN.pjoin('fanarts_SL/{}'.format(SL_name))
         if not Fanart_path_FN.isdir():
             log_info('Creating SL Fanart dir "{}"'.format(Fanart_path_FN.getPath()))
@@ -887,8 +886,8 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
         # Load Assets DB
         pDialog.resetProgress('{}\n{}'.format(dtext, 'Loading SL asset database'))
         assets_file_name =  data_dic['SL_index'][SL_name]['rom_DB_noext'] + '_assets.json'
-        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
-        SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
+        SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
+        SL_assets_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
 
         # Traverse all SL items and build fanart from other pieces of artwork
         # Last slot of the progress bar is to save the JSON database.
@@ -908,11 +907,11 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
                     SL_assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
                     build_OK_flag = False
                 else:
-                    build_OK_flag = graphs_build_SL_Fanart(
-                        PATHS, data_dic['layout'], SL_name, m_name, SL_assets_dic, Fanart_FN)
+                    build_OK_flag = graphs_build_SL_Fanart(cfg,
+                        data_dic['layout'], SL_name, m_name, SL_assets_dic, Fanart_FN)
             else:
-                build_OK_flag = graphs_build_SL_Fanart(
-                    PATHS, data_dic['layout'], SL_name, m_name, SL_assets_dic, Fanart_FN)
+                build_OK_flag = graphs_build_SL_Fanart(cfg,
+                    data_dic['layout'], SL_name, m_name, SL_assets_dic, Fanart_FN)
             processed_SL_items += 1
             total_processed_SL_items += 1 # For total ETA calculation
             build_time_end = time.time()
@@ -921,7 +920,7 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
             ETA_str = ETA_update(build_OK_flag, total_processed_SL_items, build_time)
         # Save SL assets DB.
         pDialog.updateProgress(processed_SL_items, '{}\nSaving SL {} asset database'.format(dtext, SL_name))
-        fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
+        utils_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
         # Update progress.
         SL_count += 1
         if pDialog_canceled: break
@@ -929,7 +928,7 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
 
     # Update SL Fanart build timestamp
     db_safe_edit(control_dic, 't_SL_fanart_build', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     # Inform user.
     if pDialog_canceled:
@@ -939,20 +938,20 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
 
 # Returns a dictionary with all the data necessary to build the fanarts.
 # The dictionary has the 'abort' field if an error was detected.
-def graphs_load_MAME_3DBox_stuff(PATHS, settings, BUILD_MISSING):
+def graphs_load_MAME_3DBox_stuff(cfg, BUILD_MISSING):
     data_dic = {
         'abort' : False,
         'BUILD_MISSING' : BUILD_MISSING,
     }
 
     # If artwork directory not configured abort.
-    if not settings['assets_path']:
+    if not cfg.settings['assets_path']:
         kodi_dialog_OK('Asset directory not configured. Aborting MAME 3D box generation.')
         data_dic['abort'] = True
         return data_dic
 
     # --- If fanart directory doesn't exist create it ---
-    Asset_path_FN = FileName(settings['assets_path'])
+    Asset_path_FN = FileName(cfg.settings['assets_path'])
     Boxes_path_FN = Asset_path_FN.pjoin('3dboxes')
     if not Boxes_path_FN.isdir():
         log_info('Creating Fanart dir "{}"'.format(Boxes_path_FN.getPath()))
@@ -960,22 +959,22 @@ def graphs_load_MAME_3DBox_stuff(PATHS, settings, BUILD_MISSING):
     data_dic['Boxes_path_FN'] = Boxes_path_FN
 
     # --- Load Fanart template from XML file ---
-    # TProjection_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
-    TProjection_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
-    t_projection = fs_load_JSON_file_dic(TProjection_FN.getPath())
+    # TProjection_FN = cfg.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
+    TProjection_FN = cfg.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
+    t_projection = utils_load_JSON_file_dic(TProjection_FN.getPath())
     data_dic['t_projection'] = t_projection
 
     # --- Load Assets DB ---
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Loading MAME asset database...')
-    assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+    assets_dic = utils_load_JSON_file_dic(cfg.ASSET_DB_PATH.getPath())
     pDialog.endProgress()
     data_dic['assets_dic'] = assets_dic
 
     return data_dic
 
 # Builds or rebuilds missing MAME Fanarts.
-def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
+def graphs_build_MAME_3DBox_all(cfg, data_dic):
     # Traverse all machines and build 3D boxes from other pieces of artwork
     SL_name = 'MAME'
     total_machines, processed_machines = len(data_dic['assets_dic']), 0
@@ -997,11 +996,11 @@ def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
                 data_dic['assets_dic'][m_name]['3dbox'] = Image_FN.getPath()
                 build_OK_flag = False
             else:
-                build_OK_flag = graphs_build_MAME_3DBox(
-                    PATHS, data_dic['t_projection'], SL_name, m_name, data_dic['assets_dic'], Image_FN)
+                build_OK_flag = graphs_build_MAME_3DBox(cfg,
+                    data_dic['t_projection'], SL_name, m_name, data_dic['assets_dic'], Image_FN)
         else:
-            build_OK_flag = graphs_build_MAME_3DBox(
-                PATHS, data_dic['t_projection'], SL_name, m_name, data_dic['assets_dic'], Image_FN)
+            build_OK_flag = graphs_build_MAME_3DBox(cfg,
+                data_dic['t_projection'], SL_name, m_name, data_dic['assets_dic'], Image_FN)
         processed_machines += 1
         build_time_end = time.time()
         build_time = build_time_end - build_time_start
@@ -1011,21 +1010,20 @@ def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
 
     # --- Save assets DB ---
     pDialog.startProgress('Saving MAME asset database...')
-    fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), data_dic['assets_dic'])
+    utils_write_JSON_file(cfg.ASSET_DB_PATH.getPath(), data_dic['assets_dic'])
     pDialog.endProgress()
 
     # --- MAME Fanart build timestamp ---
-    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+    control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
     db_safe_edit(control_dic, 't_MAME_3dbox_build', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     # --- assets_dic has changed. Rebuild hashed database ---
-    fs_build_asset_hashed_db(PATHS, settings, control_dic, data_dic['assets_dic'])
+    db_build_asset_hashed_db(cfg, control_dic, data_dic['assets_dic'])
 
     # --- Rebuild MAME asset cache ---
-    if settings['debug_enable_MAME_asset_cache']:
-        cache_index = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-        fs_build_asset_cache(PATHS, settings, control_dic, cache_index, data_dic['assets_dic'])
+    cache_index = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
+    db_build_asset_cache(cfg, control_dic, cache_index, data_dic['assets_dic'])
 
     # --- Inform user ---
     if pDialog_canceled:
@@ -1034,7 +1032,7 @@ def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
         kodi_notify('MAME 3D Boxes building finished')
 
 # Called before building all SL 3D Boxes.
-def graphs_load_SL_3DBox_stuff(PATHS, settings, BUILD_MISSING):
+def graphs_load_SL_3DBox_stuff(cfg, BUILD_MISSING):
     data_dic = {
         'abort' : False,
         'BUILD_MISSING' : BUILD_MISSING,
@@ -1042,26 +1040,26 @@ def graphs_load_SL_3DBox_stuff(PATHS, settings, BUILD_MISSING):
 
     # If artwork directory not configured abort.
     # SL 3dbox directories are created later in graphs_build_SL_3DBox_all()
-    if not settings['assets_path']:
+    if not cfg.settings['assets_path']:
         kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
         data_dic['abort'] = True
         return
 
     # --- Load 3D projection template from XML file ---
-    # TProjection_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
-    TProjection_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
-    t_projection = fs_load_JSON_file_dic(TProjection_FN.getPath())
+    # TProjection_FN = cfg.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
+    TProjection_FN = cfg.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
+    t_projection = utils_load_JSON_file_dic(TProjection_FN.getPath())
     data_dic['t_projection'] = t_projection
 
     # --- Load SL index ---
-    SL_index = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
+    SL_index = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
     data_dic['SL_index'] = SL_index
 
     return data_dic
 
 # Builds or rebuilds missing SL Fanarts.
-def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
-    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+def graphs_build_SL_3DBox_all(cfg, data_dic):
+    control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
 
     # Traverse all SL and on each SL every item
     SL_number, SL_count = len(data_dic['SL_index']), 1
@@ -1076,7 +1074,7 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
 
         # If fanart directory doesn't exist create it.
         pDialog.resetProgress(d_text + '\n' + 'Creating SL Fanart directory')
-        Asset_path_FN = FileName(settings['assets_path'])
+        Asset_path_FN = FileName(cfg.settings['assets_path'])
         Boxes_path_FN = Asset_path_FN.pjoin('3dboxes_SL/{}'.format(SL_name))
         if not Boxes_path_FN.isdir():
             log_info('Creating SL 3D Box dir "{}"'.format(Boxes_path_FN.getPath()))
@@ -1084,9 +1082,9 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
 
         # Load Assets DB
         pDialog.resetProgress(d_text + '\n' + 'Loading SL asset database')
-        assets_file_name =  data_dic['SL_index'][SL_name]['rom_DB_noext'] + '_assets.json'
-        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
-        SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
+        assets_file_name = data_dic['SL_index'][SL_name]['rom_DB_noext'] + '_assets.json'
+        SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
+        SL_assets_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
 
         # Traverse all SL items and build fanart from other pieces of artwork
         # Last slot of the progress bar is to save the JSON database.
@@ -1105,11 +1103,11 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
                     SL_assets_dic[m_name]['3dbox'] = Image_FN.getPath()
                     build_OK_flag = False
                 else:
-                    build_OK_flag = graphs_build_MAME_3DBox(
-                        PATHS, data_dic['t_projection'], SL_name, m_name, SL_assets_dic, Image_FN)
+                    build_OK_flag = graphs_build_MAME_3DBox(cfg,
+                        data_dic['t_projection'], SL_name, m_name, SL_assets_dic, Image_FN)
             else:
-                build_OK_flag = graphs_build_MAME_3DBox(
-                    PATHS, data_dic['t_projection'], SL_name, m_name, SL_assets_dic, Image_FN)
+                build_OK_flag = graphs_build_MAME_3DBox(cfg,
+                    data_dic['t_projection'], SL_name, m_name, SL_assets_dic, Image_FN)
             processed_SL_items += 1 # For current list progress dialog
             total_processed_SL_items += 1 # For total ETA calculation
             build_time_end = time.time()
@@ -1118,7 +1116,7 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
             ETA_str = ETA_update(build_OK_flag, total_processed_SL_items, build_time)
         # Save SL assets DB.
         pDialog.updateMessage(d_text + '\n' + 'Saving SL {} asset database'.format(SL_name))
-        fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
+        utils_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
         # Update progress.
         SL_count += 1
         if pDialog_canceled: break
@@ -1126,7 +1124,7 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
 
     # --- SL Fanart build timestamp ---
     db_safe_edit(control_dic, 't_SL_3dbox_build', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     # --- Inform user ---
     if pDialog_canceled:

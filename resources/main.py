@@ -89,8 +89,8 @@ class Configuration:
         self.SHA1_HASH_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_DB_SHA1_hashes.json')
         self.MAIN_PCLONE_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_DB_pclone_dic.json')
         # Databases used for rendering.
-        self.RENDER_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_render.json')
-        self.ASSETS_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_assets.json')
+        self.RENDER_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_renderdb.json')
+        self.ASSET_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_assetdb.json')
 
         # Audit and ROM Set databases.
         self.ROM_AUDIT_DB_PATH = self.ADDON_DATA_DIR.pjoin('ROM_Audit_DB.json')
@@ -2013,7 +2013,7 @@ def render_catalog_parent_list(cfg, catalog_name, category_name):
         assets_db_dic = fs_load_assets_all(cfg, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME asset cache disabled.')
-        assets_db_dic = utils_load_JSON_file_dic(cfg.ASSETS_DB_PATH.getPath())
+        assets_db_dic = utils_load_JSON_file_dic(cfg.ASSET_DB_PATH.getPath())
     l_assets_db_end = time.time()
     l_pclone_dic_start = time.time()
     main_pclone_dic = utils_load_JSON_file_dic(cfg.MAIN_PCLONE_DB_PATH.getPath())
@@ -2093,8 +2093,8 @@ def render_catalog_clone_list(cfg, catalog_name, category_name, parent_name):
         assets_db_dic = fs_load_assets_all(cfg, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME asset cache disabled.')
-        assets_db_dic = utils_load_JSON_file_dic(cfg.MAIN_ASSETS_DB_PATH.getPath())
-    main_pclone_dic = utils_load_JSON_file_dic(cfg.MAIN_PCLONE_DIC_PATH.getPath())
+        assets_db_dic = utils_load_JSON_file_dic(cfg.ASSET_DB_PATH.getPath())
+    main_pclone_dic = utils_load_JSON_file_dic(cfg.MAIN_PCLONE_DB_PATH.getPath())
     fav_machines = utils_load_JSON_file_dic(cfg.FAV_MACHINES_PATH.getPath())
     loading_ticks_end = time.time()
     loading_time = loading_ticks_end - loading_ticks_start
@@ -2114,7 +2114,7 @@ def render_catalog_clone_list(cfg, catalog_name, category_name, parent_name):
         t_catalog_dic[category_name][clone_name] = machine_dic[clone_name]
         t_render_dic[clone_name] = render_db_dic[clone_name]
         t_assets_dic[clone_name] = assets_db_dic[clone_name]
-    r_list = render_process_machines(t_catalog_dic, catalog_name, category_name,
+    r_list = render_process_machines(cfg, t_catalog_dic, catalog_name, category_name,
         t_render_dic, t_assets_dic, fav_machines, False, main_pclone_dic, False)
     processing_ticks_end = time.time()
     processing_time = processing_ticks_end - processing_ticks_start
@@ -2122,7 +2122,7 @@ def render_catalog_clone_list(cfg, catalog_name, category_name, parent_name):
     # --- Commit ROMs ---
     rendering_ticks_start = time.time()
     set_Kodi_all_sorting_methods(cfg)
-    render_commit_machines(r_list)
+    render_commit_machines(cfg, r_list)
     xbmcplugin.endOfDirectory(handle = cfg.addon_handle, succeeded = True, cacheToDisc = False)
     rendering_ticks_end = time.time()
     rendering_time = rendering_ticks_end - rendering_ticks_start
@@ -3014,7 +3014,7 @@ def command_context_view_DAT(cfg, machine_name, SL_name, SL_ROM, location):
         # >> Open ROM in assets database
         if view_type == VIEW_MAME_MACHINE:
             if location == 'STANDARD':
-                assets_dic = utils_load_JSON_file_dic(cfg.MAIN_ASSETS_DB_PATH.getPath())
+                assets_dic = utils_load_JSON_file_dic(cfg.MAIN_ASSET_DB_PATH.getPath())
                 m_assets = assets_dic[machine_name]
             else:
                 mame_favs_dic = utils_load_JSON_file_dic(cfg.FAV_MACHINES_PATH.getPath())
@@ -3067,7 +3067,7 @@ def command_context_view_DAT(cfg, machine_name, SL_name, SL_ROM, location):
         if view_type == VIEW_MAME_MACHINE:
             log_debug('Displaying Manual for MAME machine {} ...'.format(machine_name))
             # machine = fs_get_machine_main_db_hash(cfg, machine_name)
-            assets_dic = utils_load_JSON_file_dic(cfg.MAIN_ASSETS_DB_PATH.getPath())
+            assets_dic = utils_load_JSON_file_dic(cfg.MAIN_ASSET_DB_PATH.getPath())
             if not assets_dic[machine_name]['manual']:
                 kodi_dialog_OK('Manual not found in database.')
                 return
@@ -3853,7 +3853,7 @@ def command_context_utilities(cfg, catalog_name, category_name):
         pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machines Render'))
         machines_render = utils_load_JSON_file_dic(cfg.RENDER_DB_PATH.getPath())
         pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine Assets'))
-        assets_dic = utils_load_JSON_file_dic(cfg.MAIN_ASSETS_DB_PATH.getPath())
+        assets_dic = utils_load_JSON_file_dic(cfg.MAIN_ASSET_DB_PATH.getPath())
         pDialog.endProgress()
 
         # --- Print error message is something goes wrong writing file ---
@@ -5033,11 +5033,11 @@ def command_context_setup_custom_filters(cfg):
     # --- Build custom filter databases ---
     if menu_item == 0:
         # Open main ROM databases
-        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
         db_files = [
+            ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
             ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
-            ['render', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
-            ['assets', 'MAME machine assets', cfg.MAIN_ASSETS_DB_PATH.getPath()],
+            ['renderdb', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
+            ['assetdb', 'MAME machine assets', cfg.ASSET_DB_PATH.getPath()],
             ['machine_archives', 'Machine archives list', cfg.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
@@ -5045,20 +5045,18 @@ def command_context_setup_custom_filters(cfg):
         audit_dic = { 'machine_archives' : db_dic['machine_archives'] }
 
         # --- Make a dictionary of machines to be filtered ---
-        (main_filter_dic, sets_dic) = filter_get_filter_DB(cfg,
-            db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'])
+        (main_filter_dic, sets_dic) = filter_get_filter_DB(cfg, db_dic)
 
         # --- Parse custom filter XML and check for errors ---
         # 1) Check the filter XML syntax and filter semantic errors.
         # 2) Produces report PATHS.REPORT_CF_XML_SYNTAX_PATH
-        (filter_list, options_dic) = filter_custom_filters_load_XML(cfg, cfg.settings,
-            control_dic, main_filter_dic, sets_dic)
-        # If no filters defined sayonara
+        (filter_list, f_st_dic) = filter_custom_filters_load_XML(cfg, db_dic, main_filter_dic, sets_dic)
+        # If no filters defined sayonara.
         if len(filter_list) < 1:
             kodi_notify_warn('Filter XML has no filter definitions')
             return
-        # If errors found in the XML sayonara
-        if options_dic['XML_errors']:
+        # If errors found in the XML sayonara.
+        if f_st_dic['XML_errors']:
             kodi_dialog_OK('Custom filter database build cancelled because the XML filter '
                 'definition file contains errors. Have a look at the XML filter file report, '
                 'correct the mistakes and try again.')
@@ -5067,8 +5065,7 @@ def command_context_setup_custom_filters(cfg):
         # --- Build filter database ---
         # 1) Saves control_dic (updated custom filter build timestamp).
         # 2) Generates PATHS.REPORT_CF_DB_BUILD_PATH
-        filter_build_custom_filters(cfg, cfg.settings, control_dic,
-            filter_list, main_filter_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
+        filter_build_custom_filters(cfg, db_dic, filter_list, main_filter_dic)
 
         # --- So long and thanks for all the fish ---
         kodi_notify('Custom filter database built')
@@ -5079,8 +5076,8 @@ def command_context_setup_custom_filters(cfg):
         db_files = [
             ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
             ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
-            ['render', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
-            ['assets', 'MAME machine assets', cfg.MAIN_ASSETS_DB_PATH.getPath()],
+            ['renderdb', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
+            ['assetdb', 'MAME machine assets', cfg.ASSET_DB_PATH.getPath()],
             ['machine_archives', 'Machine archives list', cfg.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
@@ -5088,19 +5085,17 @@ def command_context_setup_custom_filters(cfg):
         # --- Make a dictionary of machines to be filtered ---
         # This currently includes all MAME parent machines.
         # However, it must include all machines (parent and clones).
-        (main_filter_dic, sets_dic) = filter_get_filter_DB(cfg,
-            db_dic['machines'], db_dic['render'], db_dic['assets'], db_dic['machine_archives'])
+        (main_filter_dic, sets_dic) = filter_get_filter_DB(cfg, db_dic)
 
         # --- Parse custom filter XML and check for errors ---
         # This function also check the filter XML syntax and produces a report.
-        (filter_list, options_dic) = filter_custom_filters_load_XML(
-            cfg, cfg.settings, db_dic['control_dic'], main_filter_dic, sets_dic)
+        (filter_list, f_st_dic) = filter_custom_filters_load_XML(cfg, db_dic, main_filter_dic, sets_dic)
         # If no filters sayonara
         if len(filter_list) < 1:
             kodi_notify_warn('Filter XML has no filter definitions')
             return
         # If errors found in the XML sayonara
-        elif options_dic['XML_errors']:
+        elif f_st_dic['XML_errors']:
             kodi_dialog_OK(
                 'The XML filter definition file contains errors. Have a look at the '
                 'XML filter file report, fix the mistakes and try again.')
@@ -5121,8 +5116,7 @@ def command_context_setup_custom_filters(cfg):
         if not XML_FN.exists():
             kodi_dialog_OK('Custom filter XML file not found.')
             return
-        fstring =  utils_load_file_to_str(XML_FN.getPath())
-        kodi_display_text_window_mono('Custom filter XML', fstring)
+        kodi_display_text_window_mono('Custom filter XML', utils_load_file_to_str(XML_FN.getPath()))
 
     # --- View filter histogram report ---
     elif menu_item == 3:
@@ -5131,8 +5125,7 @@ def command_context_setup_custom_filters(cfg):
         if not filename_FN.exists():
             kodi_dialog_OK('Filter histogram report not found.')
             return
-        fstring =  utils_load_file_to_str(filename_FN.getPath())
-        kodi_display_text_window_mono('Filter histogram report', fstring)
+        kodi_display_text_window_mono('Filter histogram report', utils_load_file_to_str(filename_FN.getPath()))
 
     # --- View filter XML syntax report ---
     elif menu_item == 4:
@@ -5141,7 +5134,7 @@ def command_context_setup_custom_filters(cfg):
         if not filename_FN.exists():
             kodi_dialog_OK('Filter XML filter syntax report not found.')
             return
-        fstring =  utils_load_file_to_str(filename_FN.getPath())
+        fstring = utils_load_file_to_str(filename_FN.getPath())
         kodi_display_text_window_mono('Custom filter XML syntax report', fstring)
 
     # --- View filter report ---
@@ -5151,20 +5144,20 @@ def command_context_setup_custom_filters(cfg):
         if not filename_FN.exists():
             kodi_dialog_OK('Custom filter database report not found.')
             return
-        fstring =  utils_load_file_to_str(filename_FN.getPath())
+        fstring = utils_load_file_to_str(filename_FN.getPath())
         kodi_display_text_window_mono('Custom filter XML syntax report', fstring)
 
 def command_show_custom_filters(cfg):
     log_debug('command_show_custom_filters() Starting ...')
 
-    # >> Open Custom filter count database and index
+    # Open Custom filter count database and index
     filter_index_dic = utils_load_JSON_file_dic(cfg.FILTERS_INDEX_PATH.getPath())
     if not filter_index_dic:
         kodi_dialog_OK('MAME custom filter index is empty. Please rebuild your filters.')
         xbmcplugin.endOfDirectory(handle = cfg.addon_handle, succeeded = True, cacheToDisc = False)
         return
 
-    # >> Check if filters need to be rebuilt
+    # Check if filters need to be rebuilt
     control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
     if control_dic['t_Custom_Filter_build'] < control_dic['t_MAME_Catalog_build']:
         kodi_dialog_OK('MAME custom filters need to be rebuilt.')
@@ -5176,8 +5169,7 @@ def command_show_custom_filters(cfg):
     set_Kodi_all_sorting_methods(cfg)
     for f_name in sorted(filter_index_dic, key = lambda x: filter_index_dic[x]['order'], reverse = False):
         num_machines = filter_index_dic[f_name]['num_machines']
-        if num_machines == 1: machine_str = 'machine'
-        else:                 machine_str = 'machines'
+        machine_str = 'machine' if num_machines == 1 else 'machines'
         render_custom_filter_item_row(f_name, num_machines, machine_str, filter_index_dic[f_name]['plot'])
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
@@ -5497,112 +5489,95 @@ def command_context_setup_plugin(cfg):
         # control_dic is created or reseted in this function.
         # This uses the modern GUI error reporting functions.
         st_dic = kodi_new_status_dic()
-        db_dic = mame_build_MAME_main_database(g_PATHS, cfg.settings, __addon_version__, st_dic)
+        db_dic = mame_build_MAME_main_database(cfg, st_dic)
         if kodi_display_status_message(st_dic): return
-        control_dic = db_dic['control']
 
         # --- Build ROM audit/scanner databases (mandatory) ---
-        options_dic = {}
-        options_dic = mame_check_before_build_ROM_audit_databases(g_PATHS, cfg.settings, control_dic)
-        if options_dic['abort']: return
-        audit_dic = mame_build_ROM_audit_databases(g_PATHS, cfg.settings, control_dic,
-            db_dic['machines'], db_dic['render'], db_dic['devices'], db_dic['roms'])
+        mame_check_before_build_ROM_audit_databases(cfg, st_dic, db_dic['control_dic'])
+        if kodi_display_status_message(st_dic): return
+
+        mame_build_ROM_audit_databases(cfg, st_dic, db_dic)
+        if kodi_display_status_message(st_dic): return
 
         # --- Build MAME catalogs (mandatory) ---
-        options_dic = mame_check_before_build_MAME_catalogs(g_PATHS, cfg.settings, control_dic)
-        if options_dic['abort']: return
-        db_dic['cache_index'] = mame_build_MAME_catalogs(g_PATHS, cfg.settings, control_dic,
-            db_dic['machines'], db_dic['render'], db_dic['roms'],
-            db_dic['main_pclone_dic'], db_dic['assets'])
+        mame_check_before_build_MAME_catalogs(cfg, st_dic, db_dic['control_dic'])
+        if kodi_display_status_message(st_dic): return
+
+        mame_build_MAME_catalogs(cfg, st_dic, db_dic)
+        if kodi_display_status_message(st_dic): return
 
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs (optional) ---
-        if cfg.settings['enable_SL']:
-            options_dic = mame_check_before_build_SL_databases(g_PATHS, cfg.settings, control_dic)
-            if not options_dic['abort']:
-                SL_dic = mame_build_SoftwareLists_databases(g_PATHS, cfg.settings, control_dic,
-                    db_dic['machines'], db_dic['render'])
-            else:
-                log_info('Skipping mame_build_SoftwareLists_databases()')
+        if cfg.settings['global_enable_SL']:
+            mame_check_before_build_SL_databases(cfg, st_dic, db_dic['control_dic'])
+            if kodi_display_status_message(st_dic): return
+            mame_build_SoftwareLists_databases(cfg, st_dic, db_dic)
+            if kodi_display_status_message(st_dic): return
         else:
             log_info('SL disabled. Skipping mame_build_SoftwareLists_databases()')
 
         # --- Scan ROMs/CHDs/Samples and updates ROM status (optional) ---
-        options_dic = mame_check_before_scan_MAME_ROMs(g_PATHS, cfg.settings, control_dic)
-        if not options_dic['abort']:
-            mame_scan_MAME_ROMs(g_PATHS, cfg.settings, control_dic, options_dic,
-                db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'],
-                audit_dic['ROM_ZIP_list'], audit_dic['Sample_ZIP_list'], audit_dic['CHD_archive_list'])
-        else:
-            log_info('Skipping mame_scan_MAME_ROMs()')
+        # Abort if ROM path not found. CHD and Samples paths are optional.
+        options_dic = {}
+        mame_check_before_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic['control_dic'])
+        if kodi_display_status_message(st_dic): return
+
+        mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic)
+        if kodi_display_status_message(st_dic): return
 
         # --- Scans MAME assets/artwork (optional) ---
-        options_dic = mame_check_before_scan_MAME_assets(g_PATHS, cfg.settings, control_dic)
-        if not options_dic['abort']:
-            mame_scan_MAME_assets(g_PATHS, cfg.settings, control_dic,
-                db_dic['assets'], db_dic['render'], db_dic['main_pclone_dic'])
-        else:
-            log_info('Skipping mame_scan_MAME_assets()')
+        mame_check_before_scan_MAME_assets(cfg, st_dic, db_dic['control_dic'])
+        if not kodi_display_status_message(st_dic):
+            # Scanning of assets is optional.
+            mame_scan_MAME_assets(cfg, st_dic, db_dic)
+            if kodi_display_status_message(st_dic): return
 
         # --- Scan SL ROMs/CHDs (optional) ---
-        if cfg.settings['enable_SL']:
-            options_dic = mame_check_before_scan_SL_ROMs(g_PATHS, cfg.settings, control_dic)
-            if not options_dic['abort']:
-                mame_scan_SL_ROMs(g_PATHS, cfg.settings, control_dic, options_dic, SL_dic['SL_index'])
-            else:
-                log_info('Skipping mame_scan_SL_ROMs()')
+        if cfg.settings['global_enable_SL']:
+            options_dic = {}
+            mame_check_before_scan_SL_ROMs(cfg, st_dic, options_dic, db_dic['control_dic'])
+            if kodi_display_status_message(st_dic): return
+            mame_scan_SL_ROMs(cfg, st_dic, options_dic, db_dic)
+            if kodi_display_status_message(st_dic): return
         else:
             log_info('SL disabled. Skipping mame_scan_SL_ROMs()')
 
         # --- Scan SL assets/artwork (optional) ---
-        if cfg.settings['enable_SL']:
-            options_dic = mame_check_before_scan_SL_assets(g_PATHS, cfg.settings, control_dic)
-            if not options_dic['abort']:
-                mame_scan_SL_assets(g_PATHS, cfg.settings, control_dic,
-                    SL_dic['SL_index'], SL_dic['SL_PClone_dic'])
-            else:
-                log_info('Skipping mame_scan_SL_assets()')
+        if cfg.settings['global_enable_SL']:
+            mame_check_before_scan_SL_assets(cfg, st_dic, db_dic['control_dic'])
+            if kodi_display_status_message(st_dic): return
+            mame_scan_SL_assets(cfg, st_dic, db_dic)
+            if kodi_display_status_message(st_dic): return
         else:
             log_info('SL disabled. Skipping mame_scan_SL_assets()')
 
-        # --- Build MAME machines plot ---
-        mame_build_MAME_plots(g_PATHS, cfg.settings, control_dic,
-            db_dic['machines'], db_dic['render'], db_dic['assets'],
-            db_dic['history_idx_dic'], db_dic['mameinfo_idx_dic'],
-            db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
+        # --- Build MAME machine plots ---
+        mame_build_MAME_plots(cfg, db_dic)
 
-        # --- Buils Software List items plot ---
-        if cfg.settings['enable_SL']:
-            mame_build_SL_plots(g_PATHS, cfg.settings, control_dic,
-                SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
+        # --- Build Software List items plot ---
+        if cfg.settings['global_enable_SL']:
+            mame_build_SL_plots(cfg, db_dic)
         else:
             log_info('SL disabled. Skipping mame_build_SL_plots()')
 
         # --- Regenerate the custom filters ---
-        (main_filter_dic, sets_dic) = filter_get_filter_DB(g_PATHS,
-            db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'])
-        (filter_list, options_dic) = filter_custom_filters_load_XML(
-            g_PATHS, cfg.settings, control_dic, main_filter_dic, sets_dic)
-        if len(filter_list) >= 1 and not options_dic['XML_errors']:
-            filter_build_custom_filters(g_PATHS, cfg.settings, control_dic,
-                filter_list, main_filter_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
+        (main_filter_dic, sets_dic) = filter_get_filter_DB(cfg, db_dic)
+        (filter_list, f_st_dic) = filter_custom_filters_load_XML(cfg, db_dic, main_filter_dic, sets_dic)
+        if len(filter_list) >= 1 and not f_st_dic['XML_errors']:
+            filter_build_custom_filters(cfg, db_dic, filter_list, main_filter_dic)
         else:
             log_info('Custom XML filters not built.')
 
         # --- Regenerate MAME asset hashed database ---
-        db_build_asset_hashed_db(cfg, control_dic, db_dic['assets'])
+        db_build_asset_hashed_db(cfg, db_dic['control_dic'], db_dic['assetdb'])
 
         # --- Regenerate MAME machine render and assets cache ---
-        db_build_render_cache(cfg, control_dic, db_dic['cache_index'], db_dic['render'])
-        db_build_asset_cache(cfg, control_dic, db_dic['cache_index'], db_dic['assets'])
+        db_build_render_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['renderdb'])
+        db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assetdb'])
 
         if DO_AUDIT:
-            # --- MAME audit ---
-            mame_audit_MAME_all(g_PATHS, cfg.settings, control_dic,
-                db_dic['machines'], db_dic['render'], audit_dic['audit_roms'])
-
-            # --- SL audit ---
-            if cfg.settings['enable_SL']:
-                mame_audit_SL_all(g_PATHS, cfg.settings, control_dic, SL_dic['SL_index'])
+            mame_audit_MAME_all(cfg, db_dic)
+            if cfg.settings['global_enable_SL']:
+                mame_audit_SL_all(cfg, db_dic)
             else:
                 log_info('SL disabled. Skipping mame_audit_SL_all()')
 
@@ -5627,8 +5602,8 @@ def command_context_setup_plugin(cfg):
         # --- Build ROM audit/scanner databases (mandatory) ---
         mame_check_before_build_ROM_audit_databases(cfg, st_dic, db_dic['control_dic'])
         if kodi_display_status_message(st_dic): return
-        audit_dic = mame_build_ROM_audit_databases(cfg, st_dic, db_dic['control_dic'],
-            db_dic['machines'], db_dic['render'], db_dic['devices'], db_dic['roms'])
+
+        mame_build_ROM_audit_databases(cfg, st_dic, db_dic)
         if kodi_display_status_message(st_dic): return
 
         # --- Release some memory before building the catalogs ---
@@ -5639,21 +5614,19 @@ def command_context_setup_plugin(cfg):
         del db_dic['command_idx_list']
         del audit_dic['audit_roms']
         del audit_dic['machine_archives']
-        del audit_dic['ROM_ZIP_list']
-        del audit_dic['Sample_ZIP_list']
-        del audit_dic['CHD_archive_list']
+        # Force garbage collection here to free memory?
 
         # --- Build MAME catalogs (mandatory) ---
         mame_check_before_build_MAME_catalogs(cfg, st_dic, db_dic['control_dic'])
         if kodi_display_status_message(st_dic): return
-        db_dic['cache_index'] = mame_build_MAME_catalogs(cfg, st_dic, db_dic['control_dic'],
-            db_dic['machines'], db_dic['render'], db_dic['roms'],
-            db_dic['main_pclone_dic'], db_dic['assets'])
+
+        mame_build_MAME_catalogs(cfg, st_dic, db_dic)
+        if kodi_display_status_message(st_dic): return
 
         # --- Regenerate the render and assets cache ---
         # Check whether cache must be rebuilt is done internally.
-        db_build_render_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['render'])
-        db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assets'])
+        db_build_render_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['renderdb'])
+        db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assetdb'])
 
         # --- Release some memory before building the SL databases ---
         del db_dic['roms']
@@ -5665,8 +5638,8 @@ def command_context_setup_plugin(cfg):
         if cfg.settings['global_enable_SL']:
             mame_check_before_build_SL_databases(cfg, st_dic, db_dic['control_dic'])
             if kodi_display_status_message(st_dic): return
-            SL_dic = mame_build_SoftwareLists_databases(cfg, st_dic, db_dic['control_dic'],
-                db_dic['machines'], db_dic['render'])
+            mame_build_SoftwareLists_databases(cfg, st_dic, db_dic)
+            if kodi_display_status_message(st_dic): return
         else:
             log_info('SL globally disabled. Skipping mame_build_SoftwareLists_databases()')
 
@@ -5679,90 +5652,72 @@ def command_context_setup_plugin(cfg):
 
         # --- MAME -------------------------------------------------------------------------------
         db_files = [
+            ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
             ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
-            ['render', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
-            ['assets', 'MAME machine assets', cfg.ASSETS_DB_PATH.getPath()],
-            ['main_pclone_dic', 'MAME PClone dictionary', cfg.MAIN_PCLONE_DIC_PATH.getPath()],
+            ['renderdb', 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
+            ['assetdb', 'MAME asset DB', cfg.ASSET_DB_PATH.getPath()],
+            ['main_pclone_dic', 'MAME PClone dictionary', cfg.MAIN_PCLONE_DB_PATH.getPath()],
             ['machine_archives', 'Machine file list', cfg.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
-            ['ROM_ZIP_list', 'ROM List index', cfg.ROM_SET_ROM_LIST_DB_PATH.getPath()],
-            ['Sample_ZIP_list', 'ROM List index', cfg.ROM_SET_SAM_LIST_DB_PATH.getPath()],
-            ['CHD_archive_list', 'CHD list index', cfg.ROM_SET_CHD_LIST_DB_PATH.getPath()],
             ['cache_index', 'MAME cache index', cfg.CACHE_INDEX_PATH.getPath()],
             ['history_idx_dic', 'History DAT index', cfg.HISTORY_IDX_PATH.getPath()],
             ['mameinfo_idx_dic', 'Mameinfo DAT index', cfg.MAMEINFO_IDX_PATH.getPath()],
             ['gameinit_idx_list', 'Gameinit DAT index', cfg.GAMEINIT_IDX_PATH.getPath()],
             ['command_idx_list', 'Command DAT index', cfg.COMMAND_IDX_PATH.getPath()],
-            ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
-        # For compatibility with "All in one step" and "Step by step" functions.
-        control_dic = db_dic['control_dic']
-        audit_dic = {
-            'machine_archives' : db_dic['machine_archives'],
-            'ROM_ZIP_list'     : db_dic['ROM_ZIP_list'],
-            'Sample_ZIP_list'  : db_dic['Sample_ZIP_list'],
-            'CHD_archive_list' : db_dic['CHD_archive_list'],
-        }
 
         # --- Scan MAME ROMs/CHDs/Samples and updates ROM status (optional) ---
         st_dic = kodi_new_status_dic()
         options_dic = {}
-        mame_check_before_scan_MAME_ROMs(cfg, st_dic, options_dic, control_dic)
+        mame_check_before_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic['control_dic'])
         if kodi_display_status_message(st_dic): return
-        mame_scan_MAME_ROMs(cfg, st_dic, control_dic, options_dic,
-            db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'],
-            audit_dic['ROM_ZIP_list'], audit_dic['Sample_ZIP_list'], audit_dic['CHD_archive_list'])
+
+        mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic)
+        if kodi_display_status_message(st_dic): return
 
         # --- Scans MAME assets/artwork (optional) ---
-        options_dic = {}
-        mame_check_before_scan_MAME_assets(cfg, st_dic, options_dic, control_dic)
-        if not options_dic['abort']:
-            mame_scan_MAME_assets(cfg, st_dic, control_dic,
-                db_dic['assets'], db_dic['render'], db_dic['main_pclone_dic'])
-        else:
-            log_info(options_dic['abort'])
-            log_info('Skipping mame_scan_MAME_assets()')
+        mame_check_before_scan_MAME_assets(cfg, st_dic, db_dic['control_dic'])
+        if not kodi_display_status_message(st_dic):
+            # Scanning of assets is optional.
+            mame_scan_MAME_assets(cfg, st_dic, db_dic)
+            if kodi_display_status_message(st_dic): return
 
         # --- Build MAME machines plot (mandatory) ---
-        mame_build_MAME_plots(cfg, control_dic,
-            db_dic['machines'], db_dic['render'], db_dic['assets'],
-            db_dic['history_idx_dic'], db_dic['mameinfo_idx_dic'],
-            db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
+        mame_build_MAME_plots(cfg, db_dic)
 
         # --- Regenerate asset hashed database ---
-        fs_build_asset_hashed_db(cfg, control_dic, db_dic['assets'])
+        db_build_asset_hashed_db(cfg, db_dic['control_dic'], db_dic['assetdb'])
 
         # --- Regenerate MAME asset cache ---
-        # Note that scanning only changes the assets, never the machines or render DB.
-        fs_build_asset_cache(cfg, control_dic, db_dic['cache_index'], db_dic['assets'])
+        # Note that scanning only changes the assets, never the machines or render DBs.
+        db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assetdb'])
 
         # --- Software Lists ---------------------------------------------------------------------
         if cfg.settings['global_enable_SL']:
             # --- Load databases ---
             db_files = [
+                ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
                 ['SL_index', 'Software Lists index', cfg.SL_INDEX_PATH.getPath()],
                 ['SL_PClone_dic', 'Software Lists Parent/Clone database', cfg.SL_PCLONE_DIC_PATH.getPath()],
                 ['SL_machines', 'Software Lists machines', cfg.SL_MACHINES_PATH.getPath()],
+                ['history_idx_dic', 'History DAT index', cfg.HISTORY_IDX_PATH.getPath()],
             ]
-            SL_dic = db_load_files(db_files)
+            db_dic = db_load_files(db_files)
 
             # --- Scan SL ROMs/CHDs (optional) ---
-            options_dic = mame_check_before_scan_SL_ROMs(cfg, control_dic)
-            if not options_dic['abort']:
-                mame_scan_SL_ROMs(cfg, control_dic, options_dic, SL_dic['SL_index'])
-            else:
-                log_info('Skipping mame_scan_SL_ROMs()')
+            mame_check_before_scan_SL_ROMs(cfg, st_dic, db_dic['control_dic'], db_dic['control_dic'])
+            if kodi_display_status_message(st_dic): return
+            mame_scan_SL_ROMs(cfg, st_dic, db_dic['control_dic'], db_dic)
+            if kodi_display_status_message(st_dic): return
 
             # --- Scan SL assets/artwork (optional) ---
-            options_dic = mame_check_before_scan_SL_assets(cfg, control_dic)
-            if not options_dic['abort']:
-                mame_scan_SL_assets(cfg, control_dic, SL_dic['SL_index'], SL_dic['SL_PClone_dic'])
-            else:
-                log_info('Skipping mame_scan_SL_assets()')
+            mame_check_before_scan_SL_assets(cfg, st_dic, db_dic['control_dic'])
+            if kodi_display_status_message(st_dic): return
+            mame_scan_SL_assets(cfg, st_dic, db_dic)
+            if kodi_display_status_message(st_dic): return
 
-            # --- Buils Software List items plot (mandatory) ---
-            mame_build_SL_plots(cfg, control_dic,
-                SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
+            # --- Build Software List items plot (mandatory) ---
+            mame_build_SL_plots(cfg, db_dic)
         else:
             log_info('SL globally disabled. Skipping SL scanning and plot building.')
 
@@ -5810,34 +5765,38 @@ def command_context_setup_plugin(cfg):
     elif menu_item == 5:
         log_info('command_context_setup_plugin() Audit MAME machines ROMs/CHDs ...')
 
-        # --- Check for requirements/errors ---
-        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
-
         # --- Load machines, ROMs and CHDs databases ---
         db_files = [
-            ['machines', 'MAME machines Main', cfg.MAIN_DB_PATH.getPath()],
-            ['render', 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
+            ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
+            ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
+            ['renderdb', 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
             ['audit_roms', 'MAME ROM Audit', cfg.ROM_AUDIT_DB_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
 
+        # --- Check for requirements/errors ---
+
         # --- Audit all MAME machines ---
         # 1) Updates control_dic statistics and timestamp.
-        mame_audit_MAME_all(g_PATHS, cfg.settings, control_dic,
-            db_dic['machines'], db_dic['render'], db_dic['audit_roms'])
-        kodi_notify('ROM and CHD audit finished')
+        mame_audit_MAME_all(cfg, db_dic)
+        kodi_notify('MAME audit finished')
 
     # --- Audit SL ROMs/CHDs ---
     elif menu_item == 6:
         log_info('command_context_setup_plugin() Audit SL ROMs/CHDs ...')
 
+        # Load databases.
+        db_files = [
+            ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
+            ['SL_index', 'Software Lists index', cfg.SL_INDEX_PATH.getPath()],
+        ]
+        db_dic = db_load_files(db_files)
+
         # --- Check for requirements/errors ---
-        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
-        SL_index = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
 
         # --- Audit all Software List items ---
         # 1) Updates control_dic statistics and timestamps and saves it.
-        mame_audit_SL_all(g_PATHS, cfg.settings, control_dic, SL_index)
+        mame_audit_SL_all(cfg, db_dic)
         kodi_notify('Software Lists audit finished')
 
     # --- Build Step by Step (database and scanner) ---
@@ -5891,7 +5850,7 @@ def command_context_setup_plugin(cfg):
             db_files = [
                 ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
                 ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
-                ['render', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
+                ['renderdb', 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
                 ['devices', 'MAME machine devices', cfg.DEVICES_DB_PATH.getPath()],
                 ['roms', 'MAME machine ROMs', cfg.ROMS_DB_PATH.getPath()],
             ]
@@ -5903,8 +5862,9 @@ def command_context_setup_plugin(cfg):
             if kodi_display_status_message(st_dic): return
 
             # Generate ROM audit databases.
-            # 1) Updates t_MAME_Audit_DB_build and control_dic and saves it.
-            audit_dic = mame_build_ROM_audit_databases(cfg, st_dic, db_dic)
+            # 1) Updates db_dic and saves databases on disk.
+            # 2) Updates t_MAME_Audit_DB_build and control_dic and saves it.
+            mame_build_ROM_audit_databases(cfg, st_dic, db_dic)
             kodi_notify('ROM audit/scanner databases built')
 
         # --- Build MAME catalogs ---
@@ -5915,8 +5875,8 @@ def command_context_setup_plugin(cfg):
             db_files = [
                 ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
                 ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
-                ['render', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
-                ['assets', 'MAME machine assets', cfg.ASSETS_DB_PATH.getPath()],
+                ['renderdb', 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
+                ['assetdb', 'MAME asset DB', cfg.ASSET_DB_PATH.getPath()],
                 ['roms', 'MAME machine ROMs', cfg.ROMS_DB_PATH.getPath()],
                 ['main_pclone_dic', 'MAME PClone dictionary', cfg.MAIN_PCLONE_DB_PATH.getPath()],
             ]
@@ -5930,15 +5890,17 @@ def command_context_setup_plugin(cfg):
             # --- Build MAME catalog ---
             # At this time the asset database will be empty (scanner has not been run). However,
             # the asset cache with an empty database is required to render the machines in the catalogs.
-            # 1) Creates cache_index_dic and saves it.
-            # 2) Updates control_dic and saves it.
-            # 3) Does not require to rebuild the render hashed database.
-            # 4) Requires rebuilding of the render cache.
-            # 5) Requires rebuilding of the asset cache.
-            db_dic['cache_index'] = mame_build_MAME_catalogs(cfg, st_dic, db_dic)
+            # 1) Updates db_dic (adds cache_index field).
+            # 2) Creates cache_index_dic and saves it.
+            # 3) Updates control_dic and saves it.
+            # 4) Does not require to rebuild the render hashed database.
+            # 5) Requires rebuilding of the render cache.
+            # 6) Requires rebuilding of the asset cache.
+            mame_build_MAME_catalogs(cfg, st_dic, db_dic)
+            if kodi_display_status_message(st_dic): return
             # Check whether cache must be rebuilt is done internally.
-            db_build_render_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['render'])
-            db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assets'])
+            db_build_render_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['renderdb'])
+            db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assetdb'])
             kodi_notify('MAME Catalogs built')
 
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs ---
@@ -5951,8 +5913,8 @@ def command_context_setup_plugin(cfg):
             # Read main database and control dic.
             db_files = [
                 ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
-                ['machines', 'MAME machines Main', cfg.MAIN_DB_PATH.getPath()],
-                ['render', 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
+                ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
+                ['renderdb', 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
             ]
             db_dic = db_load_files(db_files)
 
@@ -5962,8 +5924,9 @@ def command_context_setup_plugin(cfg):
             if kodi_display_status_message(st_dic): return
 
             # Build SL databases.
-            # 1) Modifies and saves control_dic
-            SL_dic = mame_build_SoftwareLists_databases(cfg, st_dic, db_dic)
+            # 1) Updates db_dic (adds cache_index field).
+            # 2) Modifies and saves control_dic
+            mame_build_SoftwareLists_databases(cfg, st_dic, db_dic)
             kodi_notify('Software Lists database built')
 
         # --- Scan ROMs/CHDs/Samples and updates ROM status ---
@@ -5974,16 +5937,12 @@ def command_context_setup_plugin(cfg):
             db_files = [
                 ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
                 ['cache_index', 'MAME cache index', cfg.CACHE_INDEX_PATH.getPath()],
-                ['machines', 'MAME machines Main', cfg.MAIN_DB_PATH.getPath()],
-                ['render', 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
-                ['assets', 'MAME machine Assets', cfg.ASSETS_DB_PATH.getPath()],
+                ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
+                ['renderdb', 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
+                ['assetdb', 'MAME asset DB', cfg.ASSET_DB_PATH.getPath()],
                 ['machine_archives', 'Machine archive list', cfg.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
             ]
             db_dic = db_load_files(db_files)
-            # For compatibility with "All in one step" menu option
-            audit_dic = {
-                'machine_archives' : db_dic['machine_archives'],
-            }
 
             # Check for requirements/errors.
             st_dic = kodi_new_status_dic()
@@ -5998,8 +5957,8 @@ def command_context_setup_plugin(cfg):
             # 4) Requires rebuilding the asset hashed DB.
             # 5) Requires rebuilding the asset cache.
             mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic)
-            db_build_asset_hashed_db(cfg, db_dic['control_dic'], db_dic['assets'])
-            db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assets'])
+            db_build_asset_hashed_db(cfg, db_dic['control_dic'], db_dic['assetdb'])
+            db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assetdb'])
             kodi_notify('Scanning of MAME ROMs, CHDs and Samples finished')
 
         # --- Scans MAME assets/artwork ---
@@ -6009,8 +5968,8 @@ def command_context_setup_plugin(cfg):
             # Load machine database and scan.
             db_files = [
                 ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
-                ['render', 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
-                ['assets', 'MAME machine Assets', cfg.ASSETS_DB_PATH.getPath()],
+                ['renderdb', 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
+                ['assetdb', 'MAME asset DB', cfg.ASSET_DB_PATH.getPath()],
                 ['main_pclone_dic', 'MAME PClone dictionary', cfg.MAIN_PCLONE_DB_PATH.getPath()],
                 ['cache_index', 'MAME cache index', cfg.CACHE_INDEX_PATH.getPath()],
             ]
@@ -6027,30 +5986,33 @@ def command_context_setup_plugin(cfg):
             # 2) Requires rebuilding of the asset hashed DB.
             # 3) Requires rebuilding of the asset cache.
             mame_scan_MAME_assets(cfg, st_dic, db_dic)
-            db_build_asset_hashed_db(cfg, db_dic['control_dic'], db_dic['assets'])
-            db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assets'])
+            db_build_asset_hashed_db(cfg, db_dic['control_dic'], db_dic['assetdb'])
+            db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assetdb'])
             kodi_notify('Scanning of assets/artwork finished')
 
         # --- Scan SL ROMs/CHDs ---
         elif submenu == 7:
             log_info('command_context_setup_plugin() Scanning SL ROMs/CHDs...')
+            if not cfg.settings['global_enable_SL']:
+                kodi_dialog_OK('Software Lists globally disabled.')
+                return
 
             # --- Load SL and scan ROMs/CHDs ---
             db_files = [
                 ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
                 ['SL_index', 'Software Lists index', cfg.SL_INDEX_PATH.getPath()],
             ]
-            SL_dic = db_load_files(db_files)
+            db_dic = db_load_files(db_files)
 
             # --- Check for requirements/errors ---
             st_dic = kodi_new_status_dic()
             options_dic = {}
-            mame_check_before_scan_SL_ROMs(cfg, st_dic, options_dic, SL_dic['control_dic'])
+            mame_check_before_scan_SL_ROMs(cfg, st_dic, options_dic, db_dic['control_dic'])
             if kodi_display_status_message(st_dic): return
 
             # 1) Mutates control_dic (timestamp and statistics)
             # 2) Saves control_dic
-            mame_scan_SL_ROMs(cfg, st_dic, options_dic, SL_dic)
+            mame_scan_SL_ROMs(cfg, st_dic, options_dic, db_dic)
             kodi_notify('Scanning of SL ROMs finished')
 
         # --- Scan SL assets/artwork ---
@@ -6058,6 +6020,9 @@ def command_context_setup_plugin(cfg):
         # { 'ROM_name' : {'asset1' : 'path', 'asset2' : 'path', ... }, ... }
         elif submenu == 8:
             log_info('command_context_setup_plugin() Scanning SL assets/artwork...')
+            if not cfg.settings['global_enable_SL']:
+                kodi_dialog_OK('Software Lists globally disabled.')
+                return
 
             # --- Load SL databases ---
             db_files = [
@@ -6065,16 +6030,16 @@ def command_context_setup_plugin(cfg):
                 ['SL_index', 'Software Lists index', cfg.SL_INDEX_PATH.getPath()],
                 ['SL_PClone_dic', 'Software Lists Parent/Clone database', cfg.SL_PCLONE_DIC_PATH.getPath()],
             ]
-            SL_dic = db_load_files(db_files)
+            db_dic = db_load_files(db_files)
 
             # --- Check for requirements/errors ---
             st_dic = kodi_new_status_dic()
-            mame_check_before_scan_SL_assets(cfg, st_dic, SL_dic['control_dic'])
+            mame_check_before_scan_SL_assets(cfg, st_dic, db_dic['control_dic'])
             if kodi_display_status_message(st_dic): return
 
             # --- Scan SL ---
             # 1) Mutates control_dic (timestamp and statistics) and saves it.
-            mame_scan_SL_assets(cfg, st_dic, SL_dic)
+            mame_scan_SL_assets(cfg, st_dic, db_dic)
             kodi_notify('Scanning of SL assets finished')
 
         # --- Build MAME machines plot ---
@@ -6084,9 +6049,9 @@ def command_context_setup_plugin(cfg):
             # --- Load databases ---
             db_files = [
                 ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
-                ['machines', 'MAME machines Main', cfg.MAIN_DB_PATH.getPath()],
-                ['render', 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
-                ['assets', 'MAME machine Assets', cfg.ASSETS_DB_PATH.getPath()],
+                ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
+                ['renderdb', 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
+                ['assetdb', 'MAME asset DB', cfg.ASSET_DB_PATH.getPath()],
                 ['cache_index', 'MAME cache index', cfg.CACHE_INDEX_PATH.getPath()],
                 ['history_idx_dic', 'History DAT index', cfg.HISTORY_IDX_PATH.getPath()],
                 ['mameinfo_idx_dic', 'Mameinfo DAT index', cfg.MAMEINFO_IDX_PATH.getPath()],
@@ -6102,8 +6067,8 @@ def command_context_setup_plugin(cfg):
             # 2) Requires rebuilding of the MAME asset hashed DB.
             # 3) Requires rebuilding if the MAME asset cache.
             mame_build_MAME_plots(cfg, db_dic)
-            db_build_asset_hashed_db(cfg, db_dic['control_dic'], db_dic['assets'])
-            db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assets'])
+            db_build_asset_hashed_db(cfg, db_dic['control_dic'], db_dic['assetdb'])
+            db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assetdb'])
             kodi_notify('MAME machines plot generation finished')
 
         # --- Buils Software List items plot ---
@@ -6118,15 +6083,11 @@ def command_context_setup_plugin(cfg):
                 ['history_idx_dic', 'History DAT index', cfg.HISTORY_IDX_PATH.getPath()],
             ]
             db_dic = db_load_files(db_files)
-            # For compatibility with "All in one step" menu option
-            SL_dic = {
-                'control_dic' : db_dic['control_dic'],
-                'SL_index'    : db_dic['SL_index'],
-                'SL_machines' : db_dic['SL_machines'],
-            }
+
+            # --- Check for requirements/errors ---
 
             # --- Build SL plots ---
-            mame_build_SL_plots(cfg, SL_dic)
+            mame_build_SL_plots(cfg, db_dic)
             kodi_notify('SL item plot generation finished')
 
         # --- Regenerate MAME machine render and assets cache ---
@@ -6137,14 +6098,14 @@ def command_context_setup_plugin(cfg):
             db_files = [
                 ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
                 ['cache_index', 'Cache index', cfg.CACHE_INDEX_PATH.getPath()],
-                ['render', 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
-                ['assets', 'MAME machine Assets', cfg.ASSETS_DB_PATH.getPath()],
+                ['renderdb', 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
+                ['assetdb', 'MAME asset DB', cfg.ASSET_DB_PATH.getPath()],
             ]
             db_dic = db_load_files(db_files)
 
             # --- Regenerate ROM and asset caches ---
-            db_build_render_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['render'], force_build = True)
-            db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assets'], force_build = True)
+            db_build_render_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['renderdb'], force_build = True)
+            db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assetdb'], force_build = True)
             kodi_notify('MAME machine and asset caches rebuilt')
 
         else:
@@ -6177,7 +6138,7 @@ def command_context_setup_plugin(cfg):
 
         # --- Test MAME Fanart ---
         if submenu == 0:
-            log_info('command_context_setup_plugin() Testing MAME Fanart generation ...')
+            log_info('command_context_setup_plugin() Testing MAME Fanart generation...')
             Template_FN = cfg.ADDON_CODE_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
             Asset_path_FN = cfg.ADDON_CODE_DIR.pjoin('media/MAME_assets')
             Fanart_FN = cfg.ADDON_DATA_DIR.pjoin('MAME_Fanart.png')
@@ -6207,7 +6168,7 @@ def command_context_setup_plugin(cfg):
                     'marquee'    : Asset_path_FN.pjoin('dino_marquee.png').getPath(),
                 }
             }
-            graphs_build_MAME_Fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN,
+            graphs_build_MAME_Fanart(cfg, layout, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (25, 25, 50), test_flag = True)
 
             # Display Fanart
@@ -6216,7 +6177,7 @@ def command_context_setup_plugin(cfg):
 
         # --- Test SL Fanart ---
         elif submenu == 1:
-            log_info('command_context_setup_plugin() Testing SL Fanart generation ...')
+            log_info('command_context_setup_plugin() Testing SL Fanart generation...')
             Template_FN = cfg.ADDON_CODE_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
             Asset_path_FN = cfg.ADDON_CODE_DIR.pjoin('media/SL_assets')
             Fanart_FN = cfg.ADDON_DATA_DIR.pjoin('SL_Fanart.png')
@@ -6241,8 +6202,7 @@ def command_context_setup_plugin(cfg):
                     'boxfront' : Asset_path_FN.pjoin('doom_boxfront.png').getPath(),
                 }
             }
-            graphs_build_SL_Fanart(
-                g_PATHS, layout, SL_name, m_name, assets_dic, Fanart_FN,
+            graphs_build_SL_Fanart(cfg, layout, SL_name, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
 
             # --- Display Fanart ---
@@ -6283,7 +6243,7 @@ def command_context_setup_plugin(cfg):
 
             pDialog = KodiProgressDialog()
             pDialog.startProgress('Generating test MAME 3D Box...')
-            graphs_build_MAME_3DBox(g_PATHS, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
+            graphs_build_MAME_3DBox(cfg, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
             pDialog.endProgress()
 
@@ -6319,7 +6279,7 @@ def command_context_setup_plugin(cfg):
 
             pDialog = KodiProgressDialog()
             pDialog.startProgress('Generating test SL 3D Box...')
-            graphs_build_MAME_3DBox(g_PATHS, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
+            graphs_build_MAME_3DBox(cfg, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
             pDialog.endProgress()
 
@@ -6333,95 +6293,95 @@ def command_context_setup_plugin(cfg):
             log_info('command_context_setup_plugin() Building all missing Fanarts...')
 
             # Kodi notifications inside graphs_build_*() functions.
-            data_dic = graphs_load_MAME_Fanart_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
+            data_dic = graphs_load_MAME_Fanart_stuff(cfg, BUILD_MISSING)
             if data_dic['abort']: return
-            graphs_build_MAME_Fanart_all(g_PATHS, cfg.settings, data_dic)
+            graphs_build_MAME_Fanart_all(cfg, data_dic)
 
-            data_dic = graphs_load_SL_Fanart_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
+            data_dic = graphs_load_SL_Fanart_stuff(cfg, BUILD_MISSING)
             if data_dic['abort']: return
-            graphs_build_SL_Fanart_all(g_PATHS, cfg.settings, data_dic)
+            graphs_build_SL_Fanart_all(cfg, data_dic)
 
         # --- Build all missing 3D boxes ---
         elif submenu == 5:
             BUILD_MISSING = True
             log_info('command_context_setup_plugin() Building all missing 3D boxes...')
 
-            data_dic = graphs_load_MAME_3DBox_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
+            data_dic = graphs_load_MAME_3DBox_stuff(cfg, BUILD_MISSING)
             if data_dic['abort']: return
-            graphs_build_MAME_3DBox_all(g_PATHS, cfg.settings, data_dic)
+            graphs_build_MAME_3DBox_all(cfg, data_dic)
 
-            data_dic = graphs_load_SL_3DBox_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
+            data_dic = graphs_load_SL_3DBox_stuff(cfg, BUILD_MISSING)
             if data_dic['abort']: return
-            graphs_build_SL_3DBox_all(g_PATHS, cfg.settings, data_dic)
+            graphs_build_SL_3DBox_all(cfg, data_dic)
 
         # --- Build missing MAME Fanarts ---
         elif submenu == 6:
             BUILD_MISSING = True
             log_info('command_context_setup_plugin() Building missing Fanarts...')
             # Kodi notifications inside graphs_build_*() function.
-            data_dic = graphs_load_MAME_Fanart_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
+            data_dic = graphs_load_MAME_Fanart_stuff(cfg, BUILD_MISSING)
             if data_dic['abort']: return
-            graphs_build_MAME_Fanart_all(g_PATHS, cfg.settings, data_dic)
+            graphs_build_MAME_Fanart_all(cfg, data_dic)
 
         # --- Missing SL Fanarts ---
         elif submenu == 7:
             BUILD_MISSING = True
             log_info('command_context_setup_plugin() Building missing Software Lists Fanarts ...')
             # Kodi notifications inside graphs_build_*() function.
-            data_dic = graphs_load_SL_Fanart_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
+            data_dic = graphs_load_SL_Fanart_stuff(cfg, BUILD_MISSING)
             if data_dic['abort']: return
-            graphs_build_SL_Fanart_all(g_PATHS, cfg.settings, data_dic)
+            graphs_build_SL_Fanart_all(cfg, data_dic)
 
         # --- Missing MAME 3D Boxes ---
         elif submenu == 8:
             BUILD_MISSING = True
             log_info('command_context_setup_plugin() Building missing MAME 3D Boxes ...')
             # Kodi notifications inside graphs_build_*() function.
-            data_dic = graphs_load_MAME_3DBox_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
+            data_dic = graphs_load_MAME_3DBox_stuff(cfg, BUILD_MISSING)
             if data_dic['abort']: return
-            graphs_build_MAME_3DBox_all(g_PATHS, cfg.settings, data_dic)
+            graphs_build_MAME_3DBox_all(cfg, data_dic)
 
         # --- Missing SL 3D Boxes ---
         elif submenu == 9:
             BUILD_MISSING = True
             log_info('command_context_setup_plugin() Building missing Software Lists 3D Boxes ...')
             # Kodi notifications inside graphs_build_*() function.
-            data_dic = graphs_load_SL_3DBox_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
+            data_dic = graphs_load_SL_3DBox_stuff(cfg, BUILD_MISSING)
             if data_dic['abort']: return
-            graphs_build_SL_3DBox_all(g_PATHS, cfg.settings, data_dic)
+            graphs_build_SL_3DBox_all(cfg, data_dic)
 
         # --- Rebuild all MAME Fanarts ---
         # For a complete MAME artwork collection, rebuilding all Fanarts will take hours!
         elif submenu == 10:
             BUILD_MISSING = False
             log_info('command_context_setup_plugin() Rebuilding all Fanarts...')
-            data_dic = graphs_load_MAME_Fanart_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
+            data_dic = graphs_load_MAME_Fanart_stuff(cfg, BUILD_MISSING)
             if data_dic['abort']: return
-            graphs_build_MAME_Fanart_all(g_PATHS, cfg.settings, data_dic)
+            graphs_build_MAME_Fanart_all(cfg, data_dic)
 
         # --- Rebuild all SL Fanarts ---
         elif submenu == 11:
             BUILD_MISSING = False
             log_info('command_context_setup_plugin() Rebuilding all Software Lists Fanarts ...')
-            data_dic = graphs_load_SL_Fanart_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
+            data_dic = graphs_load_SL_Fanart_stuff(cfg, BUILD_MISSING)
             if data_dic['abort']: return
-            graphs_build_SL_Fanart_all(g_PATHS, cfg.settings, data_dic)
+            graphs_build_SL_Fanart_all(cfg, data_dic)
 
         # --- Rebuild all MAME 3D Boxes ---
         elif submenu == 12:
             BUILD_MISSING = False
             log_info('command_context_setup_plugin() Rebuilding all MAME 3D Boxes ...')
-            data_dic = graphs_load_MAME_3DBox_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
+            data_dic = graphs_load_MAME_3DBox_stuff(cfg, BUILD_MISSING)
             if data_dic['abort']: return
-            graphs_build_MAME_3DBox_all(g_PATHS, cfg.settings, data_dic)
+            graphs_build_MAME_3DBox_all(cfg, data_dic)
 
         # --- Rebuild all SL 3D Boxes ---
         elif submenu == 13:
             BUILD_MISSING = False
             log_info('command_context_setup_plugin() Rebuilding all Software Lists 3D Boxes ...')
-            data_dic = graphs_load_SL_3DBox_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
+            data_dic = graphs_load_SL_3DBox_stuff(cfg, BUILD_MISSING)
             if data_dic['abort']: return
-            graphs_build_SL_3DBox_all(g_PATHS, cfg.settings, data_dic)
+            graphs_build_SL_3DBox_all(cfg, data_dic)
 
         else:
             kodi_dialog_OK('In command_context_setup_plugin() wrong submenu = {}'.format(submenu))
@@ -6696,8 +6656,8 @@ def command_exec_utility(cfg, which_utility):
         # --- Load databases ---
         db_files = [
             ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
-            ['render', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
-            ['assets', 'MAME machine assets', cfg.MAIN_ASSETS_DB_PATH.getPath()],
+            ['renderdb', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
+            ['assetdb', 'MAME machine assets', cfg.MAIN_ASSET_DB_PATH.getPath()],
             ['SL_index', 'Software Lists index', cfg.SL_INDEX_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
@@ -6883,8 +6843,8 @@ def command_exec_utility(cfg, which_utility):
         db_files = [
             ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
             # ['machines', 'MAME machines Main', cfg.MAIN_DB_PATH.getPath()],
-            ['render', 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
-            ['assets', 'MAME machine Assets', cfg.MAIN_ASSETS_DB_PATH.getPath()],
+            ['renderdb', 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
+            ['assetsdb', 'MAME machine Assets', cfg.MAIN_ASSET_DB_PATH.getPath()],
             ['roms', 'MAME machine ROMs', cfg.ROMS_DB_PATH.getPath()],
             # ['audit_roms', 'MAME ROM Audit', cfg.ROM_AUDIT_DB_PATH.getPath()],
         ]
@@ -6949,8 +6909,8 @@ def command_exec_utility(cfg, which_utility):
         dir_path = kodi_dialog_get_wdirectory('Chose directory to write MAME info XML')
         if not dir_path: return
         db_files = [
-            ['render', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
-            ['assets', 'MAME machine assets', cfg.MAIN_ASSETS_DB_PATH.getPath()],
+            ['renderdb', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
+            ['assetdb', 'MAME machine assets', cfg.MAIN_ASSET_DB_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
         mame_write_MAME_ROM_Billyc999_XML(g_PATHS, cfg.settings, control_dic, FileName(dir_path), db_dic)

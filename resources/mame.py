@@ -2503,7 +2503,7 @@ def mame_stats_timestamps_slist(cfg, slist, control_dic):
 # -------------------------------------------------------------------------------------------------
 # Check/Update/Repair Favourite ROM objects
 # -------------------------------------------------------------------------------------------------
-def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, assets_dic):
+def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, renderdb_dic, assets_dic):
     fav_machines = utils_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
     # If no MAME Favourites return
     if len(fav_machines) < 1:
@@ -2517,7 +2517,7 @@ def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, 
         log_debug('Checking machine "{}"'.format(fav_key))
         if fav_key in machines:
             machine = machines[fav_key]
-            render = machines_render[fav_key]
+            render = renderdb_dic[fav_key]
             assets = assets_dic[fav_key]
         else:
             # Machine not found in DB. Create an empty one to update the database fields.
@@ -2538,7 +2538,7 @@ def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, 
     utils_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
     pDialog.endProgress()
 
-def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic):
+def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, renderdb_dic, assets_dic):
     most_played_roms_dic = utils_load_JSON_file_dic(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
     if len(most_played_roms_dic) < 1:
         kodi_notify('MAME Most Played empty')
@@ -2554,7 +2554,7 @@ def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_ren
             launch_count = 1
         if fav_key in machines:
             machine = machines[fav_key]
-            render = machines_render[fav_key]
+            render = renderdb_dic[fav_key]
             assets = assets_dic[fav_key]
         else:
             log_debug('Machine "{}" not found in MAME main DB'.format(fav_key))
@@ -2573,7 +2573,7 @@ def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_ren
     utils_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
     pDialog.endProgress()
 
-def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic):
+def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, renderdb_dic, assets_dic):
     recent_roms_list = utils_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
     if len(recent_roms_list) < 1:
         kodi_notify('MAME Recently Played empty')
@@ -2586,7 +2586,7 @@ def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_r
         log_debug('Checking machine "{}"'.format(fav_key))
         if fav_key in machines:
             machine = machines[fav_key]
-            render = machines_render[fav_key]
+            render = renderdb_dic[fav_key]
             assets = assets_dic[fav_key]
         else:
             log_debug('Machine "{}" not found in MAME main DB'.format(fav_key))
@@ -2795,8 +2795,8 @@ def mame_build_MAME_plots(cfg, db_dic_in):
     log_info('mame_build_MAME_plots() Building machine plots/descriptions ...')
     control_dic = db_dic_in['control_dic']
     machines = db_dic_in['machines']
-    machines_render = db_dic_in['render']
-    assets_dic = db_dic_in['assets']
+    renderdb_dic = db_dic_in['renderdb']
+    assetdb_dic = db_dic_in['assetdb']
     history_idx_dic = db_dic_in['history_idx_dic']
     mameinfo_idx_dic = db_dic_in['mameinfo_idx_dic']
     gameinit_idx_dic = db_dic_in['gameinit_idx_list']
@@ -2809,19 +2809,17 @@ def mame_build_MAME_plots(cfg, db_dic_in):
     # --- Built machine plots ---
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Generating MAME machine plots...', len(machines))
-    num_machines = 0
     for mname, m in machines.items():
-        plot_str_list = mame_MAME_plot_slits(mname, m, assets_dic,
+        pDialog.updateProgressInc()
+        plot_str_list = mame_MAME_plot_slits(mname, m, assetdb_dic,
             history_info_set, mameinfo_info_set, gameinit_idx_dic, command_idx_dic)
-        assets_dic[mname]['plot'] = '\n'.join(plot_str_list)
-        num_machines += 1
-        pDialog.updateProgress(num_machines)
+        assetdb_dic[mname]['plot'] = '\n'.join(plot_str_list)
     pDialog.endProgress()
 
     # Timestamp, save the MAME asset database. Save control_dic at the end.
     db_safe_edit(control_dic, 't_MAME_plots_build', time.time())
     db_files = [
-        (assets_dic, 'MAME machine assets', cfg.ASSETS_DB_PATH.getPath()),
+        (assetdb_dic, 'MAME machine assets', cfg.ASSET_DB_PATH.getPath()),
         (control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()),
     ]
     db_save_files(db_files)
@@ -3364,21 +3362,25 @@ def mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, item_name, ro
     audit_dic['machine_CHDs_are_OK'] = all(CHD_OK_status_list) if audit_dic['machine_has_CHDs'] else True
     audit_dic['machine_is_OK'] = audit_dic['machine_ROMs_are_OK'] and audit_dic['machine_CHDs_are_OK']
 
-def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render, audit_roms_dic):
-    log_debug('mame_audit_MAME_all() Initialising ...')
+def mame_audit_MAME_all(cfg, db_dic_in):
+    log_debug('mame_audit_MAME_all() Initialising...')
+    control_dic = db_dic_in['control_dic']
+    machines = db_dic_in['machines']
+    renderdb_dic = db_dic_in['renderdb']
+    audit_roms_dic = db_dic_in['audit_roms']
 
     # Go machine by machine and audit ZIPs and CHDs. Adds new column 'status' to each ROM.
     pDialog = KodiProgressDialog()
-    pDialog.startProgress('Auditing MAME ROMs and CHDs...', len(machines_render))
+    pDialog.startProgress('Auditing MAME ROMs and CHDs...', len(renderdb_dic))
     machine_audit_dic = {}
-    for m_name in sorted(machines_render):
+    for m_name in sorted(renderdb_dic):
         pDialog.updateProgressInc()
         if pDialog.isCanceled(): break
         # Only audit machine if it has ROMs. However, add all machines to machine_audit_dic.
         # audit_roms_dic[m_name] is mutable and edited inside mame_audit_MAME_machine()
         audit_dic = fs_new_audit_dic()
         if m_name in audit_roms_dic:
-            mame_audit_MAME_machine(settings, audit_roms_dic[m_name], audit_dic)
+            mame_audit_MAME_machine(cfg.settings, audit_roms_dic[m_name], audit_dic)
         machine_audit_dic[m_name] = audit_dic
     pDialog.endProgress()
 
@@ -3399,8 +3401,8 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
     audit_MAME_machines_with_CHDs_OK     = 0
     audit_MAME_machines_with_CHDs_BAD    = 0
     audit_MAME_machines_without_CHDs     = 0
-    for m_name in machines_render:
-        render_dic = machines_render[m_name]
+    for m_name in renderdb_dic:
+        render_dic = renderdb_dic[m_name]
         audit_dic = machine_audit_dic[m_name]
         # Skip unrunnable (device) machines
         if render_dic['isDevice']: continue
@@ -3470,7 +3472,7 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
         'This report shows machines with bad/missing CHDs',
     ]
     h_list = [
-        'There are {} machines in total'.format(len(machines_render)),
+        'There are {} machines in total'.format(len(renderdb_dic)),
         'Of those, {} are runnable machines'.format(control_dic['stats_audit_MAME_machines_runnable']),
     ]
     report_full_list.extend(h_list)
@@ -3516,18 +3518,18 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
     CHD_report_error_list.append('')
 
     # Generate report.
-    pDialog.startProgress('Generating audit reports...', len(machines_render))
-    for m_name in sorted(machines_render):
+    pDialog.startProgress('Generating audit reports...', len(renderdb_dic))
+    for m_name in sorted(renderdb_dic):
         pDialog.updateProgressInc()
 
         # Skip ROMless and/or CHDless machines from reports, except the full report
-        description = machines_render[m_name]['description']
-        cloneof = machines_render[m_name]['cloneof']
+        description = renderdb_dic[m_name]['description']
+        cloneof = renderdb_dic[m_name]['cloneof']
         if m_name not in audit_roms_dic:
             head_list = []
             head_list.append('Machine {} "{}"'.format(m_name, description))
             if cloneof:
-                clone_desc = machines_render[cloneof]['description']
+                clone_desc = renderdb_dic[cloneof]['description']
                 head_list.append('Cloneof {} "{}"'.format(cloneof, clone_desc))
             head_list.append('This machine has no ROMs and/or CHDs')
             report_full_list.extend(head_list)
@@ -3545,7 +3547,7 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
         head_list = []
         head_list.append('Machine {} "{}"'.format(m_name, description))
         if cloneof:
-            clone_desc = machines_render[cloneof]['description']
+            clone_desc = renderdb_dic[cloneof]['description']
             head_list.append('Cloneof {} "{}"'.format(cloneof, clone_desc))
 
         # ROM/CHD report.
@@ -3608,23 +3610,23 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
     # --- Write reports ---
     num_items = 9
     pDialog.startProgress('Writing report files...', num_items)
-    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_FULL_PATH.getPath(), report_full_list)
+    utils_write_slist_to_file(cfg.REPORT_MAME_AUDIT_FULL_PATH.getPath(), report_full_list)
     pDialog.updateProgress(1)
-    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_GOOD_PATH.getPath(), report_good_list)
+    utils_write_slist_to_file(cfg.REPORT_MAME_AUDIT_GOOD_PATH.getPath(), report_good_list)
     pDialog.updateProgress(2)
-    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.getPath(), report_error_list)
+    utils_write_slist_to_file(cfg.REPORT_MAME_AUDIT_ERRORS_PATH.getPath(), report_error_list)
     pDialog.updateProgress(3)
-    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath(), ROM_report_good_list)
+    utils_write_slist_to_file(cfg.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath(), ROM_report_good_list)
     pDialog.updateProgress(4)
-    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath(), ROM_report_error_list)
+    utils_write_slist_to_file(cfg.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath(), ROM_report_error_list)
     pDialog.updateProgress(5)
-    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.getPath(), SAMPLES_report_good_list)
+    utils_write_slist_to_file(cfg.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.getPath(), SAMPLES_report_good_list)
     pDialog.updateProgress(6)
-    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.getPath(), SAMPLES_report_error_list)
+    utils_write_slist_to_file(cfg.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.getPath(), SAMPLES_report_error_list)
     pDialog.updateProgress(7)
-    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath(), CHD_report_good_list)
+    utils_write_slist_to_file(cfg.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath(), CHD_report_good_list)
     pDialog.updateProgress(8)
-    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath(), CHD_report_error_list)
+    utils_write_slist_to_file(cfg.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath(), CHD_report_error_list)
     pDialog.endProgress()
 
     # Update MAME audit statistics.
@@ -3647,12 +3649,14 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
 
     # Update timestamp of ROM audit.
     db_safe_edit(control_dic, 't_MAME_audit', time.time())
-    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
-def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
+def mame_audit_SL_all(cfg, db_dic_in):
     log_debug('mame_audit_SL_all() Initialising ...')
+    control_dic = db_dic_in['control_dic']
+    SL_index_dic = db_dic_in['SL_index']
 
-    # >> Report header and statistics
+    # Report header and statistics
     report_full_list = [
         '*** Advanced MAME Launcher Software Lists audit report ***',
         'This report shows full Software Lists audit report',
@@ -3682,7 +3686,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
         'This report shows SL items with errors in CHDs',
     ]
     h_list = [
-        'There are {} software lists'.format(len(SL_catalog_dic)),
+        'There are {} software lists'.format(len(SL_index_dic)),
         '',
     ]
     report_full_list.extend(h_list)
@@ -3694,7 +3698,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
     CHD_report_error_list.extend(h_list)
 
     # DEBUG code
-    # SL_catalog_dic = {
+    # SL_index_dic = {
     #     "32x" : {
     #         "display_name" : "Sega 32X cartridges",
     #         "num_with_CHDs" : 0,
@@ -3721,15 +3725,15 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
     # Iterate all SL databases and audit ROMs.
     d_text = 'Auditing Sofware Lists ROMs and CHDs...'
     pDialog = KodiProgressDialog()
-    pDialog.startProgress(d_text, len(SL_catalog_dic))
-    SL_ROM_path_FN = FileName(settings['SL_rom_path'])
-    SL_CHD_path_FN = FileName(settings['SL_chd_path'])
-    for SL_name in sorted(SL_catalog_dic):
+    pDialog.startProgress(d_text, len(SL_index_dic))
+    SL_ROM_path_FN = FileName(cfg.settings['SL_rom_path'])
+    SL_CHD_path_FN = FileName(cfg.settings['SL_chd_path'])
+    for SL_name in sorted(SL_index_dic):
         pDialog.updateProgressInc('{}\nSoftware List {}'.format(d_text, SL_name))
 
-        SL_dic = SL_catalog_dic[SL_name]
-        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_items.json')
-        SL_AUDIT_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_ROM_audit.json')
+        SL_dic = SL_index_dic[SL_name]
+        SL_DB_FN = cfg.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_items.json')
+        SL_AUDIT_ROMs_DB_FN = cfg.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_ROM_audit.json')
         roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
         audit_roms = utils_load_JSON_file_dic(SL_AUDIT_ROMs_DB_FN.getPath(), verbose = False)
 
@@ -3819,19 +3823,19 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
     # Write reports.
     num_items = 7
     pDialog.startProgress('Writing SL audit reports...', num_items)
-    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_FULL_PATH.getPath(), report_full_list)
+    utils_write_slist_to_file(cfg.REPORT_SL_AUDIT_FULL_PATH.getPath(), report_full_list)
     pDialog.updateProgress(1)
-    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath(), report_good_list)
+    utils_write_slist_to_file(cfg.REPORT_SL_AUDIT_GOOD_PATH.getPath(), report_good_list)
     pDialog.updateProgress(2)
-    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), report_error_list)
+    utils_write_slist_to_file(cfg.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), report_error_list)
     pDialog.updateProgress(3)
-    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), ROM_report_good_list)
+    utils_write_slist_to_file(cfg.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), ROM_report_good_list)
     pDialog.updateProgress(4)
-    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), ROM_report_error_list)
+    utils_write_slist_to_file(cfg.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), ROM_report_error_list)
     pDialog.updateProgress(5)
-    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), CHD_report_good_list)
+    utils_write_slist_to_file(cfg.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), CHD_report_good_list)
     pDialog.updateProgress(6)
-    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), CHD_report_error_list)
+    utils_write_slist_to_file(cfg.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), CHD_report_error_list)
     pDialog.endProgress()
 
     # Update SL audit statistics.
@@ -3851,7 +3855,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
 
     # Update timestamp and save control_dic.
     db_safe_edit(control_dic, 't_SL_audit', time.time())
-    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
 # MAME database building
@@ -4181,7 +4185,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
     pDialog.startProgress('Building main MAME database...', total_machines)
     stats = _get_stats_dic()
     log_info('mame_build_MAME_main_database() total_machines {:,}'.format(total_machines))
-    machines, machines_render, machines_roms, machines_devices = {}, {}, {}, {}
+    machines, renderdb_dic, machines_roms, machines_devices = {}, {}, {}, {}
     roms_sha1_dic = {}
     log_info('mame_build_MAME_main_database() Parsing MAME XML file ...')
     num_iteration = 0
@@ -4538,7 +4542,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
 
             # Add new machine
             machines[m_name] = machine
-            machines_render[m_name] = m_render
+            renderdb_dic[m_name] = m_render
             machines_roms[m_name] = m_roms
             machines_devices[m_name] = device_list
 
@@ -4569,7 +4573,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
     log_info('Making PClone list...')
     main_pclone_dic = {}
     main_clone_to_parent_dic = {}
-    for machine_name, m_render in machines_render.items():
+    for machine_name, m_render in renderdb_dic.items():
         if m_render['cloneof']:
             parent_name = m_render['cloneof']
             # If parent already in main_pclone_dic then add clone to parent list.
@@ -4587,42 +4591,42 @@ def mame_build_MAME_main_database(cfg, st_dic):
     # ---------------------------------------------------------------------------------------------
     log_debug('Initializing MAME asset database...')
     log_debug('Option generate_history_infolabel is {}'.format(cfg.settings['generate_history_infolabel']))
-    assets_dic = {key : fs_new_MAME_asset() for key in machines}
+    assetdb_dic = {key : fs_new_MAME_asset() for key in machines}
     if cfg.settings['generate_history_infolabel'] and history_idx_dic:
         log_debug('Adding History.DAT to MAME asset database.')
-        for m_name, asset in assets_dic.items():
-            asset['flags'] = fs_initial_flags(machines[m_name], machines_render[m_name], machines_roms[m_name])
+        for m_name, asset in assetdb_dic.items():
+            asset['flags'] = fs_initial_flags(machines[m_name], renderdb_dic[m_name], machines_roms[m_name])
             if m_name in history_idx_dic['mame']['machines']:
                 d_name, db_list, db_machine = history_idx_dic['mame']['machines'][m_name].split('|')
                 asset['history'] = history_dic[db_list][db_machine]
     else:
         log_debug('Not including History.DAT in MAME asset database.')
-        for m_name, asset in assets_dic.items():
-            asset['flags'] = fs_initial_flags(machines[m_name], machines_render[m_name], machines_roms[m_name])
+        for m_name, asset in assetdb_dic.items():
+            asset['flags'] = fs_initial_flags(machines[m_name], renderdb_dic[m_name], machines_roms[m_name])
 
     # ---------------------------------------------------------------------------------------------
     # Improve information fields in Main Render database
     # ---------------------------------------------------------------------------------------------
     if mature_dic:
         log_info('MAME machine Mature information available.')
-        for machine_name in machines_render:
-            machines_render[machine_name]['isMature'] = True if machine_name in mature_dic['data'] else False
+        for machine_name in renderdb_dic:
+            renderdb_dic[machine_name]['isMature'] = True if machine_name in mature_dic['data'] else False
     else:
         log_info('MAME machine Mature flag not available.')
 
     # Add genre infolabel into render database.
     if genre_dic:
         log_info('Using genre.ini for MAME genre information.')
-        for machine_name in machines_render:
-            machines_render[machine_name]['genre'] = machines[machine_name]['genre']
+        for machine_name in renderdb_dic:
+            renderdb_dic[machine_name]['genre'] = machines[machine_name]['genre']
     elif categories_dic:
         log_info('Using catver.ini for MAME genre information.')
-        for machine_name in machines_render:
-            machines_render[machine_name]['genre'] = machines[machine_name]['catver']
+        for machine_name in renderdb_dic:
+            renderdb_dic[machine_name]['genre'] = machines[machine_name]['catver']
     elif catlist_dic:
         log_info('Using catlist.ini for MAME genre information.')
-        for machine_name in machines_render:
-            machines_render[machine_name]['genre'] = machines[machine_name]['catlist']
+        for machine_name in renderdb_dic:
+            renderdb_dic[machine_name]['genre'] = machines[machine_name]['catlist']
 
     # ---------------------------------------------------------------------------------------------
     # Improve name in DAT indices and machine names
@@ -4636,11 +4640,11 @@ def mame_build_MAME_main_database(cfg, st_dic):
                 # Improve MAME machine names
                 history_idx_dic[cat_name]['name'] = 'MAME'
                 for machine_name in history_idx_dic[cat_name]['machines']:
-                    if machine_name not in machines_render: continue
+                    if machine_name not in renderdb_dic: continue
                     # Rebuild the CSV string.
                     m_str = history_idx_dic[cat_name]['machines'][machine_name]
                     old_display_name, db_list_name, db_machine_name = m_str.split('|')
-                    display_name = machines_render[machine_name]['description']
+                    display_name = renderdb_dic[machine_name]['description']
                     m_str = misc_build_db_str_3(display_name, db_list_name, db_machine_name)
                     history_idx_dic[cat_name]['machines'][machine_name] = m_str
             elif cat_name in SL_names_dic:
@@ -4653,22 +4657,22 @@ def mame_build_MAME_main_database(cfg, st_dic):
         log_debug('Updating Mameinfo DAT machine names ...')
         for cat_name in mameinfo_idx_dic:
             for machine_key in mameinfo_idx_dic[cat_name]:
-                if machine_key not in machines_render: continue
-                mameinfo_idx_dic[cat_name][machine_key] = machines_render[machine_key]['description']
+                if machine_key not in renderdb_dic: continue
+                mameinfo_idx_dic[cat_name][machine_key] = renderdb_dic[machine_key]['description']
 
     # GameInit DAT machine names.
     if gameinit_idx_dic:
         log_debug('Updating GameInit DAT machine names ...')
         for machine_key in gameinit_idx_dic:
-            if machine_key not in machines_render: continue
-            gameinit_idx_dic[machine_key] = machines_render[machine_key]['description']
+            if machine_key not in renderdb_dic: continue
+            gameinit_idx_dic[machine_key] = renderdb_dic[machine_key]['description']
 
     # Command DAT machine names.
     if command_idx_dic:
         log_debug('Updating Command DAT machine names ...')
         for machine_key in command_idx_dic:
-            if machine_key not in machines_render: continue
-            command_idx_dic[machine_key] = machines_render[machine_key]['description']
+            if machine_key not in renderdb_dic: continue
+            command_idx_dic[machine_key] = renderdb_dic[machine_key]['description']
 
     # ---------------------------------------------------------------------------------------------
     # Update/Reset MAME control dictionary
@@ -4746,11 +4750,11 @@ def mame_build_MAME_main_database(cfg, st_dic):
     # ---------------------------------------------------------------------------------------------
     # This saves the hash files in the database directory.
     # At this point the main hashed database is complete but the asset hashed DB is empty.
-    db_build_main_hashed_db(cfg, control_dic, machines, machines_render)
-    db_build_asset_hashed_db(cfg, control_dic, assets_dic)
+    db_build_main_hashed_db(cfg, control_dic, machines, renderdb_dic)
+    db_build_asset_hashed_db(cfg, control_dic, assetdb_dic)
 
     # --- Save databases ---
-    log_info('Saving database JSON files ...')
+    log_info('Saving database JSON files...')
     if OPTION_LOWMEM_WRITE_JSON:
         json_write_func = utils_write_JSON_file_lowmem
         log_debug('Using utils_write_JSON_file_lowmem() JSON writer')
@@ -4759,8 +4763,8 @@ def mame_build_MAME_main_database(cfg, st_dic):
         log_debug('Using utils_write_JSON_file() JSON writer')
     db_files = [
         [machines, 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
-        [machines_render, 'MAME machines eender', cfg.RENDER_DB_PATH.getPath()],
-        [assets_dic, 'MAME machine assets', cfg.ASSETS_DB_PATH.getPath()],
+        [renderdb_dic, 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
+        [assetdb_dic, 'MAME asset DB', cfg.ASSET_DB_PATH.getPath()],
         [machines_roms, 'MAME machine ROMs', cfg.ROMS_DB_PATH.getPath()],
         [machines_devices, 'MAME machine devices', cfg.DEVICES_DB_PATH.getPath()],
         [main_pclone_dic, 'MAME PClone dictionary', cfg.MAIN_PCLONE_DB_PATH.getPath()],
@@ -4777,15 +4781,15 @@ def mame_build_MAME_main_database(cfg, st_dic):
         # --- Save control_dic after everything is saved ---
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
-    db_dic = db_save_files(db_files, json_write_func)
+    db_save_files(db_files, json_write_func)
 
     # Return a dictionary with references to the objects just in case they are needed after
     # this function (in "Build everything", for example). This saves time, because databases do not
     # need to be reloaded, and apparently memory as well.
     return {
         'machines' : machines,
-        'render' : machines_render,
-        'assets' : assets_dic,
+        'renderdb' : renderdb_dic,
+        'assetdb' : assetdb_dic,
         'roms' : machines_roms,
         'devices' : machines_devices,
         'main_pclone_dic' : main_pclone_dic,
@@ -4827,7 +4831,7 @@ def _get_merged_rom(roms, merged_name):
 #
 # Traverses the ROM hierarchy and returns the ROM location and name.
 #
-def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_roms):
+def _get_ROM_location(rom_set, rom, m_name, machines, renderdb_dic, machine_roms):
     # In the Merged set all Parent and Clone ROMs are in the parent archive.
     # What about BIOS and Device ROMs?
     # However, according to the Pleasuredome DATs, ROMs are organised like
@@ -4837,7 +4841,7 @@ def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_r
     #   parent_rom_1
     #   parent_rom_2
     if rom_set == 'MERGED':
-        cloneof = machines_render[m_name]['cloneof']
+        cloneof = renderdb_dic[m_name]['cloneof']
         if cloneof:
             location = cloneof + '/' + m_name + '/' + rom['name']
         else:
@@ -4845,7 +4849,7 @@ def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_r
 
     elif rom_set == 'SPLIT':
         machine = machines[m_name]
-        cloneof = machines_render[m_name]['cloneof']
+        cloneof = renderdb_dic[m_name]['cloneof']
         if not cloneof:
             # --- Parent machine ---
             # 1. In the Split set non-merged ROMs are in the machine archive and merged ROMs
@@ -4959,10 +4963,10 @@ def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_r
 
     return location
 
-def _get_CHD_location(chd_set, disk, m_name, machines, machines_render, machine_roms):
+def _get_CHD_location(chd_set, disk, m_name, machines, renderdb_dic, machine_roms):
     if chd_set == 'MERGED':
         machine = machines[m_name]
-        cloneof = machines_render[m_name]['cloneof']
+        cloneof = renderdb_dic[m_name]['cloneof']
         romof   = machine['romof']
         if not cloneof:
             # --- Parent machine ---
@@ -5058,7 +5062,6 @@ def mame_check_before_build_ROM_audit_databases(cfg, st_dic, control_dic):
 #
 # Builds the ROM/CHD/Samples audit database and more things.
 # Updates statistics in control_dic and saves it.
-#
 # The audit databases changes for Merged, Split and Non-merged sets (the location of the ROMs changes).
 # The audit database is used when auditing MAME machines.
 #
@@ -5107,13 +5110,17 @@ def mame_check_before_build_ROM_audit_databases(cfg, st_dic, control_dic):
 #     ROM_SET_MACHINE_FILES_DB_PATH
 #     MAIN_CONTROL_PATH (control_dic)
 #
-def mame_build_ROM_audit_databases(cfg, st_dic, db_dic):
+# Add the following fields to db_dic_in:
+#     audit_roms
+#     machine_archives
+#
+def mame_build_ROM_audit_databases(cfg, st_dic, db_dic_in):
     log_info('mame_build_ROM_audit_databases() Initialising ...')
-    control_dic = db_dic['control_dic']
-    machines = db_dic['machines']
-    machines_render = db_dic['render']
-    devices_db_dic = db_dic['devices']
-    machine_roms = db_dic['roms']
+    control_dic = db_dic_in['control_dic']
+    machines = db_dic_in['machines']
+    renderdb_dic = db_dic_in['renderdb']
+    devices_db_dic = db_dic_in['devices']
+    machine_roms = db_dic_in['roms']
 
     # --- Initialize ---
     # This must match the values defined in settings.xml, "ROM sets" tab.
@@ -5138,13 +5145,13 @@ def mame_build_ROM_audit_databases(cfg, st_dic, db_dic):
 
         # --- ROMs ---
         # Skip device machines.
-        if machines_render[m_name]['isDevice']: continue
+        if renderdb_dic[m_name]['isDevice']: continue
         stats_audit_MAME_machines_runnable += 1
         m_roms = machine_roms[m_name]['roms']
         machine_rom_set = []
         for rom in m_roms:
             rom['type'] = _get_ROM_type(rom)
-            rom['location'] = _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_roms)
+            rom['location'] = _get_ROM_location(rom_set, rom, m_name, machines, renderdb_dic, machine_roms)
             machine_rom_set.append(rom)
 
         # --- Device ROMs ---
@@ -5177,12 +5184,12 @@ def mame_build_ROM_audit_databases(cfg, st_dic, db_dic):
     for m_name in sorted(machines):
         pDialog.updateProgressInc()
         # Skip Device Machines
-        if machines_render[m_name]['isDevice']: continue
+        if renderdb_dic[m_name]['isDevice']: continue
         m_disks = machine_roms[m_name]['disks']
         machine_chd_set = []
         for disk in m_disks:
             disk['type'] = ROM_TYPE_DISK
-            disk['location'] = _get_CHD_location(chd_set, disk, m_name, machines, machines_render, machine_roms)
+            disk['location'] = _get_CHD_location(chd_set, disk, m_name, machines, renderdb_dic, machine_roms)
             machine_chd_set.append(disk)
         if m_name in audit_roms_dic:
             audit_roms_dic[m_name].extend(machine_chd_set)
@@ -5224,7 +5231,7 @@ def mame_build_ROM_audit_databases(cfg, st_dic, db_dic):
     CHDs_invalid = 0
     for m_name in audit_roms_dic:
         pDialog.updateProgressInc()
-        isClone = True if machines_render[m_name]['cloneof'] else False
+        isClone = True if renderdb_dic[m_name]['cloneof'] else False
         rom_list = audit_roms_dic[m_name]
         machine_rom_archive_set = set()
         machine_sample_archive_set = set()
@@ -5304,7 +5311,7 @@ def mame_build_ROM_audit_databases(cfg, st_dic, db_dic):
     for m_name in sorted(machines):
         pDialog.updateProgressInc()
         # --- Skip devices and process ROMs and CHDs ---
-        if machines_render[m_name]['isDevice']: continue
+        if renderdb_dic[m_name]['isDevice']: continue
         for rom in machine_roms[m_name]['roms']:
             # Remove unused fields to save space in JSON database, but remove from the copy!
             rom.pop('merge')
@@ -5353,14 +5360,10 @@ def mame_build_ROM_audit_databases(cfg, st_dic, db_dic):
         # --- Save control_dic after everything is saved ---
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
-    db_dic = db_save_files(db_files, json_write_func)
-
-    # Return an dictionary with reference to the objects just in case they are needed after
-    # this function (in "Build everything", for example.
-    return {
-        'audit_roms' : audit_roms_dic,
-        'machine_archives' : machine_archives_dic,
-    }
+    db_save_files(db_files, json_write_func)
+    # Add data generated in this function to dictionary for caller code use.
+    db_dic_in['audit_roms'] = audit_roms_dic
+    db_dic_in['machine_archives'] = machine_archives_dic
 
 #
 # Checks for errors before scanning for SL ROMs.
@@ -5375,6 +5378,8 @@ def mame_check_before_build_MAME_catalogs(cfg, st_dic, control_dic):
     # --- Check that database exists ---
     pass
 
+#
+# Updates db_dic_in and adds cache_index field.
 #
 # A) Builds the following catalog files
 #    CATALOG_MAIN_PARENT_PATH
@@ -5407,10 +5412,10 @@ def mame_check_before_build_MAME_catalogs(cfg, st_dic, control_dic):
 def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     control_dic = db_dic_in['control_dic']
     machines = db_dic_in['machines']
-    machines_render = db_dic_in['render']
+    renderdb_dic = db_dic_in['renderdb']
+    assetdb_dic = db_dic_in['assetdb']
     machine_roms = db_dic_in['roms']
     main_pclone_dic = db_dic_in['main_pclone_dic']
-    assets_dic = db_dic_in['assets']
 
     # --- Machine count ---
     cache_index_dic = {
@@ -5478,7 +5483,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     normal_parent_dic, normal_all_dic, unusual_parent_dic, unusual_all_dic = {}, {}, {}, {}
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
-        machine_render = machines_render[parent_name]
+        machine_render = renderdb_dic[parent_name]
         n_coins = machine_main['input']['att_coins'] if machine_main['input'] else 0
         if machine_main['isMechanical']: continue
         if n_coins == 0: continue
@@ -5497,7 +5502,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
             or machine_main['sourcefile'] in NORMAL_DRIVER_SET:
             normal_parent_dic[parent_name] = machine_render['description']
             normal_all_dic[parent_name] = machine_render['description']
-            mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, normal_all_dic)
+            mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, normal_all_dic)
         #
         # Unusual machines. Most of them you don't wanna play.
         # No controls or control_type has "only_buttons" or "gambling" or "hanafuda" or "mahjong"
@@ -5508,14 +5513,14 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
             or machine_main['sourcefile'] in UNUSUAL_DRIVER_SET:
             unusual_parent_dic[parent_name] = machine_render['description']
             unusual_all_dic[parent_name] = machine_render['description']
-            mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, unusual_all_dic)
+            mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, unusual_all_dic)
         #
         # What remains go to the Normal/Standard list.
         #
         else:
             normal_parent_dic[parent_name] = machine_render['description']
             normal_all_dic[parent_name] = machine_render['description']
-            mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, normal_all_dic)
+            mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, normal_all_dic)
     main_catalog_parents['Normal'] = normal_parent_dic
     main_catalog_all['Normal'] = normal_all_dic
     main_catalog_parents['Unusual'] = unusual_parent_dic
@@ -5527,7 +5532,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
-        machine_render = machines_render[parent_name]
+        machine_render = renderdb_dic[parent_name]
         n_coins = machine_main['input']['att_coins'] if machine_main['input'] else 0
         if machine_main['isMechanical']: continue
         if n_coins > 0: continue
@@ -5535,7 +5540,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
         if machine_render['isDevice']: continue
         parent_dic[parent_name] = machine_render['description']
         all_dic[parent_name] = machine_render['description']
-        mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, all_dic)
+        mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, all_dic)
     main_catalog_parents['NoCoin'] = parent_dic
     main_catalog_all['NoCoin'] = all_dic
 
@@ -5545,13 +5550,13 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
-        machine_render = machines_render[parent_name]
+        machine_render = renderdb_dic[parent_name]
         if not machine_main['isMechanical']: continue
         if machine_main['isDead']: continue
         if machine_render['isDevice']: continue
         parent_dic[parent_name] = machine_render['description']
         all_dic[parent_name] = machine_render['description']
-        mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, all_dic)
+        mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, all_dic)
     main_catalog_parents['Mechanical'] = parent_dic
     main_catalog_all['Mechanical'] = all_dic
 
@@ -5560,11 +5565,11 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
-        machine_render = machines_render[parent_name]
+        machine_render = renderdb_dic[parent_name]
         if not machine_main['isDead']: continue
         parent_dic[parent_name] = machine_render['description']
         all_dic[parent_name] = machine_render['description']
-        mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, all_dic)
+        mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, all_dic)
     main_catalog_parents['Dead'] = parent_dic
     main_catalog_all['Dead'] = all_dic
 
@@ -5572,11 +5577,11 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Device Machines index ...')
     parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
-        machine_render = machines_render[parent_name]
+        machine_render = renderdb_dic[parent_name]
         if not machine_render['isDevice']: continue
         parent_dic[parent_name] = machine_render['description']
         all_dic[parent_name] = machine_render['description']
-        mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, all_dic)
+        mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, all_dic)
     main_catalog_parents['Devices'] = parent_dic
     main_catalog_all['Devices'] = all_dic
 
@@ -5597,12 +5602,12 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
-        machine_render = machines_render[parent_name]
+        machine_render = renderdb_dic[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
         if not machine_roms[parent_name]['disks']: continue
         parent_dic[parent_name] = machine_render['description']
         all_dic[parent_name] = machine_render['description']
-        mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, all_dic)
+        mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, all_dic)
     binary_catalog_parents['CHD'] = parent_dic
     binary_catalog_all['CHD'] = all_dic
 
@@ -5611,12 +5616,12 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
-        machine_render = machines_render[parent_name]
+        machine_render = renderdb_dic[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
         if not machine['sampleof']: continue
         parent_dic[parent_name] = machine_render['description']
         all_dic[parent_name] = machine_render['description']
-        mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, all_dic)
+        mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, all_dic)
     binary_catalog_parents['Samples'] = parent_dic
     binary_catalog_all['Samples'] = all_dic
 
@@ -5625,12 +5630,12 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
-        machine_render = machines_render[parent_name]
+        machine_render = renderdb_dic[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
         if not machine['softwarelists']: continue
         parent_dic[parent_name] = machine_render['description']
         all_dic[parent_name] = machine_render['description']
-        mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, all_dic)
+        mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, all_dic)
     binary_catalog_parents['SoftwareLists'] = parent_dic
     binary_catalog_all['SoftwareLists'] = all_dic
 
@@ -5638,12 +5643,12 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making BIOS Machines index ...')
     parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
-        machine_render = machines_render[parent_name]
+        machine_render = renderdb_dic[parent_name]
         if machine_render['isDevice']: continue # Skip device machines
         if not machine_render['isBIOS']: continue
         parent_dic[parent_name] = machine_render['description']
         all_dic[parent_name] = machine_render['description']
-        mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, all_dic)
+        mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, all_dic)
     binary_catalog_parents['BIOS'] = parent_dic
     binary_catalog_all['BIOS'] = all_dic
 
@@ -5661,7 +5666,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Catver catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Catver)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Catver)
     mame_cache_index_builder('Catver', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_CATVER_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_CATVER_ALL_PATH.getPath(), catalog_all)
@@ -5672,7 +5677,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Catlist catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Catlist)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Catlist)
     mame_cache_index_builder('Catlist', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_CATLIST_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_CATLIST_ALL_PATH.getPath(), catalog_all)
@@ -5683,7 +5688,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Genre catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Genre)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Genre)
     mame_cache_index_builder('Genre', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_GENRE_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_GENRE_ALL_PATH.getPath(), catalog_all)
@@ -5694,7 +5699,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Category catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Category)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Category)
     mame_cache_index_builder('Category', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_CATEGORY_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_CATEGORY_ALL_PATH.getPath(), catalog_all)
@@ -5705,7 +5710,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Nplayers catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines_render, machines_render, main_pclone_dic, mame_catalog_key_NPlayers)
+        renderdb_dic, renderdb_dic, main_pclone_dic, mame_catalog_key_NPlayers)
     mame_cache_index_builder('NPlayers', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_NPLAYERS_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_NPLAYERS_ALL_PATH.getPath(), catalog_all)
@@ -5716,7 +5721,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Bestgames catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Bestgames)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Bestgames)
     mame_cache_index_builder('Bestgames', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_BESTGAMES_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_BESTGAMES_ALL_PATH.getPath(), catalog_all)
@@ -5727,7 +5732,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Series catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Series)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Series)
     mame_cache_index_builder('Series', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_SERIES_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_SERIES_ALL_PATH.getPath(), catalog_all)
@@ -5738,7 +5743,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Alltime catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Alltime)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Alltime)
     mame_cache_index_builder('Alltime', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_ALLTIME_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_ALLTIME_ALL_PATH.getPath(), catalog_all)
@@ -5749,7 +5754,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Artwork catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Artwork)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Artwork)
     mame_cache_index_builder('Artwork', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_ARTWORK_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_ARTWORK_ALL_PATH.getPath(), catalog_all)
@@ -5760,7 +5765,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Version catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_VerAdded)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_VerAdded)
     mame_cache_index_builder('Version', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_VERADDED_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_VERADDED_ALL_PATH.getPath(), catalog_all)
@@ -5771,7 +5776,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Control Expanded catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Controls_Expanded)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Controls_Expanded)
     mame_cache_index_builder('Controls_Expanded', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath(), catalog_all)
@@ -5784,7 +5789,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Control Compact catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Controls_Compact)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Controls_Compact)
     mame_cache_index_builder('Controls_Compact', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath(), catalog_all)
@@ -5795,7 +5800,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making <device> tag Expanded catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Devices_Expanded)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Devices_Expanded)
     mame_cache_index_builder('Devices_Expanded', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath(), catalog_all)
@@ -5806,7 +5811,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making <device> tag Compact catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Devices_Compact)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Devices_Compact)
     mame_cache_index_builder('Devices_Compact', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath(), catalog_all)
@@ -5817,7 +5822,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Display Type catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Display_Type)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Display_Type)
     mame_cache_index_builder('Display_Type', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath(), catalog_all)
@@ -5828,7 +5833,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Display VSync catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Display_VSync)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Display_VSync)
     mame_cache_index_builder('Display_VSync', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_DISPLAY_VSYNC_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_DISPLAY_VSYNC_ALL_PATH.getPath(), catalog_all)
@@ -5839,7 +5844,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Display Resolution catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Display_Resolution)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Display_Resolution)
     mame_cache_index_builder('Display_Resolution', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_DISPLAY_RES_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_DISPLAY_RES_ALL_PATH.getPath(), catalog_all)
@@ -5850,7 +5855,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making CPU catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_CPU)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_CPU)
     mame_cache_index_builder('CPU', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_CPU_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_CPU_ALL_PATH.getPath(), catalog_all)
@@ -5863,9 +5868,9 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Driver catalog ...')
     catalog_parents, catalog_all = {}, {}
     # mame_build_catalog_helper(catalog_parents, catalog_all,
-    #     machines, machines_render, main_pclone_dic, mame_catalog_key_Driver)
+    #     machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Driver)
     for parent_name in main_pclone_dic:
-        render = machines_render[parent_name]
+        render = renderdb_dic[parent_name]
         if render['isDevice']: continue # Skip device machines in catalogs.
         c_key = machines[parent_name]['sourcefile']
         # Some drivers get a prettier name.
@@ -5879,7 +5884,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
                 catalog_parents[catalog_key] = { parent_name : render['description'] }
                 catalog_all[catalog_key] = { parent_name : render['description'] }
             for clone_name in main_pclone_dic[parent_name]:
-                catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
+                catalog_all[catalog_key][clone_name] = renderdb_dic[clone_name]['description']
     mame_cache_index_builder('Driver', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_DRIVER_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_DRIVER_ALL_PATH.getPath(), catalog_all)
@@ -5890,7 +5895,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Manufacturer catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Manufacturer)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Manufacturer)
     mame_cache_index_builder('Manufacturer', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_MANUFACTURER_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_MANUFACTURER_ALL_PATH.getPath(), catalog_all)
@@ -5903,7 +5908,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making MAME short name catalog...')
     catalog_parents, catalog_all = {}, {}
     for parent_name in main_pclone_dic:
-        render = machines_render[parent_name]
+        render = renderdb_dic[parent_name]
         if render['isDevice']: continue
         catalog_key = parent_name[0]
         t = '{} "{}"'.format(parent_name, render['description'])
@@ -5914,7 +5919,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
             catalog_parents[catalog_key] = { parent_name : t }
             catalog_all[catalog_key] = { parent_name : t }
         for clone_name in main_pclone_dic[parent_name]:
-            t = '{} "{}"'.format(clone_name, machines_render[clone_name]['description'])
+            t = '{} "{}"'.format(clone_name, renderdb_dic[clone_name]['description'])
             catalog_all[catalog_key][clone_name] = t
     mame_cache_index_builder('ShortName', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_SHORTNAME_PARENT_PATH.getPath(), catalog_parents)
@@ -5926,7 +5931,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making MAME long name catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_LongName)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_LongName)
     mame_cache_index_builder('LongName', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_LONGNAME_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_LONGNAME_ALL_PATH.getPath(), catalog_all)
@@ -5941,7 +5946,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     catalog_parents, catalog_all = {}, {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
-        render = machines_render[parent_name]
+        render = renderdb_dic[parent_name]
         if render['isDevice']: continue
         for sl_name in machine['softwarelists']:
             catalog_key = sl_name
@@ -5953,7 +5958,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
             else:
                 catalog_parents[catalog_key] = { parent_name : render['description'] }
                 catalog_all[catalog_key] = { parent_name : render['description'] }
-            mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
+            mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, catalog_all[catalog_key])
     mame_cache_index_builder('BySL', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
@@ -5964,7 +5969,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     log_info('Making Year catalog ...')
     catalog_parents, catalog_all = {}, {}
     mame_build_catalog_helper(catalog_parents, catalog_all,
-        machines, machines_render, main_pclone_dic, mame_catalog_key_Year)
+        machines, renderdb_dic, main_pclone_dic, mame_catalog_key_Year)
     mame_cache_index_builder('Year', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_YEAR_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_YEAR_ALL_PATH.getPath(), catalog_all)
@@ -6011,18 +6016,18 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     processed_filters = 0
     pDialog.startProgress('Computing statistics ...', NUM_FILTERS)
     for m_name in main_catalog_all['Normal']:
-        driver_status = machines_render[m_name]['driver_status']
+        driver_status = renderdb_dic[m_name]['driver_status']
         stats_MF_Normal_Total += 1
-        if not machines_render[m_name]['cloneof']: stats_MF_Normal_Total_parents += 1
+        if not renderdb_dic[m_name]['cloneof']: stats_MF_Normal_Total_parents += 1
         if driver_status == 'good':
             stats_MF_Normal_Good += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Normal_Good_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Normal_Good_parents += 1
         elif driver_status == 'imperfect':
             stats_MF_Normal_Imperfect += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Normal_Imperfect_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Normal_Imperfect_parents += 1
         elif driver_status == 'preliminary':
             stats_MF_Normal_Nonworking += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Normal_Nonworking_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Normal_Nonworking_parents += 1
         # Found in mame2003-plus.xml, machine quizf1 and maybe others.
         elif driver_status == 'protection': pass
         # Are there machines with undefined status?
@@ -6033,18 +6038,18 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     processed_filters += 1
     pDialog.updateProgress(processed_filters)
     for m_name in main_catalog_all['Unusual']:
-        driver_status = machines_render[m_name]['driver_status']
+        driver_status = renderdb_dic[m_name]['driver_status']
         stats_MF_Unusual_Total += 1
-        if not machines_render[m_name]['cloneof']: stats_MF_Unusual_Total_parents += 1
+        if not renderdb_dic[m_name]['cloneof']: stats_MF_Unusual_Total_parents += 1
         if driver_status == 'good':
             stats_MF_Unusual_Good += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Unusual_Good_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Unusual_Good_parents += 1
         elif driver_status == 'imperfect':
             stats_MF_Unusual_Imperfect += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Unusual_Imperfect_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Unusual_Imperfect_parents += 1
         elif driver_status == 'preliminary':
             stats_MF_Unusual_Nonworking += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Unusual_Nonworking_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Unusual_Nonworking_parents += 1
         elif driver_status == 'protection': pass
         elif driver_status == '': pass
         else:
@@ -6053,18 +6058,18 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     processed_filters += 1
     pDialog.updateProgress(processed_filters)
     for m_name in main_catalog_all['NoCoin']:
-        driver_status = machines_render[m_name]['driver_status']
+        driver_status = renderdb_dic[m_name]['driver_status']
         stats_MF_Nocoin_Total += 1
-        if not machines_render[m_name]['cloneof']: stats_MF_Nocoin_Total_parents += 1
+        if not renderdb_dic[m_name]['cloneof']: stats_MF_Nocoin_Total_parents += 1
         if driver_status == 'good':
             stats_MF_Nocoin_Good += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Nocoin_Good_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Nocoin_Good_parents += 1
         elif driver_status == 'imperfect':
             stats_MF_Nocoin_Imperfect += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Nocoin_Imperfect_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Nocoin_Imperfect_parents += 1
         elif driver_status == 'preliminary':
             stats_MF_Nocoin_Nonworking += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Nocoin_Nonworking_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Nocoin_Nonworking_parents += 1
         elif driver_status == 'protection': pass
         elif driver_status == '': pass
         else:
@@ -6073,18 +6078,18 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     processed_filters += 1
     pDialog.updateProgress(processed_filters)
     for m_name in main_catalog_all['Mechanical']:
-        driver_status = machines_render[m_name]['driver_status']
+        driver_status = renderdb_dic[m_name]['driver_status']
         stats_MF_Mechanical_Total += 1
-        if not machines_render[m_name]['cloneof']: stats_MF_Mechanical_Total_parents += 1
+        if not renderdb_dic[m_name]['cloneof']: stats_MF_Mechanical_Total_parents += 1
         if driver_status == 'good':
             stats_MF_Mechanical_Good += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Mechanical_Good_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Mechanical_Good_parents += 1
         elif driver_status == 'imperfect':
             stats_MF_Mechanical_Imperfect += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Mechanical_Imperfect_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Mechanical_Imperfect_parents += 1
         elif driver_status == 'preliminary':
             stats_MF_Mechanical_Nonworking += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Mechanical_Nonworking_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Mechanical_Nonworking_parents += 1
         elif driver_status == 'protection': pass
         elif driver_status == '': pass
         else:
@@ -6093,18 +6098,18 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     processed_filters += 1
     pDialog.updateProgress(processed_filters)
     for m_name in main_catalog_all['Dead']:
-        driver_status = machines_render[m_name]['driver_status']
+        driver_status = renderdb_dic[m_name]['driver_status']
         stats_MF_Dead_Total += 1
-        if not machines_render[m_name]['cloneof']: stats_MF_Dead_Total_parents += 1
+        if not renderdb_dic[m_name]['cloneof']: stats_MF_Dead_Total_parents += 1
         if driver_status == 'good':
             stats_MF_Dead_Good += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Dead_Good_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Dead_Good_parents += 1
         elif driver_status == 'imperfect':
             stats_MF_Dead_Imperfect += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Dead_Imperfect_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Dead_Imperfect_parents += 1
         elif driver_status == 'preliminary':
             stats_MF_Dead_Nonworking += 1
-            if not machines_render[m_name]['cloneof']: stats_MF_Dead_Nonworking_parents += 1
+            if not renderdb_dic[m_name]['cloneof']: stats_MF_Dead_Nonworking_parents += 1
         elif driver_status == 'protection': pass
         elif driver_status == '': pass
         else:
@@ -6163,10 +6168,8 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
         [cache_index_dic, 'MAME cache index', cfg.CACHE_INDEX_PATH.getPath()],
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
-    db_dic = db_save_files(db_files)
-
-    # Here we only need to return cache_index_dic.
-    return cache_index_dic
+    db_save_files(db_files)
+    db_dic_in['cache_index'] = cache_index_dic
 
 # -------------------------------------------------------------------------------------------------
 # Software Lists and ROM audit database building function
@@ -6709,6 +6712,9 @@ def mame_check_before_build_SL_databases(cfg, st_dic, control_dic):
         kodi_set_error_status(st_dic, t)
         return
 
+#
+# Modifies dictionary db_dic_in.
+#
 # SL_catalog_dic = { 'name' : {
 #     'display_name': u'',
 #     'num_clones' : int,
@@ -6732,7 +6738,7 @@ def mame_check_before_build_SL_databases(cfg, st_dic, control_dic):
 def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
     control_dic = db_dic_in['control_dic']
     machines = db_dic_in['machines']
-    machines_render = db_dic_in['render']
+    renderdb_dic = db_dic_in['renderdb']
 
     SL_dir_FN = FileName(cfg.settings['SL_hash_path'])
     log_debug('mame_build_SoftwareLists_databases() SL_dir_FN "{}"'.format(SL_dir_FN.getPath()))
@@ -6946,7 +6952,7 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
                 if machine_SL_name == SL_name:
                     SL_machine_dic = {
                         'machine'     : machine_name,
-                        'description' : machines_render[machine_name]['description'],
+                        'description' : renderdb_dic[machine_name]['description'],
                         'devices'     : machines[machine_name]['devices']
                     }
                     SL_machine_list.append(SL_machine_dic)
@@ -7037,18 +7043,10 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
         # Save control_dic after everything is saved.
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
-    db_dic = db_save_files(db_files, json_write_func)
-
-    # Return an dictionary with reference to the objects just in case they are needed after
-    # this function (in "Build everything", for example. This saves time (databases do not
-    # need to be reloaded) and apparently memory as well.
-    SL_dic = {
-        'SL_index' : SL_catalog_dic,
-        'SL_PClone_dic' : SL_PClone_dic,
-        'SL_machines' : SL_machines_dic,
-    }
-
-    return SL_dic
+    db_save_files(db_files, json_write_func)
+    db_dic_in['SL_index'] = SL_catalog_dic
+    db_dic_in['SL_machines'] = SL_machines_dic
+    db_dic_in['SL_PClone_dic'] = SL_PClone_dic
 
 # -------------------------------------------------------------------------------------------------
 # ROM/CHD and asset scanner
@@ -7111,8 +7109,8 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
     # --- Convenient variables for databases ---
     control_dic = db_dic_in['control_dic']
     machines = db_dic_in['machines']
-    renders = db_dic_in['render']
-    assets = db_dic_in['assets']
+    renderdb = db_dic_in['renderdb']
+    assetdb = db_dic_in['assetdb']
     machine_archives_dic = db_dic_in['machine_archives']
     # ROM_ZIP_list = db_dic_in['ROM_ZIP_list']
     # Sample_ZIP_list = db_dic_in['Sample_ZIP_list']
@@ -7183,13 +7181,13 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
     r_have_list = []
     r_miss_list = []
     dial_line = 'Scanning MAME machine archives (ROMs, CHDs and Samples)...'
-    pDialog.startProgress(dial_line, len(renders))
-    for key in sorted(renders):
+    pDialog.startProgress(dial_line, len(renderdb))
+    for key in sorted(renderdb):
         pDialog.updateProgressInc()
 
         # --- Initialise machine ---
         # log_info('mame_scan_MAME_ROMs() Checking machine {}'.format(key))
-        if renders[key]['isDevice']: continue # Skip Devices
+        if renderdb[key]['isDevice']: continue # Skip Devices
         m_have_str_list = []
         m_miss_str_list = []
 
@@ -7219,7 +7217,7 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
                 ROM_flag = 'r'
         else:
             ROM_flag = '-'
-        fs_set_ROM_flag(assets[key], ROM_flag)
+        fs_set_ROM_flag(assetdb[key], ROM_flag)
 
         # --- Samples ---
         sample_list = machine_archives_dic[key]['Samples']
@@ -7245,7 +7243,7 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
             Sample_flag = 's'
         else:
             Sample_flag = '-'
-        fs_set_Sample_flag(assets[key], Sample_flag)
+        fs_set_Sample_flag(assetdb[key], Sample_flag)
 
         # --- Disks ---
         # Machines with CHDs: 2spicy, sfiii2
@@ -7277,13 +7275,13 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
             CHD_flag = 'c'
         else:
             CHD_flag = '-'
-        fs_set_CHD_flag(assets[key], CHD_flag)
+        fs_set_CHD_flag(assetdb[key], CHD_flag)
 
         # Build FULL, HAVE and MISSING reports.
-        r_full_list.append('Machine {} "{}"'.format(key, renders[key]['description']))
-        if renders[key]['cloneof']:
-            cloneof = renders[key]['cloneof']
-            r_full_list.append('cloneof {} "{}"'.format(cloneof, renders[cloneof]['description']))
+        r_full_list.append('Machine {} "{}"'.format(key, renderdb[key]['description']))
+        if renderdb[key]['cloneof']:
+            cloneof = renderdb[key]['cloneof']
+            r_full_list.append('cloneof {} "{}"'.format(cloneof, renderdb[cloneof]['description']))
         if not rom_list and not sample_list and not chd_list:
             r_full_list.append('Machine has no ROMs, Samples and/or CHDs')
         else:
@@ -7293,20 +7291,20 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
 
         # In the HAVE report include machines if and only if every required file is there.
         if m_have_str_list and not m_miss_str_list:
-            r_have_list.append('Machine {} "{}"'.format(key, renders[key]['description']))
-            if renders[key]['cloneof']:
-                cloneof = renders[key]['cloneof']
-                r_have_list.append('cloneof {} "{}"'.format(cloneof, renders[cloneof]['description']))
+            r_have_list.append('Machine {} "{}"'.format(key, renderdb[key]['description']))
+            if renderdb[key]['cloneof']:
+                cloneof = renderdb[key]['cloneof']
+                r_have_list.append('cloneof {} "{}"'.format(cloneof, renderdb[cloneof]['description']))
             r_have_list.extend(m_have_str_list)
             r_have_list.extend(m_miss_str_list)
             r_have_list.append('')
 
         # In the MISSING report include machines if anything is missing.
         if m_miss_str_list:
-            r_miss_list.append('Machine {} "{}"'.format(key, renders[key]['description']))
-            if renders[key]['cloneof']:
-                cloneof = renders[key]['cloneof']
-                r_miss_list.append('cloneof {} "{}"'.format(cloneof, renders[cloneof]['description']))
+            r_miss_list.append('Machine {} "{}"'.format(key, renderdb[key]['description']))
+            if renderdb[key]['cloneof']:
+                cloneof = renderdb[key]['cloneof']
+                r_miss_list.append('cloneof {} "{}"'.format(cloneof, renderdb[cloneof]['description']))
             r_miss_list.extend(m_have_str_list)
             r_miss_list.extend(m_miss_str_list)
             r_miss_list.append('')
@@ -7482,9 +7480,9 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
     # --- Save databases ---
     db_files = [
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
-        [assets, 'MAME machine assets', cfg.ASSETS_DB_PATH.getPath()],
+        [assetdb, 'MAME machine assets', cfg.ASSET_DB_PATH.getPath()],
     ]
-    db_dic = db_save_files(db_files)
+    db_save_files(db_files)
 
 #
 # Checks for errors before scanning for SL assets.
@@ -7512,8 +7510,8 @@ def mame_check_before_scan_MAME_assets(cfg, st_dic, control_dic):
 #
 def mame_scan_MAME_assets(cfg, st_dic, db_dic_in):
     control_dic = db_dic_in['control_dic']
-    machines_render = db_dic_in['render']
-    assets_dic = db_dic_in['assets']
+    renderdb_dic = db_dic_in['renderdb']
+    assetdb_dic = db_dic_in['assetdb']
     main_pclone_dic = db_dic_in['main_pclone_dic']
 
     Asset_path_FN = FileName(cfg.settings['assets_path'])
@@ -7546,8 +7544,8 @@ def mame_scan_MAME_assets(cfg, st_dic, db_dic_in):
 
     # --- First pass: search for on-disk assets ---
     ondisk_assets_dic = {}
-    pDialog.startProgress('Scanning MAME assets/artwork (first pass)...', len(machines_render))
-    for m_name in sorted(machines_render):
+    pDialog.startProgress('Scanning MAME assets/artwork (first pass)...', len(renderdb_dic))
+    for m_name in sorted(renderdb_dic):
         pDialog.updateProgressInc()
         machine_assets = fs_new_MAME_asset()
         for idx, asset_tuple in enumerate(ASSET_MAME_T_LIST):
@@ -7574,46 +7572,46 @@ def mame_scan_MAME_assets(cfg, st_dic, db_dic_in):
     # --- Second pass: substitute artwork ---
     have_count_list = [0] * len(ASSET_MAME_T_LIST)
     alternate_count_list = [0] * len(ASSET_MAME_T_LIST)
-    pDialog.startProgress('Scanning MAME assets/artwork (second pass)...', len(machines_render))
-    for m_name in sorted(machines_render):
+    pDialog.startProgress('Scanning MAME assets/artwork (second pass)...', len(renderdb_dic))
+    for m_name in sorted(renderdb_dic):
         pDialog.updateProgressInc()
         asset_row = ['---'] * len(ASSET_MAME_T_LIST)
         for idx, asset_tuple in enumerate(ASSET_MAME_T_LIST):
             asset_key = asset_tuple[0]
             asset_dir = asset_tuple[1]
-            # >> Reset asset
-            assets_dic[m_name][asset_key] = ''
-            # >> If artwork exists on disk set it on database
+            # Reset asset
+            assetdb_dic[m_name][asset_key] = ''
+            # If artwork exists on disk set it on database
             if ondisk_assets_dic[m_name][asset_key]:
-                assets_dic[m_name][asset_key] = ondisk_assets_dic[m_name][asset_key]
+                assetdb_dic[m_name][asset_key] = ondisk_assets_dic[m_name][asset_key]
                 have_count_list[idx] += 1
                 asset_row[idx] = 'YES'
-            # >> If artwork does not exist on disk ...
+            # If artwork does not exist on disk ...
             else:
-                # >> if machine is a parent search in the clone list
+                # if machine is a parent search in the clone list
                 if m_name in main_pclone_dic:
                     for clone_key in main_pclone_dic[m_name]:
                         if ondisk_assets_dic[clone_key][asset_key]:
-                            assets_dic[m_name][asset_key] = ondisk_assets_dic[clone_key][asset_key]
+                            assetdb_dic[m_name][asset_key] = ondisk_assets_dic[clone_key][asset_key]
                             have_count_list[idx] += 1
                             alternate_count_list[idx] += 1
                             asset_row[idx] = 'CLO'
                             break
-                # >> if machine is a clone search in the parent first, then search in the clones
+                # if machine is a clone search in the parent first, then search in the clones
                 else:
-                    # >> Search parent
-                    parent_name = machines_render[m_name]['cloneof']
+                    # Search parent
+                    parent_name = renderdb_dic[m_name]['cloneof']
                     if ondisk_assets_dic[parent_name][asset_key]:
-                        assets_dic[m_name][asset_key] = ondisk_assets_dic[parent_name][asset_key]
+                        assetdb_dic[m_name][asset_key] = ondisk_assets_dic[parent_name][asset_key]
                         have_count_list[idx] += 1
                         alternate_count_list[idx] += 1
                         asset_row[idx] = 'PAR'
-                    # >> Search clones
+                    # Search clones
                     else:
                         for clone_key in main_pclone_dic[parent_name]:
                             if clone_key == m_name: continue
                             if ondisk_assets_dic[clone_key][asset_key]:
-                                assets_dic[m_name][asset_key] = ondisk_assets_dic[clone_key][asset_key]
+                                assetdb_dic[m_name][asset_key] = ondisk_assets_dic[clone_key][asset_key]
                                 have_count_list[idx] += 1
                                 alternate_count_list[idx] += 1
                                 asset_row[idx] = 'CLX'
@@ -7623,7 +7621,7 @@ def mame_scan_MAME_assets(cfg, st_dic, db_dic_in):
     pDialog.endProgress()
 
     # --- Asset statistics and report ---
-    total_machines = len(machines_render)
+    total_machines = len(renderdb_dic)
     # This must match the order of ASSET_MAME_T_LIST defined in disk_IO.py
     box3D = (have_count_list[0],  total_machines - have_count_list[0],  alternate_count_list[0])
     Artp  = (have_count_list[1],  total_machines - have_count_list[1],  alternate_count_list[1])
@@ -7713,9 +7711,9 @@ def mame_scan_MAME_assets(cfg, st_dic, db_dic_in):
     # --- Save databases ---
     db_files = [
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
-        [assets_dic, 'MAME machine assets', cfg.ASSETS_DB_PATH.getPath()],
+        [assetdb_dic, 'MAME machine assets', cfg.ASSET_DB_PATH.getPath()],
     ]
-    db_dic = db_save_files(db_files)
+    db_save_files(db_files)
 
 # -------------------------------------------------------------------------------------------------
 #

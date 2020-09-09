@@ -750,19 +750,19 @@ def filter_mame_Options_tag(mame_xml_dic, f_definition):
     NoMissingCHDs_bool    = True if 'NoMissingCHDs' in options_list else False
     NoMissingSamples_bool = True if 'NoMissingSamples' in options_list else False
 
-    log_debug('NoClones_bool     {}'.format(NoClones_bool))
-    log_debug('NoCoin_bool       {}'.format(NoCoin_bool))
-    log_debug('NoCoinLess_bool   {}'.format(NoCoinLess_bool))
-    log_debug('NoROMs_bool       {}'.format(NoROMs_bool))
-    log_debug('NoCHDs_bool       {}'.format(NoCHDs_bool))
-    log_debug('NoSamples_bool    {}'.format(NoSamples_bool))
-    log_debug('NoMature_bool     {}'.format(NoMature_bool))
-    log_debug('NoBIOS_bool       {}'.format(NoBIOS_bool))
-    log_debug('NoMechanical_bool {}'.format(NoMechanical_bool))
-    log_debug('NoImperfect_bool  {}'.format(NoImperfect_bool))
-    log_debug('NoNonWorking_bool {}'.format(NoNonWorking_bool))
-    log_debug('NoVertical_bool   {}'.format(NoVertical_bool))
-    log_debug('NoHorizontal_bool {}'.format(NoHorizontal_bool))
+    log_debug('NoClones_bool         {}'.format(NoClones_bool))
+    log_debug('NoCoin_bool           {}'.format(NoCoin_bool))
+    log_debug('NoCoinLess_bool       {}'.format(NoCoinLess_bool))
+    log_debug('NoROMs_bool           {}'.format(NoROMs_bool))
+    log_debug('NoCHDs_bool           {}'.format(NoCHDs_bool))
+    log_debug('NoSamples_bool        {}'.format(NoSamples_bool))
+    log_debug('NoMature_bool         {}'.format(NoMature_bool))
+    log_debug('NoBIOS_bool           {}'.format(NoBIOS_bool))
+    log_debug('NoMechanical_bool     {}'.format(NoMechanical_bool))
+    log_debug('NoImperfect_bool      {}'.format(NoImperfect_bool))
+    log_debug('NoNonWorking_bool     {}'.format(NoNonWorking_bool))
+    log_debug('NoVertical_bool       {}'.format(NoVertical_bool))
+    log_debug('NoHorizontal_bool     {}'.format(NoHorizontal_bool))
     log_debug('NoMissingROMs_bool    {}'.format(NoMissingROMs_bool))
     log_debug('NoMissingCHDs_bool    {}'.format(NoMissingCHDs_bool))
     log_debug('NoMissingSamples_bool {}'.format(NoMissingSamples_bool))
@@ -1180,7 +1180,12 @@ def filter_parse_XML(fname_str):
 # Returns a dictionary of dictionaries, indexed by the machine name.
 # This includes all MAME machines, including parents and clones.
 #
-def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic, machine_archives_dic):
+def filter_get_filter_DB(cfg, db_dic_in):
+    machine_main_dic = db_dic_in['machines']
+    renderdb_dic = db_dic_in['renderdb']
+    assetdb_dic = db_dic_in['assetdb']
+    machine_archives_dic = db_dic_in['machine_archives']
+
     main_filter_dic = {}
     # Sets are used to check the integrity of the filters defined in the XML.
     drivers_set = set()
@@ -1221,9 +1226,9 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
                 isVertical = True
 
         # ROM/CHD/Sample scanner flags. See funcion fs_initial_flags()
-        missingROMs    = True if assets_dic[m_name]['flags'][0] == 'r' else False
-        missingCHDs    = True if assets_dic[m_name]['flags'][1] == 'c' else False
-        missingSamples = True if assets_dic[m_name]['flags'][2] == 's' else False
+        missingROMs    = True if assetdb_dic[m_name]['flags'][0] == 'r' else False
+        missingCHDs    = True if assetdb_dic[m_name]['flags'][1] == 'c' else False
+        missingSamples = True if assetdb_dic[m_name]['flags'][2] == 's' else False
 
         # Fix controls to match "Machines by Controls (Compact)" filter
         if machine_main_dic[m_name]['input']:
@@ -1245,18 +1250,18 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
         # --- Build filtering dictionary ---
         main_filter_dic[m_name] = {
             # --- Default filters ---
-            'isDevice' : machine_render_dic[m_name]['isDevice'],
+            'isDevice' : renderdb_dic[m_name]['isDevice'],
             # --- <Option> filters ---
-            'isClone' : True if machine_render_dic[m_name]['cloneof'] else False,
+            'isClone' : True if renderdb_dic[m_name]['cloneof'] else False,
             'coins' : coins,
             'hasROMs' : hasROMs,
             'hasCHDs' : hasCHDs,
             'hasSamples' : hasSamples,
-            'isMature' : machine_render_dic[m_name]['isMature'],
-            'isBIOS' : machine_render_dic[m_name]['isBIOS'],
+            'isMature' : renderdb_dic[m_name]['isMature'],
+            'isBIOS' : renderdb_dic[m_name]['isBIOS'],
             'isMechanical' : machine_main_dic[m_name]['isMechanical'],
-            'isImperfect' : True if machine_render_dic[m_name]['driver_status'] == 'imperfect' else False,
-            'isNonWorking' : True if machine_render_dic[m_name]['driver_status'] == 'preliminary' else False,
+            'isImperfect' : True if renderdb_dic[m_name]['driver_status'] == 'imperfect' else False,
+            'isNonWorking' : True if renderdb_dic[m_name]['driver_status'] == 'preliminary' else False,
             'isHorizontal' : isHorizontal,
             'isVertical' : isVertical,
             # --- <Option> scanner-related filters ---
@@ -1265,11 +1270,11 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
             'missingSamples' : missingSamples,
             # --- Other filters ---
             'driver' : machine_main_dic[m_name]['sourcefile'],
-            'manufacturer' : machine_render_dic[m_name]['manufacturer'],
-            'genre' : machine_render_dic[m_name]['genre'],
+            'manufacturer' : renderdb_dic[m_name]['manufacturer'],
+            'genre' : renderdb_dic[m_name]['genre'],
             'control_list' : control_list,
             'pluggable_device_list' : pluggable_device_list,
-            'year' : machine_render_dic[m_name]['year'],
+            'year' : renderdb_dic[m_name]['year'],
         }
 
         # --- Make sets of drivers, genres, controls, and pluggable devices ---
@@ -1296,7 +1301,7 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
     pDialog.endProgress()
 
     # --- Write statistics report ---
-    log_info('Writing report "{}"'.format(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath()))
+    log_info('Writing report "{}"'.format(cfg.REPORT_CF_HISTOGRAMS_PATH.getPath()))
     rslist = [
         '*** Advanced MAME Launcher MAME histogram report ***',
         '',
@@ -1327,7 +1332,7 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
         table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
     rslist.extend(text_render_table_str(table_str))
     rslist.append('')
-    utils_write_slist_to_file(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath(), rslist)
+    utils_write_slist_to_file(cfg.REPORT_CF_HISTOGRAMS_PATH.getPath(), rslist)
 
     sets_dic = {
         'drivers_set' : drivers_set,
@@ -1341,7 +1346,8 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
 #
 # Returns a tuple (filter_list, options_dic).
 #
-def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic, sets_dic):
+def filter_custom_filters_load_XML(cfg, db_dic_in, main_filter_dic, sets_dic):
+    control_dic = db_dic_in['control_dic']
     filter_list = []
     options_dic = {
         # No errors by default until an error is found.
@@ -1349,11 +1355,11 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
     }
 
     # --- Open custom filter XML and parse it ---
-    cf_XML_path_str = settings['filter_XML']
+    cf_XML_path_str = cfg.settings['filter_XML']
     log_debug('cf_XML_path_str = "{}"'.format(cf_XML_path_str))
     if not cf_XML_path_str:
         log_debug('Using default XML custom filter.')
-        XML_FN = PATHS.CUSTOM_FILTER_PATH
+        XML_FN = cfg.CUSTOM_FILTER_PATH
     else:
         log_debug('Using user-defined in addon settings XML custom filter.')
         XML_FN = FileName(cf_XML_path_str)
@@ -1443,7 +1449,7 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
         r_full.append('')
 
     # --- Write MAME scanner reports ---
-    log_info('Writing report "{}"'.format(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath()))
+    log_info('Writing report "{}"'.format(cfg.REPORT_CF_XML_SYNTAX_PATH.getPath()))
     report_slist = [
         '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
         'There are {} custom filters defined.'.format(len(filter_list)),
@@ -1451,7 +1457,7 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
         '',
     ]
     report_slist.extend(r_full)
-    utils_write_slist_to_file(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath(), report_slist)
+    utils_write_slist_to_file(cfg.REPORT_CF_XML_SYNTAX_PATH.getPath(), report_slist)
 
     return (filter_list, options_dic)
 
@@ -1469,13 +1475,17 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
 # AML_DATA_DIR/filters/'rom_DB_noext'_render.json -> machine_render = {}
 # AML_DATA_DIR/filters/'rom_DB_noext'_assets.json -> asset_dic = {}
 #
-def filter_build_custom_filters(PATHS, settings, control_dic,
-    filter_list, main_filter_dic, machines_dic, render_dic, assets_dic):
+def filter_build_custom_filters(cfg, db_dic_in, filter_list, main_filter_dic):
+    control_dic = db_dic_in['control_dic']
+    machines_dic = db_dic_in['machines']
+    renderdb_dic = db_dic_in['renderdb']
+    assetdb_dic = db_dic_in['assetdb']
+
     # --- Clean 'filters' directory JSON files ---
-    log_info('filter_build_custom_filters() Cleaning dir "{}"'.format(PATHS.FILTERS_DB_DIR.getPath()))
+    log_info('filter_build_custom_filters() Cleaning dir "{}"'.format(cfg.FILTERS_DB_DIR.getPath()))
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Listing filter JSON files...')
-    file_list = os.listdir(PATHS.FILTERS_DB_DIR.getPath())
+    file_list = os.listdir(cfg.FILTERS_DB_DIR.getPath())
     num_files = len(file_list)
     if num_files > 1:
         log_info('Found {} files'.format(num_files))
@@ -1484,7 +1494,7 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         for file in file_list:
             pDialog.updateProgress(processed_items)
             if file.endswith('.json'):
-                full_path = os.path.join(PATHS.FILTERS_DB_DIR.getPath(), file)
+                full_path = os.path.join(cfg.FILTERS_DB_DIR.getPath(), file)
                 # log_debug('UNLINK "{}"'.format(full_path))
                 os.unlink(full_path)
             processed_items += 1
@@ -1526,8 +1536,8 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         filtered_render_dic = {}
         filtered_assets_dic = {}
         for m_name in filtered_machine_dic:
-            filtered_render_dic[m_name] = render_dic[m_name]
-            filtered_assets_dic[m_name] = assets_dic[m_name]
+            filtered_render_dic[m_name] = renderdb_dic[m_name]
+            filtered_assets_dic[m_name] = assetdb_dic[m_name]
         rom_DB_noext = hashlib.md5(f_name.encode('utf-8')).hexdigest()
         this_filter_idx_dic = {
             'display_name' : f_definition['name'],
@@ -1541,9 +1551,9 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
 
         # --- Save filter database ---
         writing_ticks_start = time.time()
-        output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_render.json')
+        output_FN = cfg.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_render.json')
         utils_write_JSON_file(output_FN.getPath(), filtered_render_dic, verbose = False)
-        output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
+        output_FN = cfg.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
         utils_write_JSON_file(output_FN.getPath(), filtered_assets_dic, verbose = False)
         writing_ticks_end = time.time()
         writing_time = writing_ticks_end - writing_ticks_start
@@ -1555,19 +1565,19 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         r_full.append('')
 
     # --- Save custom filter index ---
-    utils_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
+    utils_write_JSON_file(cfg.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
     pDialog.endProgress()
 
     # --- Update timestamp ---
     db_safe_edit(control_dic, 't_Custom_Filter_build', time.time())
-    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     # --- Write MAME scanner reports ---
-    log_info('Writing report "{}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()))
+    log_info('Writing report "{}"'.format(cfg.REPORT_CF_DB_BUILD_PATH.getPath()))
     report_slist = [
         '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
-        'File "{}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()),
+        'File "{}"'.format(cfg.REPORT_CF_DB_BUILD_PATH.getPath()),
         '',
     ]
     report_slist.extend(r_full)
-    utils_write_slist_to_file(PATHS.REPORT_CF_DB_BUILD_PATH.getPath(), report_slist)
+    utils_write_slist_to_file(cfg.REPORT_CF_DB_BUILD_PATH.getPath(), report_slist)

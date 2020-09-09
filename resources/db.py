@@ -1043,7 +1043,7 @@ def db_build_render_cache(cfg, control_dic, cache_index_dic, machines_render, fo
         return
     # Notify user this is a forced build.
     if not cfg.settings['debug_enable_MAME_render_cache'] and force_build:
-        t = 'MAME render cache disabled but force rebuilding.'
+        t = 'MAME render cache disabled but forcing rebuilding.'
         log_info(t)
         kodi_dialog_OK(t)
 
@@ -1112,7 +1112,7 @@ def db_build_asset_cache(cfg, control_dic, cache_index_dic, assets_dic, force_bu
         return
     # Notify user this is a forced build.
     if not cfg.settings['debug_enable_MAME_render_cache'] and force_build:
-        t = 'MAME asset cache disabled but force rebuilding.'
+        t = 'MAME asset cache disabled but forcing rebuilding.'
         log_info(t)
         kodi_dialog_OK(t)
 
