@@ -395,13 +395,20 @@ def mame_preprocess_RETRO_MAME2003PLUS(cfg, st_dic):
     utils_write_JSON_file(cfg.MAME_2003_PLUS_XML_CONTROL_PATH.getPath(), XML_control_dic, verbose = True)
 
 # After this function of code we have:
-# 1) a valid XML_control_dic and the XML control file is created and/or current.
-# 2) valid and verified for existence MAME_XML_path.
+# 1) Valid and verified for existence MAME_XML_path.
+# 2) A valid XML_control_dic and the XML control file is created and/or current.
 #
 # Returns tuple (MAME_XML_path [FileName object], XML_control_FN [FileName object])
-def mame_init_MAME_XML(cfg, st_dic):
+def mame_init_MAME_XML(cfg, st_dic, force_rebuild = False):
     log_info('mame_init_MAME_XML() Beginning extract/process of MAME.xml...')
-    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA and force_rebuild:
+        log_info('Forcing rebuilding of Vanilla MAME XML.')
+        MAME_XML_path = cfg.MAME_XML_PATH
+        XML_control_FN = cfg.MAME_XML_CONTROL_PATH
+        # Extract, count number of machines and create XML control file.
+        mame_extract_MAME_XML(cfg, st_dic)
+        if st_dic['abort']: return
+    elif cfg.settings['op_mode'] == OP_MODE_VANILLA and not force_rebuild:
         process_XML_flag = False
         MAME_exe_path = FileName(cfg.settings['mame_prog'])
         MAME_XML_path = cfg.MAME_XML_PATH
@@ -450,7 +457,14 @@ def mame_init_MAME_XML(cfg, st_dic):
             if st_dic['abort']: return
         else:
             log_info('Reusing previosly preprocessed Vanilla MAME XML.')
-    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS and force_rebuild:
+        log_info('Forcing rebuilding of MAME 2003 Plus XML.')
+        MAME_XML_path = FileName(cfg.settings['xml_2003_path'])
+        XML_control_FN = cfg.MAME_2003_PLUS_XML_CONTROL_PATH
+        # Count number of machines and create XML control file.
+        mame_preprocess_RETRO_MAME2003PLUS(cfg, st_dic)
+        if st_dic['abort']: return
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS and not force_rebuild:
         process_XML_flag = False
         MAME_XML_path = FileName(cfg.settings['xml_2003_path'])
         XML_control_FN = cfg.MAME_2003_PLUS_XML_CONTROL_PATH
@@ -459,7 +473,6 @@ def mame_init_MAME_XML(cfg, st_dic):
             log_info('MAME 2003 Plus XML path is not set. Aborting.')
             kodi_set_error_status(st_dic, 'MAME 2003 Plus XML path is not set.')
             return
-
         if not MAME_XML_path.exists():
             log_info('MAME 2003 Plus XML file not found. Aborting.')
             kodi_set_error_status(st_dic, 'MAME 2003 Plus XML file not found.')
