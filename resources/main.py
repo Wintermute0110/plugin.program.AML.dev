@@ -5728,14 +5728,14 @@ def command_context_setup_plugin(cfg):
     elif menu_item == 4:
         BUILD_MISSING = True
         log_info('command_context_setup_plugin() Building missing Fanarts and 3D boxes...')
+        st_dic = kodi_new_status_dic()
 
         # Check if Pillow library is available. Abort if not.
         if not PILLOW_AVAILABLE:
-            kodi_dialog_OK('Pillow Python library is not available. Aborting Fanart generation.')
+            kodi_dialog_OK('Pillow Python library is not available. Aborting image generation.')
             return
 
         # Build mussing Fanarts and 3DBoxes.
-        st_dic = kodi_new_status_dic()
         data_dic = graphs_load_MAME_Fanart_stuff(cfg, st_dic, BUILD_MISSING)
         if kodi_display_status_message(st_dic): return
         graphs_build_MAME_Fanart_all(cfg, st_dic, data_dic)
@@ -6297,97 +6297,120 @@ def command_context_setup_plugin(cfg):
         elif submenu == 4:
             BUILD_MISSING = True
             log_info('command_context_setup_plugin() Building all missing Fanarts...')
+            st_dic = kodi_new_status_dic()
+            if not PILLOW_AVAILABLE:
+                kodi_dialog_OK('Pillow Python library is not available. Aborting image generation.')
+                return
 
             # Kodi notifications inside graphs_build_*() functions.
-            data_dic = graphs_load_MAME_Fanart_stuff(cfg, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_MAME_Fanart_all(cfg, data_dic)
+            data_dic = graphs_load_MAME_Fanart_stuff(cfg, st_dic, BUILD_MISSING)
+            if kodi_display_status_message(st_dic): return
+            graphs_build_MAME_Fanart_all(cfg, st_dic, data_dic)
+            if kodi_display_status_message(st_dic): return
 
-            data_dic = graphs_load_SL_Fanart_stuff(cfg, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_SL_Fanart_all(cfg, data_dic)
+            # MAME asset DB has changed so rebuild MAME asset hashed database and MAME asset cache.
+            control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
+            db_build_asset_hashed_db(cfg, control_dic, data_dic['assetdb'])
+            cache_index = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
+            db_build_asset_cache(cfg, control_dic, cache_index, data_dic['assetdb'])
+
+            if cfg.settings['global_enable_SL']:
+                data_dic_SL = graphs_load_SL_Fanart_stuff(cfg, st_dic, BUILD_MISSING)
+                if kodi_display_status_message(st_dic): return
+                graphs_build_SL_Fanart_all(cfg, st_dic, data_dic_SL)
+                if kodi_display_status_message(st_dic): return
+            else:
+                log_info('SL globally disabled. Skipping SL Fanart generation.')
 
         # --- Build all missing 3D boxes ---
         elif submenu == 5:
             BUILD_MISSING = True
             log_info('command_context_setup_plugin() Building all missing 3D boxes...')
+            st_dic = kodi_new_status_dic()
+            if not PILLOW_AVAILABLE:
+                kodi_dialog_OK('Pillow Python library is not available. Aborting image generation.')
+                return
 
-            data_dic = graphs_load_MAME_3DBox_stuff(cfg, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_MAME_3DBox_all(cfg, data_dic)
+            # Kodi notifications inside graphs_build_*() functions.
+            data_dic = graphs_load_MAME_3DBox_stuff(cfg, st_dic, BUILD_MISSING)
+            if kodi_display_status_message(st_dic): return
+            graphs_build_MAME_3DBox_all(cfg, st_dic, data_dic)
+            if kodi_display_status_message(st_dic): return
 
-            data_dic = graphs_load_SL_3DBox_stuff(cfg, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_SL_3DBox_all(cfg, data_dic)
+            # MAME asset DB has changed so rebuild MAME asset hashed database and MAME asset cache.
+            control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
+            db_build_asset_hashed_db(cfg, control_dic, data_dic['assetdb'])
+            cache_index = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
+            db_build_asset_cache(cfg, control_dic, cache_index, data_dic['assetdb'])
 
-        # --- Build missing MAME Fanarts ---
-        elif submenu == 6:
-            BUILD_MISSING = True
-            log_info('command_context_setup_plugin() Building missing Fanarts...')
-            # Kodi notifications inside graphs_build_*() function.
-            data_dic = graphs_load_MAME_Fanart_stuff(cfg, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_MAME_Fanart_all(cfg, data_dic)
+            if cfg.settings['global_enable_SL']:
+                data_dic_SL = graphs_load_SL_3DBox_stuff(cfg, st_dic, BUILD_MISSING)
+                if kodi_display_status_message(st_dic): return
+                graphs_build_SL_3DBox_all(cfg, st_dic, data_dic_SL)
+                if kodi_display_status_message(st_dic): return
+            else:
+                log_info('SL globally disabled. Skipping SL Fanart generation.')
 
-        # --- Missing SL Fanarts ---
-        elif submenu == 7:
-            BUILD_MISSING = True
-            log_info('command_context_setup_plugin() Building missing Software Lists Fanarts ...')
-            # Kodi notifications inside graphs_build_*() function.
-            data_dic = graphs_load_SL_Fanart_stuff(cfg, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_SL_Fanart_all(cfg, data_dic)
-
-        # --- Missing MAME 3D Boxes ---
-        elif submenu == 8:
-            BUILD_MISSING = True
-            log_info('command_context_setup_plugin() Building missing MAME 3D Boxes ...')
-            # Kodi notifications inside graphs_build_*() function.
-            data_dic = graphs_load_MAME_3DBox_stuff(cfg, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_MAME_3DBox_all(cfg, data_dic)
-
-        # --- Missing SL 3D Boxes ---
-        elif submenu == 9:
-            BUILD_MISSING = True
-            log_info('command_context_setup_plugin() Building missing Software Lists 3D Boxes ...')
-            # Kodi notifications inside graphs_build_*() function.
-            data_dic = graphs_load_SL_3DBox_stuff(cfg, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_SL_3DBox_all(cfg, data_dic)
-
-        # --- Rebuild all MAME Fanarts ---
+        # --- Build missing/Rebuild all MAME Fanarts ---
         # For a complete MAME artwork collection, rebuilding all Fanarts will take hours!
-        elif submenu == 10:
-            BUILD_MISSING = False
-            log_info('command_context_setup_plugin() Rebuilding all Fanarts...')
-            data_dic = graphs_load_MAME_Fanart_stuff(cfg, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_MAME_Fanart_all(cfg, data_dic)
+        elif submenu == 6 or submenu == 10:
+            BUILD_MISSING = True if submenu == 6 else False
+            log_info('command_context_setup_plugin() Build missing/Rebuild all MAME Fanarts...')
+            log_info('BUILD_MISSING is {}'.format(BUILD_MISSING))
+            st_dic = kodi_new_status_dic()
+            data_dic = graphs_load_MAME_Fanart_stuff(cfg, st_dic, BUILD_MISSING)
+            if kodi_display_status_message(st_dic): return
+            graphs_build_MAME_Fanart_all(cfg, st_dic, data_dic)
+            if kodi_display_status_message(st_dic): return
+            # MAME asset DB has changed so rebuild MAME asset hashed database and MAME asset cache.
+            control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
+            db_build_asset_hashed_db(cfg, control_dic, data_dic['assetdb'])
+            cache_index = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
+            db_build_asset_cache(cfg, control_dic, cache_index, data_dic['assetdb'])
 
-        # --- Rebuild all SL Fanarts ---
-        elif submenu == 11:
-            BUILD_MISSING = False
-            log_info('command_context_setup_plugin() Rebuilding all Software Lists Fanarts ...')
-            data_dic = graphs_load_SL_Fanart_stuff(cfg, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_SL_Fanart_all(cfg, data_dic)
+        # --- Build missing/Rebuild all SL Fanarts ---
+        elif submenu == 7 or submenu == 11:
+            BUILD_MISSING = True if submenu == 7 else False
+            log_info('command_context_setup_plugin() Build missing/Rebuild all Software Lists Fanarts...')
+            log_info('BUILD_MISSING is {}'.format(BUILD_MISSING))
+            st_dic = kodi_new_status_dic()
+            if not cfg.settings['global_enable_SL']:
+                kodi_dialog_OK('SL globally disabled. Skipping image generation.')
+                return
+            data_dic_SL = graphs_load_SL_Fanart_stuff(cfg, st_dic, BUILD_MISSING)
+            if kodi_display_status_message(st_dic): return
+            graphs_build_SL_Fanart_all(cfg, st_dic, data_dic_SL)
+            if kodi_display_status_message(st_dic): return
 
-        # --- Rebuild all MAME 3D Boxes ---
-        elif submenu == 12:
-            BUILD_MISSING = False
-            log_info('command_context_setup_plugin() Rebuilding all MAME 3D Boxes ...')
-            data_dic = graphs_load_MAME_3DBox_stuff(cfg, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_MAME_3DBox_all(cfg, data_dic)
+        # --- Build missing/Rebuild all MAME 3D Boxes ---
+        elif submenu == 8 or submenu == 12:
+            BUILD_MISSING = True if submenu == 8 else False
+            log_info('command_context_setup_plugin() Rebuilding all MAME 3D Boxes...')
+            log_info('BUILD_MISSING is {}'.format(BUILD_MISSING))
+            st_dic = kodi_new_status_dic()
+            data_dic = graphs_load_MAME_3DBox_stuff(cfg, st_dic, BUILD_MISSING)
+            if kodi_display_status_message(st_dic): return
+            graphs_build_MAME_3DBox_all(cfg, st_dic, data_dic)
+            if kodi_display_status_message(st_dic): return
+            # MAME asset DB has changed so rebuild MAME asset hashed database and MAME asset cache.
+            control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
+            db_build_asset_hashed_db(cfg, control_dic, data_dic['assetdb'])
+            cache_index = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
+            db_build_asset_cache(cfg, control_dic, cache_index, data_dic['assetdb'])
 
-        # --- Rebuild all SL 3D Boxes ---
-        elif submenu == 13:
-            BUILD_MISSING = False
-            log_info('command_context_setup_plugin() Rebuilding all Software Lists 3D Boxes ...')
-            data_dic = graphs_load_SL_3DBox_stuff(cfg, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_SL_3DBox_all(cfg, data_dic)
+        # --- Build missing/Rebuild all SL 3D Boxes ---
+        elif submenu == 9 or submenu == 13:
+            BUILD_MISSING = True if submenu == 9 else False
+            log_info('command_context_setup_plugin() Rebuilding all Software Lists 3D Boxes...')
+            log_info('BUILD_MISSING is {}'.format(BUILD_MISSING))
+            st_dic = kodi_new_status_dic()
+            if not cfg.settings['global_enable_SL']:
+                kodi_dialog_OK('SL globally disabled. Skipping image generation.')
+                return
+            data_dic_SL = graphs_load_SL_3DBox_stuff(cfg, st_dic, BUILD_MISSING)
+            if kodi_display_status_message(st_dic): return
+            graphs_build_SL_3DBox_all(cfg, st_dic, data_dic_SL)
+            if kodi_display_status_message(st_dic): return
 
         else:
             kodi_dialog_OK('In command_context_setup_plugin() wrong submenu = {}'.format(submenu))
