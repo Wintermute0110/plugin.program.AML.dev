@@ -1403,12 +1403,13 @@ def XML_t(tag_name, tag_text = '', num_spaces = 4):
 # Export a MAME information file in Billyc999 XML format to use with RCB.
 # https://forum.kodi.tv/showthread.php?tid=70115&pid=2949624#pid2949624
 # https://github.com/billyc999/Game-database-info
-def mame_write_MAME_ROM_Billyc999_XML(PATHS, settings, control_dic, out_dir_FN, db_dic):
-    log_debug('mame_write_MAME_ROM_Billyc999_XML() BEGIN ...')
+def mame_write_MAME_ROM_Billyc999_XML(cfg, out_dir_FN, db_dic):
+    log_debug('mame_write_MAME_ROM_Billyc999_XML() BEGIN...')
+    control_dic = db_dic['control_dic']
 
     # Get output filename
     # DAT filename: AML 0.xxx ROMs (merged|split|non-merged|fully non-merged).xml
-    mame_version_str = control_dic['ver_mame']
+    mame_version_str = control_dic['ver_mame_str']
     log_info('MAME version "{}"'.format(mame_version_str))
     DAT_basename_str = 'AML MAME {} Billyc999.xml'.format(mame_version_str)
     DAT_FN = out_dir_FN.pjoin(DAT_basename_str)
@@ -1428,10 +1429,10 @@ def mame_write_MAME_ROM_Billyc999_XML(PATHS, settings, control_dic, out_dir_FN, 
     # Traverse ROMs and write DAT.
     machine_counter = 0
     pDialog = KodiProgressDialog()
-    pDialog.startProgress('Creating MAME Billyc999 XML...', len(db_dic['render']))
-    for m_name in sorted(db_dic['render']):
-        render = db_dic['render'][m_name]
-        assets = db_dic['assets'][m_name]
+    pDialog.startProgress('Creating MAME Billyc999 XML...', len(db_dic['renderdb']))
+    for m_name in sorted(db_dic['renderdb']):
+        render = db_dic['renderdb'][m_name]
+        assets = db_dic['assetdb'][m_name]
         sl.append('  <game name="{}">'.format(m_name))
         sl.append(XML_t('description', render['description']))
         sl.append(XML_t('year', render['year']))
@@ -1459,18 +1460,19 @@ def mame_write_MAME_ROM_Billyc999_XML(PATHS, settings, control_dic, out_dir_FN, 
 #
 # Only valid ROMs in DAT file.
 #
-def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic):
-    log_debug('mame_write_MAME_ROM_XML_DAT() BEGIN ...')
+def mame_write_MAME_ROM_XML_DAT(cfg, out_dir_FN, db_dic):
+    log_debug('mame_write_MAME_ROM_XML_DAT() BEGIN...')
+    control_dic = db_dic['control_dic']
     machines = db_dic['machines']
-    render = db_dic['render']
+    render = db_dic['renderdb']
     audit_roms = db_dic['audit_roms']
     roms_sha1_dic = db_dic['roms_sha1_dic']
 
     # Get output filename
     # DAT filename: AML 0.xxx ROMs (merged|split|non-merged|fully non-merged).xml
-    mame_version_str = control_dic['ver_mame']
-    rom_set = ['MERGED', 'SPLIT', 'NONMERGED', 'FULLYNONMERGED'][settings['mame_rom_set']]
-    rom_set_str = ['Merged', 'Split', 'Non-merged', 'Fully Non-merged'][settings['mame_rom_set']]
+    mame_version_str = control_dic['ver_mame_str']
+    rom_set = ['MERGED', 'SPLIT', 'NONMERGED', 'FULLYNONMERGED'][cfg.settings['mame_rom_set']]
+    rom_set_str = ['Merged', 'Split', 'Non-merged', 'Fully Non-merged'][cfg.settings['mame_rom_set']]
     log_info('MAME version "{}"'.format(mame_version_str))
     log_info('ROM set is "{}"'.format(rom_set_str))
     DAT_basename_str = 'AML MAME {} ROMs ({}).xml'.format(mame_version_str, rom_set_str)
@@ -1539,17 +1541,18 @@ def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic
 #
 # Only valid CHDs in DAT file.
 #
-def mame_write_MAME_CHD_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic):
+def mame_write_MAME_CHD_XML_DAT(cfg, out_dir_FN, db_dic):
     log_debug('mame_write_MAME_CHD_XML_DAT() BEGIN ...')
+    control_dic = db_dic['control_dic']
     machines = db_dic['machines']
-    render = db_dic['render']
+    render = db_dic['renderdb']
     audit_roms = db_dic['audit_roms']
 
     # Get output filename
     # DAT filename: AML 0.xxx ROMs (merged|split|non-merged|fully non-merged).xml
-    mame_version_str = control_dic['ver_mame']
-    chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_chd_set']]
-    chd_set_str = ['Merged', 'Split', 'Non-merged'][settings['mame_chd_set']]
+    mame_version_str = control_dic['ver_mame_str']
+    chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][cfg.settings['mame_chd_set']]
+    chd_set_str = ['Merged', 'Split', 'Non-merged'][cfg.settings['mame_chd_set']]
     log_info('MAME version "{}"'.format(mame_version_str))
     log_info('CHD set is "{}"'.format(chd_set_str))
     DAT_basename_str = 'AML MAME {} CHDs ({}).xml'.format(mame_version_str, chd_set_str)

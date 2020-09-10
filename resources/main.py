@@ -3832,8 +3832,7 @@ def command_context_utilities(cfg, catalog_name, category_name):
 
         # Ask user for a path to export the launcher configuration
         vlauncher_str_name = 'AML_VLauncher_' + catalog_name + '_' + category_name + '.xml'
-        dir_path = xbmcgui.Dialog().browse(0, 'Select XML export directory', 'files',
-            '', False, False).decode('utf-8')
+        dir_path = xbmcgui.Dialog().browse(0, 'Select XML export directory', 'files', '', False, False)
         if not dir_path: return
         export_FN = FileName(dir_path).pjoin(vlauncher_str_name)
         if export_FN.exists():
@@ -3842,24 +3841,23 @@ def command_context_utilities(cfg, catalog_name, category_name):
                 kodi_notify_warn('Export of Launcher XML cancelled')
                 return
 
+        kodi_dialog_OK('Not implemented yet, sorry!')
+        return
+
         # --- Open databases and get list of machines of this filter ---
         # This can be optimised: load stuff from the cache instead of the main databases.
-        d_text = 'Loading databases...'
-        pDialog = KodiProgressDialog()
-        pDialog.startProgress('{}\n{}'.format(d_text, 'Catalog dictionary'), 4)
-        catalog_dic = fs_get_cataloged_dic_parents(cfg, catalog_name)
-        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machines Main'))
-        machines = utils_load_JSON_file_dic(cfg.MAIN_DB_PATH.getPath())
-        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machines Render'))
-        machines_render = utils_load_JSON_file_dic(cfg.RENDER_DB_PATH.getPath())
-        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine Assets'))
-        assets_dic = utils_load_JSON_file_dic(cfg.MAIN_ASSET_DB_PATH.getPath())
-        pDialog.endProgress()
+        db_files = [
+            ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
+            ['renderdb', 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
+            ['assetdb', 'MAME asset DB', cfg.ASSET_DB_PATH.getPath()],
+        ]
+        db_dic = db_load_files(db_files)
 
         # --- Print error message is something goes wrong writing file ---
         try:
+            catalog_dic = fs_get_cataloged_dic_parents(cfg, catalog_name)
             fs_export_Virtual_Launcher(export_FN, catalog_dic[category_name],
-                machines, machines_render, assets_dic)
+                db_dic['machines'], db_dic['renderdb'], db_dic['assetsdb'])
         except Addon_Error as ex:
             kodi_notify_warn('{}'.format(ex))
         else:
@@ -6934,59 +6932,53 @@ def command_exec_utility(cfg, which_utility):
     # Export MAME information in Billyc999 XML format to use with RCB.
     elif which_utility == 'EXPORT_MAME_INFO_BILLYC999_XML':
         log_info('command_exec_utility() Initialising EXPORT_MAME_INFO_BILLYC999_XML...')
-        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
         dir_path = kodi_dialog_get_wdirectory('Chose directory to write MAME info XML')
         if not dir_path: return
         db_files = [
-            ['renderdb', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
-            ['assetdb', 'MAME machine assets', cfg.MAIN_ASSET_DB_PATH.getPath()],
+            ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
+            ['renderdb', 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
+            ['assetdb', 'MAME asset DB', cfg.ASSET_DB_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
-        mame_write_MAME_ROM_Billyc999_XML(g_PATHS, cfg.settings, control_dic, FileName(dir_path), db_dic)
+        mame_write_MAME_ROM_Billyc999_XML(cfg, FileName(dir_path), db_dic)
 
     # Export a MAME ROM DAT XML file with Logiqx format.
     # The DAT will be Merged, Split, Non-merged or Fully Non-merged same as the current
     # AML database.
     elif which_utility == 'EXPORT_MAME_ROM_DAT':
         log_info('command_exec_utility() Initialising EXPORT_MAME_ROM_DAT...')
-        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
-
-        # Choose output directory (writable directory).
         dir_path = kodi_dialog_get_wdirectory('Chose directory to write MAME ROMs DAT')
         if not dir_path: return
 
         # Open databases.
         db_files = [
-            ['machines', 'MAME machines Main', cfg.MAIN_DB_PATH.getPath()],
-            ['render', 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
+            ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
+            ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
+            ['renderdb', 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
             ['audit_roms', 'MAME ROM Audit', cfg.ROM_AUDIT_DB_PATH.getPath()],
             ['roms_sha1_dic', 'MAME ROMs SHA1 dictionary', cfg.SHA1_HASH_DB_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
 
         # Write MAME ROM dat. Notifies the user if successful.
-        mame_write_MAME_ROM_XML_DAT(g_PATHS, cfg.settings, control_dic, FileName(dir_path), db_dic)
+        mame_write_MAME_ROM_XML_DAT(cfg, FileName(dir_path), db_dic)
 
     elif which_utility == 'EXPORT_MAME_CHD_DAT':
         log_info('command_exec_utility() Initialising EXPORT_MAME_CHD_DAT ...')
-        log_info('command_exec_utility() Initialising EXPORT_MAME_ROM_DAT ...')
-        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
-
-        # Choose output directory (writable directory).
-        # DAT filename: AML 0.xxx ROMs (merged|split|non-merged|fully non-merged).xml
         dir_path = kodi_dialog_get_wdirectory('Chose directory to write MAME CHDs DAT')
         if not dir_path: return
 
         # Open databases.
         db_files = [
-            ['machines', 'MAME machines Main', cfg.MAIN_DB_PATH.getPath()],
-            ['render', 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
+            ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
+            ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
+            ['renderdb', 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
             ['audit_roms', 'MAME ROM Audit', cfg.ROM_AUDIT_DB_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
 
         # Write MAME ROM dat. Notifies the user if successful.
-        mame_write_MAME_CHD_XML_DAT(g_PATHS, cfg.settings, control_dic, FileName(dir_path), db_dic)
+        mame_write_MAME_CHD_XML_DAT(cfg, FileName(dir_path), db_dic)
 
     elif which_utility == 'EXPORT_SL_ROM_DAT':
         log_info('command_exec_utility() Initialising EXPORT_SL_ROM_DAT ...')

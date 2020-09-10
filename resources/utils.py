@@ -892,3 +892,18 @@ def kodi_reset_status(st_dic):
     st_dic['abort'] = False
     st_dic['dialog'] = KODI_MESSAGE_NONE
     st_dic['msg'] = ''
+
+# -------------------------------------------------------------------------------------------------
+# Alternative Kodi GUI error reporting.
+# This is a more phytonic way of reporting errors than using st_dic.
+# -------------------------------------------------------------------------------------------------
+# Create a Exception-derived class and use that for reporting.
+#
+# Example code:
+# try:
+#     function_that_may_fail()
+# except KodiAddonError as ex:
+#     kodi_display_status_message(ex)
+#     return # Abort addon execution
+# else:
+#     kodi_notify('Operation completed')
