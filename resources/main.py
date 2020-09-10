@@ -5734,30 +5734,36 @@ def command_context_setup_plugin(cfg):
             kodi_dialog_OK('Pillow Python library is not available. Aborting Fanart generation.')
             return
 
-        # Kodi notifications inside graphs_build_*() functions.
-        # If the cache is enabled is it updated inside graphs_build_*() functions.
-        # This is ineficcient and must be changed!!!
-        data_dic = graphs_load_MAME_Fanart_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
-        if data_dic['abort']: return
-        graphs_build_MAME_Fanart_all(g_PATHS, cfg.settings, data_dic)
+        # Build mussing Fanarts and 3DBoxes.
+        st_dic = kodi_new_status_dic()
+        data_dic = graphs_load_MAME_Fanart_stuff(cfg, st_dic, BUILD_MISSING)
+        if kodi_display_status_message(st_dic): return
+        graphs_build_MAME_Fanart_all(cfg, st_dic, data_dic)
+        if kodi_display_status_message(st_dic): return
+
+        data_dic = graphs_load_MAME_3DBox_stuff(cfg, st_dic, BUILD_MISSING)
+        if kodi_display_status_message(st_dic): return
+        graphs_build_MAME_3DBox_all(cfg, st_dic, data_dic)
+        if kodi_display_status_message(st_dic): return
+
+        # MAME asset DB has changed so rebuild MAME asset hashed database and MAME asset cache.
+        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
+        db_build_asset_hashed_db(cfg, control_dic, data_dic['assetdb'])
+        cache_index = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
+        db_build_asset_cache(cfg, control_dic, cache_index, data_dic['assetdb'])
 
         if cfg.settings['global_enable_SL']:
-            data_dic = graphs_load_SL_Fanart_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_SL_Fanart_all(g_PATHS, cfg.settings, data_dic)
-        else:
-            log_info('SL globally disabled. Skipping SL Fanart generation.')
+            data_dic_SL = graphs_load_SL_Fanart_stuff(cfg, st_dic, BUILD_MISSING)
+            if kodi_display_status_message(st_dic): return
+            graphs_build_SL_Fanart_all(cfg, st_dic, data_dic_SL)
+            if kodi_display_status_message(st_dic): return
 
-        data_dic = graphs_load_MAME_3DBox_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
-        if data_dic['abort']: return
-        graphs_build_MAME_3DBox_all(g_PATHS, cfg.settings, data_dic)
-
-        if cfg.settings['global_enable_SL']:
-            data_dic = graphs_load_SL_3DBox_stuff(g_PATHS, cfg.settings, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_SL_3DBox_all(g_PATHS, cfg.settings, data_dic)
+            data_dic_SL = graphs_load_SL_3DBox_stuff(cfg, st_dic, BUILD_MISSING)
+            if kodi_display_status_message(st_dic): return
+            graphs_build_SL_3DBox_all(cfg, st_dic, data_dic_SL)
+            if kodi_display_status_message(st_dic): return
         else:
-            log_info('SL globally disabled. Skipping SL 3DBox generation.')
+            log_info('SL globally disabled. Skipping SL Fanart and 3DBox generation.')
 
     # --- Audit MAME machine ROMs/CHDs ---
     # It is likely that this function will take a looong time. It is important that the

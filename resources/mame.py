@@ -3863,7 +3863,7 @@ def mame_audit_SL_all(cfg, db_dic_in):
 # 1) Scan MAME hash dir for XML files.
 # 2) For each XML file, read the first XML_READ_LINES lines.
 # 3) Search for the line <softwarelist name="32x" description="Sega 32X cartridges">
-# 4) Create the file SL_NAMES_PATH with a dictionary sl_name : description
+# 4) Create the file SL_NAMES_PATH with a dictionary {sl_name : description, ... }
 #
 # <softwarelist name="32x" description="Sega 32X cartridges">
 # <softwarelist name="vsmile_cart" description="VTech V.Smile cartridges">

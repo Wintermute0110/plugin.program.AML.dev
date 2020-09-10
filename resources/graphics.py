@@ -679,20 +679,17 @@ def graphs_load_MAME_Fanart_template(Template_FN):
     return layout
 
 # Returns a dictionary with all the data necessary to build the fanarts.
-# The dictionary has the 'abort' field if an error was detected.
-def graphs_load_MAME_Fanart_stuff(cfg, BUILD_MISSING):
+def graphs_load_MAME_Fanart_stuff(cfg, st_dic, BUILD_MISSING):
     data_dic = {
-        'abort' : False,
         'BUILD_MISSING' : BUILD_MISSING,
     }
 
-    # If artwork directory not configured abort.
+    # --- If artwork directory not configured abort ---
     if not cfg.settings['assets_path']:
-        kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
-        data_dic['abort'] = True
-        return data_dic
+        kodi_set_error_status(st_dic, 'Asset directory not configured. Aborting Fanart generation.')
+        return
 
-    # --- If fanart directory doesn't exist create it ---
+    # --- If Fanart directory doesn't exist create it ---
     Asset_path_FN = FileName(cfg.settings['assets_path'])
     Fanart_path_FN = Asset_path_FN.pjoin('fanarts')
     if not Fanart_path_FN.isdir():
@@ -705,72 +702,64 @@ def graphs_load_MAME_Fanart_stuff(cfg, BUILD_MISSING):
     layout = graphs_load_MAME_Fanart_template(Template_FN)
     # log_debug(str(layout))
     if not layout:
-        kodi_dialog_OK('Error loading XML MAME Fanart layout.')
-        data_dic['abort'] = True
-        return data_dic
-    else:
-        data_dic['layout'] = layout
+        kodi_set_error_status(st_dic, 'Error loading XML MAME Fanart layout.')
+        return
+    data_dic['layout'] = layout
 
     # --- Load Assets DB ---
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Loading MAME asset database...')
-    assets_dic = utils_load_JSON_file_dic(cfg.ASSET_DB_PATH.getPath())
+    assetdb_dic = utils_load_JSON_file_dic(cfg.ASSET_DB_PATH.getPath())
     pDialog.endProgress()
-    data_dic['assets_dic'] = assets_dic
+    data_dic['assetdb'] = assetdb_dic
 
     return data_dic
 
 # Builds or rebuilds missing MAME Fanarts.
-def graphs_build_MAME_Fanart_all(cfg, data_dic):
+# Caller code is responsible for updating caches.
+def graphs_build_MAME_Fanart_all(cfg, st_dic, data_dic):
     # Traverse all machines and build fanart from other pieces of artwork
     pDialog_canceled = False
     pDialog = KodiProgressDialog()
-    total_machines, processed_machines = len(data_dic['assets_dic']), 0
+    total_machines, processed_machines = len(data_dic['assetdb']), 0
     ETA_str = ETA_reset(total_machines)
     diag_t = 'Building MAME machine Fanarts...'
     pDialog.startProgress(diag_t, total_machines)
-    for m_name in sorted(data_dic['assets_dic']):
+    for m_name in sorted(data_dic['assetdb']):
         build_time_start = time.time()
         pDialog.updateProgress(processed_machines, '{}\nETA {} machine {}'.format(diag_t, ETA_str, m_name))
         if pDialog.isCanceled():
             pDialog_canceled = True
-            # kodi_dialog_OK('Fanart generation was cancelled by the user.')
+            # kodi_dialog_OK('Fanart generation was canceled by the user.')
             break
         # If build missing Fanarts was chosen only build fanart if file cannot be found.
         Fanart_FN = data_dic['Fanart_path_FN'].pjoin('{}.png'.format(m_name))
         if data_dic['BUILD_MISSING']:
             if Fanart_FN.exists():
-                data_dic['assets_dic'][m_name]['fanart'] = Fanart_FN.getPath()
+                data_dic['assetdb'][m_name]['fanart'] = Fanart_FN.getPath()
                 build_OK_flag = False
             else:
                 build_OK_flag = graphs_build_MAME_Fanart(cfg,
-                    data_dic['layout'], m_name, data_dic['assets_dic'], Fanart_FN)
+                    data_dic['layout'], m_name, data_dic['assetdb'], Fanart_FN)
         else:
             build_OK_flag = graphs_build_MAME_Fanart(cfg,
-                data_dic['layout'], m_name, data_dic['assets_dic'], Fanart_FN)
+                data_dic['layout'], m_name, data_dic['assetdb'], Fanart_FN)
         processed_machines += 1
         build_time_end = time.time()
         build_time = build_time_end - build_time_start
-        # Only update ETA if Fanart was sucesfully build.
+        # Only update ETA if Fanart was successfully build.
         ETA_str = ETA_update(build_OK_flag, processed_machines, build_time)
     pDialog.endProgress()
 
-    # Save assets DB
+    # Save MAME assets DB
     pDialog.startProgress('Saving MAME asset database...')
-    utils_write_JSON_file(cfg.ASSET_DB_PATH.getPath(), data_dic['assets_dic'])
+    utils_write_JSON_file(cfg.ASSET_DB_PATH.getPath(), data_dic['assetdb'])
     pDialog.endProgress()
 
     # Update MAME Fanart build timestamp
     control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
     db_safe_edit(control_dic, 't_MAME_fanart_build', time.time())
     utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
-
-    # assets_dic has changed. Rebuild hashed database.
-    db_build_asset_hashed_db(cfg, control_dic, data_dic['assets_dic'])
-
-    # Rebuild MAME asset cache.
-    cache_index = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
-    db_build_asset_cache(cfg, control_dic, cache_index, data_dic['assets_dic'])
 
     # Inform user.
     if pDialog_canceled:
@@ -829,29 +818,25 @@ def graphs_load_SL_Fanart_template(Template_FN):
 
 # Returns a dictionary with all the data necessary to build the fanarts.
 # The dictionary has the 'abort' field if an error was detected.
-def graphs_load_SL_Fanart_stuff(cfg, BUILD_MISSING):
+def graphs_load_SL_Fanart_stuff(cfg, st_dic, BUILD_MISSING):
     data_dic = {
-        'abort' : False,
         'BUILD_MISSING' : BUILD_MISSING,
     }
 
-    # If artwork directory not configured abort.
-    # SL Fanart directories are created later in graphs_build_SL_Fanart_all()
+    # --- If artwork directory not configured abort ---
     if not cfg.settings['assets_path']:
-        kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
-        data_dic['abort'] = True
+        kodi_set_error_status(st_dic, 'Asset directory not configured. Aborting SL Fanart generation.')
         return
 
     # --- Load Fanart template from XML file ---
+    # SL Fanart directories are created later in graphs_build_SL_Fanart_all()
     Template_FN = cfg.ADDON_CODE_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
     layout = graphs_load_SL_Fanart_template(Template_FN)
     # log_debug(str(layout))
     if not layout:
-        kodi_dialog_OK('Error loading XML Software List Fanart layout.')
-        data_dic['abort'] = True
+        kodi_set_error_status(st_dic, 'Error loading XML Software List Fanart layout.')
         return
-    else:
-        data_dic['layout'] = layout
+    data_dic['layout'] = layout
 
     # --- Load SL index ---
     SL_index = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
@@ -860,7 +845,7 @@ def graphs_load_SL_Fanart_stuff(cfg, BUILD_MISSING):
     return data_dic
 
 # Builds or rebuilds missing SL Fanarts.
-def graphs_build_SL_Fanart_all(cfg, data_dic):
+def graphs_build_SL_Fanart_all(cfg, st_dic, data_dic):
     control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
 
     # Traverse all SL and on each SL every item
@@ -938,52 +923,53 @@ def graphs_build_SL_Fanart_all(cfg, data_dic):
 
 # Returns a dictionary with all the data necessary to build the fanarts.
 # The dictionary has the 'abort' field if an error was detected.
-def graphs_load_MAME_3DBox_stuff(cfg, BUILD_MISSING):
+def graphs_load_MAME_3DBox_stuff(cfg, st_dic, BUILD_MISSING):
     data_dic = {
-        'abort' : False,
         'BUILD_MISSING' : BUILD_MISSING,
     }
 
-    # If artwork directory not configured abort.
+    # --- If artwork directory not configured abort ---
     if not cfg.settings['assets_path']:
-        kodi_dialog_OK('Asset directory not configured. Aborting MAME 3D box generation.')
-        data_dic['abort'] = True
-        return data_dic
+        kodi_set_error_status(st_dic, 'Asset directory not configured. Aborting MAME 3D box generation.')
+        return
 
-    # --- If fanart directory doesn't exist create it ---
+    # --- If 3DBox directory doesn't exist create it ---
     Asset_path_FN = FileName(cfg.settings['assets_path'])
     Boxes_path_FN = Asset_path_FN.pjoin('3dboxes')
     if not Boxes_path_FN.isdir():
-        log_info('Creating Fanart dir "{}"'.format(Boxes_path_FN.getPath()))
+        log_info('Creating 3DBox dir "{}"'.format(Boxes_path_FN.getPath()))
         Boxes_path_FN.makedirs()
     data_dic['Boxes_path_FN'] = Boxes_path_FN
 
-    # --- Load Fanart template from XML file ---
+    # --- Load 3DBox template from XML file ---
     # TProjection_FN = cfg.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
     TProjection_FN = cfg.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
     t_projection = utils_load_JSON_file_dic(TProjection_FN.getPath())
+    if not t_projection:
+        kodi_set_error_status(st_dic, 'Error loading JSON 3dbox projection data.')
+        return
     data_dic['t_projection'] = t_projection
 
     # --- Load Assets DB ---
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Loading MAME asset database...')
-    assets_dic = utils_load_JSON_file_dic(cfg.ASSET_DB_PATH.getPath())
+    assetdb_dic = utils_load_JSON_file_dic(cfg.ASSET_DB_PATH.getPath())
     pDialog.endProgress()
-    data_dic['assets_dic'] = assets_dic
+    data_dic['assetdb'] = assetdb_dic
 
     return data_dic
 
 # Builds or rebuilds missing MAME Fanarts.
-def graphs_build_MAME_3DBox_all(cfg, data_dic):
+def graphs_build_MAME_3DBox_all(cfg, st_dic, data_dic):
     # Traverse all machines and build 3D boxes from other pieces of artwork
     SL_name = 'MAME'
-    total_machines, processed_machines = len(data_dic['assets_dic']), 0
+    total_machines, processed_machines = len(data_dic['assetdb']), 0
     ETA_str = ETA_reset(total_machines)
     pDialog_canceled = False
     pDialog = KodiProgressDialog()
     d_text = 'Building MAME machine 3D Boxes...'
     pDialog.startProgress(d_text, total_machines)
-    for m_name in sorted(data_dic['assets_dic']):
+    for m_name in sorted(data_dic['assetdb']):
         build_time_start = time.time()
         d_str = '{}\nETA {} machine {}'.format(d_text, ETA_str, m_name)
         pDialog.updateProgress(processed_machines, d_str)
@@ -993,37 +979,30 @@ def graphs_build_MAME_3DBox_all(cfg, data_dic):
         Image_FN = data_dic['Boxes_path_FN'].pjoin('{}.png'.format(m_name))
         if data_dic['BUILD_MISSING']:
             if Image_FN.exists():
-                data_dic['assets_dic'][m_name]['3dbox'] = Image_FN.getPath()
+                data_dic['assetdb'][m_name]['3dbox'] = Image_FN.getPath()
                 build_OK_flag = False
             else:
                 build_OK_flag = graphs_build_MAME_3DBox(cfg,
-                    data_dic['t_projection'], SL_name, m_name, data_dic['assets_dic'], Image_FN)
+                    data_dic['t_projection'], SL_name, m_name, data_dic['assetdb'], Image_FN)
         else:
             build_OK_flag = graphs_build_MAME_3DBox(cfg,
-                data_dic['t_projection'], SL_name, m_name, data_dic['assets_dic'], Image_FN)
+                data_dic['t_projection'], SL_name, m_name, data_dic['assetdb'], Image_FN)
         processed_machines += 1
         build_time_end = time.time()
         build_time = build_time_end - build_time_start
-        # Only update ETA if 3DBox was sucesfully build.
+        # Only update ETA if 3DBox was successfully build.
         ETA_str = ETA_update(build_OK_flag, processed_machines, build_time)
     pDialog.endProgress()
 
     # --- Save assets DB ---
     pDialog.startProgress('Saving MAME asset database...')
-    utils_write_JSON_file(cfg.ASSET_DB_PATH.getPath(), data_dic['assets_dic'])
+    utils_write_JSON_file(cfg.ASSET_DB_PATH.getPath(), data_dic['assetdb'])
     pDialog.endProgress()
 
     # --- MAME Fanart build timestamp ---
     control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
     db_safe_edit(control_dic, 't_MAME_3dbox_build', time.time())
     utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
-
-    # --- assets_dic has changed. Rebuild hashed database ---
-    db_build_asset_hashed_db(cfg, control_dic, data_dic['assets_dic'])
-
-    # --- Rebuild MAME asset cache ---
-    cache_index = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
-    db_build_asset_cache(cfg, control_dic, cache_index, data_dic['assets_dic'])
 
     # --- Inform user ---
     if pDialog_canceled:
@@ -1032,23 +1011,24 @@ def graphs_build_MAME_3DBox_all(cfg, data_dic):
         kodi_notify('MAME 3D Boxes building finished')
 
 # Called before building all SL 3D Boxes.
-def graphs_load_SL_3DBox_stuff(cfg, BUILD_MISSING):
+def graphs_load_SL_3DBox_stuff(cfg, st_dic, BUILD_MISSING):
     data_dic = {
-        'abort' : False,
         'BUILD_MISSING' : BUILD_MISSING,
     }
 
-    # If artwork directory not configured abort.
+    # --- If artwork directory not configured abort ---
     # SL 3dbox directories are created later in graphs_build_SL_3DBox_all()
     if not cfg.settings['assets_path']:
-        kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
-        data_dic['abort'] = True
+        kodi_set_error_status(st_dic, 'Asset directory not configured. Aborting SL 3DBox generation.')
         return
 
     # --- Load 3D projection template from XML file ---
     # TProjection_FN = cfg.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
     TProjection_FN = cfg.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
     t_projection = utils_load_JSON_file_dic(TProjection_FN.getPath())
+    if not t_projection:
+        kodi_set_error_status(st_dic, 'Error loading JSON SL 3dbox projection data.')
+        return
     data_dic['t_projection'] = t_projection
 
     # --- Load SL index ---
@@ -1058,7 +1038,7 @@ def graphs_load_SL_3DBox_stuff(cfg, BUILD_MISSING):
     return data_dic
 
 # Builds or rebuilds missing SL Fanarts.
-def graphs_build_SL_3DBox_all(cfg, data_dic):
+def graphs_build_SL_3DBox_all(cfg, st_dic, data_dic):
     control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
 
     # Traverse all SL and on each SL every item
