@@ -3419,7 +3419,7 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         d_text = 'Loading databases ...'
         num_items = 3
         pDialog = KodiProgressDialog()
-        pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machines Main'), num_items)
+        pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machines main'), num_items)
         machine = db_get_machine_main_hashed_db(cfg, machine_name)
         pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine ROMs'))
         roms_db_dic = utils_load_JSON_file_dic(cfg.ROMS_DB_PATH.getPath())
@@ -3437,13 +3437,10 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
 
         # --- ROM info ---
         info_text = []
-        if machine['cloneof'] and machine['romof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(machine['cloneof']) +
-                '[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
-        elif machine['cloneof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(machine['cloneof']))
-        elif machine['romof']:
-            info_text.append('[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
+        cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
+        romof = machine['romof'] if machine['romof'] else 'None'
+        info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
+            '[COLOR violet]romof[/COLOR] {}'.format(romof))
         info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
             '[COLOR skyblue]isDevice[/COLOR] {}'.format(str(machine['isDevice'])))
         info_text.append('')
@@ -3539,13 +3536,10 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
 
         # --- Generate report ---
         info_text = []
-        if machine['cloneof'] and machine['romof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(machine['cloneof']) +
-                '[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
-        elif machine['cloneof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(machine['cloneof']))
-        elif machine['romof']:
-            info_text.append('[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
+        cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
+        romof = machine['romof'] if machine['romof'] else 'None'
+        info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
+            '[COLOR violet]romof[/COLOR] {}'.format(romof))
         info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
             '[COLOR skyblue]isDevice[/COLOR] {}'.format(str(machine['isDevice'])))
         info_text.append('')
@@ -3739,13 +3733,10 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
 
         # --- Generate report ---
         info_text = []
-        if machine['cloneof'] and machine['romof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(machine['cloneof']) +
-                '[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
-        elif machine['cloneof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(machine['cloneof']))
-        elif machine['romof']:
-            info_text.append('[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
+        cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
+        romof = machine['romof'] if machine['romof'] else 'None'
+        info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
+            '[COLOR violet]romof[/COLOR] {}'.format(romof))
         info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
             '[COLOR skyblue]isDevice[/COLOR] {}'.format(str(machine['isDevice'])))
         info_text.append('')

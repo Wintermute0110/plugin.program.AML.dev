@@ -87,11 +87,12 @@ FEATURE  [CORE] Port the addon to Kodi Matrix and Python 3.
 
 FEATURE  [CORE] Create branch python2 and place series 0.10.x into this branch.
 
-WIP      [CORE] Support Retroarch MAME 2003 Plus.
+FEATURE  [CORE] Support Retroarch MAME 2003 Plus.
 
-FEATURE  [FILTERS] Implement filtering options NoMissingROMs, NoMissingCHDs
-         and NoMissingSamples.
+FEATURE  [FILTERS] Implement filtering options NoMissingROMs, NoMissingCHDs and NoMissingSamples.
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=2964109#pid2964109
+
+FEATURE  [CORE] Different colours for different filters in the root window.
 
 FEATURE  [CORE] In the Setup Plugin CM, Build Fanarts and 3D boxes: add an option to
          build all the Fanarts and 3D boxes at once.
@@ -106,6 +107,9 @@ FEATURE  [CORE] New Utility "Show machines with smallest ROMs"
 
 FEATURE  [CORE] Disable Kodi screensaver when launching MAME and reenable after MAME finishes.
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=2934194#pid2934194
+
+FIX      [CORE] Fixed crash when creating ROM audit database when MAME CHD set was SPLIT.
+         See https://forum.kodi.tv/showthread.php?tid=304186&pid=2975566#pid2975566
 
 
 [B]Advanced MAME Launcher | version 0.9.12 | 10 February 2020[/B]
