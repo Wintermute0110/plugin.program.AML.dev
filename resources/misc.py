@@ -467,11 +467,11 @@ def misc_addon_version_str_to_int(AML_version_str):
         elif kind_str == 'beta':
             release_flag = 1
         # log_debug('misc_addon_version_str_to_int() major        {}'.format(major))
-        # log_debug('fs_AML_version_str_to_int() minor        {}'.format(minor))
-        # log_debug('fs_AML_version_str_to_int() build        {}'.format(build))
-        # log_debug('fs_AML_version_str_to_int() kind_str     {}'.format(kind_str))
-        # log_debug('fs_AML_version_str_to_int() release_flag {}'.format(release_flag))
-        # log_debug('fs_AML_version_str_to_int() beta         {}'.format(beta))
+        # log_debug('misc_addon_version_str_to_int() minor        {}'.format(minor))
+        # log_debug('misc_addon_version_str_to_int() build        {}'.format(build))
+        # log_debug('misc_addon_version_str_to_int() kind_str     {}'.format(kind_str))
+        # log_debug('misc_addon_version_str_to_int() release_flag {}'.format(release_flag))
+        # log_debug('misc_addon_version_str_to_int() beta         {}'.format(beta))
         version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100 + beta
     elif m_obj_alpha:
         major    = int(m_obj_alpha.group(1))
@@ -482,20 +482,20 @@ def misc_addon_version_str_to_int(AML_version_str):
             release_flag = 0
         elif kind_str == 'beta':
             release_flag = 1
-        # log_debug('fs_AML_version_str_to_int() major        {}'.format(major))
-        # log_debug('fs_AML_version_str_to_int() minor        {}'.format(minor))
-        # log_debug('fs_AML_version_str_to_int() build        {}'.format(build))
-        # log_debug('fs_AML_version_str_to_int() kind_str     {}'.format(kind_str))
-        # log_debug('fs_AML_version_str_to_int() release_flag {}'.format(release_flag))
+        # log_debug('misc_addon_version_str_to_int() major        {}'.format(major))
+        # log_debug('misc_addon_version_str_to_int() minor        {}'.format(minor))
+        # log_debug('misc_addon_version_str_to_int() build        {}'.format(build))
+        # log_debug('misc_addon_version_str_to_int() kind_str     {}'.format(kind_str))
+        # log_debug('misc_addon_version_str_to_int() release_flag {}'.format(release_flag))
         version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100
     elif m_obj_standard:
         major = int(m_obj_standard.group(1))
         minor = int(m_obj_standard.group(2))
         build = int(m_obj_standard.group(3))
         release_flag = 5
-        # log_debug('fs_AML_version_str_to_int() major {}'.format(major))
-        # log_debug('fs_AML_version_str_to_int() minor {}'.format(minor))
-        # log_debug('fs_AML_version_str_to_int() build {}'.format(build))
+        # log_debug('misc_addon_version_str_to_int() major {}'.format(major))
+        # log_debug('misc_addon_version_str_to_int() minor {}'.format(minor))
+        # log_debug('misc_addon_version_str_to_int() build {}'.format(build))
         version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100
     else:
         # log_debug('AML addon version "{}" cannot be parsed.'.format(AML_version_str))

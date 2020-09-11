@@ -255,7 +255,7 @@ def mame_cache_index_builder(cat_name, cache_index_dic, catalog_all, catalog_par
         cache_index_dic[cat_name][cat_key] = {
             'num_parents'  : len(catalog_parents[cat_key]),
             'num_machines' : len(catalog_all[cat_key]),
-            # Make sure this key is the same as fs_render_cache_get_hash()
+            # Make sure this key is the same as db_render_cache_get_hash()
             'hash'         : hashlib.md5(key_str.encode('utf-8')).hexdigest(),
         }
 

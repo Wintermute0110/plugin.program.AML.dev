@@ -1225,7 +1225,7 @@ def filter_get_filter_DB(cfg, db_dic_in):
             elif drotate == '90' or drotate == '270':
                 isVertical = True
 
-        # ROM/CHD/Sample scanner flags. See funcion fs_initial_flags()
+        # ROM/CHD/Sample scanner flags. See funcion db_initial_flags()
         missingROMs    = True if assetdb_dic[m_name]['flags'][0] == 'r' else False
         missingCHDs    = True if assetdb_dic[m_name]['flags'][1] == 'c' else False
         missingSamples = True if assetdb_dic[m_name]['flags'][2] == 's' else False

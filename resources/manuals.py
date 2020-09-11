@@ -316,7 +316,7 @@ def manuals_check_img_extraction_needed(PDF_file_FN, img_dir_FN):
         return status_dic
 
     # JSON INFO file exists. Open JSON file and check timestamps.
-    info_dic = fs_load_JSON_file_dic(info_FN.getPath())
+    info_dic = utils_load_JSON_file_dic(info_FN.getPath())
     man_file_mtime = PDF_file_FN.getmtime()
     if man_file_mtime > info_dic['IMG_timestamp']:
         status_dic['extraction_needed'] = True
@@ -387,7 +387,7 @@ def manuals_create_INFO_file(status_dic, PDF_file_FN, img_dir_FN):
         'IMG_timestamp' : IMG_timestamp,
         'IMG_time' : time.strftime('%a %d %b %Y %H:%M:%S', time.localtime(IMG_timestamp)),
     }
-    fs_write_JSON_file_pprint(info_FN.getPath(), info_dic)
+    utils_write_JSON_file_pprint(info_FN.getPath(), info_dic)
 
 #
 # Gets a list of filters (codecs) used in the PDF file.

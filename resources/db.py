@@ -83,7 +83,7 @@ import xml.etree.ElementTree as ET
 # devices[1]:
 #   ...
 #
-def fs_new_machine_dic():
+def db_new_machine_dic():
     return {
         # --- <machine> tag attributes ---
         'isMechanical'    : False,
@@ -121,7 +121,7 @@ def fs_new_machine_dic():
 #
 # Object used in MAME_render_db.json
 #
-def fs_new_machine_render_dic():
+def db_new_machine_render_dic():
     return {
         # --- <machine> attributes ---
         'cloneof'        : '', # Must be in the render DB to generate the PClone flag
@@ -144,13 +144,13 @@ def fs_new_machine_render_dic():
 # Object used in MAME_DB_roms.json
 # machine_roms = {
 #     'machine_name' : {
-#         'bios'  : [ fs_new_bios_dic(), ... ],
-#         'disks' : [ fs_new_disk_dic(), ... ],
-#         'roms'  : [ fs_new_rom_dic(), ... ],
+#         'bios'  : [ db_new_bios_dic(), ... ],
+#         'disks' : [ db_new_disk_dic(), ... ],
+#         'roms'  : [ db_new_rom_dic(), ... ],
 #     }
 # }
 #
-def fs_new_roms_object():
+def db_new_roms_object():
     return {
         'bios'    : [],
         'roms'    : [],
@@ -158,20 +158,20 @@ def fs_new_roms_object():
         'samples' : [],
     }
 
-def fs_new_bios_dic():
+def db_new_bios_dic():
     return {
         'name'        : '',
         'description' : '',
     }
 
-def fs_new_disk_dic():
+def db_new_disk_dic():
     return {
         'name'  : '',
         'merge' : '',
         'sha1'  : '', # sha1 allows to know if CHD is valid or not. CHDs don't have crc
     }
 
-def fs_new_rom_dic():
+def db_new_rom_dic():
     return {
         'name'  : '',
         'merge' : '',
@@ -180,7 +180,7 @@ def fs_new_rom_dic():
         'crc'   : '', # crc allows to know if ROM is valid or not
     }
 
-def fs_new_audit_dic():
+def db_new_audit_dic():
     return {
         'machine_has_ROMs_or_CHDs' : False,
         'machine_has_ROMs'         : False,
@@ -225,7 +225,7 @@ ASSET_MAME_T_LIST  = [
 #   d  Machine has device/s but are not mandatory (can be booted without the device).
 #   D  Machine has device/s and must be plugged in order to boot.
 #
-def fs_new_MAME_asset():
+def db_new_MAME_asset():
     return {
         '3dbox'      : '',
         'artpreview' : '',
@@ -250,13 +250,13 @@ def fs_new_MAME_asset():
 #   ?  SL ROM not scanned
 #   r  Missing ROM
 #   R  Have ROM
-def fs_new_SL_ROM_part():
+def db_new_SL_ROM_part():
     return {
         'name'      : '',
         'interface' : ''
     }
 
-def fs_new_SL_ROM():
+def db_new_SL_ROM():
     return {
         'description' : '',
         'year'        : '',
@@ -270,7 +270,7 @@ def fs_new_SL_ROM():
         'status_CHD'  : '-',
     }
 
-def fs_new_SL_ROM_audit_dic():
+def db_new_SL_ROM_audit_dic():
     return {
         'type'     : '',
         'name'     : '',
@@ -279,7 +279,7 @@ def fs_new_SL_ROM_audit_dic():
         'location' : '',
     }
 
-def fs_new_SL_DISK_audit_dic():
+def db_new_SL_DISK_audit_dic():
     return {
         'type'     : '',
         'name'     : '',
@@ -297,7 +297,7 @@ ASSET_SL_T_LIST = [
     ('manual',   'manuals_SL'),
 ]
 
-def fs_new_SL_asset():
+def db_new_SL_asset():
     return {
         '3dbox'    : '',
         'title'    : '',
@@ -661,7 +661,7 @@ def db_safe_edit(my_dic, field, value):
 # Changes introduced in 0.9.6
 # 1) fav_machine['name'] = machine_name
 #
-def fs_get_MAME_Favourite_simple(machine_name, machine, assets, control_dic):
+def db_get_MAME_Favourite_simple(machine_name, machine, assets, control_dic):
     fav_machine = {}
 
     fav_machine = copy.deepcopy(machine)
@@ -672,7 +672,7 @@ def fs_get_MAME_Favourite_simple(machine_name, machine, assets, control_dic):
 
     return fav_machine
 
-def fs_get_MAME_Favourite_full(machine_name, machine, machine_render, assets, control_dic):
+def db_get_MAME_Favourite_full(machine_name, machine, machine_render, assets, control_dic):
     fav_machine = {}
 
     fav_machine = copy.deepcopy(machine)
@@ -684,7 +684,7 @@ def fs_get_MAME_Favourite_full(machine_name, machine, machine_render, assets, co
 
     return fav_machine
 
-def fs_get_SL_Favourite(SL_name, ROM_name, ROM, assets, control_dic):
+def db_get_SL_Favourite(SL_name, ROM_name, ROM, assets, control_dic):
     fav_SL_item = {}
 
     SL_DB_key = SL_name + '-' + ROM_name
@@ -702,119 +702,119 @@ def fs_get_SL_Favourite(SL_name, ROM_name, ROM, assets, control_dic):
 #
 # Get Catalog databases
 #
-def fs_get_cataloged_dic_parents(PATHS, catalog_name):
+def db_get_cataloged_dic_parents(cfg, catalog_name):
     if catalog_name == 'Main':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_MAIN_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_MAIN_PARENT_PATH.getPath())
     elif catalog_name == 'Binary':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_BINARY_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_BINARY_PARENT_PATH.getPath())
     elif catalog_name == 'Catver':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CATVER_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_CATVER_PARENT_PATH.getPath())
     elif catalog_name == 'Catlist':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_CATLIST_PARENT_PATH.getPath())
     elif catalog_name == 'Genre':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_GENRE_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_GENRE_PARENT_PATH.getPath())
     elif catalog_name == 'Category':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CATEGORY_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_CATEGORY_PARENT_PATH.getPath())
     elif catalog_name == 'NPlayers':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_NPLAYERS_PARENT_PATH.getPath())
     elif catalog_name == 'Bestgames':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_BESTGAMES_PARENT_PATH.getPath())
     elif catalog_name == 'Series':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_SERIES_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_SERIES_PARENT_PATH.getPath())
     elif catalog_name == 'Alltime':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_ALLTIME_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_ALLTIME_PARENT_PATH.getPath())
     elif catalog_name == 'Artwork':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_ARTWORK_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_ARTWORK_PARENT_PATH.getPath())
     elif catalog_name == 'Version':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_VERADDED_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_VERADDED_PARENT_PATH.getPath())
     elif catalog_name == 'Controls_Expanded':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath())
     elif catalog_name == 'Controls_Compact':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath())
     elif catalog_name == 'Devices_Expanded':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath())
     elif catalog_name == 'Devices_Compact':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath())
     elif catalog_name == 'Display_Type':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath())
     elif catalog_name == 'Display_VSync':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_VSYNC_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_DISPLAY_VSYNC_PARENT_PATH.getPath())
     elif catalog_name == 'Display_Resolution':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_RES_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_DISPLAY_RES_PARENT_PATH.getPath())
     elif catalog_name == 'CPU':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CPU_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_CPU_PARENT_PATH.getPath())
     elif catalog_name == 'Driver':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_DRIVER_PARENT_PATH.getPath())
     elif catalog_name == 'Manufacturer':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_MANUFACTURER_PARENT_PATH.getPath())
     elif catalog_name == 'ShortName':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_SHORTNAME_PARENT_PATH.getPath())
     elif catalog_name == 'LongName':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_LONGNAME_PARENT_PATH.getPath())
     elif catalog_name == 'BySL':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_SL_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_SL_PARENT_PATH.getPath())
     elif catalog_name == 'Year':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_YEAR_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_YEAR_PARENT_PATH.getPath())
     else:
-        log_error('fs_get_cataloged_dic_parents() Unknown catalog_name = "{}"'.format(catalog_name))
+        log_error('db_get_cataloged_dic_parents() Unknown catalog_name = "{}"'.format(catalog_name))
 
     return catalog_dic
 
-def fs_get_cataloged_dic_all(PATHS, catalog_name):
+def db_get_cataloged_dic_all(cfg, catalog_name):
     if catalog_name == 'Main':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_MAIN_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_MAIN_ALL_PATH.getPath())
     elif catalog_name == 'Binary':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_BINARY_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_BINARY_ALL_PATH.getPath())
     elif catalog_name == 'Catver':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CATVER_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_CATVER_ALL_PATH.getPath())
     elif catalog_name == 'Catlist':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CATLIST_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_CATLIST_ALL_PATH.getPath())
     elif catalog_name == 'Genre':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_GENRE_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_GENRE_ALL_PATH.getPath())
     elif catalog_name == 'Category':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CATEGORY_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_CATEGORY_ALL_PATH.getPath())
     elif catalog_name == 'NPlayers':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_NPLAYERS_ALL_PATH.getPath())
     elif catalog_name == 'Bestgames':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_BESTGAMES_ALL_PATH.getPath())
     elif catalog_name == 'Series':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_SERIES_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_SERIES_ALL_PATH.getPath())
     elif catalog_name == 'Alltime':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_ALLTIME_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_ALLTIME_ALL_PATH.getPath())
     elif catalog_name == 'Artwork':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_ARTWORK_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_ARTWORK_ALL_PATH.getPath())
     elif catalog_name == 'Version':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_VERADDED_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_VERADDED_ALL_PATH.getPath())
     elif catalog_name == 'Controls_Expanded':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath())
     elif catalog_name == 'Controls_Compact':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath())
     elif catalog_name == 'Devices_Expanded':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath())
     elif catalog_name == 'Devices_Compact':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath())
     elif catalog_name == 'Display_Type':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath())
     elif catalog_name == 'Display_VSync':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_VSYNC_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_DISPLAY_VSYNC_ALL_PATH.getPath())
     elif catalog_name == 'Display_Resolution':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_RES_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_DISPLAY_RES_ALL_PATH.getPath())
     elif catalog_name == 'CPU':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CPU_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_CPU_ALL_PATH.getPath())
     elif catalog_name == 'Driver':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DRIVER_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_DRIVER_ALL_PATH.getPath())
     elif catalog_name == 'Manufacturer':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_MANUFACTURER_ALL_PATH.getPath())
     elif catalog_name == 'ShortName':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_SHORTNAME_ALL_PATH.getPath())
     elif catalog_name == 'LongName':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_LONGNAME_ALL_PATH.getPath())
     elif catalog_name == 'BySL':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_SL_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_SL_ALL_PATH.getPath())
     elif catalog_name == 'Year':
-        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_YEAR_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(cfg.CATALOG_YEAR_ALL_PATH.getPath())
     else:
-        log_error('fs_get_cataloged_dic_all() Unknown catalog_name = "{}"'.format(catalog_name))
+        log_error('db_get_cataloged_dic_all() Unknown catalog_name = "{}"'.format(catalog_name))
 
     return catalog_dic
 
@@ -822,7 +822,7 @@ def fs_get_cataloged_dic_all(PATHS, catalog_name):
 # Locates object index in a list of dictionaries by 'name' field.
 # Returns -1 if object cannot be found. Uses a linear search (slow!).
 #
-def fs_locate_idx_by_MAME_name(object_list, object_name):
+def db_locate_idx_by_MAME_name(object_list, object_name):
     object_index = -1
     for i, machine in enumerate(object_list):
         if object_name == machine['name']:
@@ -834,7 +834,7 @@ def fs_locate_idx_by_MAME_name(object_list, object_name):
 #
 # Same as previous function but on a list of Software List items
 #
-def fs_locate_idx_by_SL_item_name(object_list, SL_name, SL_ROM_name):
+def db_locate_idx_by_SL_item_name(object_list, SL_name, SL_ROM_name):
     SL_fav_DB_key = SL_name + '-' + SL_ROM_name
     object_index = -1
     for i, machine in enumerate(object_list):
@@ -846,7 +846,7 @@ def fs_locate_idx_by_SL_item_name(object_list, SL_name, SL_ROM_name):
 
 # Valid ROM: ROM has CRC hash
 # Valid CHD: CHD has SHA1 hash
-def fs_initial_flags(machine, machine_render, m_roms):
+def db_initial_flags(machine, machine_render, m_roms):
     # Machine has own ROMs (at least one ROM is valid and has empty 'merge' attribute)
     has_own_ROMs = False
     for rom in m_roms['roms']:
@@ -890,7 +890,7 @@ def fs_initial_flags(machine, machine_render, m_roms):
 # Update m_dic using Python pass by assignment.
 # Remember that strings are inmutable!
 #
-def fs_set_ROM_flag(m_dic, new_ROM_flag):
+def db_set_ROM_flag(m_dic, new_ROM_flag):
     flag_ROM = m_dic['flags'][0]
     flag_CHD = m_dic['flags'][1]
     flag_Samples = m_dic['flags'][2]
@@ -899,7 +899,7 @@ def fs_set_ROM_flag(m_dic, new_ROM_flag):
     flag_ROM = new_ROM_flag
     m_dic['flags'] = '{}{}{}{}{}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
-def fs_set_CHD_flag(m_dic, new_CHD_flag):
+def db_set_CHD_flag(m_dic, new_CHD_flag):
     flag_ROM = m_dic['flags'][0]
     flag_CHD = m_dic['flags'][1]
     flag_Samples = m_dic['flags'][2]
@@ -908,7 +908,7 @@ def fs_set_CHD_flag(m_dic, new_CHD_flag):
     flag_CHD      = new_CHD_flag
     m_dic['flags'] = '{}{}{}{}{}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
-def fs_set_Sample_flag(m_dic, new_Sample_flag):
+def db_set_Sample_flag(m_dic, new_Sample_flag):
     flag_ROM = m_dic['flags'][0]
     flag_CHD = m_dic['flags'][1]
     flag_Samples = m_dic['flags'][2]
@@ -969,7 +969,7 @@ def db_build_main_hashed_db(cfg, control_dic, machines, machines_render):
 # Retrieves machine from distributed database.
 # This is very quick for retrieving individual machines, very slow for multiple machines.
 #
-def db_get_machine_main_hashed_db(PATHS, machine_name):
+def db_get_machine_main_hashed_db(cfg, machine_name):
     log_debug('db_get_machine_main_hashed_db() machine {}'.format(machine_name))
     md5_str = hashlib.md5(machine_name.encode('utf-8')).hexdigest()
     # WARNING Python slicing does not work like in C/C++!
@@ -1019,7 +1019,7 @@ def db_build_asset_hashed_db(cfg, control_dic, assets_dic):
 # This is very quick for retrieving individual machines, slow for multiple machines.
 #
 def db_get_machine_assets_hashed_db(cfg, machine_name):
-    log_debug('db_get_machine_assets_hash_db() machine {}'.format(machine_name))
+    log_debug('db_get_machine_assets_hashed_db() machine {}'.format(machine_name))
     md5_str = hashlib.md5(machine_name.encode('utf-8')).hexdigest()
     hash_DB_FN = cfg.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_assets.json')
     hashed_db_dic = utils_load_JSON_file_dic(hash_DB_FN.getPath())
@@ -1071,15 +1071,15 @@ def db_build_render_cache(cfg, control_dic, cache_index_dic, machines_render, fo
     pDialog.startProgress('Building MAME render cache')
     for catalog_name in sorted(cache_index_dic):
         catalog_index_dic = cache_index_dic[catalog_name]
-        catalog_all = fs_get_cataloged_dic_all(cfg, catalog_name)
+        catalog_all = db_get_cataloged_dic_all(cfg, catalog_name)
         diag_t = 'Building MAME [COLOR orange]{}[/COLOR] render cache ({} of {})...'.format(
             catalog_name, catalog_count, num_catalogs)
         pDialog.resetProgress(diag_t, len(catalog_index_dic))
         for catalog_key in catalog_index_dic:
             pDialog.updateProgressInc()
             hash_str = catalog_index_dic[catalog_key]['hash']
-            # log_verb('fs_build_ROM_cache() Catalog "{}" --- Key "{}"'.format(catalog_name, catalog_key))
-            # log_verb('fs_build_ROM_cache() hash {}'.format(hash_str))
+            # log_verb('db_build_ROM_cache() Catalog "{}" --- Key "{}"'.format(catalog_name, catalog_key))
+            # log_verb('db_build_ROM_cache() hash {}'.format(hash_str))
 
             # Build all machines cache
             m_render_all_dic = {}
@@ -1140,7 +1140,7 @@ def db_build_asset_cache(cfg, control_dic, cache_index_dic, assets_dic, force_bu
     pDialog.startProgress('Building MAME asset cache')
     for catalog_name in sorted(cache_index_dic):
         catalog_index_dic = cache_index_dic[catalog_name]
-        catalog_all = fs_get_cataloged_dic_all(cfg, catalog_name)
+        catalog_all = db_get_cataloged_dic_all(cfg, catalog_name)
         diag_t = 'Building MAME [COLOR orange]{}[/COLOR] asset cache ({} of {})...'.format(
             catalog_name, catalog_count, num_catalogs)
         pDialog.resetProgress(diag_t, len(catalog_index_dic))

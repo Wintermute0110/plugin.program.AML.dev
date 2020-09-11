@@ -379,8 +379,8 @@ def utils_write_JSON_file_lowmem(json_filename, json_data, verbose = True):
 # Threaded JSON loader
 # -------------------------------------------------------------------------------------------------
 # How to use this code:
-#     render_thread = Threaded_Load_JSON(PATHS.RENDER_DB_PATH.getPath())
-#     assets_thread = Threaded_Load_JSON(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+#     render_thread = Threaded_Load_JSON(cfg.RENDER_DB_PATH.getPath())
+#     assets_thread = Threaded_Load_JSON(cfg.MAIN_ASSETS_DB_PATH.getPath())
 #     render_thread.start()
 #     assets_thread.start()
 #     render_thread.join()
@@ -393,7 +393,7 @@ class Threaded_Load_JSON(threading.Thread):
         self.json_filename = json_filename
  
     def run(self): 
-        self.output_dic = fs_load_JSON_file_dic(self.json_filename)
+        self.output_dic = utils_load_JSON_file_dic(self.json_filename)
 
 # -------------------------------------------------------------------------------------------------
 # File cache functions.
@@ -904,6 +904,22 @@ def kodi_reset_status(st_dic):
 #     function_that_may_fail()
 # except KodiAddonError as ex:
 #     kodi_display_status_message(ex)
-#     return # Abort addon execution
 # else:
 #     kodi_notify('Operation completed')
+#
+# def function_that_may_fail():
+#     raise KodiAddonError(msg, dialog)
+class KodiAddonError(Exception):
+    def __init__(self, msg, dialog = KODI_MESSAGE_DIALOG):
+        self.dialog = dialog
+        self.msg = msg
+
+    def __str__(self):
+        return self.msg
+
+def kodi_display_exception(ex):
+    st_dic = kodi_new_status_dic()
+    st_dic['abort'] = True
+    st_dic['dialog'] = ex.dialog
+    st_dic['msg'] = ex.msg
+    kodi_display_status_message(st_dic)

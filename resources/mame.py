@@ -2506,8 +2506,12 @@ def mame_stats_timestamps_slist(cfg, slist, control_dic):
 # -------------------------------------------------------------------------------------------------
 # Check/Update/Repair Favourite ROM objects
 # -------------------------------------------------------------------------------------------------
-def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, renderdb_dic, assets_dic):
-    fav_machines = utils_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
+def mame_update_MAME_Fav_objects(cfg, db_dic):
+    control_dic = db_dic['control_dic']
+    machines = db_dic['machines']
+    renderdb_dic = db_dic['renderdb']
+    assets_dic = db_dic['assetdb']
+    fav_machines = utils_load_JSON_file_dic(cfg.FAV_MACHINES_PATH.getPath())
     # If no MAME Favourites return
     if len(fav_machines) < 1:
         kodi_notify('MAME Favourites empty')
@@ -2526,23 +2530,27 @@ def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, renderdb_dic, ass
             # Machine not found in DB. Create an empty one to update the database fields.
             # The user can delete it later.
             log_debug('Machine "{}" not found in MAME main DB'.format(fav_key))
-            machine = fs_new_machine_dic()
-            render = fs_new_machine_render_dic()
-            assets = fs_new_MAME_asset()
+            machine = db_new_machine_dic()
+            render = db_new_machine_render_dic()
+            assets = db_new_MAME_asset()
             # Change plot to warn user this machine is not found in database.
             t = 'Machine {} missing'.format(fav_key)
             render['description'] = t
             assets['plot'] = t
-        new_fav = fs_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
+        new_fav = db_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
         fav_machines[fav_key] = new_fav
         log_debug('Updated machine "{}"'.format(fav_key))
         iteration += 1
         pDialog.updateProgress(iteration)
-    utils_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+    utils_write_JSON_file(cfg.FAV_MACHINES_PATH.getPath(), fav_machines)
     pDialog.endProgress()
 
-def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, renderdb_dic, assets_dic):
-    most_played_roms_dic = utils_load_JSON_file_dic(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+def mame_update_MAME_MostPlay_objects(cfg, db_dic):
+    control_dic = db_dic['control_dic']
+    machines = db_dic['control_dic']
+    renderdb_dic = db_dic['control_dic']
+    assets_dic = db_dic['control_dic']
+    most_played_roms_dic = utils_load_JSON_file_dic(cfg.MAME_MOST_PLAYED_FILE_PATH.getPath())
     if len(most_played_roms_dic) < 1:
         kodi_notify('MAME Most Played empty')
         return
@@ -2561,23 +2569,27 @@ def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, renderdb_dic
             assets = assets_dic[fav_key]
         else:
             log_debug('Machine "{}" not found in MAME main DB'.format(fav_key))
-            machine = fs_new_machine_dic()
-            render = fs_new_machine_render_dic()
-            assets = fs_new_MAME_asset()
+            machine = db_new_machine_dic()
+            render = db_new_machine_render_dic()
+            assets = db_new_MAME_asset()
             t = 'Machine {} missing'.format(fav_key)
             render['description'] = t
             assets['plot'] = t
-        new_fav = fs_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
+        new_fav = db_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
         new_fav['launch_count'] = launch_count
         most_played_roms_dic[fav_key] = new_fav
         log_debug('Updated machine "{}"'.format(fav_key))
         iteration += 1
         pDialog.updateProgress(iteration)
-    utils_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+    utils_write_JSON_file(cfg.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
     pDialog.endProgress()
 
-def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, renderdb_dic, assets_dic):
-    recent_roms_list = utils_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+def mame_update_MAME_RecentPlay_objects(cfg, db_dic):
+    control_dic = db_dic['control_dic']
+    machines = db_dic['machines']
+    renderdb_dic = db_dic['renderdb']
+    assets_dic = db_dic['assetdb']
+    recent_roms_list = utils_load_JSON_file_list(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath())
     if len(recent_roms_list) < 1:
         kodi_notify('MAME Recently Played empty')
         return
@@ -2593,24 +2605,26 @@ def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, renderdb_d
             assets = assets_dic[fav_key]
         else:
             log_debug('Machine "{}" not found in MAME main DB'.format(fav_key))
-            machine = fs_new_machine_dic()
-            render = fs_new_machine_render_dic()
-            assets = fs_new_MAME_asset()
+            machine = db_new_machine_dic()
+            render = db_new_machine_render_dic()
+            assets = db_new_MAME_asset()
             t = 'Machine {} missing'.format(fav_key)
             render['description'] = t
             assets['plot'] = t
-        new_fav = fs_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
+        new_fav = db_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
         recent_roms_list[i] = new_fav
         log_debug('Updated machine "{}"'.format(fav_key))
         iteration += 1
         pDialog.updateProgress(iteration)
-    utils_write_JSON_file(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
+    utils_write_JSON_file(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
     pDialog.endProgress()
 
-def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
+def mame_update_SL_Fav_objects(cfg, db_dic):
+    control_dic = db_dic['control_dic']
+    SL_index = db_dic['SL_index']
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Loading SL Most Played JSON DB...')
-    fav_SL_roms = utils_load_JSON_file_dic(PATHS.FAV_SL_ROMS_PATH.getPath())
+    fav_SL_roms = utils_load_JSON_file_dic(cfg.FAV_SL_ROMS_PATH.getPath())
     if len(fav_SL_roms) < 1:
         kodi_notify_warn('SL Most Played empty')
         return
@@ -2627,10 +2641,10 @@ def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
         pDialog.updateProgressInc('Checking SL Favourites...\nItem "{}"'.format(fav_ROM_name))
 
         # --- Load SL ROMs DB and assets ---
-        file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json'
-        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        assets_file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_assets.json'
-        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+        file_name =  SL_index[fav_SL_name]['rom_DB_noext'] + '_items.json'
+        SL_DB_FN = cfg.SL_DB_DIR.pjoin(file_name)
+        assets_file_name =  SL_index[fav_SL_name]['rom_DB_noext'] + '_assets.json'
+        SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
         SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
         SL_assets_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath(), verbose = False)
 
@@ -2642,22 +2656,24 @@ def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
             # Machine not found in DB. Create an empty one to update the database fields.
             # The user can delete it later.
             log_debug('Machine "{}" / "{}" not found in SL main DB'.format(fav_ROM_name, fav_SL_name))
-            SL_ROM = fs_new_SL_ROM()
-            SL_assets = fs_new_SL_asset()
+            SL_ROM = db_new_SL_ROM()
+            SL_assets = db_new_SL_asset()
             # Change plot to warn user this machine is not found in database.
             t = 'Item "{}" missing'.format(fav_ROM_name)
             SL_ROM['description'] = t
             SL_ROM['plot'] = t
-        new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
+        new_fav_ROM = db_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
         fav_SL_roms[fav_SL_key] = new_fav_ROM
         log_debug('Updated SL Favourite "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
-    utils_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
+    utils_write_JSON_file(cfg.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
     pDialog.endProgress()
 
-def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
+def mame_update_SL_MostPlay_objects(cfg, db_dic):
+    control_dic = db_dic['control_dic']
+    SL_index = db_dic['SL_index']
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Loading SL Most Played JSON DB...')
-    most_played_roms_dic = utils_load_JSON_file_dic(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+    most_played_roms_dic = utils_load_JSON_file_dic(cfg.SL_MOST_PLAYED_FILE_PATH.getPath())
     if len(most_played_roms_dic) < 1:
         kodi_notify_warn('SL Most Played empty')
         return
@@ -2680,10 +2696,10 @@ def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
         pDialog.updateProgressInc('Checking SL Most Played...\nItem "{}"'.format(fav_ROM_name))
 
         # --- Load SL ROMs DB and assets ---
-        file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json'
-        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        assets_file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_assets.json'
-        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+        file_name = SL_index[fav_SL_name]['rom_DB_noext'] + '_items.json'
+        SL_DB_FN = cfg.SL_DB_DIR.pjoin(file_name)
+        assets_file_name =  SL_index[fav_SL_name]['rom_DB_noext'] + '_assets.json'
+        SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
         SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
         SL_assets_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath(), verbose = False)
 
@@ -2693,22 +2709,24 @@ def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
             SL_assets = SL_assets_dic[fav_ROM_name]
         else:
             log_debug('Machine "{}" / "{}" not found in SL main DB'.format(fav_ROM_name, fav_SL_name))
-            SL_ROM = fs_new_SL_ROM()
-            SL_assets = fs_new_SL_asset()
+            SL_ROM = db_new_SL_ROM()
+            SL_assets = db_new_SL_asset()
             t = 'Item "{}" missing'.format(fav_ROM_name)
             SL_ROM['description'] = t
             SL_ROM['plot'] = t
-        new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
+        new_fav_ROM = db_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
         new_fav_ROM['launch_count'] = launch_count
         most_played_roms_dic[fav_SL_key] = new_fav_ROM
         log_debug('Updated SL Most Played "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
-    utils_write_JSON_file(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+    utils_write_JSON_file(cfg.SL_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
     pDialog.endProgress()
 
-def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
+def mame_update_SL_RecentPlay_objects(cfg, db_dic):
+    control_dic = db_dic['control_dic']
+    SL_index = db_dic['SL_index']
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Loading SL Recently Played JSON DB...')
-    recent_roms_list = utils_load_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
+    recent_roms_list = utils_load_JSON_file_list(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath())
     if len(recent_roms_list) < 1:
         kodi_notify_warn('SL Recently Played empty')
         return
@@ -2725,10 +2743,10 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
         pDialog.updateProgressInc('Checking SL Recently Played...\nItem "{}"'.format(fav_ROM_name))
 
         # --- Load SL ROMs DB and assets ---
-        file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json'
-        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        assets_file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_assets.json'
-        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+        file_name = SL_index[fav_SL_name]['rom_DB_noext'] + '_items.json'
+        SL_DB_FN = cfg.SL_DB_DIR.pjoin(file_name)
+        assets_file_name =  SL_index[fav_SL_name]['rom_DB_noext'] + '_assets.json'
+        SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
         SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
         SL_assets_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath(), verbose = False)
 
@@ -2738,15 +2756,15 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
             SL_assets = SL_assets_dic[fav_ROM_name]
         else:
             log_debug('Machine "{}" / "{}" not found in SL main DB'.format(fav_ROM_name, fav_SL_name))
-            SL_ROM = fs_new_SL_ROM()
-            SL_assets = fs_new_SL_asset()
+            SL_ROM = db_new_SL_ROM()
+            SL_assets = db_new_SL_asset()
             t = 'Item "{}" missing'.format(fav_ROM_name)
             SL_ROM['description'] = t
             SL_ROM['plot'] = t
-        new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
+        new_fav_ROM = db_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
         recent_roms_list[i] = new_fav_ROM
         log_debug('Updated SL Recently Played  "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
-    utils_write_JSON_file(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
+    utils_write_JSON_file(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
     pDialog.endProgress()
 
 # ------------------------------------------------------------------------------------------------
@@ -3381,7 +3399,7 @@ def mame_audit_MAME_all(cfg, db_dic_in):
         if pDialog.isCanceled(): break
         # Only audit machine if it has ROMs. However, add all machines to machine_audit_dic.
         # audit_roms_dic[m_name] is mutable and edited inside mame_audit_MAME_machine()
-        audit_dic = fs_new_audit_dic()
+        audit_dic = db_new_audit_dic()
         if m_name in audit_roms_dic:
             mame_audit_MAME_machine(cfg.settings, audit_roms_dic[m_name], audit_dic)
         machine_audit_dic[m_name] = audit_dic
@@ -3744,7 +3762,7 @@ def mame_audit_SL_all(cfg, db_dic_in):
         for rom_key in sorted(roms):
             # audit_roms_list and audit_dic are mutable and edited inside the function()
             audit_rom_list = audit_roms[rom_key]
-            audit_dic = fs_new_audit_dic()
+            audit_dic = db_new_audit_dic()
             mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, rom_key, audit_rom_list, audit_dic)
 
             # Audit statistics
@@ -4200,9 +4218,9 @@ def mame_build_MAME_main_database(cfg, st_dic):
         # <machine> tag start event includes <machine> attributes
         if event == 'start' and (elem.tag == 'machine' or elem.tag == 'game'):
             processed_machines += 1
-            machine  = fs_new_machine_dic()
-            m_render = fs_new_machine_render_dic()
-            m_roms   = fs_new_roms_object()
+            machine  = db_new_machine_dic()
+            m_render = db_new_machine_render_dic()
+            m_roms   = db_new_roms_object()
             device_list = []
             runnable = False
             num_displays = 0
@@ -4282,7 +4300,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
         # <biosset> name and description attributes are mandatory
         elif event == 'start' and elem.tag == 'biosset':
             # --- Add BIOS to ROMS_DB_PATH ---
-            bios = fs_new_bios_dic()
+            bios = db_new_bios_dic()
             bios['name'] = str(elem.attrib['name'])
             bios['description'] = str(elem.attrib['description'])
             m_roms['bios'].append(bios)
@@ -4305,7 +4323,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
             #     raise GeneralError('ROM with no sha1 (machine {})'.format(machine_name))
 
             # --- Add BIOS to ROMS_DB_PATH ---
-            rom = fs_new_rom_dic()
+            rom = db_new_rom_dic()
             rom['name']  = str(elem.attrib['name'])
             rom['merge'] = str(elem.attrib['merge']) if 'merge' in elem.attrib else ''
             rom['bios']  = str(elem.attrib['bios']) if 'bios' in elem.attrib else ''
@@ -4332,7 +4350,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
             # if 'sha1' in elem.attrib and 'merge' not in elem.attrib: machine['CHDs'].append(elem.attrib['name'])
 
             # Add BIOS to ROMS_DB_PATH.
-            disk = fs_new_disk_dic()
+            disk = db_new_disk_dic()
             disk['name']  = str(elem.attrib['name'])
             disk['merge'] = str(elem.attrib['merge']) if 'merge' in elem.attrib else ''
             disk['sha1']  = str(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
@@ -4594,18 +4612,18 @@ def mame_build_MAME_main_database(cfg, st_dic):
     # ---------------------------------------------------------------------------------------------
     log_debug('Initializing MAME asset database...')
     log_debug('Option generate_history_infolabel is {}'.format(cfg.settings['generate_history_infolabel']))
-    assetdb_dic = {key : fs_new_MAME_asset() for key in machines}
+    assetdb_dic = {key : db_new_MAME_asset() for key in machines}
     if cfg.settings['generate_history_infolabel'] and history_idx_dic:
         log_debug('Adding History.DAT to MAME asset database.')
         for m_name, asset in assetdb_dic.items():
-            asset['flags'] = fs_initial_flags(machines[m_name], renderdb_dic[m_name], machines_roms[m_name])
+            asset['flags'] = db_initial_flags(machines[m_name], renderdb_dic[m_name], machines_roms[m_name])
             if m_name in history_idx_dic['mame']['machines']:
                 d_name, db_list, db_machine = history_idx_dic['mame']['machines'][m_name].split('|')
                 asset['history'] = history_dic[db_list][db_machine]
     else:
         log_debug('Not including History.DAT in MAME asset database.')
         for m_name, asset in assetdb_dic.items():
-            asset['flags'] = fs_initial_flags(machines[m_name], renderdb_dic[m_name], machines_roms[m_name])
+            asset['flags'] = db_initial_flags(machines[m_name], renderdb_dic[m_name], machines_roms[m_name])
 
     # ---------------------------------------------------------------------------------------------
     # Improve information fields in Main Render database
@@ -5987,7 +6005,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     # This code is disabled
     # mame_properties_dic = {}
     # for catalog_name in CATALOG_NAME_LIST:
-    #     catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+    #     catalog_dic = db_get_cataloged_dic_parents(cfg, catalog_name)
     #     for category_name in sorted(catalog_dic):
     #         prop_key = '{} - {}'.format(catalog_name, category_name)
     #         mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_PCLONE}
@@ -6487,7 +6505,7 @@ def _mame_load_SL_XML(xml_filename):
 
     # Parse using ElementTree.
     # If XML has errors (invalid characters, etc.) this will rais exception 'err'
-    # log_debug('fs_load_SL_XML() Loading XML file "{}"'.format(xml_filename))
+    # log_debug('_mame_load_SL_XML() Loading XML file "{}"'.format(xml_filename))
     try:
         xml_tree = ET.parse(xml_filename)
     except:
@@ -6506,7 +6524,7 @@ def _mame_load_SL_XML(xml_filename):
         if root_element.tag != 'software':
             log_warning('In SL {}, unrecognised XML tag <{}>'.format(SL_name, root_element.tag))
             continue
-        SL_item = fs_new_SL_ROM()
+        SL_item = db_new_SL_ROM()
         SL_rom_list = []
         num_roms = 0
         num_disks = 0
@@ -6527,7 +6545,7 @@ def _mame_load_SL_XML(xml_filename):
 
             elif xml_tag == 'part':
                 # <part name="cart" interface="_32x_cart">
-                part_dic = fs_new_SL_ROM_part()
+                part_dic = db_new_SL_ROM_part()
                 part_dic['name'] = rom_child.attrib['name']
                 part_dic['interface'] = rom_child.attrib['interface']
                 SL_item['parts'].append(part_dic)
@@ -6843,7 +6861,7 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
                     for rom_dic in dataarea_dic['roms']:
                         location = _get_SL_ROM_location(rom_set, SL_name, SL_item_name,
                             rom_dic, SL_Items, parent_rom_dic)
-                        rom_audit_dic = fs_new_SL_ROM_audit_dic()
+                        rom_audit_dic = db_new_SL_ROM_audit_dic()
                         rom_audit_dic['type']     = ROM_TYPE_ROM
                         rom_audit_dic['name']     = rom_dic['name']
                         rom_audit_dic['size']     = rom_dic['size']
@@ -6860,7 +6878,7 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
                 for diskarea_dic in part_dic['diskarea']:
                     for disk_dic in diskarea_dic['disks']:
                         location = _get_SL_CHD_location(chd_set, SL_name, SL_item_name, disk_dic, SL_Items)
-                        disk_audit_dic = fs_new_SL_DISK_audit_dic()
+                        disk_audit_dic = db_new_SL_DISK_audit_dic()
                         disk_audit_dic['type']     = ROM_TYPE_DISK
                         disk_audit_dic['name']     = disk_dic['name']
                         disk_audit_dic['sha1']     = disk_dic['sha1']
@@ -6983,7 +7001,7 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
         # --- Second pass: substitute artwork ---
         SL_assets_dic = {}
         for rom_key in sorted(SL_roms):
-            SL_assets_dic[rom_key] = fs_new_SL_asset()
+            SL_assets_dic[rom_key] = db_new_SL_asset()
 
         # --- Write SL asset JSON ---
         utils_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic, verbose = False)
@@ -7006,7 +7024,7 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
     # >> Not used at the moment -> Global properties
     # mame_properties_dic = {}
     # for catalog_name in CATALOG_NAME_LIST:
-    #     catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+    #     catalog_dic = db_get_cataloged_dic_parents(cfg, catalog_name)
     #     for category_name in sorted(catalog_dic):
     #         prop_key = '{} - {}'.format(catalog_name, category_name)
     #         mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_NORMAL}
@@ -7220,7 +7238,7 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
                 ROM_flag = 'r'
         else:
             ROM_flag = '-'
-        fs_set_ROM_flag(assetdb[key], ROM_flag)
+        db_set_ROM_flag(assetdb[key], ROM_flag)
 
         # --- Samples ---
         sample_list = machine_archives_dic[key]['Samples']
@@ -7246,7 +7264,7 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
             Sample_flag = 's'
         else:
             Sample_flag = '-'
-        fs_set_Sample_flag(assetdb[key], Sample_flag)
+        db_set_Sample_flag(assetdb[key], Sample_flag)
 
         # --- Disks ---
         # Machines with CHDs: 2spicy, sfiii2
@@ -7278,7 +7296,7 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
             CHD_flag = 'c'
         else:
             CHD_flag = '-'
-        fs_set_CHD_flag(assetdb[key], CHD_flag)
+        db_set_CHD_flag(assetdb[key], CHD_flag)
 
         # Build FULL, HAVE and MISSING reports.
         r_full_list.append('Machine {} "{}"'.format(key, renderdb[key]['description']))
@@ -7550,7 +7568,7 @@ def mame_scan_MAME_assets(cfg, st_dic, db_dic_in):
     pDialog.startProgress('Scanning MAME assets/artwork (first pass)...', len(renderdb_dic))
     for m_name in sorted(renderdb_dic):
         pDialog.updateProgressInc()
-        machine_assets = fs_new_MAME_asset()
+        machine_assets = db_new_MAME_asset()
         for idx, asset_tuple in enumerate(ASSET_MAME_T_LIST):
             asset_key = asset_tuple[0]
             asset_dir = asset_tuple[1]
@@ -8024,7 +8042,7 @@ def mame_scan_SL_assets(cfg, st_dic, SL_dic):
         # log_info('Assets JSON "{}"'.format(SL_asset_DB_FN.getPath()))
         ondisk_assets_dic = {}
         for rom_key in sorted(SL_roms):
-            SL_assets = fs_new_SL_asset()
+            SL_assets = db_new_SL_asset()
             for idx, asset_tuple in enumerate(ASSET_SL_T_LIST):
                 asset_key = asset_tuple[0]
                 asset_dir = asset_tuple[1]
@@ -8044,7 +8062,7 @@ def mame_scan_SL_assets(cfg, st_dic, SL_dic):
         SL_assets_dic = {}
         for rom_key in sorted(SL_roms):
             SL_item_count += 1
-            SL_assets_dic[rom_key] = fs_new_SL_asset()
+            SL_assets_dic[rom_key] = db_new_SL_asset()
             asset_row = ['---'] * len(ASSET_SL_T_LIST)
             for idx, asset_tuple in enumerate(ASSET_SL_T_LIST):
                 asset_key = asset_tuple[0]
