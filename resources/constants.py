@@ -152,11 +152,15 @@ ASSET_MANUAL_EXTS  = ['pdf', 'cbz', 'cbr']
 ASSET_TRAILER_EXTS = ['mp4']
 ASSET_IMAGE_EXTS   = ['png']
 
-# Colours for filters and items in the root main menu.
+# Colors for filters and items in the root main menu.
 COLOR_FILTER_MAIN = '[COLOR thistle]'
 COLOR_FILTER_BINARY = '[COLOR lightblue]'
 COLOR_FILTER_CATALOG_DAT = '[COLOR violet]'
 COLOR_FILTER_CATALOG_NODAT = '[COLOR sandybrown]'
-COLOR_MAME_FAVOURITE = '[COLOR silver]'
+COLOR_SOFTWARE_LISTS = '[COLOR lightgreen]'
+COLOR_MAME_SPECIAL = '[COLOR silver]'
+COLOR_SL_SPECIAL = '[COLOR gold]'
+COLOR_UTILITIES = '[COLOR green]'
+COLOR_GLOBAL_REPORTS = '[COLOR red]'
 COLOR_DEFAULT = '[COLOR white]'
 COLOR_END = '[/COLOR]'

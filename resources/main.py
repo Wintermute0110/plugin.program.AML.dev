@@ -749,7 +749,7 @@ def set_Kodi_all_sorting_methods_and_size(cfg):
 # ---------------------------------------------------------------------------------------------
 # Returns a dictionary rd (render data).
 def set_render_root_data():
-    # Tuple: catalog_name, catalog_key, title, plot
+    # Tuple: catalog_name, catalog_key, title, plot, render colour.
     root_Main = {
         # Main filter Catalog
         'Main_Normal' : [
@@ -758,6 +758,7 @@ def set_render_root_data():
             ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
              'slot[/COLOR] and normal controls. This list includes the machines you would '
              'typically find in Europe and USA amusement arcades some decades ago.'),
+            COLOR_FILTER_MAIN,
         ],
         'Main_Unusual' : [
             'Main', 'Unusual',
@@ -765,6 +766,7 @@ def set_render_root_data():
             ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
              'slot[/COLOR] and Only buttons, Gambling, Hanafuda and Mahjong controls. '
              'This corresponds to slot, gambling and Japanese card and mahjong machines.'),
+            COLOR_FILTER_MAIN,
         ],
         'Main_NoCoin' : [
             'Main', 'NoCoin',
@@ -772,6 +774,7 @@ def set_render_root_data():
             ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with no coin '
              'slot[/COLOR]. Here you will find the good old MESS machines, including computers, '
              'video game consoles, hand-held video game consoles, etc.'),
+            COLOR_FILTER_MAIN,
         ],
         'Main_Mechanical' : [
             'Main', 'Mechanical',
@@ -779,12 +782,14 @@ def set_render_root_data():
             ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]mechanical[/COLOR] MAME machines. '
              'These machines have mechanical parts, for example pinballs, and currently do not work with MAME. '
              'They are here for preservation and historical reasons.'),
+            COLOR_FILTER_MAIN,
         ],
         'Main_Dead' : [
             'Main', 'Dead',
             'Dead machines',
             ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]dead[/COLOR] MAME machines. '
              'Dead machines do not work and have no controls, so you cannot interact with them in any way.'),
+            COLOR_FILTER_MAIN,
         ],
         'Main_Devices' : [
             'Main', 'Devices',
@@ -792,6 +797,7 @@ def set_render_root_data():
             ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]device machines[/COLOR]. '
              'Device machines, for example the Zilog Z80 CPU, are components used by other machines '
              'and cannot be run on their own.'),
+            COLOR_FILTER_MAIN,
         ],
     }
 
@@ -803,12 +809,14 @@ def set_render_root_data():
             'Machines [BIOS]',
             ('[COLOR orange]Binary filter[/COLOR] of [COLOR violet]BIOS[/COLOR] machines. Some BIOS '
              'machines can be run and usually will display a message like "Game not found".'),
+            COLOR_FILTER_BINARY,
         ],
         'CHD' : [
             'Binary', 'CHD',
             'Machines [with CHDs]',
             ('[COLOR orange]Binary filter[/COLOR] of machines that need one or more '
              '[COLOR violet]CHDs[/COLOR] to run. They may also need ROMs and/or BIOS or not.'),
+            COLOR_FILTER_BINARY,
         ],
         'Samples' : [
             'Binary', 'Samples',
@@ -816,12 +824,14 @@ def set_render_root_data():
             ('[COLOR orange]Binary filter[/COLOR] of machines that require '
              '[COLOR violet]samples[/COLOR]. Samples are optional and will increase the quality '
              'of the emulated sound.'),
+            COLOR_FILTER_BINARY,
         ],
         'SoftwareLists' : [
             'Binary', 'SoftwareLists',
             'Machines [with Software Lists]',
             ('[COLOR orange]Binary filter[/COLOR] of machines that have one or more '
              '[COLOR violet]Software Lists[/COLOR] associated.'),
+            COLOR_FILTER_BINARY,
         ],
     }
 
@@ -833,24 +843,28 @@ def set_render_root_data():
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
              'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].'),
             misc_url_1_arg('catalog', 'Catver'),
+            COLOR_FILTER_CATALOG_DAT,
         ],
         'Catlist' : [
             'Machines by Category (Catlist)',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
              'This filter requires that you configure [COLOR violet]catlist.ini[/COLOR].'),
             misc_url_1_arg('catalog', 'Catlist'),
+            COLOR_FILTER_CATALOG_DAT,
         ],
         'Genre' : [
             'Machines by Category (Genre)',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Genre. '
              'This filter requires that you configure [COLOR violet]genre.ini[/COLOR].'),
             misc_url_1_arg('catalog', 'Genre'),
+            COLOR_FILTER_CATALOG_DAT,
         ],
         'Category' : [
             'Machines by Category (MASH)',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Category. '
              'This filter requires that you configure [COLOR violet]Category.ini[/COLOR] by MASH.'),
             misc_url_1_arg('catalog', 'Category'),
+            COLOR_FILTER_CATALOG_DAT,
         ],
         'NPlayers' : [
             'Machines by Number of players',
@@ -858,6 +872,7 @@ def set_render_root_data():
              'players that can play simultaneously or alternatively. This filter requires '
              'that you configure [COLOR violet]nplayers.ini[/COLOR].'),
             misc_url_1_arg('catalog', 'NPlayers'),
+            COLOR_FILTER_CATALOG_DAT,
         ],
         'Bestgames' : [
             'Machines by Rating',
@@ -865,12 +880,14 @@ def set_render_root_data():
              'is subjective but is a good indicator about the quality of the games. '
              'This filter requires that you configure [COLOR violet]bestgames.ini[/COLOR].'),
             misc_url_1_arg('catalog', 'Bestgames'),
+            COLOR_FILTER_CATALOG_DAT,
         ],
         'Series' : [
             'Machines by Series',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by series. '
              'This filter requires that you configure [COLOR violet]series.ini[/COLOR].'),
             misc_url_1_arg('catalog', 'Series'),
+            COLOR_FILTER_CATALOG_DAT,
         ],
         'Alltime' : [
             'Machines by Alltime (MASH)',
@@ -878,18 +895,21 @@ def set_render_root_data():
              'sorted by year. '
              'This filter requires that you configure [COLOR violet]Alltime.ini[/COLOR] by MASH.'),
             misc_url_1_arg('catalog', 'Alltime'),
+            COLOR_FILTER_CATALOG_DAT,
         ],
         'Artwork' : [
             'Machines by Artwork (MASH)',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Artwork. '
              'This filter requires that you configure [COLOR violet]Artwork.ini[/COLOR] by MASH.'),
             misc_url_1_arg('catalog', 'Artwork'),
+            COLOR_FILTER_CATALOG_DAT,
         ],
         'Version' : [
             'Machines by Version Added (Catver)',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Version Added. '
              'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].'),
             misc_url_1_arg('catalog', 'Version'),
+            COLOR_FILTER_CATALOG_DAT,
         ],
 
         # Cataloged filters (always there, extracted from MAME XML)
@@ -902,30 +922,35 @@ def set_render_root_data():
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
              'For each machine, all controls are included in the list.'),
             misc_url_1_arg('catalog', 'Controls_Expanded'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
         'Controls_Compact' : [
             'Machines by Controls (Compact)',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
              'Machines may have additional controls.'),
             misc_url_1_arg('catalog', 'Controls_Compact'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
         'Devices_Expanded' : [
             'Machines by Pluggable Devices (Expanded)',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
              'For each machine, all pluggable devices are included in the list.'),
             misc_url_1_arg('catalog', 'Devices_Expanded'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
         'Devices_Compact' : [
             'Machines by Pluggable Devices (Compact)',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
              'Machines may have additional pluggable devices.'),
             misc_url_1_arg('catalog', 'Devices_Compact'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
         'Display_Type' : [
             'Machines by Display Type',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display type '
              'and rotation.'),
             misc_url_1_arg('catalog', 'Display_Type'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
         'Display_VSync' : [
             'Machines by Display VSync freq',
@@ -933,28 +958,33 @@ def set_render_root_data():
              'vertical synchronisation (VSync) frequency, also known as the display refresh rate or '
              'frames per second (FPS).'),
             misc_url_1_arg('catalog', 'Display_VSync'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
         'Display_Resolution' : [
             'Machines by Display Resolution',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display resolution.'),
             misc_url_1_arg('catalog', 'Display_Resolution'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
         'CPU' : [
             'Machines by CPU',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the CPU used.'),
             misc_url_1_arg('catalog', 'CPU'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
         'Driver' : [
             'Machines by Driver',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by driver. '
              'Brother machines have the same driver.'),
             misc_url_1_arg('catalog', 'Driver'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
         'Manufacturer' : [
             'Machines by Manufacturer',
             ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted by '
              'manufacturer.'),
             misc_url_1_arg('catalog', 'Manufacturer'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
         'ShortName' : [
             'Machines by MAME short name',
@@ -962,23 +992,27 @@ def set_render_root_data():
              'by the MAME short name. The short name originated during the old MS-DOS days '
              'where filenames were restricted to 8 ASCII characters.'),
             misc_url_1_arg('catalog', 'ShortName'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
         'LongName' : [
             'Machines by MAME long name',
             ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
              'by the machine description or long name.'),
             misc_url_1_arg('catalog', 'LongName'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
         'BySL' : [
             'Machines by Software List',
             ('[COLOR orange]Catalog filter[/COLOR] of the Software Lists and the machines '
              'that run items belonging to that Software List.'),
             misc_url_1_arg('catalog', 'BySL'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
         'Year' : [
             'Machines by Year',
             ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by release year.'),
             misc_url_1_arg('catalog', 'Year'),
+            COLOR_FILTER_CATALOG_NODAT,
         ],
     }
 
@@ -1017,71 +1051,36 @@ def set_render_root_data():
             'Software Lists (all)',
             ('Display all [COLOR orange]Software Lists[/COLOR].'),
             misc_url_1_arg('catalog', 'SL'),
+            COLOR_SOFTWARE_LISTS,
         ],
         'SL_ROM' : [
             'Software Lists (with ROMs)',
             ('Display [COLOR orange]Software Lists[/COLOR] that have only ROMs and not CHDs (disks).'),
             misc_url_1_arg('catalog', 'SL_ROM'),
+            COLOR_SOFTWARE_LISTS,
         ],
         'SL_ROM_CHD' : [
             'Software Lists (with ROMs and CHDs)',
             ('Display [COLOR orange]Software Lists[/COLOR] that have both ROMs and CHDs.'),
             misc_url_1_arg('catalog', 'SL_ROM_CHD'),
+            COLOR_SOFTWARE_LISTS,
         ],
         'SL_CHD' : [
             'Software Lists (with CHDs)',
             ('Display [COLOR orange]Software Lists[/COLOR] that have only CHDs and not ROMs.'),
             misc_url_1_arg('catalog', 'SL_CHD'),
+            COLOR_SOFTWARE_LISTS,
         ],
         'SL_empty' : [
             'Software Lists (no ROMs nor CHDs)',
             ('Display [COLOR orange]Software Lists[/COLOR] with no ROMs nor CHDs.'),
             misc_url_1_arg('catalog', 'SL_empty'),
+            COLOR_SOFTWARE_LISTS,
         ],
     }
 
     # Tuple: title, plot, URL, context_menu_list
     root_special_CM = {
-        'MAME_Favs' : [
-            '<Favourite MAME machines>',
-            ('Display your [COLOR orange]Favourite MAME machines[/COLOR]. '
-             'To add machines to the Favourite list use the context menu on any MAME machine list.'),
-            misc_url_1_arg('command', 'SHOW_MAME_FAVS'),
-            [('Manage Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_FAV'))],
-        ],
-        'MAME_Most' : [
-            '{Most Played MAME machines}',
-            ('Display the MAME machines that you play most, sorted by the number '
-             'of times you have launched them.'),
-            misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'),
-            [('Manage Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED'))],
-        ],
-        'MAME_Recent' : [
-            '{Recently Played MAME machines}',
-            ('Display the MAME machines that you have launched recently.'),
-            misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'),
-            [('Manage Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED'))],
-        ],
-        'SL_Favs' : [
-            '<Favourite Software Lists ROMs>',
-            ('Display your [COLOR orange]Favourite Software List items[/COLOR]. '
-             'To add machines to the SL Favourite list use the context menu on any SL item list.'),
-            misc_url_1_arg('command', 'SHOW_SL_FAVS'),
-            [('Manage SL Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_FAV'))],
-        ],
-        'SL_Most' : [
-            '{Most Played SL ROMs}',
-            ('Display the Software List itmes that you play most, sorted by the number '
-             'of times you have launched them.'),
-            misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'),
-            [('Manage SL Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED'))],
-        ],
-        'SL_Recent' : [
-            '{Recently Played SL ROMs}',
-            'Display the Software List items that you have launched recently.',
-            misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'),
-            [('Manage SL Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED'))],
-        ],
         'Custom_Filters' : [
             '[Custom MAME filters]',
             ('[COLOR orange]Custom filters[/COLOR] allows to generate machine '
@@ -1090,6 +1089,53 @@ def set_render_root_data():
              'complete default set of filters in XML format which can be edited.'),
             misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'),
             [('Setup custom filters', misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS'))],
+            COLOR_MAME_SPECIAL,
+        ],
+        'MAME_Favs' : [
+            '<Favourite MAME machines>',
+            ('Display your [COLOR orange]Favourite MAME machines[/COLOR]. '
+             'To add machines to the Favourite list use the context menu on any MAME machine list.'),
+            misc_url_1_arg('command', 'SHOW_MAME_FAVS'),
+            [('Manage Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_FAV'))],
+            COLOR_MAME_SPECIAL,
+        ],
+        'MAME_Most' : [
+            '{Most Played MAME machines}',
+            ('Display the MAME machines that you play most, sorted by the number '
+             'of times you have launched them.'),
+            misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'),
+            [('Manage Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED'))],
+            COLOR_MAME_SPECIAL,
+        ],
+        'MAME_Recent' : [
+            '{Recently Played MAME machines}',
+            ('Display the MAME machines that you have launched recently.'),
+            misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'),
+            [('Manage Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED'))],
+            COLOR_MAME_SPECIAL,
+        ],
+        'SL_Favs' : [
+            '<Favourite Software Lists ROMs>',
+            ('Display your [COLOR orange]Favourite Software List items[/COLOR]. '
+             'To add machines to the SL Favourite list use the context menu on any SL item list.'),
+            misc_url_1_arg('command', 'SHOW_SL_FAVS'),
+            [('Manage SL Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_FAV'))],
+            COLOR_SL_SPECIAL,
+        ],
+        'SL_Most' : [
+            '{Most Played SL ROMs}',
+            ('Display the Software List itmes that you play most, sorted by the number '
+             'of times you have launched them.'),
+            misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'),
+            [('Manage SL Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED'))],
+            COLOR_SL_SPECIAL,
+        ],
+        'SL_Recent' : [
+            '{Recently Played SL ROMs}',
+            'Display the Software List items that you have launched recently.',
+            misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'),
+            [('Manage SL Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED'))],
+            COLOR_SL_SPECIAL,
         ],
     }
 
@@ -1372,12 +1418,12 @@ def render_root_list(cfg):
         Utilities_plot = ('Execute several [COLOR orange]Utilities[/COLOR]. For example, to '
             'check you AML configuration.')
         URL = misc_url_1_arg('command', 'SHOW_UTILITIES_VLAUNCHERS')
-        render_root_category_row(cfg, 'Utilities', Utilities_plot, URL)
+        render_root_category_row(cfg, 'Utilities', Utilities_plot, URL, COLOR_UTILITIES)
     if cfg.settings['display_global_reports']:
         Global_Reports_plot = ('View the [COLOR orange]Global Reports[/COLOR] and '
             'machine and audit [COLOR orange]Statistics[/COLOR].')
         URL = misc_url_1_arg('command', 'SHOW_GLOBALREPORTS_VLAUNCHERS')
-        render_root_category_row(cfg, 'Global Reports', Global_Reports_plot, URL)
+        render_root_category_row(cfg, 'Global Reports', Global_Reports_plot, URL, COLOR_GLOBAL_REPORTS)
 
     # End of directory.
     xbmcplugin.endOfDirectory(handle = cfg.addon_handle, succeeded = True, cacheToDisc = False)
@@ -1488,10 +1534,10 @@ def render_skin_SL_filters(cfg):
 #
 # A Catalog is equivalent to a Launcher in AEL.
 #
-def render_root_catalog_row(cfg, catalog_name, catalog_key, display_name, plot_str):
+def render_root_catalog_row(cfg, catalog_name, catalog_key, display_name, plot_str, color_str = COLOR_DEFAULT):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
-    listitem = xbmcgui.ListItem(display_name)
+    listitem = xbmcgui.ListItem('{}{}{}'.format(color_str, display_name, COLOR_END))
     listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY, 'plot' : plot_str})
 
     # --- Artwork ---
@@ -1509,18 +1555,16 @@ def render_root_catalog_row(cfg, catalog_name, catalog_key, display_name, plot_s
         ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
     ]
     listitem.addContextMenuItems(commands)
-
-    # --- Add row ---
     URL = misc_url_2_arg('catalog', catalog_name, 'category', catalog_key)
     xbmcplugin.addDirectoryItem(cfg.addon_handle, URL, listitem, isFolder = True)
 
 #
 # A Category is equivalent to a Category in AEL. It contains a list of Launchers (catalogs).
 #
-def render_root_category_row(cfg, display_name, plot_str, root_URL):
+def render_root_category_row(cfg, display_name, plot_str, root_URL, color_str = COLOR_DEFAULT):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
-    listitem = xbmcgui.ListItem(display_name)
+    listitem = xbmcgui.ListItem('{}{}{}'.format(color_str, display_name, COLOR_END))
     listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY, 'plot' : plot_str})
 
     # --- Artwork ---
@@ -1537,10 +1581,10 @@ def render_root_category_row(cfg, display_name, plot_str, root_URL):
     listitem.addContextMenuItems(commands)
     xbmcplugin.addDirectoryItem(cfg.addon_handle, root_URL, listitem, isFolder = True)
 
-def render_root_category_row_custom_CM(cfg, display_name, plot_str, root_URL, cmenu_list):
+def render_root_category_row_custom_CM(cfg, display_name, plot_str, root_URL, cmenu_list, color_str = COLOR_DEFAULT):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
-    listitem = xbmcgui.ListItem(display_name)
+    listitem = xbmcgui.ListItem('{}{}{}'.format(color_str, display_name, COLOR_END))
     listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY, 'plot' : plot_str})
 
     # --- Artwork ---
