@@ -4998,21 +4998,21 @@ def _get_CHD_location(chd_set, disk, m_name, machines, renderdb_dic, machine_rom
         else:
             # --- Clone machine ---
             if disk['merge']:
-                # >> Get merged ROM from parent
+                # Get merged ROM from parent
                 parent_name = cloneof
                 parent_romof = machines[parent_name]['romof']
                 parent_disks =  machine_roms[parent_name]['disks']
                 clone_disk_merged_name = disk['merge']
-                # >> Pick ROMs with same name and choose the first one.
+                # Pick ROMs with same name and choose the first one.
                 parent_merged_disk_l = [r for r in parent_disks if r['name'] == clone_disk_merged_name]
                 parent_merged_disk = parent_merged_disk_l[0]
-                # >> Check if clone merged ROM is also merged in parent
+                # Check if clone merged ROM is also merged in parent
                 if parent_merged_disk['merge']:
-                    # >> ROM is in the 'romof' archive of the parent ROM
+                    # ROM is in the 'romof' archive of the parent ROM
                     super_parent_name = parent_romof
                     super_parent_disks =  machine_roms[super_parent_name]['disks']
                     parent_disk_merged_name = parent_merged_disk['merge']
-                    # >> Pick ROMs with same name and choose the first one.
+                    # Pick ROMs with same name and choose the first one.
                     super_parent_merged_disk_l = [r for r in super_parent_disks if r['name'] == parent_disk_merged_name]
                     super_parent_merged_disk = super_parent_merged_disk_l[0]
                     location = super_parent_name + '/' + super_parent_merged_disk['name']
@@ -5022,6 +5022,9 @@ def _get_CHD_location(chd_set, disk, m_name, machines, renderdb_dic, machine_rom
                 location = cloneof + '/' + disk['name']
 
     elif chd_set == 'SPLIT':
+        machine = machines[m_name]
+        cloneof = renderdb_dic[m_name]['cloneof']
+        romof   = machine['romof']
         if not cloneof:
             # --- Parent machine ---
             if disk['merge']:
@@ -5044,7 +5047,7 @@ def _get_CHD_location(chd_set, disk, m_name, machines, renderdb_dic, machine_rom
 
     return location
 
-# Makes a unique and alphabetically sorted list of ROM ZIP files.
+# Returns a unique and alphabetically sorted list of ROM ZIP files.
 # This list is different depending on the ROM set (Merged, Split or Non-merged).
 def mame_get_ROM_ZIP_list(machine_archives_dic):
     rom_list = []
