@@ -4,6 +4,7 @@
 # Prepare files for a new AML release.
 #
 #   1) Clean pyo and pyc files.
+#      Clean __pycache__ directories (Python 3 interpreter, must be empty).
 #   2) Create directory plugin.program.AML
 #   3) Copy required files to run AML. Do not copy unnecessary files.
 #   4) Create file version.sha, which contains current git version.
@@ -33,7 +34,7 @@ import sys
 AML_DEV_ID  = 'plugin.program.AML.dev'
 AML_ID      = 'plugin.program.AML'
 AML_NAME    = 'Advanced MAME Launcher'
-AML_VERSION = '0.10.0'
+AML_VERSION = '1.0.0'
 root_file_list = [
     'addon.py',
     'addon.xml',
@@ -147,18 +148,38 @@ def main():
     print('AML_VERSION {}'.format(AML_VERSION))
 
     # Clean pyo and pyc files.
-    print('\nCleaning pyo and pyc files ...')
+    num_pyo, num_pyc = 0, 0
+    print('\nCleaning pyo and pyc files...')
     current_dir = os.getcwd()
-    print('The current working directory is "{}"'.format(current_dir))
+    print('The current directory is "{}"'.format(current_dir))
     for filename in glob.iglob(current_dir + '/**/*.pyo', recursive = True):
-         # print('Removing "{}"'.format(filename))
+         # print('Removing file "{}"'.format(filename))
          os.unlink(filename)
+         num_pyo += 1
     for filename in glob.iglob(current_dir + '/**/*.pyc', recursive = True):
-         # print('Removing "{}"'.format(filename))
+         # print('Removing file "{}"'.format(filename))
          os.unlink(filename)
+         num_pyc += 1
+    print('Cleaned {} pyo files and {} pyc files'.format(num_pyo, num_pyc))
+
+    # Clean (empty) __pycache__ directories.
+    num_cache_dirs = 0
+    print('\nCleaning __pycache__ (empty) directories...')
+    for root, dirs, files in os.walk(current_dir, topdown=False):
+        # print('\nroot "{}"'.format(root))
+        (head, tail) = os.path.split(root)
+        # print('head "{}"'.format(head))
+        # print('tail "{}"'.format(tail))
+        if tail == '__pycache__':
+            print('Removing dir "{}"'.format(root))
+            os.rmdir(root)
+            num_cache_dirs += 1
+        # for name in files: print('file "{}"'.format(name))
+        # for name in dirs: print('dir "{}"'.format(name))
+    print('Cleaned {} directories'.format(num_cache_dirs))
 
     # Create directory AML_ID. If exists, then purge it.
-    print('\nCreating target directory ...')
+    print('\nCreating target directory...')
     release_dir = os.path.join(current_dir, AML_ID)
     print('The target directory is "{}"'.format(release_dir))
     if os.path.isdir(release_dir):
