@@ -4,6 +4,7 @@
 # Prepare files for a new AML release.
 #
 #   1) Clean pyo and pyc files.
+#      Clean __pycache__ directories (Python 3 interpreter, must be empty).
 #   2) Create directory plugin.program.AML
 #   3) Copy required files to run AML. Do not copy unnecessary files.
 #   4) Create file version.sha, which contains current git version.
@@ -65,7 +66,7 @@ root_directory_list = [
 #
 def edit_xml_attribute(xml_file_path, tag_name, attrib_name, attrib_value):
     # Read XML file contents.
-    print('Reading XML file "{0}"'.format(xml_file_path))
+    print('Reading XML file "{}"'.format(xml_file_path))
     with open(xml_file_path) as file:
         str_list = file.readlines()
 
@@ -83,7 +84,7 @@ def edit_xml_attribute(xml_file_path, tag_name, attrib_name, attrib_value):
     # )
     # [^>]*?                     # any attributes that follow the src
     # >                          # end of the tag
-    expression = '<{0}\s+[^>]*?{1}="([^\1>]+?)"[^>]*?>'.format(tag_name, attrib_name)
+    expression = '<{}\s+[^>]*?{}="([^\1>]+?)"[^>]*?>'.format(tag_name, attrib_name)
     # print(expression)
     prog = re.compile(expression)
     match_found = False
@@ -92,18 +93,18 @@ def edit_xml_attribute(xml_file_path, tag_name, attrib_name, attrib_value):
         m = prog.search(line)
         if m:
             current_attrib_value = m.group(1)
-            print('Matched tag name "{0}", attribute name "{1}", attribute value "{2}"'.format(
+            print('Matched tag name "{}", attribute name "{}", attribute value "{}"'.format(
                 tag_name, attrib_name, current_attrib_value))
-            old_str = '{0}="{1}"'.format(attrib_name, current_attrib_value)
-            new_str = '{0}="{1}"'.format(attrib_name, attrib_value)
-            print("Replacing '{0}' with '{1}'".format(old_str, new_str))
+            old_str = '{}="{}"'.format(attrib_name, current_attrib_value)
+            new_str = '{}="{}"'.format(attrib_name, attrib_value)
+            print("Replacing '{}' with '{}'".format(old_str, new_str))
             str_list[line_idx] = line.replace(old_str, new_str)
             match_found = True
             break
 
     # Write file if a match was found. If not, warn user and abort.
     if match_found:
-        print('Writing XML file "{0}"'.format(xml_file_path))
+        print('Writing XML file "{}"'.format(xml_file_path))
         with open(xml_file_path, 'w') as file:
             file.write(''.join(str_list))
     else:
@@ -116,7 +117,7 @@ def edit_xml_attribute(xml_file_path, tag_name, attrib_name, attrib_value):
 # The string must be in a line of text. No multiline strings allowed.
 #
 def edit_text_file(file_path, old_str, new_str):
-    print('Reading XML file "{0}"'.format(file_path))
+    print('Reading XML file "{}"'.format(file_path))
     with open(file_path) as file:
         str_list = file.readlines()
 
@@ -126,12 +127,12 @@ def edit_text_file(file_path, old_str, new_str):
         position = line.find(old_str)
         if position > 1:
             match_found = True
-            print("Match found, replacing '{0}' with '{1}'".format(old_str, new_str))
+            print("Match found, replacing '{}' with '{}'".format(old_str, new_str))
             # str.replace() changes all occurences.
             str_list[line_idx] = line.replace(old_str, new_str)
 
     if match_found:
-        print('Writing XML file "{0}"'.format(file_path))
+        print('Writing XML file "{}"'.format(file_path))
         with open(file_path, 'w') as file:
             file.write(''.join(str_list))
     else:
@@ -140,53 +141,73 @@ def edit_text_file(file_path, old_str, new_str):
 
 # --- main ---------------------------------------------------------------------------------------
 def main():
-    print('Starting {0}'.format(sys.argv[0]))
-    print('AML_DEV_ID  {0}'.format(AML_DEV_ID))
-    print('AML_ID      {0}'.format(AML_ID))
-    print('AML_NAME    {0}'.format(AML_NAME))
-    print('AML_VERSION {0}'.format(AML_VERSION))
+    print('Starting {}'.format(sys.argv[0]))
+    print('AML_DEV_ID  {}'.format(AML_DEV_ID))
+    print('AML_ID      {}'.format(AML_ID))
+    print('AML_NAME    {}'.format(AML_NAME))
+    print('AML_VERSION {}'.format(AML_VERSION))
 
     # Clean pyo and pyc files.
-    print('\nCleaning pyo and pyc files ...')
+    num_pyo, num_pyc = 0, 0
+    print('\nCleaning pyo and pyc files...')
     current_dir = os.getcwd()
-    print('The current working directory is "{0}"'.format(current_dir))
+    print('The current directory is "{}"'.format(current_dir))
     for filename in glob.iglob(current_dir + '/**/*.pyo', recursive = True):
-         # print('Removing "{0}"'.format(filename))
+         # print('Removing file "{}"'.format(filename))
          os.unlink(filename)
+         num_pyo += 1
     for filename in glob.iglob(current_dir + '/**/*.pyc', recursive = True):
-         # print('Removing "{0}"'.format(filename))
+         # print('Removing file "{}"'.format(filename))
          os.unlink(filename)
+         num_pyc += 1
+    print('Cleaned {} pyo files and {} pyc files'.format(num_pyo, num_pyc))
+
+    # Clean (empty) __pycache__ directories.
+    num_cache_dirs = 0
+    print('\nCleaning __pycache__ (empty) directories...')
+    for root, dirs, files in os.walk(current_dir, topdown=False):
+        # print('\nroot "{}"'.format(root))
+        (head, tail) = os.path.split(root)
+        # print('head "{}"'.format(head))
+        # print('tail "{}"'.format(tail))
+        if tail == '__pycache__':
+            print('Removing dir "{}"'.format(root))
+            os.rmdir(root)
+            num_cache_dirs += 1
+        # for name in files: print('file "{}"'.format(name))
+        # for name in dirs: print('dir "{}"'.format(name))
+    print('Cleaned {} directories'.format(num_cache_dirs))
 
     # Create directory AML_ID. If exists, then purge it.
-    print('\nCreating target directory ...')
+    print('\nCreating target directory...')
     release_dir = os.path.join(current_dir, AML_ID)
-    print('The target directory is "{0}"'.format(release_dir))
+    print('The target directory is "{}"'.format(release_dir))
     if os.path.isdir(release_dir):
-        print('Directory "{0}" exists'.format(release_dir))
-        print('Purging contents in "{0}"'.format(release_dir))
+        print('Directory "{}" exists'.format(release_dir))
+        print('Purging contents in "{}"'.format(release_dir))
         shutil.rmtree(release_dir)
     os.mkdir(release_dir)
-    print('Created directory "{0}"'.format(release_dir))
+    print('Created directory "{}"'.format(release_dir))
 
     # Copy required files to run AML
     print('\nCopying root files ...')
     for file in root_file_list:
         src = os.path.join(current_dir, file)
         dst = os.path.join(release_dir, file)
-        print('Copy "{0}"'.format(src))
-        # print('Into "{0}"'.format(dst))
+        print('Copy "{}"'.format(src))
+        # print('Into "{}"'.format(dst))
         # If target directory does not exists then create it, otherwise shutil.copy() will fail.
         target_dir = os.path.dirname(dst)
         if not os.path.exists(target_dir):
-            print('Creating directory "{0}"'.format(target_dir))
+            print('Creating directory "{}"'.format(target_dir))
             os.makedirs(target_dir)
         shutil.copy(src, dst)
     print('\nCopying root whole directories ...')
     for directory in root_directory_list:
         src = os.path.join(current_dir, directory)
         dst = os.path.join(release_dir, directory)
-        print('Recursive copy "{0}"'.format(src))
-        # print('Into "{0}"'.format(dst))
+        print('Recursive copy "{}"'.format(src))
+        # print('Into "{}"'.format(dst))
         shutil.copytree(src, dst)
 
     # Create file version.txt, which contains current git version.
@@ -209,7 +230,7 @@ def main():
 
     # So long and thanks for all the fish.
     print('All operations finished. Exiting.')
-    print('Exiting {0}'.format(sys.argv[0]))
+    print('Exiting {}'.format(sys.argv[0]))
 
 if __name__ == "__main__":
     main()

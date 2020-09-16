@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Advanced MAME Launcher constants and globals.
-
 # Copyright (c) 2018-2020 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -13,13 +11,15 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# Advanced MAME Launcher constants and globals.
+
 # --- Python standard library ---
 from __future__ import unicode_literals
 
 # -------------------------------------------------------------------------------------------------
 # Addon configuration options
 # -------------------------------------------------------------------------------------------------
-# Compat, smaller size, non-human readable JSON.
+# Compact, smaller size, non-human readable JSON.
 # This setting must be True when releasing.
 OPTION_COMPACT_JSON = True
 
@@ -35,52 +35,23 @@ OPTION_LOWMEM_WRITE_JSON = True
 DISABLE_MAME_LAUNCHING = False
 
 # -------------------------------------------------------------------------------------------------
-# A universal Addon error reporting exception
-# This exception is raised to report errors in the GUI.
-# Unhandled exceptions must not raise Addon_Error() so the addon crashes and the traceback 
-# is printed in the Kodi log file.
-# -------------------------------------------------------------------------------------------------
-# Top-level GUI code looks like this:
-#
-# try:
-#     autoconfig_export_category(category, export_FN)
-# except Addon_Error as ex:
-#     kodi_notify_warn('{0}'.format(ex))
-# else:
-#     kodi_notify('Exported Category "{0}" XML config'.format(category['m_name']))
-#
-# Low-level code looks like this:
-#
-# def autoconfig_export_category(category, export_FN):
-#     try:
-#         do_something_that_may_fail()
-#     except OSError:
-#         log_error('(OSError) Cannot write {0} file'.format(export_FN.getBase()))
-#         # >> Message to be printed in the GUI
-#         raise Addon_Error('Error writing file (OSError)')
-#
-class Addon_Error(Exception):
-    def __init__(self, err_str):
-        self.err_str = err_str
-
-    def __str__(self):
-        return self.err_str
-
-# -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher settings
 # -------------------------------------------------------------------------------------------------
 # Operational modes
 # This must match setting op_mode_raw in settings.xml or bad things will happen.
-OP_MODE_EXTERNAL           = 'External MAME'
+OP_MODE_VANILLA            = 'Vanilla MAME'
 OP_MODE_RETRO_MAME2003PLUS = 'Retroarch MAME 2003 Plus'
 OP_MODE_RETRO_MAME2010     = 'Retroarch MAME 2010'
 OP_MODE_RETRO_MAME2014     = 'Retroarch MAME 2014'
 OP_MODE_LIST = [
-    OP_MODE_EXTERNAL,
+    OP_MODE_VANILLA,
     OP_MODE_RETRO_MAME2003PLUS,
     OP_MODE_RETRO_MAME2010,
     OP_MODE_RETRO_MAME2014,
 ]
+
+# In MAME 2003 Plus the MAME version is not found on the XML file.
+MAME2003PLUS_VERSION_RAW = '0.78 (RA2003Plus)'
 
 # Make sure these strings are equal to the ones in settings.xml or bad things will happen.
 VIEW_MODE_FLAT             = 0 # 'Flat'
@@ -96,7 +67,6 @@ ROMSET_SL_SPLIT            = 1 # 'Split'
 # Advanced MAME Launcher constants
 # -------------------------------------------------------------------------------------------------
 # Database status. Status it determined with timestamps in control_dic
-MAME_XML_EXTRACTED    = 100
 MAME_MAIN_DB_BUILT    = 200
 MAME_AUDIT_DB_BUILT   = 300
 MAME_CATALOG_BUILT    = 400
@@ -184,3 +154,16 @@ ASSET_ARTWORK_EXTS = ['zip']
 ASSET_MANUAL_EXTS  = ['pdf', 'cbz', 'cbr']
 ASSET_TRAILER_EXTS = ['mp4']
 ASSET_IMAGE_EXTS   = ['png']
+
+# Colors for filters and items in the root main menu.
+COLOR_FILTER_MAIN = '[COLOR thistle]'
+COLOR_FILTER_BINARY = '[COLOR lightblue]'
+COLOR_FILTER_CATALOG_DAT = '[COLOR violet]'
+COLOR_FILTER_CATALOG_NODAT = '[COLOR sandybrown]'
+COLOR_SOFTWARE_LISTS = '[COLOR lightgreen]'
+COLOR_MAME_SPECIAL = '[COLOR silver]'
+COLOR_SL_SPECIAL = '[COLOR gold]'
+COLOR_UTILITIES = '[COLOR green]'
+COLOR_GLOBAL_REPORTS = '[COLOR red]'
+COLOR_DEFAULT = '[COLOR white]'
+COLOR_END = '[/COLOR]'

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Advanced MAME Launcher MAME filter engine.
-
 # Copyright (c) 2016-2020 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -13,6 +11,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# Advanced MAME Launcher MAME filter engine.
+
 # --- Be prepared for the future ---
 from __future__ import unicode_literals
 from __future__ import division
@@ -20,9 +20,9 @@ from __future__ import division
 # --- Modules/packages in this plugin ---
 from .constants import *
 from .utils import *
-from .utils_kodi import *
 from .misc import *
-from .disk_IO import *
+from .db import *
+from .mame_misc import *
 
 # --- Python standard library ---
 import xml.etree.ElementTree as ET
@@ -80,8 +80,8 @@ def _get_change_tuple(text_t):
     if tuple_list:
         return tuple_list[0]
     else:
-        log_error('_get_change_tuple() text_t = "{0}"'.format(text_t))
-        m = '(Exception) Cannot parse <Change> "{0}"'.format(text_t)
+        log_error('_get_change_tuple() text_t = "{}"'.format(text_t))
+        m = '(Exception) Cannot parse <Change> "{}"'.format(text_t)
         log_error(m)
         raise Addon_Error(m)
 
@@ -754,19 +754,19 @@ def filter_mame_Options_tag(mame_xml_dic, f_definition):
     NoMissingCHDs_bool    = True if 'NoMissingCHDs' in options_list else False
     NoMissingSamples_bool = True if 'NoMissingSamples' in options_list else False
 
-    log_debug('NoClones_bool     {}'.format(NoClones_bool))
-    log_debug('NoCoin_bool       {}'.format(NoCoin_bool))
-    log_debug('NoCoinLess_bool   {}'.format(NoCoinLess_bool))
-    log_debug('NoROMs_bool       {}'.format(NoROMs_bool))
-    log_debug('NoCHDs_bool       {}'.format(NoCHDs_bool))
-    log_debug('NoSamples_bool    {}'.format(NoSamples_bool))
-    log_debug('NoMature_bool     {}'.format(NoMature_bool))
-    log_debug('NoBIOS_bool       {}'.format(NoBIOS_bool))
-    log_debug('NoMechanical_bool {}'.format(NoMechanical_bool))
-    log_debug('NoImperfect_bool  {}'.format(NoImperfect_bool))
-    log_debug('NoNonWorking_bool {}'.format(NoNonWorking_bool))
-    log_debug('NoVertical_bool   {}'.format(NoVertical_bool))
-    log_debug('NoHorizontal_bool {}'.format(NoHorizontal_bool))
+    log_debug('NoClones_bool         {}'.format(NoClones_bool))
+    log_debug('NoCoin_bool           {}'.format(NoCoin_bool))
+    log_debug('NoCoinLess_bool       {}'.format(NoCoinLess_bool))
+    log_debug('NoROMs_bool           {}'.format(NoROMs_bool))
+    log_debug('NoCHDs_bool           {}'.format(NoCHDs_bool))
+    log_debug('NoSamples_bool        {}'.format(NoSamples_bool))
+    log_debug('NoMature_bool         {}'.format(NoMature_bool))
+    log_debug('NoBIOS_bool           {}'.format(NoBIOS_bool))
+    log_debug('NoMechanical_bool     {}'.format(NoMechanical_bool))
+    log_debug('NoImperfect_bool      {}'.format(NoImperfect_bool))
+    log_debug('NoNonWorking_bool     {}'.format(NoNonWorking_bool))
+    log_debug('NoVertical_bool       {}'.format(NoVertical_bool))
+    log_debug('NoHorizontal_bool     {}'.format(NoHorizontal_bool))
     log_debug('NoMissingROMs_bool    {}'.format(NoMissingROMs_bool))
     log_debug('NoMissingCHDs_bool    {}'.format(NoMissingCHDs_bool))
     log_debug('NoMissingSamples_bool {}'.format(NoMissingSamples_bool))
@@ -1184,11 +1184,12 @@ def filter_parse_XML(fname_str):
 # Returns a dictionary of dictionaries, indexed by the machine name.
 # This includes all MAME machines, including parents and clones.
 #
-def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic, machine_archives_dic):
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Building filter database ...')
-    total_items = len(machine_main_dic)
-    item_count = 0
+def filter_get_filter_DB(cfg, db_dic_in):
+    machine_main_dic = db_dic_in['machines']
+    renderdb_dic = db_dic_in['renderdb']
+    assetdb_dic = db_dic_in['assetdb']
+    machine_archives_dic = db_dic_in['machine_archives']
+
     main_filter_dic = {}
     # Sets are used to check the integrity of the filters defined in the XML.
     drivers_set = set()
@@ -1200,8 +1201,10 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
     genres_drivers_dic = {}
     controls_drivers_dic = {}
     pdevices_drivers_dic = {}
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Building filter database...', len(machine_main_dic))
     for m_name in machine_main_dic:
-        pDialog.update(int((item_count*100) / total_items))
+        pDialog.updateProgressInc()
         if 'att_coins' in machine_main_dic[m_name]['input']:
             coins = machine_main_dic[m_name]['input']['att_coins']
         else:
@@ -1226,10 +1229,10 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
             elif drotate == '90' or drotate == '270':
                 isVertical = True
 
-        # ROM/CHD/Sample scanner flags. See funcion fs_initial_flags()
-        missingROMs    = True if assets_dic[m_name]['flags'][0] == 'r' else False
-        missingCHDs    = True if assets_dic[m_name]['flags'][1] == 'c' else False
-        missingSamples = True if assets_dic[m_name]['flags'][2] == 's' else False
+        # ROM/CHD/Sample scanner flags. See funcion db_initial_flags()
+        missingROMs    = True if assetdb_dic[m_name]['flags'][0] == 'r' else False
+        missingCHDs    = True if assetdb_dic[m_name]['flags'][1] == 'c' else False
+        missingSamples = True if assetdb_dic[m_name]['flags'][2] == 's' else False
 
         # Fix controls to match "Machines by Controls (Compact)" filter
         if machine_main_dic[m_name]['input']:
@@ -1251,18 +1254,18 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
         # --- Build filtering dictionary ---
         main_filter_dic[m_name] = {
             # --- Default filters ---
-            'isDevice' : machine_render_dic[m_name]['isDevice'],
+            'isDevice' : renderdb_dic[m_name]['isDevice'],
             # --- <Option> filters ---
-            'isClone' : True if machine_render_dic[m_name]['cloneof'] else False,
+            'isClone' : True if renderdb_dic[m_name]['cloneof'] else False,
             'coins' : coins,
             'hasROMs' : hasROMs,
             'hasCHDs' : hasCHDs,
             'hasSamples' : hasSamples,
-            'isMature' : machine_render_dic[m_name]['isMature'],
-            'isBIOS' : machine_render_dic[m_name]['isBIOS'],
+            'isMature' : renderdb_dic[m_name]['isMature'],
+            'isBIOS' : renderdb_dic[m_name]['isBIOS'],
             'isMechanical' : machine_main_dic[m_name]['isMechanical'],
-            'isImperfect' : True if machine_render_dic[m_name]['driver_status'] == 'imperfect' else False,
-            'isNonWorking' : True if machine_render_dic[m_name]['driver_status'] == 'preliminary' else False,
+            'isImperfect' : True if renderdb_dic[m_name]['driver_status'] == 'imperfect' else False,
+            'isNonWorking' : True if renderdb_dic[m_name]['driver_status'] == 'preliminary' else False,
             'isHorizontal' : isHorizontal,
             'isVertical' : isVertical,
             # --- <Option> scanner-related filters ---
@@ -1271,13 +1274,12 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
             'missingSamples' : missingSamples,
             # --- Other filters ---
             'driver' : machine_main_dic[m_name]['sourcefile'],
-            'manufacturer' : machine_render_dic[m_name]['manufacturer'],
-            'genre' : machine_render_dic[m_name]['genre'],
+            'manufacturer' : renderdb_dic[m_name]['manufacturer'],
+            'genre' : renderdb_dic[m_name]['genre'],
             'control_list' : control_list,
             'pluggable_device_list' : pluggable_device_list,
-            'year' : machine_render_dic[m_name]['year'],
+            'year' : renderdb_dic[m_name]['year'],
         }
-        item_count += 1
 
         # --- Make sets of drivers, genres, controls, and pluggable devices ---
         mdict = main_filter_dic[m_name]
@@ -1300,45 +1302,41 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
                 pdevices_drivers_dic[device] += 1
             else:
                 pdevices_drivers_dic[device] = 1
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Write statistics report ---
-    log_info('Writing report "{}"'.format(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath()))
-    with open(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath(), 'w') as file:
-        rslist = [
-            '*** Advanced MAME Launcher MAME histogram report ***',
-            '',
-        ]
+    log_info('Writing report "{}"'.format(cfg.REPORT_CF_HISTOGRAMS_PATH.getPath()))
+    rslist = [
+        '*** Advanced MAME Launcher MAME histogram report ***',
+        '',
+    ]
+    table_str = [
+        ['right', 'right'],
+        ['Genre', 'Number of machines'],
+    ]
+    for dname, dnumber in sorted(genres_drivers_dic.items(), key = lambda x: x[1], reverse = True):
+        table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
+    rslist.extend(text_render_table_str(table_str))
+    rslist.append('')
 
-        table_str = [
-            ['right', 'right'],
-            ['Genre', 'Number of machines'],
-        ]
-        for dname, dnumber in sorted(genres_drivers_dic.items(), key = lambda x: x[1], reverse = True):
-            table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
-        rslist.extend(text_render_table_str(table_str))
-        rslist.append('')
+    table_str = [
+        ['right', 'right'],
+        ['Control', 'Number of machines'],
+    ]
+    for dname, dnumber in sorted(controls_drivers_dic.items(), key = lambda x: x[1], reverse = True):
+        table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
+    rslist.extend(text_render_table_str(table_str))
+    rslist.append('')
 
-        table_str = [
-            ['right', 'right'],
-            ['Control', 'Number of machines'],
-        ]
-        for dname, dnumber in sorted(controls_drivers_dic.items(), key = lambda x: x[1], reverse = True):
-            table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
-        rslist.extend(text_render_table_str(table_str))
-        rslist.append('')
-
-        table_str = [
-            ['right', 'right'],
-            ['Device', 'Number of machines'],
-        ]
-        for dname, dnumber in sorted(pdevices_drivers_dic.items(), key = lambda x: x[1], reverse = True):
-            table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
-        rslist.extend(text_render_table_str(table_str))
-        rslist.append('')
-
-        file.write('\n'.join(rslist).encode('utf-8'))
+    table_str = [
+        ['right', 'right'],
+        ['Device', 'Number of machines'],
+    ]
+    for dname, dnumber in sorted(pdevices_drivers_dic.items(), key = lambda x: x[1], reverse = True):
+        table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
+    rslist.extend(text_render_table_str(table_str))
+    rslist.append('')
+    utils_write_slist_to_file(cfg.REPORT_CF_HISTOGRAMS_PATH.getPath(), rslist)
 
     sets_dic = {
         'drivers_set' : drivers_set,
@@ -1352,7 +1350,8 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
 #
 # Returns a tuple (filter_list, options_dic).
 #
-def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic, sets_dic):
+def filter_custom_filters_load_XML(cfg, db_dic_in, main_filter_dic, sets_dic):
+    control_dic = db_dic_in['control_dic']
     filter_list = []
     options_dic = {
         # No errors by default until an error is found.
@@ -1360,11 +1359,11 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
     }
 
     # --- Open custom filter XML and parse it ---
-    cf_XML_path_str = settings['filter_XML']
+    cf_XML_path_str = cfg.settings['filter_XML']
     log_debug('cf_XML_path_str = "{}"'.format(cf_XML_path_str))
     if not cf_XML_path_str:
         log_debug('Using default XML custom filter.')
-        XML_FN = PATHS.CUSTOM_FILTER_PATH
+        XML_FN = cfg.CUSTOM_FILTER_PATH
     else:
         log_debug('Using user-defined in addon settings XML custom filter.')
         XML_FN = FileName(cf_XML_path_str)
@@ -1401,8 +1400,8 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
 
         # Check 3) Genres in <Genre> exist. <Genre> uses the LSP parser.
         keyword_list = []
-        for token in SP_tokenize(filter_dic['genre']):
-            if isinstance(token, LSP_literal_token):
+        for token in LSP_tokenize(filter_dic['genre']):
+            if isinstance(token, SP_literal_token):
                 keyword_list.append(token.value)
         for dname in keyword_list:
             if dname not in sets_dic['genres_set']:
@@ -1454,16 +1453,15 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
         r_full.append('')
 
     # --- Write MAME scanner reports ---
-    log_info('Writing report "{}"'.format(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath()))
-    with open(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath(), 'w') as file:
-        report_slist = [
-            '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
-            'There are {} custom filters defined.'.format(len(filter_list)),
-            'XML "{}"'.format(XML_FN.getOriginalPath()),
-            '',
-        ]
-        report_slist.extend(r_full)
-        file.write('\n'.join(report_slist).encode('utf-8'))
+    log_info('Writing report "{}"'.format(cfg.REPORT_CF_XML_SYNTAX_PATH.getPath()))
+    report_slist = [
+        '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
+        'There are {} custom filters defined.'.format(len(filter_list)),
+        'XML "{}"'.format(XML_FN.getOriginalPath()),
+        '',
+    ]
+    report_slist.extend(r_full)
+    utils_write_slist_to_file(cfg.REPORT_CF_XML_SYNTAX_PATH.getPath(), report_slist)
 
     return (filter_list, options_dic)
 
@@ -1481,27 +1479,30 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
 # AML_DATA_DIR/filters/'rom_DB_noext'_render.json -> machine_render = {}
 # AML_DATA_DIR/filters/'rom_DB_noext'_assets.json -> asset_dic = {}
 #
-def filter_build_custom_filters(PATHS, settings, control_dic,
-    filter_list, main_filter_dic, machines_dic, render_dic, assets_dic):
+def filter_build_custom_filters(cfg, db_dic_in, filter_list, main_filter_dic):
+    control_dic = db_dic_in['control_dic']
+    machines_dic = db_dic_in['machines']
+    renderdb_dic = db_dic_in['renderdb']
+    assetdb_dic = db_dic_in['assetdb']
+
     # --- Clean 'filters' directory JSON files ---
-    log_info('filter_build_custom_filters() Cleaning dir "{}"'.format(PATHS.FILTERS_DB_DIR.getPath()))
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Cleaning old filter JSON files ...')
-    pDialog.update(0)
-    file_list = os.listdir(PATHS.FILTERS_DB_DIR.getPath())
+    log_info('filter_build_custom_filters() Cleaning dir "{}"'.format(cfg.FILTERS_DB_DIR.getPath()))
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Listing filter JSON files...')
+    file_list = os.listdir(cfg.FILTERS_DB_DIR.getPath())
     num_files = len(file_list)
     if num_files > 1:
         log_info('Found {} files'.format(num_files))
         processed_items = 0
+        pDialog.resetProgress('Cleaning filter JSON files...', num_files)
         for file in file_list:
-            pDialog.update((processed_items*100) // num_files)
+            pDialog.updateProgress(processed_items)
             if file.endswith('.json'):
-                full_path = os.path.join(PATHS.FILTERS_DB_DIR.getPath(), file)
+                full_path = os.path.join(cfg.FILTERS_DB_DIR.getPath(), file)
                 # log_debug('UNLINK "{}"'.format(full_path))
                 os.unlink(full_path)
             processed_items += 1
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Report header ---
     r_full = [
@@ -1511,19 +1512,16 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
     ]
 
     # --- Traverse list of filters, build filter index and compute filter list ---
-    pdialog_line1 = 'Building custom MAME filters'
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
     Filters_index_dic = {}
-    total_items = len(filter_list)
     processed_items = 0
+    diag_t = 'Building custom MAME filters...'
+    pDialog.startProgress(diag_t, len(filter_list))
     for f_definition in filter_list:
         # --- Initialise ---
         f_name = f_definition['name']
         log_debug('filter_build_custom_filters() Processing filter "{}"'.format(f_name))
         # log_debug('f_definition = {}'.format(unicode(f_definition)))
-
-        # --- Initial progress ---
-        pDialog.update((processed_items*100) // total_items, pdialog_line1, 'Filter "{}" ...'.format(f_name))
+        pDialog.updateProgressInc('{}\nFilter "{}"'.format(diag_t, f_name))
 
         # --- Do filtering ---
         filtered_machine_dic = filter_mame_Default(main_filter_dic)
@@ -1542,9 +1540,9 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         filtered_render_dic = {}
         filtered_assets_dic = {}
         for m_name in filtered_machine_dic:
-            filtered_render_dic[m_name] = render_dic[m_name]
-            filtered_assets_dic[m_name] = assets_dic[m_name]
-        rom_DB_noext = hashlib.md5(f_name).hexdigest()
+            filtered_render_dic[m_name] = renderdb_dic[m_name]
+            filtered_assets_dic[m_name] = assetdb_dic[m_name]
+        rom_DB_noext = hashlib.md5(f_name.encode('utf-8')).hexdigest()
         this_filter_idx_dic = {
             'display_name' : f_definition['name'],
             'num_machines' : len(filtered_render_dic),
@@ -1553,19 +1551,17 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
             'rom_DB_noext' : rom_DB_noext
         }
         Filters_index_dic[f_name] = this_filter_idx_dic
+        processed_items += 1
 
         # --- Save filter database ---
         writing_ticks_start = time.time()
-        output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_render.json')
-        fs_write_JSON_file(output_FN.getPath(), filtered_render_dic, verbose = False)
-        output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
-        fs_write_JSON_file(output_FN.getPath(), filtered_assets_dic, verbose = False)
+        output_FN = cfg.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_render.json')
+        utils_write_JSON_file(output_FN.getPath(), filtered_render_dic, verbose = False)
+        output_FN = cfg.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
+        utils_write_JSON_file(output_FN.getPath(), filtered_assets_dic, verbose = False)
         writing_ticks_end = time.time()
         writing_time = writing_ticks_end - writing_ticks_start
         log_debug('JSON writing time {:.4f} s'.format(writing_time))
-
-        # --- Final progress ---
-        processed_items += 1
 
         # --- Report ---
         r_full.append('Filter "{}"'.format(f_name))
@@ -1573,21 +1569,19 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         r_full.append('')
 
     # --- Save custom filter index ---
-    fs_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
-    pDialog.update(100, pdialog_line1, ' ')
-    pDialog.close()
+    utils_write_JSON_file(cfg.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
+    pDialog.endProgress()
 
     # --- Update timestamp ---
-    change_control_dic(control_dic, 't_Custom_Filter_build', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    db_safe_edit(control_dic, 't_Custom_Filter_build', time.time())
+    utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     # --- Write MAME scanner reports ---
-    log_info('Writing report "{}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()))
-    with open(PATHS.REPORT_CF_DB_BUILD_PATH.getPath(), 'w') as file:
-        report_slist = [
-            '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
-            'File "{}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()),
-            '',
-        ]
-        report_slist.extend(r_full)
-        file.write('\n'.join(report_slist).encode('utf-8'))
+    log_info('Writing report "{}"'.format(cfg.REPORT_CF_DB_BUILD_PATH.getPath()))
+    report_slist = [
+        '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
+        'File "{}"'.format(cfg.REPORT_CF_DB_BUILD_PATH.getPath()),
+        '',
+    ]
+    report_slist.extend(r_full)
+    utils_write_slist_to_file(cfg.REPORT_CF_DB_BUILD_PATH.getPath(), report_slist)
