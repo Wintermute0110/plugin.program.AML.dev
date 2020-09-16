@@ -116,7 +116,7 @@ class SP_operator_has_token:
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing HAS token')
         literal_str = self.first.exec_token()
-        if type(literal_str) is not str:
+        if type(literal_str) is not unicode:
             raise SyntaxError("HAS token exec; expected string, got {}".format(type(literal_str)))
         ret = True if SP_parser_search_string.find(literal_str) >= 0 else False
         if debug_SP_parser: log_debug('Token HAS returns {} "{}"'.format(type(ret), unicode(ret)))
@@ -133,7 +133,7 @@ class SP_operator_lacks_token:
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing LACKS token')
         literal_str = self.first.exec_token()
-        if type(literal_str) is not str:
+        if type(literal_str) is not unicode:
             raise SyntaxError("LACKS token exec; expected string, got {}".format(type(literal_str)))
         ret = False if SP_parser_search_string.find(literal_str) >= 0 else True
         if debug_SP_parser: log_debug('Token LACKS returns {} "{}"'.format(type(ret), unicode(ret)))
@@ -319,7 +319,7 @@ class LSP_operator_has_token:
     def exec_token(self):
         if debug_LSP_parser: log_debug('Executing HAS token')
         literal_str = self.first.exec_token()
-        if type(literal_str) is not str:
+        if type(literal_str) is not unicode:
             raise SyntaxError("HAS token exec; expected string, got {}".format(type(literal_str)))
         ret = literal_str in LSP_parser_search_list
         if debug_LSP_parser: log_debug('Token HAS returns {} "{}"'.format(type(ret), unicode(ret)))
@@ -336,7 +336,7 @@ class LSP_operator_lacks_token:
     def exec_token(self):
         if debug_LSP_parser: log_debug('Executing LACKS token')
         literal_str = self.first.exec_token()
-        if type(literal_str) is not str:
+        if type(literal_str) is not unicode:
             raise SyntaxError("LACKS token exec; expected string, got {}".format(type(literal_str)))
         ret = literal_str not in LSP_parser_search_list
         if debug_LSP_parser: log_debug('Token LACKS returns {} "{}"'.format(type(ret), unicode(ret)))
@@ -1468,12 +1468,12 @@ def filter_custom_filters_load_XML(cfg, db_dic_in, main_filter_dic, sets_dic):
 #
 # filter_index_dic = {
 #     'name' : {
-#         'display_name' : str,
+#         'display_name' : unicode,
 #         'num_machines' : int,
 #         'num_parents' : int,
 #         'order' : int,
-#         'plot' : str,
-#         'rom_DB_noext' : str,
+#         'plot' : unicode,
+#         'rom_DB_noext' : unicode,
 #     }
 # }
 # AML_DATA_DIR/filters/'rom_DB_noext'_render.json -> machine_render = {}

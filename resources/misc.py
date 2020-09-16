@@ -174,14 +174,14 @@ def text_str_dic_max_size(dictionary_list, dic_key, title_str = ''):
 
     return max_str_size
 
-def text_print_padded_left(str, str_max_size):
-    formatted_str = '{}'.format(str)
+def text_print_padded_left(unicode, str_max_size):
+    formatted_str = '{}'.format(unicode)
     padded_str =  formatted_str + ' ' * (str_max_size - len(formatted_str))
 
     return padded_str
 
-def text_print_padded_right(str, str_max_size):
-    formatted_str = '{}'.format(str)
+def text_print_padded_right(unicode, str_max_size):
+    formatted_str = '{}'.format(unicode)
     padded_str = ' ' * (str_max_size - len(formatted_str)) + formatted_str
 
     return padded_str
@@ -428,7 +428,7 @@ def misc_look_for_file(rootPath, filename_noext, file_exts):
 def misc_generate_random_SID():
     t1 = time.time()
     t2 = t1 + random.getrandbits(32)
-    base = hashlib.md5(str(t1 + t2))
+    base = hashlib.md5(unicode(t1 + t2))
     sid = base.hexdigest()
 
     return sid

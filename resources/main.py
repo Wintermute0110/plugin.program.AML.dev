@@ -43,7 +43,12 @@ import copy
 import datetime
 import os
 import subprocess
-import urllib.parse
+try:
+    import urlparse
+    ADDON_RUNNING_PYTHON_2 = True
+except:
+    import urllib.parse
+    ADDON_RUNNING_PYTHON_2 = False
 
 # --- Plugin database indices ---
 # _PATH is a filename | _DIR is a directory
@@ -266,7 +271,7 @@ class Configuration:
 # g_base_url must be a global variable because it is used in the misc_url_*() functions.
 g_base_url = ''
 # Module loading time. This variable is read only (only modified here).
-g_time_str = str(datetime.datetime.now())
+g_time_str = unicode(datetime.datetime.now())
 
 # ---------------------------------------------------------------------------------------------
 # This is the plugin entry point.
@@ -322,7 +327,10 @@ def run_plugin(addon_argv):
     cfg.base_url = addon_argv[0]
     g_base_url = cfg.base_url
     cfg.addon_handle = int(addon_argv[1])
-    args = urllib.parse.parse_qs(addon_argv[2][1:])
+    if ADDON_RUNNING_PYTHON_2:
+        args = urlparse.parse_qs(addon_argv[2][1:])
+    else:
+        args = urllib.parse.parse_qs(addon_argv[2][1:])
     # log_debug('args = {}'.format(args))
     # Interestingly, if plugin is called as type executable then args is empty.
     # However, if plugin is called as type game then Kodi adds the following
@@ -531,100 +539,93 @@ def get_settings(cfg):
     aobj = cfg.__addon__
 
     # --- Main operation ---
-    g_settings['op_mode_raw']    = int(o.getSetting('op_mode_raw'))
-    g_settings['enable_SL']      = True if o.getSetting('enable_SL') == 'true' else False
-    g_settings['mame_prog']      = o.getSetting('mame_prog').decode('utf-8')
-    g_settings['SL_hash_path'] = o.getSetting('SL_hash_path').decode('utf-8')
-
-    g_settings['retroarch_prog'] = o.getSetting('retroarch_prog').decode('utf-8')
-    g_settings['libretro_dir']   = o.getSetting('libretro_dir').decode('utf-8')
-    g_settings['xml_2003_path']  = o.getSetting('xml_2003_path').decode('utf-8')
+    settings['op_mode_raw'] = int(aobj.getSetting('op_mode_raw'))
+    settings['rom_path'] = aobj.getSetting('rom_path').decode('utf-8')
+    # Vanilla MAME settings.
+    settings['enable_SL'] = True if aobj.getSetting('enable_SL') == 'true' else False
+    settings['mame_prog'] = aobj.getSetting('mame_prog').decode('utf-8')
+    settings['SL_hash_path'] = aobj.getSetting('SL_hash_path').decode('utf-8')
+    # MAME 2003 Plus settings.
+    settings['retroarch_prog'] = aobj.getSetting('retroarch_prog').decode('utf-8')
+    settings['libretro_dir'] = aobj.getSetting('libretro_dir').decode('utf-8')
+    settings['xml_2003_path'] = aobj.getSetting('xml_2003_path').decode('utf-8')
 
     # --- Optional paths ---
-    g_settings['rom_path']     = o.getSetting('rom_path').decode('utf-8')
-    g_settings['assets_path']  = o.getSetting('assets_path').decode('utf-8')
-    g_settings['dats_path']    = o.getSetting('dats_path').decode('utf-8')
-    g_settings['chd_path']     = o.getSetting('chd_path').decode('utf-8')
-    g_settings['samples_path'] = o.getSetting('samples_path').decode('utf-8')
-    g_settings['SL_rom_path']  = o.getSetting('SL_rom_path').decode('utf-8')
-    g_settings['SL_chd_path']  = o.getSetting('SL_chd_path').decode('utf-8')
+    settings['assets_path'] = aobj.getSetting('assets_path').decode('utf-8')
+    settings['dats_path'] = aobj.getSetting('dats_path').decode('utf-8')
+    settings['chd_path'] = aobj.getSetting('chd_path').decode('utf-8')
+    settings['samples_path'] = aobj.getSetting('samples_path').decode('utf-8')
+    settings['SL_rom_path'] = aobj.getSetting('SL_rom_path').decode('utf-8')
+    settings['SL_chd_path'] = aobj.getSetting('SL_chd_path').decode('utf-8')
 
     # --- ROM sets ---
-    g_settings['mame_rom_set'] = int(o.getSetting('mame_rom_set'))
-    g_settings['mame_chd_set'] = int(o.getSetting('mame_chd_set'))
-    g_settings['SL_rom_set'] = int(o.getSetting('SL_rom_set'))
-    g_settings['SL_chd_set'] = int(o.getSetting('SL_chd_set'))
+    settings['mame_rom_set'] = int(aobj.getSetting('mame_rom_set'))
+    settings['mame_chd_set'] = int(aobj.getSetting('mame_chd_set'))
+    settings['SL_rom_set'] = int(aobj.getSetting('SL_rom_set'))
+    settings['SL_chd_set'] = int(aobj.getSetting('SL_chd_set'))
 
     # Misc separator
-    g_settings['filter_XML'] = o.getSetting('filter_XML').decode('utf-8')
-    g_settings['generate_history_infolabel'] = True if o.getSetting('generate_history_infolabel') == 'true' else False
+    settings['filter_XML'] = aobj.getSetting('filter_XML').decode('utf-8')
+    settings['generate_history_infolabel'] = True if aobj.getSetting('generate_history_infolabel') == 'true' else False
 
     # --- Display I ---
-    g_settings['display_launcher_notify']    = True if o.getSetting('display_launcher_notify') == 'true' else False
-    g_settings['mame_view_mode']             = int(o.getSetting('mame_view_mode'))
-    g_settings['sl_view_mode']               = int(o.getSetting('sl_view_mode'))
-    g_settings['display_hide_Mature']        = True if o.getSetting('display_hide_Mature') == 'true' else False
-    g_settings['display_hide_BIOS']          = True if o.getSetting('display_hide_BIOS') == 'true' else False
-    g_settings['display_hide_imperfect']     = True if o.getSetting('display_hide_imperfect') == 'true' else False
-    g_settings['display_hide_nonworking']    = True if o.getSetting('display_hide_nonworking') == 'true' else False
-    g_settings['display_rom_available']      = True if o.getSetting('display_rom_available') == 'true' else False
-    g_settings['display_chd_available']      = True if o.getSetting('display_chd_available') == 'true' else False
-    g_settings['display_SL_items_available'] = True if o.getSetting('display_SL_items_available') == 'true' else False
-    g_settings['display_MAME_flags']         = True if o.getSetting('display_MAME_flags') == 'true' else False
-    g_settings['display_SL_flags']           = True if o.getSetting('display_SL_flags') == 'true' else False
+    settings['display_launcher_notify'] = True if aobj.getSetting('display_launcher_notify') == 'true' else False
+    settings['mame_view_mode'] = int(aobj.getSetting('mame_view_mode'))
+    settings['sl_view_mode'] = int(aobj.getSetting('sl_view_mode'))
+    settings['display_hide_Mature'] = True if aobj.getSetting('display_hide_Mature') == 'true' else False
+    settings['display_hide_BIOS'] = True if aobj.getSetting('display_hide_BIOS') == 'true' else False
+    settings['display_hide_imperfect'] = True if aobj.getSetting('display_hide_imperfect') == 'true' else False
+    settings['display_hide_nonworking'] = True if aobj.getSetting('display_hide_nonworking') == 'true' else False
+    settings['display_rom_available'] = True if aobj.getSetting('display_rom_available') == 'true' else False
+    settings['display_chd_available'] = True if aobj.getSetting('display_chd_available') == 'true' else False
+    settings['display_SL_items_available'] = True if aobj.getSetting('display_SL_items_available') == 'true' else False
+    settings['display_MAME_flags'] = True if aobj.getSetting('display_MAME_flags') == 'true' else False
+    settings['display_SL_flags'] = True if aobj.getSetting('display_SL_flags') == 'true' else False
 
     # --- Display II ---
-    g_settings['display_main_filters']    = True if o.getSetting('display_main_filters') == 'true' else False
-    g_settings['display_binary_filters']  = True if o.getSetting('display_binary_filters') == 'true' else False
-    g_settings['display_catalog_filters'] = True if o.getSetting('display_catalog_filters') == 'true' else False
-    g_settings['display_DAT_browser']     = True if o.getSetting('display_DAT_browser') == 'true' else False
-    g_settings['display_SL_browser']      = True if o.getSetting('display_SL_browser') == 'true' else False
-    g_settings['display_custom_filters']  = True if o.getSetting('display_custom_filters') == 'true' else False
-    g_settings['display_ROLs']            = True if o.getSetting('display_ROLs') == 'true' else False
-    g_settings['display_MAME_favs']       = True if o.getSetting('display_MAME_favs') == 'true' else False
-    g_settings['display_MAME_most']       = True if o.getSetting('display_MAME_most') == 'true' else False
-    g_settings['display_MAME_recent']     = True if o.getSetting('display_MAME_recent') == 'true' else False
-    g_settings['display_SL_favs']         = True if o.getSetting('display_SL_favs') == 'true' else False
-    g_settings['display_SL_most']         = True if o.getSetting('display_SL_most') == 'true' else False
-    g_settings['display_SL_recent']       = True if o.getSetting('display_SL_recent') == 'true' else False
-    g_settings['display_utilities']       = True if o.getSetting('display_utilities') == 'true' else False
-    g_settings['display_global_reports']  = True if o.getSetting('display_global_reports') == 'true' else False
+    settings['display_main_filters'] = True if aobj.getSetting('display_main_filters') == 'true' else False
+    settings['display_binary_filters'] = True if aobj.getSetting('display_binary_filters') == 'true' else False
+    settings['display_catalog_filters'] = True if aobj.getSetting('display_catalog_filters') == 'true' else False
+    settings['display_DAT_browser'] = True if aobj.getSetting('display_DAT_browser') == 'true' else False
+    settings['display_SL_browser'] = True if aobj.getSetting('display_SL_browser') == 'true' else False
+    settings['display_custom_filters'] = True if aobj.getSetting('display_custom_filters') == 'true' else False
+    settings['display_ROLs'] = True if aobj.getSetting('display_ROLs') == 'true' else False
+    settings['display_MAME_favs'] = True if aobj.getSetting('display_MAME_favs') == 'true' else False
+    settings['display_MAME_most'] = True if aobj.getSetting('display_MAME_most') == 'true' else False
+    settings['display_MAME_recent'] = True if aobj.getSetting('display_MAME_recent') == 'true' else False
+    settings['display_SL_favs'] = True if aobj.getSetting('display_SL_favs') == 'true' else False
+    settings['display_SL_most'] = True if aobj.getSetting('display_SL_most') == 'true' else False
+    settings['display_SL_recent'] = True if aobj.getSetting('display_SL_recent') == 'true' else False
+    settings['display_utilities'] = True if aobj.getSetting('display_utilities') == 'true' else False
+    settings['display_global_reports'] = True if aobj.getSetting('display_global_reports') == 'true' else False
 
     # --- Artwork / Assets ---
-    g_settings['display_hide_trailers']    = True if o.getSetting('display_hide_trailers') == 'true' else False
-    g_settings['artwork_mame_icon']        = int(o.getSetting('artwork_mame_icon'))
-    g_settings['artwork_mame_fanart']      = int(o.getSetting('artwork_mame_fanart'))
-    g_settings['artwork_SL_icon']          = int(o.getSetting('artwork_SL_icon'))
-    g_settings['artwork_SL_fanart']        = int(o.getSetting('artwork_SL_fanart'))
+    settings['display_hide_trailers'] = True if aobj.getSetting('display_hide_trailers') == 'true' else False
+    settings['artwork_mame_icon'] = int(aobj.getSetting('artwork_mame_icon'))
+    settings['artwork_mame_fanart'] = int(aobj.getSetting('artwork_mame_fanart'))
+    settings['artwork_SL_icon'] = int(aobj.getSetting('artwork_SL_icon'))
+    settings['artwork_SL_fanart'] = int(aobj.getSetting('artwork_SL_fanart'))
 
     # --- Advanced ---
-    g_settings['media_state_action']             = int(o.getSetting('media_state_action'))
-    g_settings['delay_tempo']                    = int(round(float(o.getSetting('delay_tempo'))))
-    g_settings['suspend_audio_engine']           = True if o.getSetting('suspend_audio_engine') == 'true' else False
-    g_settings['suspend_screensaver'] = True if o.getSetting('suspend_screensaver') == 'true' else False
-    g_settings['toggle_window']                  = True if o.getSetting('toggle_window') == 'true' else False
-    g_settings['log_level']                      = int(o.getSetting('log_level'))
-    g_settings['debug_enable_MAME_render_cache'] = True if o.getSetting('debug_enable_MAME_render_cache') == 'true' else False
-    g_settings['debug_enable_MAME_asset_cache']  = True if o.getSetting('debug_enable_MAME_asset_cache') == 'true' else False
-    g_settings['debug_MAME_item_data']           = True if o.getSetting('debug_MAME_item_data') == 'true' else False
-    g_settings['debug_MAME_ROM_DB_data']         = True if o.getSetting('debug_MAME_ROM_DB_data') == 'true' else False
-    g_settings['debug_MAME_Audit_DB_data']       = True if o.getSetting('debug_MAME_Audit_DB_data') == 'true' else False
-    g_settings['debug_SL_item_data']             = True if o.getSetting('debug_SL_item_data') == 'true' else False
-    g_settings['debug_SL_ROM_DB_data']           = True if o.getSetting('debug_SL_ROM_DB_data') == 'true' else False
-    g_settings['debug_SL_Audit_DB_data']         = True if o.getSetting('debug_SL_Audit_DB_data') == 'true' else False
-
-    # --- Transform settings data ---
-    g_settings['op_mode'] = OP_MODE_LIST[g_settings['op_mode_raw']]
-
-    g_mame_icon   = assets_get_asset_key_MAME_icon(g_settings['artwork_mame_icon'])
-    g_mame_fanart = assets_get_asset_key_MAME_fanart(g_settings['artwork_mame_fanart'])
-    g_SL_icon     = assets_get_asset_key_SL_icon(g_settings['artwork_SL_icon'])
-    g_SL_fanart   = assets_get_asset_key_SL_fanart(g_settings['artwork_SL_fanart'])
+    settings['media_state_action'] = int(aobj.getSetting('media_state_action'))
+    settings['delay_tempo'] = int(round(float(aobj.getSetting('delay_tempo'))))
+    settings['suspend_audio_engine'] = True if aobj.getSetting('suspend_audio_engine') == 'true' else False
+    settings['suspend_screensaver'] = True if aobj.getSetting('suspend_screensaver') == 'true' else False
+    settings['toggle_window'] = True if aobj.getSetting('toggle_window') == 'true' else False
+    settings['log_level'] = int(aobj.getSetting('log_level'))
+    settings['debug_enable_MAME_render_cache'] = True if aobj.getSetting('debug_enable_MAME_render_cache') == 'true' else False
+    settings['debug_enable_MAME_asset_cache'] = True if aobj.getSetting('debug_enable_MAME_asset_cache') == 'true' else False
+    settings['debug_MAME_item_data'] = True if aobj.getSetting('debug_MAME_item_data') == 'true' else False
+    settings['debug_MAME_ROM_DB_data'] = True if aobj.getSetting('debug_MAME_ROM_DB_data') == 'true' else False
+    settings['debug_MAME_Audit_DB_data'] = True if aobj.getSetting('debug_MAME_Audit_DB_data') == 'true' else False
+    settings['debug_SL_item_data'] = True if aobj.getSetting('debug_SL_item_data') == 'true' else False
+    settings['debug_SL_ROM_DB_data'] = True if aobj.getSetting('debug_SL_ROM_DB_data') == 'true' else False
+    settings['debug_SL_Audit_DB_data'] = True if aobj.getSetting('debug_SL_Audit_DB_data') == 'true' else False
 
     # --- Dump settings for DEBUG ---
     # log_debug('Settings dump BEGIN')
     # for key in sorted(settings):
-    #     log_debug('{} --> {:10s} {}'.format(key.rjust(21), str(settings[key]), type(settings[key])))
+    #     log_debug('{} --> {:10s} {}'.format(key.rjust(21), unicode(settings[key]), type(settings[key])))
     # log_debug('Settings dump END')
 
 #
@@ -2209,9 +2210,9 @@ def render_catalog_clone_list(cfg, catalog_name, category_name, parent_name):
 # Returns a list of dictionaries:
 # r_list = [
 #   {
-#     'm_name' : str, 'render_name' : str,
+#     'm_name' : unicode, 'render_name' : unicode,
 #     'info' : {}, 'props' : {}, 'art' : {},
-#     'context' : [], 'URL' ; str
+#     'context' : [], 'URL' ; unicode
 #   }, ...
 # ]
 #
@@ -3492,8 +3493,8 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         romof = machine['romof'] if machine['romof'] else 'None'
         info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
             '[COLOR violet]romof[/COLOR] {}'.format(romof))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
-            '[COLOR skyblue]isDevice[/COLOR] {}'.format(str(machine['isDevice'])))
+        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
+            '[COLOR skyblue]isDevice[/COLOR] {}'.format(unicode(machine['isDevice'])))
         info_text.append('')
 
         # --- Table header ---
@@ -3512,28 +3513,27 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
                 elif not rom['bios'] and     rom['merge']: r_type = 'MROM'
                 elif not rom['bios'] and not rom['merge']: r_type = 'ROM'
                 else:                                      r_type = 'ERROR'
-                table_row = [r_type, str(rom['name']), str(rom['size']),
-                             str(rom['crc']), str(rom['merge']), str(rom['bios'])]
+                table_row = [r_type, unicode(rom['name']), unicode(rom['size']),
+                    unicode(rom['crc']), unicode(rom['merge']), unicode(rom['bios'])]
                 table_str.append(table_row)
 
         # --- Table: device ROMs ---
         if device_roms_list:
             for rom in device_roms_list:
-                table_row = ['DROM', str(rom['name']), str(rom['size']),
-                             str(rom['crc']), str(rom['merge']), str(rom['device_name'])]
+                table_row = ['DROM', unicode(rom['name']), unicode(rom['size']),
+                    unicode(rom['crc']), unicode(rom['merge']), unicode(rom['device_name'])]
                 table_str.append(table_row)
 
         # --- Table: machine CHDs ---
         if roms_dic['disks']:
             for disk in roms_dic['disks']:
-                table_row = ['DISK', str(disk['name']), '',
-                             str(disk['sha1'])[0:8], str(disk['merge']), '']
+                table_row = ['DISK', unicode(disk['name']), '', unicode(disk['sha1'])[0:8], unicode(disk['merge']), '']
                 table_str.append(table_row)
 
         # --- Table: machine Samples ---
         if roms_dic['samples']:
             for sample in roms_dic['samples']:
-                table_row = ['SAM', str(sample['name']), '', '', '', '']
+                table_row = ['SAM', unicode(sample['name']), '', '', '', '']
                 table_str.append(table_row)
 
         # --- Table: BIOSes ---
@@ -3542,7 +3542,7 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
             bios_table_str.append(['right',     'left'])
             bios_table_str.append(['BIOS name', 'Description'])
             for bios in roms_dic['bios']:
-                table_row = [str(bios['name']), str(bios['description'])]
+                table_row = [unicode(bios['name']), unicode(bios['description'])]
                 bios_table_str.append(table_row)
 
         # --- Render text information window ---
@@ -3591,8 +3591,8 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         romof = machine['romof'] if machine['romof'] else 'None'
         info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
             '[COLOR violet]romof[/COLOR] {}'.format(romof))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
-            '[COLOR skyblue]isDevice[/COLOR] {}'.format(str(machine['isDevice'])))
+        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
+            '[COLOR skyblue]isDevice[/COLOR] {}'.format(unicode(machine['isDevice'])))
         info_text.append('')
 
         # --- Table header ---
@@ -3606,13 +3606,13 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         # --- Table rows ---
         for m_rom in rom_list:
             if m_rom['type'] == ROM_TYPE_DISK:
-                sha1_str = str(m_rom['sha1'])[0:8]
-                table_row = [str(m_rom['type']), str(m_rom['name']), '', sha1_str, m_rom['location']]
+                sha1_str = unicode(m_rom['sha1'])[0:8]
+                table_row = [unicode(m_rom['type']), unicode(m_rom['name']), '', sha1_str, m_rom['location']]
             elif m_rom['type'] == ROM_TYPE_SAMPLE:
-                table_row = [str(m_rom['type']), str(m_rom['name']), '', '', str(m_rom['location'])]
+                table_row = [unicode(m_rom['type']), unicode(m_rom['name']), '', '', unicode(m_rom['location'])]
             else:
-                table_row = [str(m_rom['type']), str(m_rom['name']), str(m_rom['size']),
-                             str(m_rom['crc']), str(m_rom['location'])]
+                table_row = [unicode(m_rom['type']), unicode(m_rom['name']), unicode(m_rom['size']),
+                    unicode(m_rom['crc']), unicode(m_rom['location'])]
             table_str.append(table_row)
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
@@ -3664,7 +3664,7 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
                     # Interate ROMs in dataarea
                     for rom_dic in dataarea_dic['roms']:
                         table_row = [part_name, part_interface, 'dataarea', dataarea_name,
-                            rom_dic['name'], str(rom_dic['size']), rom_dic['crc']]
+                            rom_dic['name'], unicode(rom_dic['size']), rom_dic['crc']]
                         table_str.append(table_row)
             if 'diskarea' in part_dic:
                 # Iterate Diskareas
@@ -3716,7 +3716,7 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
                 table_str.append(table_row)
             else:
                 table_row = [rom_dic['type'], # rom_dic['name'],
-                    str(rom_dic['size']), rom_dic['crc'], rom_dic['location']]
+                    unicode(rom_dic['size']), rom_dic['crc'], rom_dic['location']]
                 table_str.append(table_row)
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
@@ -3788,8 +3788,8 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         romof = machine['romof'] if machine['romof'] else 'None'
         info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
             '[COLOR violet]romof[/COLOR] {}'.format(romof))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
-            '[COLOR skyblue]isDevice[/COLOR] {}'.format(str(machine['isDevice'])))
+        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
+            '[COLOR skyblue]isDevice[/COLOR] {}'.format(unicode(machine['isDevice'])))
         info_text.append('')
 
         # --- Table header ---
@@ -3806,11 +3806,11 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
                 table_row = [m_rom['type'], m_rom['name'], '', sha1_srt,
                     m_rom['location'], m_rom['status_colour']]
             elif m_rom['type'] == ROM_TYPE_SAMPLE:
-                table_row = [str(m_rom['type']), str(m_rom['name']), '', '',
+                table_row = [unicode(m_rom['type']), unicode(m_rom['name']), '', '',
                     m_rom['location'], m_rom['status_colour']]
             else:
-                table_row = [str(m_rom['type']), str(m_rom['name']),
-                    str(m_rom['size']), str(m_rom['crc']), m_rom['location'], m_rom['status_colour']]
+                table_row = [unicode(m_rom['type']), unicode(m_rom['name']),
+                    unicode(m_rom['size']), unicode(m_rom['crc']), m_rom['location'], m_rom['status_colour']]
             table_str.append(table_row)
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
@@ -3858,7 +3858,7 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
                 table_str.append(table_row)
             else:
                 table_row = [m_rom['type'], # m_rom['name'],
-                    str(m_rom['size']), m_rom['crc'], m_rom['location'], m_rom['status_colour']]
+                    unicode(m_rom['size']), m_rom['crc'], m_rom['location'], m_rom['status_colour']]
                 table_str.append(table_row)
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
@@ -6796,7 +6796,7 @@ def command_exec_utility(cfg, which_utility):
                         coliding_crc = rom['crc']
                         coliding_sha1 = db_dic['roms_sha1_dic'][coliding_name]
                         table_str.append(
-                            ['Collision', rom_nonmerged_location, str(rom['size']), rom['crc'], sha1])
+                            ['Collision', rom_nonmerged_location, unicode(rom['size']), rom['crc'], sha1])
                         table_str.append(['with', coliding_name, ' ', coliding_crc, coliding_sha1])
                     else:
                         crc_roms_dic[rom['crc']] = rom_nonmerged_location
@@ -6880,7 +6880,7 @@ def command_exec_utility(cfg, which_utility):
                                     coliding_sha1 = roms_sha1_dic[coliding_name]
                                     table_str.append([
                                         'Collision', rom_nonmerged_location,
-                                        str(rom['size']), rom['crc'], sha1
+                                        unicode(rom['size']), rom['crc'], sha1
                                     ])
                                     table_str.append([
                                         'with', coliding_name, ' ',

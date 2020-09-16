@@ -27,7 +27,7 @@
 # only exception to this rule is the module .constants. This module is virtually included
 # by every other addon module.
 #
-# How to report errors on the low-level filesystem functions???
+# How to report errors on the low-level filesystem functions??? See the end of the file.
 
 # --- Be prepared for the future ---
 from __future__ import unicode_literals
@@ -367,7 +367,7 @@ def utils_write_JSON_file_lowmem(json_filename, json_data, verbose = True):
         # --- Chunk by chunk JSON writer ---
         with io.open(json_filename, 'wt', encoding = 'utf-8') as file:
             for chunk in jobj.iterencode(json_data):
-                file.write(str(chunk))
+                file.write(unicode(chunk))
     except OSError:
         kodi_notify('Advanced MAME Launcher',
                     'Cannot write {} file (OSError)'.format(json_filename))
@@ -434,11 +434,11 @@ def utils_file_cache_add_dir(dir_str, verbose = True):
     root_dir_str = dir_FN.getPath()
     # For unicode errors in os.walk() see
     # https://stackoverflow.com/questions/21772271/unicodedecodeerror-when-performing-os-walk
-    for root, dirs, files in os.walk(str(root_dir_str)):
+    for root, dirs, files in os.walk(unicode(root_dir_str)):
         # log_debug('----------')
         # log_debug('root = {}'.format(root))
-        # log_debug('dirs = {}'.format(str(dirs)))
-        # log_debug('files = {}'.format(str(files)))
+        # log_debug('dirs = {}'.format(unicode(dirs)))
+        # log_debug('files = {}'.format(unicode(files)))
         # log_debug('\n')
         for f in files:
             my_file = os.path.join(root, f)
@@ -465,7 +465,7 @@ def utils_file_cache_search(dir_str, filename_noext, file_exts):
     current_cache_set = file_cache[dir_str]
     # if filename_noext == '005':
     #     log_debug('utils_file_cache_search() Searching in "{}"'.format(dir_str))
-    #     log_debug('utils_file_cache_search() current_cache_set "{}"'.format(str(current_cache_set)))
+    #     log_debug('utils_file_cache_search() current_cache_set "{}"'.format(unicode(current_cache_set)))
     for ext in file_exts:
         file_base = filename_noext + '.' + ext
         # log_debug('utils_file_cache_search() file_Base = "{}"'.format(file_base))
@@ -502,51 +502,52 @@ def log_variable(var_name, var):
 def log_debug_KR(str_text):
     if current_log_level < LOG_DEBUG: return
 
-    # if it is bytes we assume it's "utf-8" encoded.
+    # If it is bytes we assume it's "utf-8" encoded.
     # will fail if called with other encodings (latin, etc).
-    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
-                              
+    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
+
     # At this point we are sure str_text is a Unicode string.
-    # Kodi functions require Unicode strings as arguments.
+    # Kodi functions (Python 3) require Unicode strings as arguments.
+    # Kodi functions (Python 2) require UTF-8 encoded bytes as arguments.
     log_text = 'AML DEBUG: ' + str_text
-    xbmc.log(log_text, level = xbmc.LOGNOTICE)
+    xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
 
 def log_verb_KR(str_text):
     if current_log_level < LOG_VERB: return
-    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
+    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
     log_text = 'AML VERB : ' + str_text
-    xbmc.log(log_text, level = xbmc.LOGNOTICE)
+    xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
 
 def log_info_KR(str_text):
     if current_log_level < LOG_INFO: return
-    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
+    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
     log_text = 'AML INFO : ' + str_text
-    xbmc.log(log_text, level = xbmc.LOGNOTICE)
+    xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
 
 def log_warning_KR(str_text):
     if current_log_level < LOG_WARNING: return
-    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
+    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
     log_text = 'AML WARN : ' + str_text
-    xbmc.log(log_text, level = xbmc.LOGWARNING)
+    xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGWARNING)
 
 def log_error_KR(str_text):
     if current_log_level < LOG_ERROR: return
-    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
+    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
     log_text = 'AML ERROR: ' + str_text
-    xbmc.log(log_text, level = xbmc.LOGERROR)
+    xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGERROR)
 
 #
 # Replacement functions when running outside Kodi with the standard Python interpreter.
 #
-def log_debug_Python(str): print(str)
+def log_debug_Python(unicode_str): print(unicode_str)
 
-def log_verb_Python(str): print(str)
+def log_verb_Python(unicode_str): print(unicode_str)
 
-def log_info_Python(str): print(str)
+def log_info_Python(unicode_str): print(unicode_str)
 
-def log_warning_Python(str): print(str)
+def log_warning_Python(unicode_str): print(unicode_str)
 
-def log_error_Python(str): print(str)
+def log_error_Python(unicode_str): print(unicode_str)
 
 # -------------------------------------------------------------------------------------------------
 # Kodi notifications and dialogs
@@ -563,11 +564,23 @@ def kodi_dialog_OK(text, title = 'Advanced MAME Launcher'):
 def kodi_dialog_yesno(text, title = 'Advanced MAME Launcher'):
     return xbmcgui.Dialog().yesno(title, text)
 
+# Returns a directory.
+def kodi_dialog_get_directory(dialog_heading):
+    return xbmcgui.Dialog().browse(0, dialog_heading, '')
+
+def kodi_dialog_get_file(dialog_heading):
+    return xbmcgui.Dialog().browse(1, dialog_heading, '')
+
+def kodi_dialog_get_image(dialog_heading):
+    return xbmcgui.Dialog().browse(2, dialog_heading, '')
+
 # Returns a writable directory.
-# type 3 ShowAndGetWriteableDirectory
-# shares  'files'  list file sources (added through filemanager)
-# shares  'local'  list local drives
-# shares  ''       list local drives and network shares
+# Arg 1: type 3 ShowAndGetWriteableDirectory
+# Arg 2: heading
+# Arg 3: shares
+#     shares  'files'  list file sources (added through filemanager)
+#     shares  'local'  list local drives
+#     shares  ''       list local drives and network shares
 def kodi_dialog_get_wdirectory(dialog_heading):
     return xbmcgui.Dialog().browse(3, dialog_heading, '')
 
@@ -613,11 +626,11 @@ class KodiProgressDialog(object):
         self.step_total = step_total
         self.step_counter = step_counter
         try:
-            self.progress = math.floor((self.step_counter * 100) / self.step_total)
+            self.progress = int(math.floor((self.step_counter * 100) / self.step_total))
         except ZeroDivisionError:
             # Fix case when step_total is 0.
             self.step_total = 0.001
-            self.progress = math.floor((self.step_counter * 100) / self.step_total)
+            self.progress = int(math.floor((self.step_counter * 100) / self.step_total))
         self.dialog_active = True
         self.message = message
         self.progressDialog.create(self.heading, self.message)
@@ -629,11 +642,11 @@ class KodiProgressDialog(object):
         self.step_total = step_total
         self.step_counter = step_counter
         try:
-            self.progress = math.floor((self.step_counter * 100) / self.step_total)
+            self.progress = int(math.floor((self.step_counter * 100) / self.step_total))
         except ZeroDivisionError:
             # Fix case when step_total is 0.
             self.step_total = 0.001
-            self.progress = math.floor((self.step_counter * 100) / self.step_total)
+            self.progress = int(math.floor((self.step_counter * 100) / self.step_total))
         self.message = message
         self.progressDialog.update(self.progress, self.message)
 
@@ -641,11 +654,11 @@ class KodiProgressDialog(object):
     def updateProgress(self, step_counter, message = None):
         if not self.dialog_active: raise TypeError
         self.step_counter = step_counter
-        self.progress = math.floor((self.step_counter * 100) / self.step_total)
+        self.progress = int(math.floor((self.step_counter * 100) / self.step_total))
         if message is None:
             self.progressDialog.update(self.progress)
         else:
-            if type(message) is not str: raise TypeError
+            if type(message) is not unicode: raise TypeError
             self.message = message
             self.progressDialog.update(self.progress, self.message)
 
@@ -653,19 +666,19 @@ class KodiProgressDialog(object):
     # Progress is incremented AFTER dialog is updated.
     def updateProgressInc(self, message = None):
         if not self.dialog_active: raise TypeError
-        self.progress = math.floor((self.step_counter * 100) / self.step_total)
+        self.progress = int(math.floor((self.step_counter * 100) / self.step_total))
         self.step_counter += 1
         if message is None:
             self.progressDialog.update(self.progress)
         else:
-            if type(message) is not str: raise TypeError
+            if type(message) is not unicode: raise TypeError
             self.message = message
             self.progressDialog.update(self.progress, self.message)
 
     # Update dialog message but keep same progress.
     def updateMessage(self, message):
         if not self.dialog_active: raise TypeError
-        if type(message) is not str: raise TypeError
+        if type(message) is not unicode: raise TypeError
         self.message = message
         self.progressDialog.update(self.progress, self.message)
 
