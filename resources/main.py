@@ -1032,24 +1032,28 @@ def set_render_root_data():
             ('Browse the contents of [COLOR orange]history.dat[/COLOR]. Note that '
              'history.dat is also available on the MAME machines and SL items context menu.'),
             misc_url_1_arg('catalog', 'History'),
+            COLOR_MAME_DAT_BROWSER,
         ],
         'MAMEINFO' : [
             'MAMEINFO DAT',
             ('Browse the contents of [COLOR orange]mameinfo.dat[/COLOR]. Note that '
              'mameinfo.dat is also available on the MAME machines context menu.'),
             misc_url_1_arg('catalog', 'MAMEINFO'),
+            COLOR_MAME_DAT_BROWSER,
         ],
         'Gameinit' : [
             'Gameinit DAT',
             ('Browse the contents of [COLOR orange]gameinit.dat[/COLOR]. Note that '
              'gameinit.dat is also available on the MAME machines context menu.'),
             misc_url_1_arg('catalog', 'Gameinit'),
+            COLOR_MAME_DAT_BROWSER,
         ],
         'Command' : [
             'Command DAT',
             ('Browse the contents of [COLOR orange]command.dat[/COLOR]. Note that '
              'command.dat is also available on the MAME machines context menu.'),
             misc_url_1_arg('catalog', 'Command'),
+            COLOR_MAME_DAT_BROWSER,
         ],
     }
 
@@ -1087,8 +1091,7 @@ def set_render_root_data():
         ],
     }
 
-    # Tuple: title, plot, URL, context_menu_list
-    root_special_CM = {
+    root_filters_CM = {
         'Custom_Filters' : [
             '[Custom MAME filters]',
             ('[COLOR orange]Custom filters[/COLOR] allows to generate machine '
@@ -1097,8 +1100,24 @@ def set_render_root_data():
              'complete default set of filters in XML format which can be edited.'),
             misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'),
             [('Setup custom filters', misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS'))],
-            COLOR_MAME_SPECIAL,
+            COLOR_MAME_FILTERS,
         ],
+    }
+
+    root_ROLs_CM = {
+        'ROLs' : [
+            '[AEL Read Only Launchers]',
+            ('[COLOR orange]AEL Read Only Launchers[/COLOR] are special launchers '
+             'exported to AEL. You can select your Favourite MAME machines or setup a custom '
+             'filter to enjoy your MAME games in AEL togheter with other emulators.'),
+            misc_url_1_arg('command', 'SHOW_AEL_ROLS'),
+            [('Setup ROLs', misc_url_1_arg_RunPlugin('command', 'SETUP_AEL_ROLS'))],
+            COLOR_AEL_ROLS,
+        ],
+    }
+
+    # Tuple: title, plot, URL, context_menu_list
+    root_special_CM = {
         'MAME_Favs' : [
             '<Favourite MAME machines>',
             ('Display your [COLOR orange]Favourite MAME machines[/COLOR]. '
@@ -1153,6 +1172,8 @@ def set_render_root_data():
         'root_categories' : root_categories,
         'root_special' : root_special,
         'root_SL' : root_SL,
+        'root_filters_CM' : root_filters_CM,
+        'root_ROLs_CM' : root_ROLs_CM,
         'root_special_CM' : root_special_CM,
     }
 
@@ -1396,14 +1417,10 @@ def render_root_list(cfg):
 
     # --- Special launchers ---
     if cfg.settings['display_custom_filters']:
-        render_root_category_row_custom_CM(cfg, *rd['root_special_CM']['Custom_Filters'])
+        render_root_category_row_custom_CM(cfg, *rd['root_filters_CM']['Custom_Filters'])
 
     if cfg.settings['display_ROLs']:
-        ROLS_plot = ('[COLOR orange]AEL Read Only Launchers[/COLOR] are special launchers '
-            'exported to AEL. You can select your Favourite MAME machines or setup a custom '
-            'filter to enjoy your MAME games in AEL togheter with other emulators.')
-        URL = misc_url_1_arg('command', 'SHOW_AEL_ROLS')
-        render_root_category_row('[AEL Read Only Launchers]', ROLS_plot, URL)
+        render_root_category_row_custom_CM(cfg, *rd['root_ROLs_CM']['ROLs'])
 
     # --- MAME Favourite stuff ---
     if cfg.settings['display_MAME_favs']:
