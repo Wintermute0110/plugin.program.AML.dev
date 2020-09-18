@@ -3508,8 +3508,8 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
         romof = machine['romof'] if machine['romof'] else 'None'
         info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
-            '[COLOR violet]romof[/COLOR] {}'.format(romof))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
+            '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
+            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
             '[COLOR skyblue]isDevice[/COLOR] {}'.format(unicode(machine['isDevice'])))
         info_text.append('')
 
@@ -3606,8 +3606,8 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
         romof = machine['romof'] if machine['romof'] else 'None'
         info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
-            '[COLOR violet]romof[/COLOR] {}'.format(romof))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
+            '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
+            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
             '[COLOR skyblue]isDevice[/COLOR] {}'.format(unicode(machine['isDevice'])))
         info_text.append('')
 
@@ -3658,12 +3658,12 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         rom = roms[SL_ROM]
         rom_db_list = roms_db[SL_ROM]
 
+        cloneof = rom['cloneof'] if rom['cloneof'] else 'None'
         info_text = []
         info_text.append('[COLOR violet]SL_name[/COLOR] {}'.format(SL_name))
         info_text.append('[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM))
         info_text.append('[COLOR violet]description[/COLOR] {}'.format(rom['description']))
-        if rom['cloneof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(rom['cloneof']))
+        info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(cloneof))
         info_text.append('')
 
         table_str = []
@@ -3713,12 +3713,12 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         rom = roms[SL_ROM]
         rom_db_list = rom_audit_db[SL_ROM]
 
+        cloneof = rom['cloneof'] if rom['cloneof'] else 'None'
         info_text = []
         info_text.append('[COLOR violet]SL_name[/COLOR] {}'.format(SL_name))
         info_text.append('[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM))
         info_text.append('[COLOR violet]description[/COLOR] {}'.format(rom['description']))
-        if rom['cloneof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(rom['cloneof']))
+        info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(cloneof))
         info_text.append('')
 
         # table_str = [    ['left', 'left',         'left', 'left',     'left'] ]
@@ -3803,8 +3803,8 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
         romof = machine['romof'] if machine['romof'] else 'None'
         info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
-            '[COLOR violet]romof[/COLOR] {}'.format(romof))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
+            '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
+            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
             '[COLOR skyblue]isDevice[/COLOR] {}'.format(unicode(machine['isDevice'])))
         info_text.append('')
 
@@ -3986,8 +3986,8 @@ def render_fav_machine_row(cfg, m_name, machine, m_assets, location):
     AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_CLONE if machine['cloneof'] else AEL_PCLONE_STAT_VALUE_PARENT
 
     # --- Assets/artwork ---
-    icon_path      = m_assets[g_mame_icon] if m_assets[g_mame_icon] else 'DefaultProgram.png'
-    fanart_path    = m_assets[g_mame_fanart]
+    icon_path      = m_assets[cfg.mame_icon] if m_assets[cfg.mame_icon] else 'DefaultProgram.png'
+    fanart_path    = m_assets[cfg.mame_fanart]
     banner_path    = m_assets['marquee']
     clearlogo_path = m_assets['clearlogo']
     poster_path    = m_assets['3dbox'] if m_assets['3dbox'] else m_assets['flyer']
@@ -4079,7 +4079,7 @@ def command_show_mame_fav(cfg):
     for m_name in fav_machines:
         machine = fav_machines[m_name]
         assets  = machine['assets']
-        render_fav_machine_row(m_name, machine, assets, LOCATION_MAME_FAVS)
+        render_fav_machine_row(cfg, m_name, machine, assets, LOCATION_MAME_FAVS)
     xbmcplugin.endOfDirectory(handle = cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 #
@@ -4217,7 +4217,7 @@ def command_show_mame_most_played(cfg):
     sorted_dic = sorted(most_played_roms_dic, key = lambda x : most_played_roms_dic[x]['launch_count'], reverse = True)
     for machine_name in sorted_dic:
         machine = most_played_roms_dic[machine_name]
-        render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_MOST_PLAYED)
+        render_fav_machine_row(cfg, machine['name'], machine, machine['assets'], LOCATION_MAME_MOST_PLAYED)
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 def command_context_manage_mame_most_played(cfg, machine_name):
@@ -4349,7 +4349,7 @@ def command_show_mame_recently_played(cfg):
 
     set_Kodi_unsorted_method(cfg)
     for machine in recent_roms_list:
-        render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_RECENT_PLAYED)
+        render_fav_machine_row(cfg, machine['name'], machine, machine['assets'], LOCATION_MAME_RECENT_PLAYED)
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 def command_context_manage_mame_recent_played(cfg, machine_name):
@@ -7390,12 +7390,9 @@ def command_exec_report(cfg, which_report):
 # Launch MAME machine. Syntax: $ mame <machine_name> [options]
 # Example: $ mame dino
 #
-def run_machine(machine_name, location):
+def run_machine(cfg, machine_name, location):
     log_info('run_machine() Launching MAME machine  "{}"'.format(machine_name))
     log_info('run_machine() Launching MAME location "{}"'.format(location))
-
-    # --- Get paths ---
-    mame_prog_FN = FileName(cfg.settings['mame_prog'])
 
     # --- Load databases ---
     control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
@@ -7427,7 +7424,7 @@ def run_machine(machine_name, location):
         kodi_dialog_OK('Unknown location = "{}". This is a bug, please report it.'.format(location))
         return
 
-    # >> Check if ROM exist
+    # Check if ROM exist
     if not cfg.settings['rom_path']:
         kodi_dialog_OK('ROM directory not configured.')
         return
@@ -7452,6 +7449,12 @@ def run_machine(machine_name, location):
     BIOS_name = ''
 
     # Launch machine using subprocess module.
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        mame_prog_FN = FileName(cfg.settings['mame_prog'])
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        mame_prog_FN = FileName(cfg.settings['retroarch_prog'])
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
     log_debug('run_machine() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
     log_debug('run_machine() mame_dir     "{}"'.format(mame_dir))
@@ -7486,10 +7489,21 @@ def run_machine(machine_name, location):
     utils_write_JSON_file(cfg.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
 
     # --- Build final arguments to launch MAME ---
-    # arg_list = [mame_prog_FN.getPath(), '-window', machine_name]
-    arg_list = [mame_prog_FN.getPath(), machine_name]
-    if BIOS_name:
-        arg_list.extend(['-bios', BIOS_name])
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        # arg_list = [mame_prog_FN.getPath(), '-window', machine_name]
+        arg_list = [mame_prog_FN.getPath(), machine_name]
+        if BIOS_name: arg_list.extend(['-bios', BIOS_name])
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        if is_windows():
+            core_path = os.path.join(cfg.settings['libretro_dir'], 'mame2003_plus_libretro.dll')
+        elif is_linux():
+            core_path = os.path.join(cfg.settings['libretro_dir'], 'mame2003_plus_libretro.so')
+        else:
+            raise TypeError('Unsupported platform "{}"'.format(cached_sys_platform))
+        machine_path = os.path.join(cfg.settings['rom_path'], machine_name + '.zip')
+        arg_list = [mame_prog_FN.getPath(), '-L', core_path, machine_path]
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
     log_info('arg_list = {}'.format(arg_list))
 
     # --- User notification ---
@@ -7500,12 +7514,12 @@ def run_machine(machine_name, location):
         return
 
     # --- Run MAME ---
-    run_before_execution()
+    run_before_execution(cfg)
     run_process(cfg, arg_list, mame_dir)
-    run_after_execution()
+    run_after_execution(cfg)
     # Refresh list so Most Played and Recently played get updated.
-    kodi_refresh_container()
     log_info('run_machine() Exiting function.')
+    kodi_refresh_container()
 
 #
 # Launch a SL machine. See http://docs.mamedev.org/usingmame/usingmame.html
@@ -7561,7 +7575,7 @@ def run_machine(machine_name, location):
 #
 # Most common cases are A) and C).
 #
-def run_SL_machine(SL_name, SL_ROM_name, location):
+def run_SL_machine(cfg, SL_name, SL_ROM_name, location):
     SL_LAUNCH_WITH_MEDIA = 100
     SL_LAUNCH_NO_MEDIA   = 200
     log_info('run_SL_machine() Launching SL machine (location = {}) ...'.format(location))
@@ -7805,7 +7819,7 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
     kodi_refresh_container()
     log_info('run_SL_machine() Exiting function.')
 
-def run_before_execution():
+def run_before_execution(cfg):
     global g_flag_kodi_was_playing
     global g_flag_kodi_audio_suspended
     global g_flag_kodi_toggle_fullscreen
@@ -7874,7 +7888,7 @@ def run_process(cfg, arg_list, mame_dir):
     log_info('run_process() Function BEGIN...')
 
     # --- Prevent a console window to be shown in Windows. Not working yet! ---
-    if sys.platform == 'win32':
+    if is_windows():
         log_info('run_process() Platform is win32. Creating _info structure')
         _info = subprocess.STARTUPINFO()
         _info.dwFlags = subprocess.STARTF_USESHOWWINDOW
@@ -7890,18 +7904,20 @@ def run_process(cfg, arg_list, mame_dir):
         # SW_SHOWNORMAL = 1
         # MAME console window is shown, MAME graphical window on top, Kodi on bottom.
         _info.wShowWindow = 1
-    else:
+    elif is_linux():
         log_info('run_process() _info is None')
         _info = None
+    else:
+        raise TypeError('Unsupported platform "{}"'.format(cached_sys_platform))
 
     # --- Run MAME ---
     f = io.open(cfg.MAME_OUTPUT_PATH.getPath(), 'wb')
-    p = subprocess.Popen(arg_list, cwd=mame_dir, startupinfo=_info, stdout=f, stderr=subprocess.STDOUT)
+    p = subprocess.Popen(arg_list, cwd = mame_dir, startupinfo = _info, stdout = f, stderr = subprocess.STDOUT)
     p.wait()
     f.close()
     log_debug('run_process() function ENDS')
 
-def run_after_execution():
+def run_after_execution(cfg):
     log_info('run_after_execution() Function BEGIN ...')
 
     # --- Stop Kodi some time ---

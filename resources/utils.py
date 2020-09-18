@@ -564,13 +564,13 @@ def kodi_dialog_yesno(text, title = 'Advanced MAME Launcher'):
 
 # Returns a directory.
 def kodi_dialog_get_directory(dialog_heading):
-    return xbmcgui.Dialog().browse(0, dialog_heading, '')
+    return xbmcgui.Dialog().browse(0, dialog_heading, '').decode('utf-8')
 
 def kodi_dialog_get_file(dialog_heading):
-    return xbmcgui.Dialog().browse(1, dialog_heading, '')
+    return xbmcgui.Dialog().browse(1, dialog_heading, '').decode('utf-8')
 
 def kodi_dialog_get_image(dialog_heading):
-    return xbmcgui.Dialog().browse(2, dialog_heading, '')
+    return xbmcgui.Dialog().browse(2, dialog_heading, '').decode('utf-8')
 
 # Returns a writable directory.
 # Arg 1: type 3 ShowAndGetWriteableDirectory
@@ -580,7 +580,7 @@ def kodi_dialog_get_image(dialog_heading):
 #     shares  'local'  list local drives
 #     shares  ''       list local drives and network shares
 def kodi_dialog_get_wdirectory(dialog_heading):
-    return xbmcgui.Dialog().browse(3, dialog_heading, '')
+    return xbmcgui.Dialog().browse(3, dialog_heading, '').decode('utf-8')
 
 # Displays a small box in the bottom right corner
 def kodi_notify(text, title = 'Advanced MAME Launcher', time = 5000):
