@@ -24,6 +24,7 @@ from __future__ import division
 
 # --- Python standard library ---
 import re
+import time
 
 # -------------------------------------------------------------------------------------------------
 # Strings and text functions.
