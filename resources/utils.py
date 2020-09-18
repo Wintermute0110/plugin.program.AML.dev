@@ -309,10 +309,8 @@ def utils_load_JSON_file_list(json_filename, verbose = True):
 
     return data_list
 
-#
 # This consumes a lot of memory but it is fast.
 # See https://stackoverflow.com/questions/24239613/memoryerror-using-json-dumps
-#
 def utils_write_JSON_file(json_filename, json_data, verbose = True):
     l_start = time.time()
     if verbose:
@@ -635,6 +633,9 @@ class KodiProgressDialog(object):
         self.message = message
         self.progressDialog.create(self.heading, self.message)
         self.progressDialog.update(self.progress)
+        # Workaround for Kodi Leia
+        self.progressDialog.update(self.progress, ' ', ' ', ' ')
+        self.progressDialog.update(self.progress, self.message)
 
     # Changes message and resets progress.
     def resetProgress(self, message, step_total = 100, step_counter = 0):
@@ -661,6 +662,9 @@ class KodiProgressDialog(object):
             if type(message) is not unicode: raise TypeError
             self.message = message
             self.progressDialog.update(self.progress, self.message)
+            # Workaround for Kodi Leia
+            self.progressDialog.update(self.progress, ' ', ' ', ' ')
+            self.progressDialog.update(self.progress, self.message)
 
     # Update progress, optionally update message as well, and autoincrements.
     # Progress is incremented AFTER dialog is updated.
@@ -673,6 +677,9 @@ class KodiProgressDialog(object):
         else:
             if type(message) is not unicode: raise TypeError
             self.message = message
+            self.progressDialog.update(self.progress, self.message)
+            # Workaround for Kodi Leia
+            self.progressDialog.update(self.progress, ' ', ' ', ' ')
             self.progressDialog.update(self.progress, self.message)
 
     # Update dialog message but keep same progress.
@@ -802,6 +809,22 @@ def kodi_display_text_window_mono(window_title, info_text):
 # Displays a text window with a proportional font (default).
 def kodi_display_text_window(window_title, info_text):
     xbmcgui.Dialog().textviewer(window_title, info_text)
+
+# -------------------------------------------------------------------------------------------------
+# Astraction layer for settings to easy the Leia-Matrix transition.
+# Settings are only read once on every execution and they are not performance critical.
+# -------------------------------------------------------------------------------------------------
+def kodi_get_int_setting(cfg, setting_str):
+    return int(cfg.__addon__.getSetting(setting_str))
+
+def kodi_get_float_setting_as_int(cfg, setting_str):
+    return int(round(float(cfg.__addon__.getSetting(setting_str))))
+
+def kodi_get_bool_setting(cfg, setting_str):
+    return True if cfg.__addon__.getSetting(setting_str) == 'true' else False
+
+def kodi_get_str_setting(cfg, setting_str):
+    return cfg.__addon__.getSetting(setting_str).decode('utf-8')
 
 # -------------------------------------------------------------------------------------------------
 # Determine Kodi version and create some constants to allow version-dependent code.

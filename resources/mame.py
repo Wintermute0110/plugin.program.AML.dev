@@ -4191,7 +4191,8 @@ def mame_build_MAME_main_database(cfg, st_dic):
     # grab only the information we want and discard the rest.
     # See [1] http://effbot.org/zone/element-iterparse.htm
     log_info('Loading XML "{}"'.format(MAME_XML_path.getPath()))
-    xml_iter = ET.iterparse(MAME_XML_path.getPath(), events = ("start", "end"))
+    xml_fobj = io.open(MAME_XML_path.getPath(), 'rt', encoding = 'utf-8')
+    xml_iter = ET.iterparse(xml_fobj, events = ("start", "end"))
     event, root = next(xml_iter)
     if cfg.settings['op_mode'] == OP_MODE_VANILLA:
         mame_version_str = root.attrib['build']
@@ -4581,6 +4582,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
             # log_debug('total_machines = {}'.format(total_machines))
         # Stop after STOP_AFTER_MACHINES machines have been processed for debug.
         if processed_machines >= STOP_AFTER_MACHINES: break
+    xml_fobj.close()
     pDialog.endProgress()
     log_info('Processed {:,} MAME XML events'.format(num_iteration))
     log_info('Processed machines {:,} ({:,} parents, {:,} clones)'.format(

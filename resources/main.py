@@ -536,91 +536,90 @@ def run_plugin(addon_argv):
 # Get Addon Settings. log_*() functions cannot be used here during normal operation.
 def get_settings(cfg):
     settings = cfg.settings
-    aobj = cfg.__addon__
 
     # --- Main operation ---
-    settings['op_mode_raw'] = int(aobj.getSetting('op_mode_raw'))
-    settings['rom_path'] = aobj.getSetting('rom_path').decode('utf-8')
+    settings['op_mode_raw'] = kodi_get_int_setting(cfg, 'op_mode_raw')
+    settings['rom_path'] = kodi_get_str_setting(cfg, 'rom_path')
     # Vanilla MAME settings.
-    settings['enable_SL'] = True if aobj.getSetting('enable_SL') == 'true' else False
-    settings['mame_prog'] = aobj.getSetting('mame_prog').decode('utf-8')
-    settings['SL_hash_path'] = aobj.getSetting('SL_hash_path').decode('utf-8')
+    settings['enable_SL'] = kodi_get_bool_setting(cfg, 'enable_SL')
+    settings['mame_prog'] = kodi_get_str_setting(cfg, 'mame_prog')
+    settings['SL_hash_path'] = kodi_get_str_setting(cfg, 'SL_hash_path')
     # MAME 2003 Plus settings.
-    settings['retroarch_prog'] = aobj.getSetting('retroarch_prog').decode('utf-8')
-    settings['libretro_dir'] = aobj.getSetting('libretro_dir').decode('utf-8')
-    settings['xml_2003_path'] = aobj.getSetting('xml_2003_path').decode('utf-8')
+    settings['retroarch_prog'] = kodi_get_str_setting(cfg, 'retroarch_prog')
+    settings['libretro_dir'] = kodi_get_str_setting(cfg, 'libretro_dir')
+    settings['xml_2003_path'] = kodi_get_str_setting(cfg, 'xml_2003_path')
 
     # --- Optional paths ---
-    settings['assets_path'] = aobj.getSetting('assets_path').decode('utf-8')
-    settings['dats_path'] = aobj.getSetting('dats_path').decode('utf-8')
-    settings['chd_path'] = aobj.getSetting('chd_path').decode('utf-8')
-    settings['samples_path'] = aobj.getSetting('samples_path').decode('utf-8')
-    settings['SL_rom_path'] = aobj.getSetting('SL_rom_path').decode('utf-8')
-    settings['SL_chd_path'] = aobj.getSetting('SL_chd_path').decode('utf-8')
+    settings['assets_path'] = kodi_get_str_setting(cfg, 'assets_path')
+    settings['dats_path'] = kodi_get_str_setting(cfg, 'dats_path')
+    settings['chd_path'] = kodi_get_str_setting(cfg, 'chd_path')
+    settings['samples_path'] = kodi_get_str_setting(cfg, 'samples_path')
+    settings['SL_rom_path'] = kodi_get_str_setting(cfg, 'SL_rom_path')
+    settings['SL_chd_path'] = kodi_get_str_setting(cfg, 'SL_chd_path')
 
     # --- ROM sets ---
-    settings['mame_rom_set'] = int(aobj.getSetting('mame_rom_set'))
-    settings['mame_chd_set'] = int(aobj.getSetting('mame_chd_set'))
-    settings['SL_rom_set'] = int(aobj.getSetting('SL_rom_set'))
-    settings['SL_chd_set'] = int(aobj.getSetting('SL_chd_set'))
+    settings['mame_rom_set'] = kodi_get_int_setting(cfg, 'mame_rom_set')
+    settings['mame_chd_set'] = kodi_get_int_setting(cfg, 'mame_chd_set')
+    settings['SL_rom_set'] = kodi_get_int_setting(cfg, 'SL_rom_set')
+    settings['SL_chd_set'] = kodi_get_int_setting(cfg, 'SL_chd_set')
 
     # Misc separator
-    settings['filter_XML'] = aobj.getSetting('filter_XML').decode('utf-8')
-    settings['generate_history_infolabel'] = True if aobj.getSetting('generate_history_infolabel') == 'true' else False
+    settings['filter_XML'] = kodi_get_str_setting(cfg, 'filter_XML')
+    settings['generate_history_infolabel'] = kodi_get_bool_setting(cfg, 'generate_history_infolabel')
 
     # --- Display I ---
-    settings['display_launcher_notify'] = True if aobj.getSetting('display_launcher_notify') == 'true' else False
-    settings['mame_view_mode'] = int(aobj.getSetting('mame_view_mode'))
-    settings['sl_view_mode'] = int(aobj.getSetting('sl_view_mode'))
-    settings['display_hide_Mature'] = True if aobj.getSetting('display_hide_Mature') == 'true' else False
-    settings['display_hide_BIOS'] = True if aobj.getSetting('display_hide_BIOS') == 'true' else False
-    settings['display_hide_imperfect'] = True if aobj.getSetting('display_hide_imperfect') == 'true' else False
-    settings['display_hide_nonworking'] = True if aobj.getSetting('display_hide_nonworking') == 'true' else False
-    settings['display_rom_available'] = True if aobj.getSetting('display_rom_available') == 'true' else False
-    settings['display_chd_available'] = True if aobj.getSetting('display_chd_available') == 'true' else False
-    settings['display_SL_items_available'] = True if aobj.getSetting('display_SL_items_available') == 'true' else False
-    settings['display_MAME_flags'] = True if aobj.getSetting('display_MAME_flags') == 'true' else False
-    settings['display_SL_flags'] = True if aobj.getSetting('display_SL_flags') == 'true' else False
+    settings['display_launcher_notify'] = kodi_get_bool_setting(cfg, 'display_launcher_notify')
+    settings['mame_view_mode'] = kodi_get_int_setting(cfg, 'mame_view_mode')
+    settings['sl_view_mode'] = kodi_get_int_setting(cfg, 'sl_view_mode')
+    settings['display_hide_Mature'] = kodi_get_bool_setting(cfg, 'display_hide_Mature')
+    settings['display_hide_BIOS'] = kodi_get_bool_setting(cfg, 'display_hide_BIOS')
+    settings['display_hide_imperfect'] = kodi_get_bool_setting(cfg, 'display_hide_imperfect')
+    settings['display_hide_nonworking'] = kodi_get_bool_setting(cfg, 'display_hide_nonworking')
+    settings['display_rom_available'] = kodi_get_bool_setting(cfg, 'display_rom_available')
+    settings['display_chd_available'] = kodi_get_bool_setting(cfg, 'display_chd_available')
+    settings['display_SL_items_available'] = kodi_get_bool_setting(cfg, 'display_SL_items_available')
+    settings['display_MAME_flags'] = kodi_get_bool_setting(cfg, 'display_MAME_flags')
+    settings['display_SL_flags'] = kodi_get_bool_setting(cfg, 'display_SL_flags')
 
     # --- Display II ---
-    settings['display_main_filters'] = True if aobj.getSetting('display_main_filters') == 'true' else False
-    settings['display_binary_filters'] = True if aobj.getSetting('display_binary_filters') == 'true' else False
-    settings['display_catalog_filters'] = True if aobj.getSetting('display_catalog_filters') == 'true' else False
-    settings['display_DAT_browser'] = True if aobj.getSetting('display_DAT_browser') == 'true' else False
-    settings['display_SL_browser'] = True if aobj.getSetting('display_SL_browser') == 'true' else False
-    settings['display_custom_filters'] = True if aobj.getSetting('display_custom_filters') == 'true' else False
-    settings['display_ROLs'] = True if aobj.getSetting('display_ROLs') == 'true' else False
-    settings['display_MAME_favs'] = True if aobj.getSetting('display_MAME_favs') == 'true' else False
-    settings['display_MAME_most'] = True if aobj.getSetting('display_MAME_most') == 'true' else False
-    settings['display_MAME_recent'] = True if aobj.getSetting('display_MAME_recent') == 'true' else False
-    settings['display_SL_favs'] = True if aobj.getSetting('display_SL_favs') == 'true' else False
-    settings['display_SL_most'] = True if aobj.getSetting('display_SL_most') == 'true' else False
-    settings['display_SL_recent'] = True if aobj.getSetting('display_SL_recent') == 'true' else False
-    settings['display_utilities'] = True if aobj.getSetting('display_utilities') == 'true' else False
-    settings['display_global_reports'] = True if aobj.getSetting('display_global_reports') == 'true' else False
+    settings['display_main_filters'] = kodi_get_bool_setting(cfg, 'display_main_filters')
+    settings['display_binary_filters'] = kodi_get_bool_setting(cfg, 'display_binary_filters')
+    settings['display_catalog_filters'] = kodi_get_bool_setting(cfg, 'display_catalog_filters')
+    settings['display_DAT_browser'] = kodi_get_bool_setting(cfg, 'display_DAT_browser')
+    settings['display_SL_browser'] = kodi_get_bool_setting(cfg, 'display_SL_browser')
+    settings['display_custom_filters'] = kodi_get_bool_setting(cfg, 'display_custom_filters')
+    settings['display_ROLs'] = kodi_get_bool_setting(cfg, 'display_ROLs')
+    settings['display_MAME_favs'] = kodi_get_bool_setting(cfg, 'display_MAME_favs')
+    settings['display_MAME_most'] = kodi_get_bool_setting(cfg, 'display_MAME_most')
+    settings['display_MAME_recent'] = kodi_get_bool_setting(cfg, 'display_MAME_recent')
+    settings['display_SL_favs'] = kodi_get_bool_setting(cfg, 'display_SL_favs')
+    settings['display_SL_most'] = kodi_get_bool_setting(cfg, 'display_SL_most')
+    settings['display_SL_recent'] = kodi_get_bool_setting(cfg, 'display_SL_recent')
+    settings['display_utilities'] = kodi_get_bool_setting(cfg, 'display_utilities')
+    settings['display_global_reports'] = kodi_get_bool_setting(cfg, 'display_global_reports')
 
     # --- Artwork / Assets ---
-    settings['display_hide_trailers'] = True if aobj.getSetting('display_hide_trailers') == 'true' else False
-    settings['artwork_mame_icon'] = int(aobj.getSetting('artwork_mame_icon'))
-    settings['artwork_mame_fanart'] = int(aobj.getSetting('artwork_mame_fanart'))
-    settings['artwork_SL_icon'] = int(aobj.getSetting('artwork_SL_icon'))
-    settings['artwork_SL_fanart'] = int(aobj.getSetting('artwork_SL_fanart'))
+    settings['display_hide_trailers'] = kodi_get_bool_setting(cfg, 'display_hide_trailers')
+    settings['artwork_mame_icon'] = kodi_get_int_setting(cfg, 'artwork_mame_icon')
+    settings['artwork_mame_fanart'] = kodi_get_int_setting(cfg, 'artwork_mame_fanart')
+    settings['artwork_SL_icon'] = kodi_get_int_setting(cfg, 'artwork_SL_icon')
+    settings['artwork_SL_fanart'] = kodi_get_int_setting(cfg, 'artwork_SL_fanart')
 
     # --- Advanced ---
-    settings['media_state_action'] = int(aobj.getSetting('media_state_action'))
-    settings['delay_tempo'] = int(round(float(aobj.getSetting('delay_tempo'))))
-    settings['suspend_audio_engine'] = True if aobj.getSetting('suspend_audio_engine') == 'true' else False
-    settings['suspend_screensaver'] = True if aobj.getSetting('suspend_screensaver') == 'true' else False
-    settings['toggle_window'] = True if aobj.getSetting('toggle_window') == 'true' else False
-    settings['log_level'] = int(aobj.getSetting('log_level'))
-    settings['debug_enable_MAME_render_cache'] = True if aobj.getSetting('debug_enable_MAME_render_cache') == 'true' else False
-    settings['debug_enable_MAME_asset_cache'] = True if aobj.getSetting('debug_enable_MAME_asset_cache') == 'true' else False
-    settings['debug_MAME_item_data'] = True if aobj.getSetting('debug_MAME_item_data') == 'true' else False
-    settings['debug_MAME_ROM_DB_data'] = True if aobj.getSetting('debug_MAME_ROM_DB_data') == 'true' else False
-    settings['debug_MAME_Audit_DB_data'] = True if aobj.getSetting('debug_MAME_Audit_DB_data') == 'true' else False
-    settings['debug_SL_item_data'] = True if aobj.getSetting('debug_SL_item_data') == 'true' else False
-    settings['debug_SL_ROM_DB_data'] = True if aobj.getSetting('debug_SL_ROM_DB_data') == 'true' else False
-    settings['debug_SL_Audit_DB_data'] = True if aobj.getSetting('debug_SL_Audit_DB_data') == 'true' else False
+    settings['media_state_action'] = kodi_get_int_setting(cfg, 'media_state_action')
+    settings['delay_tempo'] = kodi_get_float_setting_as_int(cfg, 'delay_tempo')
+    settings['suspend_audio_engine'] = kodi_get_bool_setting(cfg, 'suspend_audio_engine')
+    settings['suspend_screensaver'] = kodi_get_bool_setting(cfg, 'suspend_screensaver')
+    settings['toggle_window'] = kodi_get_bool_setting(cfg, 'toggle_window')
+    settings['log_level'] = kodi_get_int_setting(cfg, 'log_level')
+    settings['debug_enable_MAME_render_cache'] = kodi_get_bool_setting(cfg, 'debug_enable_MAME_render_cache')
+    settings['debug_enable_MAME_asset_cache'] = kodi_get_bool_setting(cfg, 'debug_enable_MAME_asset_cache')
+    settings['debug_MAME_item_data'] = kodi_get_bool_setting(cfg, 'debug_MAME_item_data')
+    settings['debug_MAME_ROM_DB_data'] = kodi_get_bool_setting(cfg, 'debug_MAME_ROM_DB_data')
+    settings['debug_MAME_Audit_DB_data'] = kodi_get_bool_setting(cfg, 'debug_MAME_Audit_DB_data')
+    settings['debug_SL_item_data'] = kodi_get_bool_setting(cfg, 'debug_SL_item_data')
+    settings['debug_SL_ROM_DB_data'] = kodi_get_bool_setting(cfg, 'debug_SL_ROM_DB_data')
+    settings['debug_SL_Audit_DB_data'] = kodi_get_bool_setting(cfg, 'debug_SL_Audit_DB_data')
 
     # --- Dump settings for DEBUG ---
     # log_debug('Settings dump BEGIN')
