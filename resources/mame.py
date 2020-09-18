@@ -5979,8 +5979,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
         if render['isDevice']: continue
         for sl_name in machine['softwarelists']:
             catalog_key = sl_name
-            if catalog_key in SL_names_dic:
-                catalog_key = SL_names_dic[catalog_key]
+            if catalog_key in SL_names_dic: catalog_key = SL_names_dic[catalog_key]
             if catalog_key in catalog_parents:
                 catalog_parents[catalog_key][parent_name] = render['description']
                 catalog_all[catalog_key][parent_name] = render['description']
@@ -5988,6 +5987,13 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
                 catalog_parents[catalog_key] = { parent_name : render['description'] }
                 catalog_all[catalog_key] = { parent_name : render['description'] }
             mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, catalog_all[catalog_key])
+    # Add orphaned Software Lists (SL that do not have an associated machine).
+    for sl_name in SL_names_dic:
+        catalog_key = sl_name
+        if catalog_key in SL_names_dic: catalog_key = SL_names_dic[catalog_key]
+        if catalog_key in catalog_parents: continue
+        catalog_parents[catalog_key] = {}
+        catalog_all[catalog_key] = {}
     mame_cache_index_builder('BySL', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_SL_ALL_PATH.getPath(), catalog_all)

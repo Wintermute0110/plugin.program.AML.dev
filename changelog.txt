@@ -60,7 +60,7 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
 
 [B]Advanced MAME Launcher | version 1.0.0 | xx August 2020[/B]
 
-WIP      [CORE] Port the addon to Kodi Matrix and Python 3.
+FEATURE  [CORE] Port the addon to Kodi Matrix and Python 3.
 
 WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
          Github wiki.
@@ -68,10 +68,13 @@ WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi 
 
 [B]Advanced MAME Launcher | version 0.10.0 | xx August 2020[/B]
 
-WIP      [CORE] Create branch python2 and place series 0.10.x into this branch.
+FEATURE  [CORE] Big code refactoring to prepare Kodi Python API changes.
 
-FEATURE  [FILTERS] Implement filtering options NoMissingROMs, NoMissingCHDs
-         and NoMissingSamples.
+FEATURE  [CORE] Include Software Lists that have no associated MAME machines.
+
+FEATURE  [CORE] Create branch python2 and place series 0.10.x into this branch.
+
+FEATURE  [FILTERS] Implement filtering options NoMissingROMs, NoMissingCHDs and NoMissingSamples.
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=2964109#pid2964109
 
 FEATURE  [CORE] In the Setup Plugin CM, Build Fanarts and 3D boxes: add an option to
