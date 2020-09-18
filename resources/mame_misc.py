@@ -17,6 +17,10 @@
 # This module can be loaded anywhere without creating circular dependencies.
 # Optionally this module can include utils.py to use the log_*() functions.
 
+# --- Be prepared for the future ---
+from __future__ import unicode_literals
+from __future__ import division
+
 # --- AEL packages ---
 
 # --- Python standard library ---

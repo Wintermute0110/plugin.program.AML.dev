@@ -1759,9 +1759,6 @@ def _mame_stat_chd(chd_path):
 # -------------------------------------------------------------------------------------------------
 # Statistic printing
 # -------------------------------------------------------------------------------------------------
-# See https://docs.python.org/2/library/time.html
-def _str_time(secs): return time.strftime('%a %d %b %Y %H:%M:%S', time.localtime(secs))
-
 def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append('[COLOR orange]Machine {} / Render data[/COLOR]'.format(machine_name))
     # Print MAME Favourites special fields
@@ -4191,8 +4188,11 @@ def mame_build_MAME_main_database(cfg, st_dic):
     # grab only the information we want and discard the rest.
     # See [1] http://effbot.org/zone/element-iterparse.htm
     log_info('Loading XML "{}"'.format(MAME_XML_path.getPath()))
-    xml_fobj = io.open(MAME_XML_path.getPath(), 'rt', encoding = 'utf-8')
-    xml_iter = ET.iterparse(xml_fobj, events = ("start", "end"))
+    # Next two lines cause UnicodeEncodeError in Python 2.
+    # xml_fobj = io.open(MAME_XML_path.getPath(), 'rt', encoding = 'utf-8')
+    # xml_iter = ET.iterparse(xml_fobj, events = ('start', 'end'))
+    # This seems to work well in Python 2.
+    xml_iter = ET.iterparse(MAME_XML_path.getPath(), events = ('start', 'end'))
     event, root = next(xml_iter)
     if cfg.settings['op_mode'] == OP_MODE_VANILLA:
         mame_version_str = root.attrib['build']
@@ -4217,8 +4217,8 @@ def mame_build_MAME_main_database(cfg, st_dic):
     num_iteration = 0
     for event, elem in xml_iter:
         # Debug the elements we are iterating from the XML file
-        # print('event "{}"'.format(event))
-        # print('elem.tag "{}" | elem.text "{}" | elem.attrib "{}"'.format(elem.tag, elem.text, unicode(elem.attrib)))
+        # log_debug('event "{}"'.format(event))
+        # log_debug('elem.tag "{}" | elem.text "{}" | elem.attrib "{}"'.format(elem.tag, elem.text, unicode(elem.attrib)))
 
         # <machine> tag start event includes <machine> attributes
         if event == 'start' and (elem.tag == 'machine' or elem.tag == 'game'):
@@ -4582,7 +4582,6 @@ def mame_build_MAME_main_database(cfg, st_dic):
             # log_debug('total_machines = {}'.format(total_machines))
         # Stop after STOP_AFTER_MACHINES machines have been processed for debug.
         if processed_machines >= STOP_AFTER_MACHINES: break
-    xml_fobj.close()
     pDialog.endProgress()
     log_info('Processed {:,} MAME XML events'.format(num_iteration))
     log_info('Processed machines {:,} ({:,} parents, {:,} clones)'.format(
@@ -7830,7 +7829,7 @@ def mame_scan_SL_ROMs(cfg, st_dic, options_dic, SL_dic):
     r_all_list = []
     r_have_list = []
     r_miss_list = []
-    d_text = 'Scanning Sofware Lists ROM ZIPs and CHDs ...'
+    d_text = 'Scanning Sofware Lists ROM ZIPs and CHDs...'
     pDialog.startProgress(d_text, len(SL_index_dic))
     for SL_name in sorted(SL_index_dic):
         pDialog.updateProgressInc('{}\nSoftware List [COLOR orange]{}[/COLOR]'.format(d_text, SL_name))
