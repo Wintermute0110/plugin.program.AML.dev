@@ -318,10 +318,10 @@ def utils_write_JSON_file(json_filename, json_data, verbose = True):
     try:
         with io.open(json_filename, 'wt', encoding = 'utf-8') as file:
             if OPTION_COMPACT_JSON:
-                file.write(json.dumps(json_data, ensure_ascii = False, sort_keys = True))
+                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True)))
             else:
-                file.write(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
-                    indent = 1, separators = (',', ':')))
+                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
+                    indent = 1, separators = (',', ':'))))
     except OSError:
         kodi_notify('Advanced MAME Launcher',
                     'Cannot write {} file (OSError)'.format(json_filename))
@@ -339,8 +339,8 @@ def utils_write_JSON_file_pprint(json_filename, json_data, verbose = True):
         log_debug('utils_write_JSON_file_pprint() "{}"'.format(json_filename))
     try:
         with io.open(json_filename, 'wt', encoding = 'utf-8') as file:
-            file.write(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
-                indent = 1, separators = (', ', ' : ')))
+            file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
+                indent = 1, separators = (', ', ' : '))))
     except OSError:
         kodi_notify('Advanced MAME Launcher',
                     'Cannot write {} file (OSError)'.format(json_filename))
@@ -631,11 +631,9 @@ class KodiProgressDialog(object):
             self.progress = int(math.floor((self.step_counter * 100) / self.step_total))
         self.dialog_active = True
         self.message = message
-        self.progressDialog.create(self.heading, self.message)
+        self.progressDialog.create(self.heading, self.message, ' ', ' ') # Workaround for Kodi Leia
+        # self.progressDialog.create(self.heading, self.message) # Code for Krypton and up.
         self.progressDialog.update(self.progress)
-        # Workaround for Kodi Leia
-        self.progressDialog.update(self.progress, ' ', ' ', ' ')
-        self.progressDialog.update(self.progress, self.message)
 
     # Changes message and resets progress.
     def resetProgress(self, message, step_total = 100, step_counter = 0):
@@ -649,7 +647,8 @@ class KodiProgressDialog(object):
             self.step_total = 0.001
             self.progress = int(math.floor((self.step_counter * 100) / self.step_total))
         self.message = message
-        self.progressDialog.update(self.progress, self.message)
+        self.progressDialog.update(self.progress, self.message, ' ', ' ') # Workaround for Kodi Leia
+        # self.progressDialog.update(self.progress, self.message) # Code for Krypton and up.
 
     # Update progress and optionally update message as well.
     def updateProgress(self, step_counter, message = None):
@@ -661,10 +660,8 @@ class KodiProgressDialog(object):
         else:
             if type(message) is not unicode: raise TypeError
             self.message = message
-            self.progressDialog.update(self.progress, self.message)
-            # Workaround for Kodi Leia
-            self.progressDialog.update(self.progress, ' ', ' ', ' ')
-            self.progressDialog.update(self.progress, self.message)
+            self.progressDialog.update(self.progress, self.message, ' ', ' ') # Workaround for Kodi Leia
+            # self.progressDialog.update(self.progress, self.message) # Code for Krypton and up.
 
     # Update progress, optionally update message as well, and autoincrements.
     # Progress is incremented AFTER dialog is updated.
@@ -677,17 +674,16 @@ class KodiProgressDialog(object):
         else:
             if type(message) is not unicode: raise TypeError
             self.message = message
-            self.progressDialog.update(self.progress, self.message)
-            # Workaround for Kodi Leia
-            self.progressDialog.update(self.progress, ' ', ' ', ' ')
-            self.progressDialog.update(self.progress, self.message)
+            self.progressDialog.update(self.progress, self.message, ' ', ' ') # Workaround for Kodi Leia
+            # self.progressDialog.update(self.progress, self.message) # Code for Krypton and up.
 
     # Update dialog message but keep same progress.
     def updateMessage(self, message):
         if not self.dialog_active: raise TypeError
         if type(message) is not unicode: raise TypeError
         self.message = message
-        self.progressDialog.update(self.progress, self.message)
+        self.progressDialog.update(self.progress, self.message, ' ', ' ') # Workaround for Kodi Leia
+        # self.progressDialog.update(self.progress, self.message) # Code for Krypton and up.
 
     def isCanceled(self):
         # If the user pressed the cancel button before then return it now.
@@ -710,7 +706,8 @@ class KodiProgressDialog(object):
     # and the progress it had when it was closed.
     def reopen(self):
         if self.dialog_active: raise TypeError
-        self.progressDialog.create(self.title, self.message)
+        self.progressDialog.create(self.heading, self.message, ' ', ' ') # Workaround for Kodi Leia
+        # self.progressDialog.create(self.title, self.message) # Code for Krypton and up.
         self.progressDialog.update(self.progress)
         self.dialog_active = True
 
