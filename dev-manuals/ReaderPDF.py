@@ -109,7 +109,7 @@ class PDFReader:
         pdf_bytes_str = self.read_contents()
         if not pdf_bytes_str:
             return []
-        # log_debug('Type of pdf_bytes_str is "{0}"'.format(unicode(type(pdf_bytes_str))))
+        # log_debug('Type of pdf_bytes_str is "{}"'.format(unicode(type(pdf_bytes_str))))
 
         start_fix = 0
         i = 0
@@ -120,20 +120,20 @@ class PDFReader:
             i_stream = pdf_bytes_str.find('stream', i)
             if __debug_function:
                 log_debug('\n')
-                log_debug('i = {0:6d} / dim = {1}'.format(i, dim))
-                log_debug('i_stream = {0}'.format(i_stream))
+                log_debug('i = {:6d} / dim = {}'.format(i, dim))
+                log_debug('i_stream = {}'.format(i_stream))
             if i_stream < 0:
                 break
 
             # sub_str = pdf_bytes_str[i_stream : i_stream + i_offset]
             # hex_chars = map(hex, map(ord, sub_str))
-            # log_debug('sub_str {0}'.format(type(sub_str)))
-            # log_debug('Hex {0}'.format(hex_chars))
-            # log_debug('Raw "{0}"'.format(sub_str.decode('utf8', errors = 'ignore')))
+            # log_debug('sub_str {}'.format(type(sub_str)))
+            # log_debug('Hex {}'.format(hex_chars))
+            # log_debug('Raw "{}"'.format(sub_str.decode('utf8', errors = 'ignore')))
 
             i_start = pdf_bytes_str.find(start_mark, i_stream, i_stream + i_offset)
             if __debug_function:
-                log_debug('i_start  = {0}'.format(i_start))
+                log_debug('i_start  = {}'.format(i_start))
             if i_start < 0:
                 i = i_stream + i_offset
                 continue
@@ -150,14 +150,14 @@ class PDFReader:
 
             image = pdf_bytes_str[i_start:i_end]
             if __debug_function:
-                log_debug('sys.getsizeof(image) = {0}'.format(sys.getsizeof(image)))
+                log_debug('sys.getsizeof(image) = {}'.format(sys.getsizeof(image)))
 
             # >> Using numbered thumbnails - name does not matter
-            img_name = '{0}_{1:03d}.{2}'.format(name, dim, pdf_type)
+            img_name = '{}_{1:03d}.{2}'.format(name, dim, pdf_type)
 
             if sys.getsizeof(image) > self.min_size:
                 image_path = os.path.join(save_path, img_name)
-                log_debug('Writing img "{0}"'.format(image_path))
+                log_debug('Writing img "{}"'.format(image_path))
                 with open(image_path, "wb") as fh:
                     fh.write(image)
                 images_path.append(image_path)

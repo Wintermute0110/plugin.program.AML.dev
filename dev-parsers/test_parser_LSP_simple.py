@@ -1,4 +1,4 @@
-#!/usr/bin/python2 -B
+#!/usr/bin/python3 -B
 
 import re
 
@@ -27,7 +27,7 @@ class LSP_literal_token:
     def exec_token(self):
         if debug_LSP_parser: log_debug('Executing LITERAL token value "{}"'.format(self.value))
         ret = self.value
-        if debug_LSP_parser: log_debug('Token LITERAL returns {} "{}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('Token LITERAL returns {} "{}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self): return '<LITERAL "{}">'.format(self.value)
 
@@ -67,7 +67,7 @@ class LSP_operator_has_token:
         if type(literal_str) is not str:
             raise SyntaxError("HAS token exec; expected string, got {}".format(type(literal_str)))
         ret = literal_str in LSP_parser_search_list
-        if debug_LSP_parser: log_debug('Token HAS returns {} "{}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('Token HAS returns {} "{}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self): return "<OP has>"
 
@@ -84,7 +84,7 @@ class LSP_operator_lacks_token:
         if type(literal_str) is not str:
             raise SyntaxError("LACKS token exec; expected string, got {}".format(type(literal_str)))
         ret = literal_str not in LSP_parser_search_list
-        if debug_LSP_parser: log_debug('Token LACKS returns {} "{}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('Token LACKS returns {} "{}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self): return "<OP lacks>"
 
@@ -101,7 +101,7 @@ class LSP_operator_not_token:
         if type(exp_bool) is not bool:
             raise SyntaxError("NOT token exec; expected string, got {}".format(type(exp_bool)))
         ret = not exp_bool
-        if debug_LSP_parser: log_debug('Token NOT returns {} "{}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('Token NOT returns {} "{}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self): return "<OP not>"
 
@@ -116,7 +116,7 @@ class LSP_operator_and_token:
     def exec_token(self):
         if debug_LSP_parser: log_debug('Executing AND token')
         ret = self.first.exec_token() and self.second.exec_token()
-        if debug_LSP_parser: log_debug('Token AND returns {} "{}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('Token AND returns {} "{}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self): return "<OP and>"
 
@@ -131,7 +131,7 @@ class LSP_operator_or_token:
     def exec_token(self):
         if debug_LSP_parser: log_debug('Executing OR token')
         ret = self.first.exec_token() or self.second.exec_token()
-        if debug_LSP_parser: log_debug('Token OR returns {} "{}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('Token OR returns {} "{}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self): return "<OP or>"
 
@@ -192,10 +192,10 @@ def LSP_parse_exec(program, search_list):
 
     if debug_LSP_parse_exec:
         log_debug('LSP_parse_exec() Initialising program execution')
-        log_debug('LSP_parse_exec() Search  "{}"'.format(unicode(search_list)))
+        log_debug('LSP_parse_exec() Search  "{}"'.format(str(search_list)))
         log_debug('LSP_parse_exec() Program "{}"'.format(program))
     LSP_parser_search_list = search_list
-    LSP_next = LSP_tokenize(program).next
+    LSP_next = LSP_tokenize(program).__next__
     LSP_token = LSP_next()
 
     # Old function parse_exec().
@@ -230,7 +230,7 @@ p_str = 'has Namco or (has Konami or not (has Capcom and has Kaneko))'
 # p_str = 'lacks Capcom or lacks Kaneko or lacks Namco'
 
 # Single program test
-log_info("String  '{}'".format(unicode(i_list)))
+log_info("String  '{}'".format(str(i_list)))
 log_info("Program '{}'".format(p_str))
 for i, token in enumerate(LSP_tokenize(p_str)):
     log_info("Token {:02d} '{}'".format(i, token))

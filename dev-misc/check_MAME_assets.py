@@ -48,10 +48,10 @@ def fs_write_JSON_file(json_filename, json_data):
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
           file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, indent = 2, separators = (',', ': '))))
     except OSError:
-        # gui_kodi_notify('Advanced Emulator Launcher - Error', 'Cannot write {0} file (OSError)'.format(roms_json_file))
+        # gui_kodi_notify('Advanced Emulator Launcher - Error', 'Cannot write {} file (OSError)'.format(roms_json_file))
         pass
     except IOError:
-        # gui_kodi_notify('Advanced Emulator Launcher - Error', 'Cannot write {0} file (IOError)'.format(roms_json_file))
+        # gui_kodi_notify('Advanced Emulator Launcher - Error', 'Cannot write {} file (IOError)'.format(roms_json_file))
         pass
 
 def fs_load_JSON_file(json_filename):
@@ -61,7 +61,7 @@ def fs_load_JSON_file(json_filename):
         return data_dic
 
     # --- Parse using json module ---
-    # log_verb('fs_load_ROMs_JSON() Loading JSON file {0}'.format(json_filename))
+    # log_verb('fs_load_ROMs_JSON() Loading JSON file {}'.format(json_filename))
     with open(json_filename) as file:    
         data_dic = json.load(file)
 
@@ -106,7 +106,7 @@ for machine_name in machines:
             asset_filename = os.path.join(ASSETS_DIR, artwork_name, machine_name + '.ico')
         else:
             asset_filename = os.path.join(ASSETS_DIR, artwork_name, machine_name + '.png')
-        # print('Checking {0}'.format(asset_filename))
+        # print('Checking {}'.format(asset_filename))
         if os.path.exists(asset_filename): 
             assets_dic[artwork_name] = True
             assets_stats[artwork_name] += 1
@@ -148,25 +148,25 @@ str_list.append(u'Machine    | artpreview | bosses | cabinets | cpanel | devices
                 u'howto | icons | logo | marquees | pcb   | scores | select | snap | titles | versus |\n')
 for machine_name in sorted(MAME_assets_dic):
     m = MAME_assets_dic[machine_name]
-    str_list.append(u'{0} '.format(machine_name.ljust(12)))
-    str_list.append(u'{0}        '.format(str(m['artpreview']).ljust(5)))
-    str_list.append(u'{0}    '.format(str(m['bosses']).ljust(5)))
-    str_list.append(u'{0}      '.format(str(m['cabinets']).ljust(5)))
-    str_list.append(u'{0}    '.format(str(m['cpanel']).ljust(5)))
-    str_list.append(u'{0}     '.format(str(m['devices']).ljust(5)))
-    str_list.append(u'{0}  '.format(str(m['ends']).ljust(5)))
-    str_list.append(u'{0}    '.format(str(m['flyers']).ljust(5)))
-    str_list.append(u'{0}      '.format(str(m['gameover']).ljust(5)))
-    str_list.append(u'{0}   '.format(str(m['howto']).ljust(5)))
-    str_list.append(u'{0}   '.format(str(m['icons']).ljust(5)))
-    str_list.append(u'{0}  '.format(str(m['logo']).ljust(5)))
-    str_list.append(u'{0}      '.format(str(m['marquees']).ljust(5)))
-    str_list.append(u'{0}   '.format(str(m['pcb']).ljust(5)))
-    str_list.append(u'{0}    '.format(str(m['scores']).ljust(5)))
-    str_list.append(u'{0}    '.format(str(m['select']).ljust(5)))
-    str_list.append(u'{0}  '.format(str(m['snap']).ljust(5)))
-    str_list.append(u'{0}    '.format(str(m['titles']).ljust(5)))
-    str_list.append(u'{0}    '.format(str(m['versus']).ljust(5)))
+    str_list.append(u'{} '.format(machine_name.ljust(12)))
+    str_list.append(u'{}        '.format(str(m['artpreview']).ljust(5)))
+    str_list.append(u'{}    '.format(str(m['bosses']).ljust(5)))
+    str_list.append(u'{}      '.format(str(m['cabinets']).ljust(5)))
+    str_list.append(u'{}    '.format(str(m['cpanel']).ljust(5)))
+    str_list.append(u'{}     '.format(str(m['devices']).ljust(5)))
+    str_list.append(u'{}  '.format(str(m['ends']).ljust(5)))
+    str_list.append(u'{}    '.format(str(m['flyers']).ljust(5)))
+    str_list.append(u'{}      '.format(str(m['gameover']).ljust(5)))
+    str_list.append(u'{}   '.format(str(m['howto']).ljust(5)))
+    str_list.append(u'{}   '.format(str(m['icons']).ljust(5)))
+    str_list.append(u'{}  '.format(str(m['logo']).ljust(5)))
+    str_list.append(u'{}      '.format(str(m['marquees']).ljust(5)))
+    str_list.append(u'{}   '.format(str(m['pcb']).ljust(5)))
+    str_list.append(u'{}    '.format(str(m['scores']).ljust(5)))
+    str_list.append(u'{}    '.format(str(m['select']).ljust(5)))
+    str_list.append(u'{}  '.format(str(m['snap']).ljust(5)))
+    str_list.append(u'{}    '.format(str(m['titles']).ljust(5)))
+    str_list.append(u'{}    '.format(str(m['versus']).ljust(5)))
     str_list.append(u'\n')
 full_string = ''.join(str_list)
 file = open('asset_report.txt', 'wt' )

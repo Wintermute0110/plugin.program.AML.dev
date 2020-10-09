@@ -1,4 +1,4 @@
-#!/usr/bin/python2 -B
+#!/usr/bin/python3 -B
 
 import re
 
@@ -26,7 +26,7 @@ class SP_literal_token:
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing LITERAL token value "{}"'.format(self.value))
         ret = self.value
-        if debug_SP_parser: log_debug('Token LITERAL returns {} "{}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('Token LITERAL returns {} "{}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self): return '<LITERAL "{}">'.format(self.value)
 
@@ -43,7 +43,7 @@ class SP_operator_has_token:
         if type(literal_str) is not str:
             raise SyntaxError("HAS token exec; expected string, got {}".format(type(literal_str)))
         ret = True if SP_parser_search_string.find(literal_str) >= 0 else False
-        if debug_SP_parser: log_debug('Token HAS returns {} "{}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('Token HAS returns {} "{}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self): return "<OP has>"
 
@@ -60,7 +60,7 @@ class SP_operator_lacks_token:
         if type(literal_str) is not str:
             raise SyntaxError("LACKS token exec; expected string, got {}".format(type(literal_str)))
         ret = False if SP_parser_search_string.find(literal_str) >= 0 else True
-        if debug_SP_parser: log_debug('Token LACKS returns {} "{}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('Token LACKS returns {} "{}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self): return "<OP lacks>"
 
@@ -77,7 +77,7 @@ class SP_operator_not_token:
         if type(exp_bool) is not bool:
             raise SyntaxError("NOT token exec; expected string, got {}".format(type(exp_bool)))
         ret = not exp_bool
-        if debug_SP_parser: log_debug('Token NOT returns {} "{}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('Token NOT returns {} "{}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self): return "<OP not>"
 
@@ -92,7 +92,7 @@ class SP_operator_and_token:
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing AND token')
         ret = self.first.exec_token() and self.second.exec_token()
-        if debug_SP_parser: log_debug('Token AND returns {} "{}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('Token AND returns {} "{}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self): return "<OP and>"
 
@@ -107,7 +107,7 @@ class SP_operator_or_token:
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing OR token')
         ret = self.first.exec_token() or self.second.exec_token()
-        if debug_SP_parser: log_debug('Token OR returns {} "{}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('Token OR returns {} "{}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self): return "<OP or>"
 
@@ -171,7 +171,7 @@ def SP_parse_exec(program, search_string):
         log_debug('SP_parse_exec() Search string "{}"'.format(search_string))
         log_debug('SP_parse_exec() Program       "{}"'.format(program))
     SP_parser_search_string = search_string
-    SP_next = SP_tokenize(program).next
+    SP_next = SP_tokenize(program).__next__
     SP_token = SP_next()
 
     # Old function parse_exec()

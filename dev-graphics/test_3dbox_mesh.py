@@ -55,8 +55,8 @@ def print_surface_vertices(s_name, s_index, t):
         (t[f[0]].x, t[f[0]].y), (t[f[1]].x, t[f[1]].y),
         (t[f[2]].x, t[f[2]].y), (t[f[3]].x, t[f[3]].y),
     ]
-    print('Surface {0}'.format(s_name))
-    # print('{0}'.format(pointlist))
+    print('Surface {}'.format(s_name))
+    # print('{}'.format(pointlist))
     pprint.pprint(pointlist)
 
     # print_surface_vertices('Spine', 0, t)
@@ -223,15 +223,15 @@ while True:
     pygame.draw.line(screen, (0, 0, 255), (t_a[0].x, t_a[0].y), (t_a[3].x, t_a[3].y), 3)
 
     # --- Draw text ---
-    text_surface = myfont.render('angle X {0}'.format(angleX), True, (255, 0, 255))
+    text_surface = myfont.render('angle X {}'.format(angleX), True, (255, 0, 255))
     screen.blit(text_surface, (10, 10))
-    text_surface = myfont.render('angle Y {0}'.format(angleY), True, (255, 0, 255))
+    text_surface = myfont.render('angle Y {}'.format(angleY), True, (255, 0, 255))
     screen.blit(text_surface, (10, 30))
-    text_surface = myfont.render('angle Z {0}'.format(angleZ), True, (255, 0, 255))
+    text_surface = myfont.render('angle Z {}'.format(angleZ), True, (255, 0, 255))
     screen.blit(text_surface, (10, 50))
-    text_surface = myfont.render('FOV {0}'.format(fov), True, (255, 0, 255))
+    text_surface = myfont.render('FOV {}'.format(fov), True, (255, 0, 255))
     screen.blit(text_surface, (10, 70))
-    text_surface = myfont.render('distance {0}'.format(viewer_distance), True, (255, 0, 255))
+    text_surface = myfont.render('distance {}'.format(viewer_distance), True, (255, 0, 255))
     screen.blit(text_surface, (10, 90))
 
     # --- Refresh screen ---
