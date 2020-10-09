@@ -1124,7 +1124,8 @@ def filter_parse_XML(fname_str):
                 'change'           : [], # List of tuples (change_orig string, change_dest string)
             }
             for filter_element in root_element:
-                text_t = filter_element.text if filter_element.text else ''
+                text_t = unicode(filter_element.text if filter_element.text else '')
+                # log_debug('text_t "{}" type "{}"'.format(text_t, type(text_t)))
                 if filter_element.tag == 'Name':
                     this_filter_dic['name'] = text_t
                 elif filter_element.tag == 'Plot':
@@ -1161,7 +1162,7 @@ def filter_parse_XML(fname_str):
             log_debug('Adding filter "{}"'.format(this_filter_dic['name']))
             filters_list.append(this_filter_dic)
 
-    # >> Resolve DEFINE tags (substitute by the defined value)
+    # Resolve DEFINE tags (substitute by the defined value)
     for f_definition in filters_list:
         for initial_str, final_str in define_dic.iteritems():
             f_definition['driver']           = f_definition['driver'].replace(initial_str, final_str)
