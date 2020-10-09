@@ -1099,7 +1099,7 @@ def set_render_root_data():
              'complete default set of filters in XML format which can be edited.'),
             misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'),
             [('Setup custom filters', misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS'))],
-            COLOR_MAME_FILTERS,
+            COLOR_MAME_CUSTOM_FILTERS,
         ],
     }
 
@@ -5234,7 +5234,7 @@ def command_show_custom_filters(cfg):
     for f_name in sorted(filter_index_dic, key = lambda x: filter_index_dic[x]['order'], reverse = False):
         num_machines = filter_index_dic[f_name]['num_machines']
         machine_str = 'machine' if num_machines == 1 else 'machines'
-        render_custom_filter_item_row(f_name, num_machines, machine_str, filter_index_dic[f_name]['plot'])
+        render_custom_filter_item_row(cfg, f_name, num_machines, machine_str, filter_index_dic[f_name]['plot'])
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_custom_filter_item_row(cfg, f_name, num_machines, machine_str, plot):
@@ -5311,7 +5311,7 @@ def render_custom_filter_machines(cfg, filter_name):
         c_dic[m_name] = render_db_dic[m_name]['description']
     catalog_dic = {category_name : c_dic}
     # Render a flat list and ignore filters.
-    r_list = render_process_machines(catalog_dic, catalog_name, category_name,
+    r_list = render_process_machines(cfg, catalog_dic, catalog_name, category_name,
         render_db_dic, assets_db_dic, fav_machines)
     processing_ticks_end = time.time()
     processing_time = processing_ticks_end - processing_ticks_start
@@ -5319,7 +5319,7 @@ def render_custom_filter_machines(cfg, filter_name):
     # --- Commit ROMs ---
     rendering_ticks_start = time.time()
     set_Kodi_all_sorting_methods(cfg)
-    render_commit_machines(r_list)
+    render_commit_machines(cfg, r_list)
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
     rendering_ticks_end = time.time()
     rendering_time = rendering_ticks_end - rendering_ticks_start
