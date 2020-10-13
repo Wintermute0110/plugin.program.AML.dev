@@ -1124,6 +1124,7 @@ def filter_parse_XML(fname_str):
                 'change'           : [], # List of tuples (change_orig string, change_dest string)
             }
             for filter_element in root_element:
+                # In Python 2 filter_element.text hast type str and not unicode.
                 text_t = unicode(filter_element.text if filter_element.text else '')
                 # log_debug('text_t "{}" type "{}"'.format(text_t, type(text_t)))
                 if filter_element.tag == 'Name':
