@@ -263,7 +263,7 @@ def mame_get_MAME_exe_version(cfg, mame_prog_FN):
     # log_info('mame_get_MAME_exe_version() mame_exec    "{}"'.format(mame_exec))
     stdout_f = cfg.MAME_STDOUT_VER_PATH.getPath()
     err_f = cfg.MAME_STDERR_VER_PATH.getPath()
-    with open(stdout_f, 'wb') as out, open(err_f, 'wb') as err:
+    with io.open(stdout_f, 'wb') as out, io.open(err_f, 'wb') as err:
         p = subprocess.Popen([mame_prog_FN.getPath(), '-version'], stdout = out, stderr = err, cwd = mame_dir)
         p.wait()
 
@@ -287,7 +287,7 @@ def mame_count_MAME_machines(XML_path_FN):
     log_debug('XML "{}"'.format(XML_path_FN.getPath()))
     num_machines_modern = 0
     num_machines_legacy = 0
-    with open(XML_path_FN.getPath(), 'rt') as f:
+    with io.open(XML_path_FN.getPath(), 'rt', encoding = 'utf-8') as f:
         for line in f:
             if line.find('<machine name=') > 0:
                 num_machines_modern += 1
@@ -320,7 +320,7 @@ def mame_extract_MAME_XML(cfg, st_dic):
     log_info('mame_extract_MAME_XML() mame_exec    "{}"'.format(mame_exec))
     pDialog.startProgress('Extracting MAME XML database. Progress bar is not accurate.')
     XML_path_FN = cfg.MAME_XML_PATH
-    with open(XML_path_FN.getPath(), 'wb') as out, open(cfg.MAME_STDERR_PATH.getPath(), 'wb') as err:
+    with io.open(XML_path_FN.getPath(), 'wb') as out, io.open(cfg.MAME_STDERR_PATH.getPath(), 'wb') as err:
         p = subprocess.Popen([mame_prog_FN.getPath(), '-listxml'], stdout = out, stderr = err, cwd = mame_dir)
         count = 0
         while p.poll() is None:
@@ -342,7 +342,7 @@ def mame_extract_MAME_XML(cfg, st_dic):
     statinfo = os.stat(XML_path_FN.getPath())
 
     # Get MAME version from the XML.
-    xml_f = open(XML_path_FN.getPath())
+    xml_f = io.open(XML_path_FN.getPath(), 'rt', encoding = 'utf-8')
     xml_iter = ET.iterparse(xml_f, events = ("start", "end"))
     event, root = next(xml_iter)
     xml_f.close()
@@ -580,7 +580,7 @@ def mame_load_Catver_ini(filename):
         elif read_status == 1:
             line_list = stripped_line.split("=")
             if len(line_list) == 1:
-                log_debug('mame_load_Catver_ini() Reached end of categories parsing.')
+                # log_debug('mame_load_Catver_ini() Reached end of categories parsing.')
                 read_status = 2
             else:
                 if __debug_do_list_categories: log_debug(line_list)
@@ -598,7 +598,7 @@ def mame_load_Catver_ini(filename):
         elif read_status == 3:
             line_list = stripped_line.split("=")
             if len(line_list) == 1:
-                log_debug('mame_load_Catver_ini() Reached end of veradded parsing.')
+                # log_debug('mame_load_Catver_ini() Reached end of veradded parsing.')
                 read_status = 4
             else:
                 if __debug_do_list_categories: log_debug(line_list)
@@ -869,7 +869,7 @@ def mame_load_INI_datfile_simple(filename):
     }
     slist = []
     try:
-        f = io.open(filename, 'rt', encoding = 'utf-8')
+        f = io.open(filename, 'rt', encoding = 'utf-8', errors = 'replace')
         for file_line in f:
             stripped_line = file_line.strip()
             if stripped_line == '': continue # Skip blanks
@@ -1421,7 +1421,7 @@ def mame_write_MAME_ROM_Billyc999_XML(cfg, out_dir_FN, db_dic):
     sl.append('<menu>')
     sl.append('  <header>')
     sl.append(XML_t('listname', 'Exported by Advanced MAME Launcher'))
-    sl.append(XML_t('lastlistupdate', _str_time(time.time())))
+    sl.append(XML_t('lastlistupdate', misc_time_to_str(time.time())))
     sl.append(XML_t('listversion', '{}'.format(mame_version_str)))
     sl.append(XML_t('exporterversion', 'MAME {}'.format(mame_version_str)))
     sl.append('  </header>')
@@ -1491,7 +1491,7 @@ def mame_write_MAME_ROM_XML_DAT(cfg, out_dir_FN, db_dic):
     slist.append(XML_t('name', desc_str))
     slist.append(XML_t('description', desc_str))
     slist.append(XML_t('version', '{}'.format(mame_version_str)))
-    slist.append(XML_t('date', _str_time(time.time())))
+    slist.append(XML_t('date', misc_time_to_str(time.time())))
     slist.append(XML_t('author', 'Exported by Advanced MAME Launcher'))
     slist.append('</header>')
 
@@ -1572,7 +1572,7 @@ def mame_write_MAME_CHD_XML_DAT(cfg, out_dir_FN, db_dic):
     slist.append(XML_t('name', desc_str))
     slist.append(XML_t('description', desc_str))
     slist.append(XML_t('version', '{}'.format(mame_version_str)))
-    slist.append(XML_t('date', _str_time(time.time())))
+    slist.append(XML_t('date', misc_time_to_str(time.time())))
     slist.append(XML_t('author', 'Exported by Advanced MAME Launcher'))
     slist.append('</header>')
 
@@ -1755,9 +1755,6 @@ def _mame_stat_chd(chd_path):
 # -------------------------------------------------------------------------------------------------
 # Statistic printing
 # -------------------------------------------------------------------------------------------------
-# See https://docs.python.org/2/library/time.html
-def _str_time(secs): return time.strftime('%a %d %b %Y %H:%M:%S', time.localtime(secs))
-
 def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append('[COLOR orange]Machine {} / Render data[/COLOR]'.format(machine_name))
     # Print MAME Favourites special fields
@@ -1924,15 +1921,15 @@ def mame_stats_main_print_slist(cfg, slist, control_dic, XML_ctrl_dic):
     slist.append('Software Lists         [COLOR violet]{:s}[/COLOR]'.format(SL_str))
     # Information in the MAME XML control file.
     if XML_ctrl_dic['t_XML_extraction']:
-        slist.append('XML extraction time    {}'.format(_str_time(XML_ctrl_dic['t_XML_extraction'])))
+        slist.append('XML extraction time    {}'.format(misc_time_to_str(XML_ctrl_dic['t_XML_extraction'])))
     else:
         slist.append('XML extraction time    {}'.format('no extracted'))
     if XML_ctrl_dic['st_mtime']:
-        slist.append('XML modification time  {}'.format(_str_time(XML_ctrl_dic['st_mtime'])))
+        slist.append('XML modification time  {}'.format(misc_time_to_str(XML_ctrl_dic['st_mtime'])))
     else:
         slist.append('XML extraction time    {}'.format('undefined'))
     if XML_ctrl_dic['t_XML_preprocessing']:
-        slist.append('XML preprocess time    {}'.format(_str_time(XML_ctrl_dic['t_XML_preprocessing'])))
+        slist.append('XML preprocess time    {}'.format(misc_time_to_str(XML_ctrl_dic['t_XML_preprocessing'])))
     else:
         slist.append('XML extraction time    {}'.format('undefined'))
     slist.append('XML size               {:,} bytes'.format(XML_ctrl_dic['st_size']))
@@ -2406,100 +2403,100 @@ def mame_stats_timestamps_slist(cfg, slist, control_dic):
     slist.append('[COLOR orange]Timestamps[/COLOR]')
     # MAME and SL databases.
     if control_dic['t_MAME_DB_build']:
-        slist.append("MAME DB built on            {}".format(_str_time(control_dic['t_MAME_DB_build'])))
+        slist.append("MAME DB built on            {}".format(misc_time_to_str(control_dic['t_MAME_DB_build'])))
     else:
         slist.append("MAME DB never built")
     if control_dic['t_MAME_Audit_DB_build']:
-        slist.append("MAME Audit DB built on      {}".format(_str_time(control_dic['t_MAME_Audit_DB_build'])))
+        slist.append("MAME Audit DB built on      {}".format(misc_time_to_str(control_dic['t_MAME_Audit_DB_build'])))
     else:
         slist.append("MAME Audit DB never built")
     if control_dic['t_MAME_Catalog_build']:
-        slist.append("MAME Catalog built on       {}".format(_str_time(control_dic['t_MAME_Catalog_build'])))
+        slist.append("MAME Catalog built on       {}".format(misc_time_to_str(control_dic['t_MAME_Catalog_build'])))
     else:
         slist.append("MAME Catalog never built")
     if control_dic['t_SL_DB_build']:
-        slist.append("SL DB built on              {}".format(_str_time(control_dic['t_SL_DB_build'])))
+        slist.append("SL DB built on              {}".format(misc_time_to_str(control_dic['t_SL_DB_build'])))
     else:
         slist.append("SL DB never built")
 
     # MAME and SL scanner.
     if control_dic['t_MAME_ROMs_scan']:
-        slist.append("MAME ROMs scaned on         {}".format(_str_time(control_dic['t_MAME_ROMs_scan'])))
+        slist.append("MAME ROMs scaned on         {}".format(misc_time_to_str(control_dic['t_MAME_ROMs_scan'])))
     else:
         slist.append("MAME ROMs never scaned")
     if control_dic['t_MAME_assets_scan']:
-        slist.append("MAME assets scaned on       {}".format(_str_time(control_dic['t_MAME_assets_scan'])))
+        slist.append("MAME assets scaned on       {}".format(misc_time_to_str(control_dic['t_MAME_assets_scan'])))
     else:
         slist.append("MAME assets never scaned")
 
     if control_dic['t_SL_ROMs_scan']:
-        slist.append("SL ROMs scaned on           {}".format(_str_time(control_dic['t_SL_ROMs_scan'])))
+        slist.append("SL ROMs scaned on           {}".format(misc_time_to_str(control_dic['t_SL_ROMs_scan'])))
     else:
         slist.append("SL ROMs never scaned")
     if control_dic['t_SL_assets_scan']:
-        slist.append("SL assets scaned on         {}".format(_str_time(control_dic['t_SL_assets_scan'])))
+        slist.append("SL assets scaned on         {}".format(misc_time_to_str(control_dic['t_SL_assets_scan'])))
     else:
         slist.append("SL assets never scaned")
 
     # Plots, Fanarts and 3D Boxes.
     if control_dic['t_MAME_plots_build']:
-        slist.append("MAME Plots built on         {}".format(_str_time(control_dic['t_MAME_plots_build'])))
+        slist.append("MAME Plots built on         {}".format(misc_time_to_str(control_dic['t_MAME_plots_build'])))
     else:
         slist.append("MAME Plots never built")
     if control_dic['t_SL_plots_build']:
-        slist.append("SL Plots built on           {}".format(_str_time(control_dic['t_SL_plots_build'])))
+        slist.append("SL Plots built on           {}".format(misc_time_to_str(control_dic['t_SL_plots_build'])))
     else:
         slist.append("SL Plots never built")
 
     if control_dic['t_MAME_fanart_build']:
-        slist.append("MAME Fanarts built on       {}".format(_str_time(control_dic['t_MAME_fanart_build'])))
+        slist.append("MAME Fanarts built on       {}".format(misc_time_to_str(control_dic['t_MAME_fanart_build'])))
     else:
         slist.append("MAME Fanarts never built")
     if control_dic['t_SL_fanart_build']:
-        slist.append("SL Fanarts built on         {}".format(_str_time(control_dic['t_SL_fanart_build'])))
+        slist.append("SL Fanarts built on         {}".format(misc_time_to_str(control_dic['t_SL_fanart_build'])))
     else:
         slist.append("SL Fanarts never built")
 
     if control_dic['t_MAME_3dbox_build']:
-        slist.append("MAME 3D Boxes built on      {}".format(_str_time(control_dic['t_MAME_3dbox_build'])))
+        slist.append("MAME 3D Boxes built on      {}".format(misc_time_to_str(control_dic['t_MAME_3dbox_build'])))
     else:
         slist.append("MAME 3D Boxes never built")
     if control_dic['t_SL_3dbox_build']:
-        slist.append("SL 3D Boxes built on        {}".format(_str_time(control_dic['t_SL_3dbox_build'])))
+        slist.append("SL 3D Boxes built on        {}".format(misc_time_to_str(control_dic['t_SL_3dbox_build'])))
     else:
         slist.append("SL 3D Boxes never built")
 
     # MAME machine hash, asset hash, render cache and asset cache.
     if control_dic['t_MAME_machine_hash']:
-        slist.append("MAME machine hash built on  {}".format(_str_time(control_dic['t_MAME_machine_hash'])))
+        slist.append("MAME machine hash built on  {}".format(misc_time_to_str(control_dic['t_MAME_machine_hash'])))
     else:
         slist.append("MAME machine hash never built")
     if control_dic['t_MAME_asset_hash']:
-        slist.append("MAME asset hash built on    {}".format(_str_time(control_dic['t_MAME_asset_hash'])))
+        slist.append("MAME asset hash built on    {}".format(misc_time_to_str(control_dic['t_MAME_asset_hash'])))
     else:
         slist.append("MAME asset hash never built")
     if control_dic['t_MAME_render_cache_build']:
-        slist.append("MAME render cache built on  {}".format(_str_time(control_dic['t_MAME_render_cache_build'])))
+        slist.append("MAME render cache built on  {}".format(misc_time_to_str(control_dic['t_MAME_render_cache_build'])))
     else:
         slist.append("MAME render cache never built")
     if control_dic['t_MAME_asset_cache_build']:
-        slist.append("MAME asset cache built on   {}".format(_str_time(control_dic['t_MAME_asset_cache_build'])))
+        slist.append("MAME asset cache built on   {}".format(misc_time_to_str(control_dic['t_MAME_asset_cache_build'])))
     else:
         slist.append("MAME asset cache never built")
 
     # Custsom filters.
     if control_dic['t_Custom_Filter_build']:
-        slist.append("Custom filters built on     {}".format(_str_time(control_dic['t_Custom_Filter_build'])))
+        slist.append("Custom filters built on     {}".format(misc_time_to_str(control_dic['t_Custom_Filter_build'])))
     else:
         slist.append("Custom filters never built")
 
     # Audit stuff.
     if control_dic['t_MAME_audit']:
-        slist.append("MAME ROMs audited on        {}".format(_str_time(control_dic['t_MAME_audit'])))
+        slist.append("MAME ROMs audited on        {}".format(misc_time_to_str(control_dic['t_MAME_audit'])))
     else:
         slist.append("MAME ROMs never audited")
     if control_dic['t_SL_audit']:
-        slist.append("SL ROMs audited on          {}".format(_str_time(control_dic['t_SL_audit'])))
+        slist.append("SL ROMs audited on          {}".format(misc_time_to_str(control_dic['t_SL_audit'])))
     else:
         slist.append("SL ROMs never audited")
 
@@ -2932,6 +2929,13 @@ ZIP_NOT_FOUND = 0
 BAD_ZIP_FILE  = 1
 ZIP_FILE_OK   = 2
 def mame_audit_MAME_machine(settings, rom_list, audit_dic):
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        rom_path = cfg.settings['rom_path_vanilla']
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        rom_path = cfg.settings['rom_path_2003_plus']
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
+
     # --- Cache the ROM set ZIP files and detect wrong named files by CRC ---
     # 1) Traverse ROMs, determine the set ZIP files, open ZIP files and put ZIPs in the cache.
     # 2) If a ZIP file is not in the cache is because the ZIP file was not found 
@@ -2951,18 +2955,18 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
     z_cache = {}
     z_cache_status = {}
     for m_rom in rom_list:
-        # >> Skip CHDs
+        # Skip CHDs.
         if m_rom['type'] == ROM_TYPE_DISK: continue
 
-        # >> Process ROM ZIP files
+        # Process ROM ZIP files.
         set_name = m_rom['location'].split('/')[0]
         if m_rom['type'] == ROM_TYPE_SAMPLE:
             zip_FN = FileName(settings['samples_path']).pjoin(set_name + '.zip')
         else:
-            zip_FN = FileName(settings['rom_path']).pjoin(set_name + '.zip')
+            zip_FN = FileName(rom_path).pjoin(set_name + '.zip')
         zip_path = zip_FN.getPath()
 
-        # >> ZIP file encountered for the first time. Skip ZIP files already in the cache.
+        # ZIP file encountered for the first time. Skip ZIP files already in the cache.
         if zip_path not in z_cache_status:
             if zip_FN.exists():
                 # >> Scan files in ZIP file and put them in the cache
@@ -3042,8 +3046,8 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
             # log_debug('set_name       {}'.format(set_name))
             # log_debug('sample_name    {}'.format(sample_name))
 
-            # >> Test if ZIP file exists (use cached data). ZIP file must be in the cache always
-            # >> at this point.
+            # Test if ZIP file exists (use cached data). ZIP file must be in the cache always
+            # at this point.
             zip_FN = FileName(settings['samples_path']).pjoin(set_name + '.zip')
             zip_path = zip_FN.getPath()
             # log_debug('ZIP {}'.format(zip_FN.getPath()))
@@ -4078,10 +4082,16 @@ def mame_build_MAME_main_database(cfg, st_dic):
     MAMEINFO_FN = DATS_dir_FN.pjoin(MAMEINFO_DAT)
 
     # --- Print user configuration for debug ---
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        rom_path = cfg.settings['rom_path_vanilla']
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        rom_path = cfg.settings['rom_path_2003_plus']
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
     log_info('mame_build_MAME_main_database() Starting...')
     log_info('--- Paths ---')
     log_info('mame_prog      = "{}"'.format(cfg.settings['mame_prog']))
-    log_info('ROM_path       = "{}"'.format(cfg.settings['rom_path']))
+    log_info('ROM path       = "{}"'.format(rom_path))
     log_info('assets_path    = "{}"'.format(cfg.settings['assets_path']))
     log_info('DATs_path      = "{}"'.format(cfg.settings['dats_path']))
     log_info('CHD_path       = "{}"'.format(cfg.settings['chd_path']))
@@ -4197,7 +4207,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
         mame_version_int = mame_get_numerical_version(mame_version_str)
     else:
         raise ValueError
-    log_info('mame_build_MAME_main_database() MAME str version "{}"'.format(mame_version_str))
+    log_info('mame_build_MAME_main_database() MAME string version "{}"'.format(mame_version_str))
     log_info('mame_build_MAME_main_database() MAME numerical version {}'.format(mame_version_int))
 
     # --- Process MAME XML ---
@@ -4212,8 +4222,8 @@ def mame_build_MAME_main_database(cfg, st_dic):
     num_iteration = 0
     for event, elem in xml_iter:
         # Debug the elements we are iterating from the XML file
-        # print('event "{}"'.format(event))
-        # print('elem.tag "{}" | elem.text "{}" | elem.attrib "{}"'.format(elem.tag, elem.text, str(elem.attrib)))
+        # log_debug('event "{}"'.format(event))
+        # log_debug('elem.tag "{}" | elem.text "{}" | elem.attrib "{}"'.format(elem.tag, elem.text, str(elem.attrib)))
 
         # <machine> tag start event includes <machine> attributes
         if event == 'start' and (elem.tag == 'machine' or elem.tag == 'game'):

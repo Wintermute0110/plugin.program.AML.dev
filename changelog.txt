@@ -32,28 +32,17 @@ WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that inc
          (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
          and then imported again into AML.
 
-WIP      [CORE] Recursive context menus.
-         Pay attention to the select() bug in Kodi Krypton.
-         This requires Kodi version detection and having different code for Krypton/Leia.
-         Start with the context menu in which recursiveness ir more useful.
-
-WIP      [CORE] Retroarch MAME 2003 Plus support was added in 0.10.0/1.0.0
-         Can AML support Retroarch MAME 2003 Plus in Android? According to
-         Chrisism, Retroarch is currently the best way to use MAME in Android.
-         TTBOMK, currently I think it is the only core to support this feature. Investigate if
-         there are more Retroarch cores with this feature. See NOTES.md
-
-         See https://github.com/libretro/mame2003-libretro/pull/348
-         See https://github.com/libretro/mame2003-plus-libretro/pull/8
-         See https://github.com/libretro/mame2010-libretro/pull/123
-         See https://github.com/libretro/mame2010-libretro/tree/master/metadata
-
 WIP      [MANUALS] Increase the number of supported PDF filters.
          This may require A LOT of Python coding.
 
 WIP      [MANUALS] Support for CBZ/CBR manuals.
          In theory Kodi VFS is able to read RAR files.
          Wait until this is implemented in AEL and then port it from AEL into AML?
+
+WIP      [CORE] Recursive context menus.
+         Pay attention to the select() bug in Kodi Krypton.
+         This requires Kodi version detection and having different code for Krypton/Leia.
+         Start with the context menu in which recursiveness ir more useful.
 
 WIP      [GRAPHICS] Optimize the generation of 3D boxes.
          Cache the background images used in all boxes.
@@ -63,27 +52,34 @@ WIP      [GRAPHICS] Respect the aspect ratio in 3D boxes. For example, if the po
          poster texture. ScreenScraper respects the aspect ratio of the 3D boxes, have
          a look at examples there (for example, see Mega Drive 3D box and PSX 3D box).
 
-WIP      [GRAPHICS] Unify and improve the Fanart functions.
-         Currently there are separated functions for MAME and SL fanart generation, with a lot
-         of duplicated code. Create a universal set of functions that use XML to define
-         a template for the Fanart.
+WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed by AML.
+         In this core, the XML is extracted using the MAME internal menu, which must be
+         opened with the Retroarch core options menu. The XML file is saved in the SAVES
+         directory with name mame2003-plus/mame2003-plus.xml
+         Exploit this to give support to MAME 2003 and then Android. According to
+         Chrisism, Retroarch is currently the best way to use MAME in Android.
+         TTBOMK, currently it is the only core to support this feature. Investigate if there
+         are more Retroarch cores with this feature.
 
-WIP      [GRAPHICS] Unify and improve the 3D box functions.
-         Currently there are separated functions for MAME and SL 3D boxes.
-         Create a universal set of functions for 3D box generations (projection of 2D textures
-         in a 3D box structure).
+         See https://github.com/libretro/mame2003-libretro/pull/348
+         See https://github.com/libretro/mame2003-plus-libretro/pull/8
+         See https://github.com/libretro/mame2010-libretro/pull/123
+         See https://github.com/libretro/mame2010-libretro/tree/master/metadata
+
+[B]Advanced MAME Launcher | version 1.0.0 | xx August 2020[/B]
+
+FEATURE  [CORE] Port the addon to Kodi Matrix and Python 3.
 
 WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
          Github wiki.
 
 
-[B]Advanced MAME Launcher | version 1.0.0 | xx August 2020[/B]
-
-FEATURE  [CORE] Port the addon to Kodi Matrix and Python 3.
-         This version of the addon is feature synched with version 0.10.0
-
-
 [B]Advanced MAME Launcher | version 0.10.0 | xx August 2020[/B]
+
+FEATURE  [CORE] Big code refactoring to prepare Kodi Python API changes.
+
+FEATURE  [CORE] Include Software Lists that have no associated MAME machines in "Machines
+         by Software List" filter.
 
 FEATURE  [CORE] Create branch python2 and place series 0.10.x into this branch.
 

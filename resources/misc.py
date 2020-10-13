@@ -20,6 +20,7 @@
 
 # --- Python standard library ---
 import re
+import time
 
 # -------------------------------------------------------------------------------------------------
 # Strings and text functions.
@@ -54,7 +55,7 @@ def text_XML(tag_name, tag_text, num_spaces = 2):
         tag_text = text_escape_XML(tag_text)
         line = '{}<{}>{}</{}>\n'.format(' ' * num_spaces, tag_name, tag_text, tag_name)
     else:
-        # >> Empty tag    
+        # Empty tag.
         line = '{}<{} />\n'.format(' ' * num_spaces, tag_name)
 
     return line
@@ -170,15 +171,15 @@ def text_str_dic_max_size(dictionary_list, dic_key, title_str = ''):
 
     return max_str_size
 
-def text_print_padded_left(str, str_max_size):
-    formatted_str = '{}'.format(str)
-    padded_str =  formatted_str + ' ' * (str_max_size - len(formatted_str))
+def text_print_padded_left(text_line, text_max_size):
+    formatted_str = '{}'.format(text_line)
+    padded_str =  formatted_str + ' ' * (text_max_size - len(formatted_str))
 
     return padded_str
 
-def text_print_padded_right(str, str_max_size):
-    formatted_str = '{}'.format(str)
-    padded_str = ' ' * (str_max_size - len(formatted_str)) + formatted_str
+def text_print_padded_right(text_line, text_max_size):
+    formatted_str = '{}'.format(text_line)
+    padded_str = ' ' * (text_max_size - len(formatted_str)) + formatted_str
 
     return padded_str
 
@@ -428,6 +429,10 @@ def misc_generate_random_SID():
     sid = base.hexdigest()
 
     return sid
+
+# See https://docs.python.org/3.8/library/time.html#time.gmtime
+def misc_time_to_str(secs):
+    return time.strftime('%a %d %b %Y %H:%M:%S', time.localtime(secs))
 
 #
 # All version numbers must be less than 100, except the major version.

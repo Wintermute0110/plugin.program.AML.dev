@@ -27,7 +27,7 @@
 # only exception to this rule is the module .constants. This module is virtually included
 # by every other addon module.
 #
-# How to report errors on the low-level filesystem functions???
+# How to report errors on the low-level filesystem functions??? See the end of the file.
 
 # --- AML modules ---
 from .constants import *
@@ -305,10 +305,8 @@ def utils_load_JSON_file_list(json_filename, verbose = True):
 
     return data_list
 
-#
 # This consumes a lot of memory but it is fast.
 # See https://stackoverflow.com/questions/24239613/memoryerror-using-json-dumps
-#
 def utils_write_JSON_file(json_filename, json_data, verbose = True):
     l_start = time.time()
     if verbose:
@@ -495,54 +493,55 @@ def log_variable(var_name, var):
     xbmc.log(log_text, level = xbmc.LOGERROR)
 
 # For Unicode stuff in Kodi log see https://github.com/romanvm/kodi.six
-def log_debug_KR(str_text):
+def log_debug_KR(text_line):
     if current_log_level < LOG_DEBUG: return
 
-    # if it is bytes we assume it's "utf-8" encoded.
+    # If it is bytes we assume it's "utf-8" encoded.
     # will fail if called with other encodings (latin, etc).
-    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
-                              
-    # At this point we are sure str_text is a Unicode string.
-    # Kodi functions require Unicode strings as arguments.
-    log_text = 'AML DEBUG: ' + str_text
+    if isinstance(text_line, bytes): text_line = text_line.decode('utf-8')
+
+    # At this point we are sure text_line is a Unicode string.
+    # Kodi functions (Python 3) require Unicode strings as arguments.
+    # Kodi functions (Python 2) require UTF-8 encoded bytes as arguments.
+    log_text = 'AML DEBUG: ' + text_line
     xbmc.log(log_text, level = xbmc.LOGNOTICE)
 
-def log_verb_KR(str_text):
+def log_verb_KR(text_line):
     if current_log_level < LOG_VERB: return
-    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
-    log_text = 'AML VERB : ' + str_text
+    if isinstance(text_line, bytes): text_line = text_line.decode('utf-8')
+    log_text = 'AML VERB : ' + text_line
     xbmc.log(log_text, level = xbmc.LOGNOTICE)
 
-def log_info_KR(str_text):
+def log_info_KR(text_line):
     if current_log_level < LOG_INFO: return
-    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
-    log_text = 'AML INFO : ' + str_text
+    if isinstance(text_line, bytes): text_line = text_line.decode('utf-8')
+    log_text = 'AML INFO : ' + text_line
     xbmc.log(log_text, level = xbmc.LOGNOTICE)
 
-def log_warning_KR(str_text):
+def log_warning_KR(text_line):
     if current_log_level < LOG_WARNING: return
-    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
-    log_text = 'AML WARN : ' + str_text
+    if isinstance(text_line, bytes): text_line = text_line.decode('utf-8')
+    log_text = 'AML WARN : ' + text_line
     xbmc.log(log_text, level = xbmc.LOGWARNING)
 
-def log_error_KR(str_text):
+def log_error_KR(text_line):
     if current_log_level < LOG_ERROR: return
-    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
-    log_text = 'AML ERROR: ' + str_text
+    if isinstance(text_line, bytes): text_line = text_line.decode('utf-8')
+    log_text = 'AML ERROR: ' + text_line
     xbmc.log(log_text, level = xbmc.LOGERROR)
 
 #
 # Replacement functions when running outside Kodi with the standard Python interpreter.
 #
-def log_debug_Python(str): print(str)
+def log_debug_Python(text_line): print(text_line)
 
-def log_verb_Python(str): print(str)
+def log_verb_Python(text_line): print(text_line)
 
-def log_info_Python(str): print(str)
+def log_info_Python(text_line): print(text_line)
 
-def log_warning_Python(str): print(str)
+def log_warning_Python(text_line): print(text_line)
 
-def log_error_Python(str): print(str)
+def log_error_Python(text_line): print(text_line)
 
 # -------------------------------------------------------------------------------------------------
 # Kodi notifications and dialogs
@@ -559,11 +558,23 @@ def kodi_dialog_OK(text, title = 'Advanced MAME Launcher'):
 def kodi_dialog_yesno(text, title = 'Advanced MAME Launcher'):
     return xbmcgui.Dialog().yesno(title, text)
 
+# Returns a directory.
+def kodi_dialog_get_directory(dialog_heading):
+    return xbmcgui.Dialog().browse(0, dialog_heading, '')
+
+def kodi_dialog_get_file(dialog_heading):
+    return xbmcgui.Dialog().browse(1, dialog_heading, '')
+
+def kodi_dialog_get_image(dialog_heading):
+    return xbmcgui.Dialog().browse(2, dialog_heading, '')
+
 # Returns a writable directory.
-# type 3 ShowAndGetWriteableDirectory
-# shares  'files'  list file sources (added through filemanager)
-# shares  'local'  list local drives
-# shares  ''       list local drives and network shares
+# Arg 1: type 3 ShowAndGetWriteableDirectory
+# Arg 2: heading
+# Arg 3: shares
+#     shares  'files'  list file sources (added through filemanager)
+#     shares  'local'  list local drives
+#     shares  ''       list local drives and network shares
 def kodi_dialog_get_wdirectory(dialog_heading):
     return xbmcgui.Dialog().browse(3, dialog_heading, '')
 
@@ -686,7 +697,7 @@ class KodiProgressDialog(object):
     # and the progress it had when it was closed.
     def reopen(self):
         if self.dialog_active: raise TypeError
-        self.progressDialog.create(self.title, self.message)
+        self.progressDialog.create(self.heading, self.message)
         self.progressDialog.update(self.progress)
         self.dialog_active = True
 
@@ -785,6 +796,22 @@ def kodi_display_text_window_mono(window_title, info_text):
 # Displays a text window with a proportional font (default).
 def kodi_display_text_window(window_title, info_text):
     xbmcgui.Dialog().textviewer(window_title, info_text)
+
+# -------------------------------------------------------------------------------------------------
+# Astraction layer for settings to easy the Leia-Matrix transition.
+# Settings are only read once on every execution and they are not performance critical.
+# -------------------------------------------------------------------------------------------------
+def kodi_get_int_setting(cfg, setting_str):
+    return cfg.__addon__.getSettingInt(setting_str)
+
+def kodi_get_float_setting_as_int(cfg, setting_str):
+    return int(round(cfg.__addon__.getSettingFloat(setting_str)))
+
+def kodi_get_bool_setting(cfg, setting_str):
+    return cfg.__addon__.getSettingBool(setting_str)
+
+def kodi_get_str_setting(cfg, setting_str):
+    return cfg.__addon__.getSettingString(setting_str)
 
 # -------------------------------------------------------------------------------------------------
 # Determine Kodi version and create some constants to allow version-dependent code.
