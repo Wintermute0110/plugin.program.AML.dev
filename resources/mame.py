@@ -3569,7 +3569,7 @@ def mame_audit_MAME_all(cfg, db_dic_in):
         # >> Check if audit was canceled.
         # log_debug(unicode(rom_list))
         if 'status' not in rom_list[0]:
-            report_list.append('Audit was canceled at machine {0}'.format(m_name))
+            report_list.append('Audit was canceled at machine {}'.format(m_name))
             break
 
         # >> Machine header (in all reports).
@@ -4215,7 +4215,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
         mame_version_int = mame_get_numerical_version(mame_version_str)
     else:
         raise ValueError
-    log_info('mame_build_MAME_main_database() MAME unicode version "{}"'.format(mame_version_str))
+    log_info('mame_build_MAME_main_database() MAME string version "{}"'.format(mame_version_str))
     log_info('mame_build_MAME_main_database() MAME numerical version {}'.format(mame_version_int))
 
     # --- Process MAME XML ---

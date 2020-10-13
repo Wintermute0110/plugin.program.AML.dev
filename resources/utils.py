@@ -497,55 +497,55 @@ def log_variable(var_name, var):
     xbmc.log(log_text, level = xbmc.LOGERROR)
 
 # For Unicode stuff in Kodi log see https://github.com/romanvm/kodi.six
-def log_debug_KR(str_text):
+def log_debug_KR(text_line):
     if current_log_level < LOG_DEBUG: return
 
     # If it is bytes we assume it's "utf-8" encoded.
     # will fail if called with other encodings (latin, etc).
-    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
+    if isinstance(text_line, str): text_line = text_line.decode('utf-8')
 
-    # At this point we are sure str_text is a Unicode string.
+    # At this point we are sure text_line is a Unicode string.
     # Kodi functions (Python 3) require Unicode strings as arguments.
     # Kodi functions (Python 2) require UTF-8 encoded bytes as arguments.
-    log_text = 'AML DEBUG: ' + str_text
+    log_text = 'AML DEBUG: ' + text_line
     xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
 
-def log_verb_KR(str_text):
+def log_verb_KR(text_line):
     if current_log_level < LOG_VERB: return
-    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
-    log_text = 'AML VERB : ' + str_text
+    if isinstance(text_line, str): text_line = text_line.decode('utf-8')
+    log_text = 'AML VERB : ' + text_line
     xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
 
-def log_info_KR(str_text):
+def log_info_KR(text_line):
     if current_log_level < LOG_INFO: return
-    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
-    log_text = 'AML INFO : ' + str_text
+    if isinstance(text_line, str): text_line = text_line.decode('utf-8')
+    log_text = 'AML INFO : ' + text_line
     xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
 
-def log_warning_KR(str_text):
+def log_warning_KR(text_line):
     if current_log_level < LOG_WARNING: return
-    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
-    log_text = 'AML WARN : ' + str_text
+    if isinstance(text_line, str): text_line = text_line.decode('utf-8')
+    log_text = 'AML WARN : ' + text_line
     xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGWARNING)
 
-def log_error_KR(str_text):
+def log_error_KR(text_line):
     if current_log_level < LOG_ERROR: return
-    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
-    log_text = 'AML ERROR: ' + str_text
+    if isinstance(text_line, str): text_line = text_line.decode('utf-8')
+    log_text = 'AML ERROR: ' + text_line
     xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGERROR)
 
 #
 # Replacement functions when running outside Kodi with the standard Python interpreter.
 #
-def log_debug_Python(unicode_str): print(unicode_str)
+def log_debug_Python(text_line): print(text_line)
 
-def log_verb_Python(unicode_str): print(unicode_str)
+def log_verb_Python(text_line): print(text_line)
 
-def log_info_Python(unicode_str): print(unicode_str)
+def log_info_Python(text_line): print(text_line)
 
-def log_warning_Python(unicode_str): print(unicode_str)
+def log_warning_Python(text_line): print(text_line)
 
-def log_error_Python(unicode_str): print(unicode_str)
+def log_error_Python(text_line): print(text_line)
 
 # -------------------------------------------------------------------------------------------------
 # Kodi notifications and dialogs
@@ -675,7 +675,7 @@ class KodiProgressDialog(object):
             if type(message) is not unicode: raise TypeError
             self.message = message
             self.progressDialog.update(self.progress, self.message, ' ', ' ') # Workaround for Kodi Leia
-            # self.progressDialog.update(self.progress, self.message) # Code for Krypton and up.
+            # self.progressDialog.update(self.progress, self.message) # Code for Matrix and up.
 
     # Update dialog message but keep same progress.
     def updateMessage(self, message):
@@ -683,7 +683,7 @@ class KodiProgressDialog(object):
         if type(message) is not unicode: raise TypeError
         self.message = message
         self.progressDialog.update(self.progress, self.message, ' ', ' ') # Workaround for Kodi Leia
-        # self.progressDialog.update(self.progress, self.message) # Code for Krypton and up.
+        # self.progressDialog.update(self.progress, self.message) # Code for Matrix and up.
 
     def isCanceled(self):
         # If the user pressed the cancel button before then return it now.
@@ -707,7 +707,7 @@ class KodiProgressDialog(object):
     def reopen(self):
         if self.dialog_active: raise TypeError
         self.progressDialog.create(self.heading, self.message, ' ', ' ') # Workaround for Kodi Leia
-        # self.progressDialog.create(self.title, self.message) # Code for Krypton and up.
+        # self.progressDialog.create(self.heading, self.message) # Code for Matrix and up.
         self.progressDialog.update(self.progress)
         self.dialog_active = True
 

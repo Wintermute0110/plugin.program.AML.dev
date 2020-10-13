@@ -175,15 +175,15 @@ def text_str_dic_max_size(dictionary_list, dic_key, title_str = ''):
 
     return max_str_size
 
-def text_print_padded_left(unicode, str_max_size):
-    formatted_str = '{}'.format(unicode)
-    padded_str =  formatted_str + ' ' * (str_max_size - len(formatted_str))
+def text_print_padded_left(text_line, text_max_size):
+    formatted_str = '{}'.format(text_line)
+    padded_str =  formatted_str + ' ' * (text_max_size - len(formatted_str))
 
     return padded_str
 
-def text_print_padded_right(unicode, str_max_size):
-    formatted_str = '{}'.format(unicode)
-    padded_str = ' ' * (str_max_size - len(formatted_str)) + formatted_str
+def text_print_padded_right(text_line, text_max_size):
+    formatted_str = '{}'.format(text_line)
+    padded_str = ' ' * (text_max_size - len(formatted_str)) + formatted_str
 
     return padded_str
 
