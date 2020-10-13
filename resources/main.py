@@ -539,12 +539,13 @@ def get_settings(cfg):
 
     # --- Main operation ---
     settings['op_mode_raw'] = kodi_get_int_setting(cfg, 'op_mode_raw')
-    settings['rom_path'] = kodi_get_str_setting(cfg, 'rom_path')
     # Vanilla MAME settings.
+    settings['rom_path_vanilla'] = kodi_get_str_setting(cfg, 'rom_path_vanilla')
     settings['enable_SL'] = kodi_get_bool_setting(cfg, 'enable_SL')
     settings['mame_prog'] = kodi_get_str_setting(cfg, 'mame_prog')
     settings['SL_hash_path'] = kodi_get_str_setting(cfg, 'SL_hash_path')
     # MAME 2003 Plus settings.
+    settings['rom_path_2003_plus'] = kodi_get_str_setting(cfg, 'rom_path_2003_plus')
     settings['retroarch_prog'] = kodi_get_str_setting(cfg, 'retroarch_prog')
     settings['libretro_dir'] = kodi_get_str_setting(cfg, 'libretro_dir')
     settings['xml_2003_path'] = kodi_get_str_setting(cfg, 'xml_2003_path')
@@ -6557,6 +6558,8 @@ def command_exec_utility(cfg, which_utility):
         # --- Mandatory stuff ---
         slist.append('[COLOR orange]MAME executable[/COLOR]')
         if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+            # ROM path is mandatory.
+            aux_check_dir_ERR(slist, cfg.settings['rom_path_vanilla'], 'MAME ROM path')
             # Vanilla MAME checks.
             if cfg.settings['mame_prog']:
                 if FileName(cfg.settings['mame_prog']).exists():
@@ -6567,6 +6570,8 @@ def command_exec_utility(cfg, which_utility):
                 slist.append('{} MAME executable not set'.format(ERR))
         elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
             # MAME 2003 Plus checks.
+            # ROM path is mandatory.
+            aux_check_dir_ERR(slist, cfg.settings['rom_path_2003_plus'], 'MAME ROM path')
             # Retroarch executable.
             if cfg.settings['retroarch_prog']:
                 if FileName(cfg.settings['retroarch_prog']).exists():
@@ -6593,8 +6598,6 @@ def command_exec_utility(cfg, which_utility):
                 slist.append('{} MAME 2003 Plus XML not set'.format(ERR))
         else:
             slist.append('{} Unknown op_mode {}'.format(ERR, cfg.settings['op_mode']))
-        # ROM path is mandatory.
-        aux_check_dir_ERR(slist, cfg.settings['rom_path'], 'MAME ROM path')
         slist.append('')
 
         slist.append('[COLOR orange]MAME optional paths[/COLOR]')
@@ -7424,11 +7427,17 @@ def run_machine(cfg, machine_name, location):
         kodi_dialog_OK('Unknown location = "{}". This is a bug, please report it.'.format(location))
         return
 
-    # Check if ROM exist
-    if not cfg.settings['rom_path']:
+    # Check if ROM ZIP file exists.
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        rom_path = cfg.settings['rom_path_vanilla']
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        rom_path = cfg.settings['rom_path_2003_plus']
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
+    if not rom_path:
         kodi_dialog_OK('ROM directory not configured.')
         return
-    ROM_path_FN = FileName(cfg.settings['rom_path'])
+    ROM_path_FN = FileName(rom_path)
     if not ROM_path_FN.isdir():
         kodi_dialog_OK('ROM directory does not exist.')
         return
@@ -7500,7 +7509,7 @@ def run_machine(cfg, machine_name, location):
             core_path = os.path.join(cfg.settings['libretro_dir'], 'mame2003_plus_libretro.so')
         else:
             raise TypeError('Unsupported platform "{}"'.format(cached_sys_platform))
-        machine_path = os.path.join(cfg.settings['rom_path'], machine_name + '.zip')
+        machine_path = os.path.join(cfg.settings['rom_path_2003_plus'], machine_name + '.zip')
         arg_list = [mame_prog_FN.getPath(), '-L', core_path, machine_path]
     else:
         raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))

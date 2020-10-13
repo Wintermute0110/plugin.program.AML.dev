@@ -2933,6 +2933,13 @@ ZIP_NOT_FOUND = 0
 BAD_ZIP_FILE  = 1
 ZIP_FILE_OK   = 2
 def mame_audit_MAME_machine(settings, rom_list, audit_dic):
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        rom_path = cfg.settings['rom_path_vanilla']
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        rom_path = cfg.settings['rom_path_2003_plus']
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
+
     # --- Cache the ROM set ZIP files and detect wrong named files by CRC ---
     # 1) Traverse ROMs, determine the set ZIP files, open ZIP files and put ZIPs in the cache.
     # 2) If a ZIP file is not in the cache is because the ZIP file was not found 
@@ -2952,18 +2959,18 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
     z_cache = {}
     z_cache_status = {}
     for m_rom in rom_list:
-        # >> Skip CHDs
+        # Skip CHDs.
         if m_rom['type'] == ROM_TYPE_DISK: continue
 
-        # >> Process ROM ZIP files
+        # Process ROM ZIP files.
         set_name = m_rom['location'].split('/')[0]
         if m_rom['type'] == ROM_TYPE_SAMPLE:
             zip_FN = FileName(settings['samples_path']).pjoin(set_name + '.zip')
         else:
-            zip_FN = FileName(settings['rom_path']).pjoin(set_name + '.zip')
+            zip_FN = FileName(rom_path).pjoin(set_name + '.zip')
         zip_path = zip_FN.getPath()
 
-        # >> ZIP file encountered for the first time. Skip ZIP files already in the cache.
+        # ZIP file encountered for the first time. Skip ZIP files already in the cache.
         if zip_path not in z_cache_status:
             if zip_FN.exists():
                 # >> Scan files in ZIP file and put them in the cache
@@ -3086,9 +3093,9 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
                 m_rom['status_colour'] = '[COLOR green]{}[/COLOR]'.format(m_rom['status'])
                 continue
 
-            # >> Test if ZIP file exists (use cached data). ZIP file must be in the cache always
-            # >> at this point.
-            zip_FN = FileName(settings['rom_path']).pjoin(set_name + '.zip')
+            # Test if ZIP file exists (use cached data). ZIP file must be in the cache always
+            # at this point.
+            zip_FN = FileName(rom_path).pjoin(set_name + '.zip')
             zip_path = zip_FN.getPath()
             # log_debug('ZIP {}'.format(zip_FN.getPath()))
             if z_cache_status[zip_path] == ZIP_NOT_FOUND:
@@ -4079,10 +4086,16 @@ def mame_build_MAME_main_database(cfg, st_dic):
     MAMEINFO_FN = DATS_dir_FN.pjoin(MAMEINFO_DAT)
 
     # --- Print user configuration for debug ---
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        rom_path = cfg.settings['rom_path_vanilla']
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        rom_path = cfg.settings['rom_path_2003_plus']
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
     log_info('mame_build_MAME_main_database() Starting...')
     log_info('--- Paths ---')
     log_info('mame_prog      = "{}"'.format(cfg.settings['mame_prog']))
-    log_info('ROM_path       = "{}"'.format(cfg.settings['rom_path']))
+    log_info('ROM path       = "{}"'.format(rom_path))
     log_info('assets_path    = "{}"'.format(cfg.settings['assets_path']))
     log_info('DATs_path      = "{}"'.format(cfg.settings['dats_path']))
     log_info('CHD_path       = "{}"'.format(cfg.settings['chd_path']))
@@ -7096,10 +7109,16 @@ def mame_check_before_scan_MAME_ROMs(cfg, st_dic, options_dic, control_dic):
 
     # ROM scanning is mandatory, even if ROM directory is empty.
     # Get paths and check they exist.
-    if not cfg.settings['rom_path']:
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        rom_path = cfg.settings['rom_path_vanilla']
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        rom_path = cfg.settings['rom_path_2003_plus']
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
+    if not rom_path:
         kodi_set_error_status(st_dic, 'ROM directory not configured. Aborting scanner.')
         return
-    ROM_path_FN = FileName(cfg.settings['rom_path'])
+    ROM_path_FN = FileName(rom_path)
     if not ROM_path_FN.isdir():
         kodi_set_error_status(st_dic, 'ROM directory does not exist. Aborting scanner.')
         return
@@ -7155,7 +7174,13 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
     kodi_reset_status(st_dic)
 
     # At this point paths have been verified and exists.
-    ROM_path_FN = FileName(cfg.settings['rom_path'])
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        rom_path = cfg.settings['rom_path_vanilla']
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        rom_path = cfg.settings['rom_path_2003_plus']
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
+    ROM_path_FN = FileName(rom_path)
     log_info('mame_scan_MAME_ROMs() ROM dir OP {}'.format(ROM_path_FN.getOriginalPath()))
     log_info('mame_scan_MAME_ROMs() ROM dir  P {}'.format(ROM_path_FN.getPath()))
 
@@ -7859,7 +7884,6 @@ def mame_scan_SL_ROMs(cfg, st_dic, options_dic, SL_dic):
                 for i, rom_file in enumerate(rom_list):
                     SL_ROMs_total += 1
                     SL_ROM_FN = utils_file_cache_search(SL_ROM_path_str, rom_file, SL_ROM_EXTS)
-                    # ROM_path = SL_ROM_path_str + '/' + rom_file
                     if SL_ROM_FN:
                         have_rom_list[i] = True
                         m_have_str_list.append('HAVE ROM {}'.format(rom_file))
