@@ -43,7 +43,12 @@ import copy
 import datetime
 import os
 import subprocess
-import urllib.parse
+try:
+    import urlparse
+    ADDON_RUNNING_PYTHON_2 = True
+except:
+    import urllib.parse
+    ADDON_RUNNING_PYTHON_2 = False
 
 # --- Plugin database indices ---
 # _PATH is a filename | _DIR is a directory
@@ -322,7 +327,10 @@ def run_plugin(addon_argv):
     cfg.base_url = addon_argv[0]
     g_base_url = cfg.base_url
     cfg.addon_handle = int(addon_argv[1])
-    args = urllib.parse.parse_qs(addon_argv[2][1:])
+    if ADDON_RUNNING_PYTHON_2:
+        args = urlparse.parse_qs(addon_argv[2][1:])
+    else:
+        args = urllib.parse.parse_qs(addon_argv[2][1:])
     # log_debug('args = {}'.format(args))
     # Interestingly, if plugin is called as type executable then args is empty.
     # However, if plugin is called as type game then Kodi adds the following
@@ -528,93 +536,93 @@ def run_plugin(addon_argv):
 # Get Addon Settings. log_*() functions cannot be used here during normal operation.
 def get_settings(cfg):
     settings = cfg.settings
-    aobj = cfg.__addon__
 
     # --- Main operation ---
-    settings['op_mode_raw'] = aobj.getSettingInt('op_mode_raw')
-    settings['rom_path'] = aobj.getSettingString('rom_path')
+    settings['op_mode_raw'] = kodi_get_int_setting(cfg, 'op_mode_raw')
     # Vanilla MAME settings.
-    settings['enable_SL'] = aobj.getSettingBool('enable_SL')
-    settings['mame_prog'] = aobj.getSettingString('mame_prog')
-    settings['SL_hash_path'] = aobj.getSettingString('SL_hash_path')
+    settings['rom_path_vanilla'] = kodi_get_str_setting(cfg, 'rom_path_vanilla')
+    settings['enable_SL'] = kodi_get_bool_setting(cfg, 'enable_SL')
+    settings['mame_prog'] = kodi_get_str_setting(cfg, 'mame_prog')
+    settings['SL_hash_path'] = kodi_get_str_setting(cfg, 'SL_hash_path')
     # MAME 2003 Plus settings.
-    settings['retroarch_prog'] = aobj.getSettingString('retroarch_prog')
-    settings['libretro_dir'] = aobj.getSettingString('libretro_dir')
-    settings['xml_2003_path'] = aobj.getSettingString('xml_2003_path')
+    settings['rom_path_2003_plus'] = kodi_get_str_setting(cfg, 'rom_path_2003_plus')
+    settings['retroarch_prog'] = kodi_get_str_setting(cfg, 'retroarch_prog')
+    settings['libretro_dir'] = kodi_get_str_setting(cfg, 'libretro_dir')
+    settings['xml_2003_path'] = kodi_get_str_setting(cfg, 'xml_2003_path')
 
     # --- Optional paths ---
-    settings['assets_path'] = aobj.getSettingString('assets_path')
-    settings['dats_path'] = aobj.getSettingString('dats_path')
-    settings['chd_path'] = aobj.getSettingString('chd_path')
-    settings['samples_path'] = aobj.getSettingString('samples_path')
-    settings['SL_rom_path'] = aobj.getSettingString('SL_rom_path')
-    settings['SL_chd_path'] = aobj.getSettingString('SL_chd_path')
+    settings['assets_path'] = kodi_get_str_setting(cfg, 'assets_path')
+    settings['dats_path'] = kodi_get_str_setting(cfg, 'dats_path')
+    settings['chd_path'] = kodi_get_str_setting(cfg, 'chd_path')
+    settings['samples_path'] = kodi_get_str_setting(cfg, 'samples_path')
+    settings['SL_rom_path'] = kodi_get_str_setting(cfg, 'SL_rom_path')
+    settings['SL_chd_path'] = kodi_get_str_setting(cfg, 'SL_chd_path')
 
     # --- ROM sets ---
-    settings['mame_rom_set'] = aobj.getSettingInt('mame_rom_set')
-    settings['mame_chd_set'] = aobj.getSettingInt('mame_chd_set')
-    settings['SL_rom_set'] = aobj.getSettingInt('SL_rom_set')
-    settings['SL_chd_set'] = aobj.getSettingInt('SL_chd_set')
+    settings['mame_rom_set'] = kodi_get_int_setting(cfg, 'mame_rom_set')
+    settings['mame_chd_set'] = kodi_get_int_setting(cfg, 'mame_chd_set')
+    settings['SL_rom_set'] = kodi_get_int_setting(cfg, 'SL_rom_set')
+    settings['SL_chd_set'] = kodi_get_int_setting(cfg, 'SL_chd_set')
 
     # Misc separator
-    settings['filter_XML'] = aobj.getSettingString('filter_XML')
-    settings['generate_history_infolabel'] = aobj.getSettingBool('generate_history_infolabel')
+    settings['filter_XML'] = kodi_get_str_setting(cfg, 'filter_XML')
+    settings['generate_history_infolabel'] = kodi_get_bool_setting(cfg, 'generate_history_infolabel')
 
     # --- Display I ---
-    settings['display_launcher_notify'] = aobj.getSettingBool('display_launcher_notify')
-    settings['mame_view_mode'] = aobj.getSettingInt('mame_view_mode')
-    settings['sl_view_mode'] = aobj.getSettingInt('sl_view_mode')
-    settings['display_hide_Mature'] = aobj.getSettingBool('display_hide_Mature')
-    settings['display_hide_BIOS'] = aobj.getSettingBool('display_hide_BIOS')
-    settings['display_hide_imperfect'] = aobj.getSettingBool('display_hide_imperfect')
-    settings['display_hide_nonworking'] = aobj.getSettingBool('display_hide_nonworking')
-    settings['display_rom_available'] = aobj.getSettingBool('display_rom_available')
-    settings['display_chd_available'] = aobj.getSettingBool('display_chd_available')
-    settings['display_SL_items_available'] = aobj.getSettingBool('display_SL_items_available')
-    settings['display_MAME_flags'] = aobj.getSettingBool('display_MAME_flags')
-    settings['display_SL_flags'] = aobj.getSettingBool('display_SL_flags')
+    settings['display_launcher_notify'] = kodi_get_bool_setting(cfg, 'display_launcher_notify')
+    settings['mame_view_mode'] = kodi_get_int_setting(cfg, 'mame_view_mode')
+    settings['sl_view_mode'] = kodi_get_int_setting(cfg, 'sl_view_mode')
+    settings['display_hide_Mature'] = kodi_get_bool_setting(cfg, 'display_hide_Mature')
+    settings['display_hide_BIOS'] = kodi_get_bool_setting(cfg, 'display_hide_BIOS')
+    settings['display_hide_imperfect'] = kodi_get_bool_setting(cfg, 'display_hide_imperfect')
+    settings['display_hide_nonworking'] = kodi_get_bool_setting(cfg, 'display_hide_nonworking')
+    settings['display_rom_available'] = kodi_get_bool_setting(cfg, 'display_rom_available')
+    settings['display_chd_available'] = kodi_get_bool_setting(cfg, 'display_chd_available')
+    settings['display_SL_items_available'] = kodi_get_bool_setting(cfg, 'display_SL_items_available')
+    settings['display_MAME_flags'] = kodi_get_bool_setting(cfg, 'display_MAME_flags')
+    settings['display_SL_flags'] = kodi_get_bool_setting(cfg, 'display_SL_flags')
 
     # --- Display II ---
-    settings['display_main_filters'] = aobj.getSettingBool('display_main_filters')
-    settings['display_binary_filters'] = aobj.getSettingBool('display_binary_filters')
-    settings['display_catalog_filters'] = aobj.getSettingBool('display_catalog_filters')
-    settings['display_DAT_browser'] = aobj.getSettingBool('display_DAT_browser')
-    settings['display_SL_browser'] = aobj.getSettingBool('display_SL_browser')
-    settings['display_custom_filters'] = aobj.getSettingBool('display_custom_filters')
-    settings['display_ROLs'] = aobj.getSettingBool('display_ROLs')
-    settings['display_MAME_favs'] = aobj.getSettingBool('display_MAME_favs')
-    settings['display_MAME_most'] = aobj.getSettingBool('display_MAME_most')
-    settings['display_MAME_recent'] = aobj.getSettingBool('display_MAME_recent')
-    settings['display_SL_favs'] = aobj.getSettingBool('display_SL_favs')
-    settings['display_SL_most'] = aobj.getSettingBool('display_SL_most')
-    settings['display_SL_recent'] = aobj.getSettingBool('display_SL_recent')
-    settings['display_utilities'] = aobj.getSettingBool('display_utilities')
-    settings['display_global_reports'] = aobj.getSettingBool('display_global_reports')
+    settings['display_main_filters'] = kodi_get_bool_setting(cfg, 'display_main_filters')
+    settings['display_binary_filters'] = kodi_get_bool_setting(cfg, 'display_binary_filters')
+    settings['display_catalog_filters'] = kodi_get_bool_setting(cfg, 'display_catalog_filters')
+    settings['display_DAT_browser'] = kodi_get_bool_setting(cfg, 'display_DAT_browser')
+    settings['display_SL_browser'] = kodi_get_bool_setting(cfg, 'display_SL_browser')
+    settings['display_custom_filters'] = kodi_get_bool_setting(cfg, 'display_custom_filters')
+    settings['display_ROLs'] = kodi_get_bool_setting(cfg, 'display_ROLs')
+    settings['display_MAME_favs'] = kodi_get_bool_setting(cfg, 'display_MAME_favs')
+    settings['display_MAME_most'] = kodi_get_bool_setting(cfg, 'display_MAME_most')
+    settings['display_MAME_recent'] = kodi_get_bool_setting(cfg, 'display_MAME_recent')
+    settings['display_SL_favs'] = kodi_get_bool_setting(cfg, 'display_SL_favs')
+    settings['display_SL_most'] = kodi_get_bool_setting(cfg, 'display_SL_most')
+    settings['display_SL_recent'] = kodi_get_bool_setting(cfg, 'display_SL_recent')
+    settings['display_utilities'] = kodi_get_bool_setting(cfg, 'display_utilities')
+    settings['display_global_reports'] = kodi_get_bool_setting(cfg, 'display_global_reports')
 
     # --- Artwork / Assets ---
-    settings['display_hide_trailers'] = aobj.getSettingBool('display_hide_trailers')
-    settings['artwork_mame_icon'] = aobj.getSettingInt('artwork_mame_icon')
-    settings['artwork_mame_fanart'] = aobj.getSettingInt('artwork_mame_fanart')
-    settings['artwork_SL_icon'] = aobj.getSettingInt('artwork_SL_icon')
-    settings['artwork_SL_fanart'] = aobj.getSettingInt('artwork_SL_fanart')
+    settings['display_hide_trailers'] = kodi_get_bool_setting(cfg, 'display_hide_trailers')
+    settings['artwork_mame_icon'] = kodi_get_int_setting(cfg, 'artwork_mame_icon')
+    settings['artwork_mame_fanart'] = kodi_get_int_setting(cfg, 'artwork_mame_fanart')
+    settings['artwork_SL_icon'] = kodi_get_int_setting(cfg, 'artwork_SL_icon')
+    settings['artwork_SL_fanart'] = kodi_get_int_setting(cfg, 'artwork_SL_fanart')
 
     # --- Advanced ---
-    settings['media_state_action'] = aobj.getSettingInt('media_state_action')
-    settings['delay_tempo'] = aobj.getSettingInt('delay_tempo')
-    settings['suspend_audio_engine'] = aobj.getSettingBool('suspend_audio_engine')
-    settings['suspend_screensaver'] = aobj.getSettingBool('suspend_screensaver')
-    settings['toggle_window'] = aobj.getSettingBool('toggle_window')
-    settings['log_level'] = aobj.getSettingInt('log_level')
-    settings['debug_enable_MAME_render_cache'] = aobj.getSettingBool('debug_enable_MAME_render_cache')
-    settings['debug_enable_MAME_asset_cache']  = aobj.getSettingBool('debug_enable_MAME_asset_cache')
-    settings['debug_MAME_item_data'] = aobj.getSettingBool('debug_MAME_item_data')
-    settings['debug_MAME_ROM_DB_data'] = aobj.getSettingBool('debug_MAME_ROM_DB_data')
-    settings['debug_MAME_Audit_DB_data'] = aobj.getSettingBool('debug_MAME_Audit_DB_data')
-    settings['debug_SL_item_data'] = aobj.getSettingBool('debug_SL_item_data')
-    settings['debug_SL_ROM_DB_data'] = aobj.getSettingBool('debug_SL_ROM_DB_data')
-    settings['debug_SL_Audit_DB_data'] = aobj.getSettingBool('debug_SL_Audit_DB_data')
+    settings['media_state_action'] = kodi_get_int_setting(cfg, 'media_state_action')
+    settings['delay_tempo'] = kodi_get_float_setting_as_int(cfg, 'delay_tempo')
+    settings['suspend_audio_engine'] = kodi_get_bool_setting(cfg, 'suspend_audio_engine')
+    settings['suspend_screensaver'] = kodi_get_bool_setting(cfg, 'suspend_screensaver')
+    settings['toggle_window'] = kodi_get_bool_setting(cfg, 'toggle_window')
+    settings['log_level'] = kodi_get_int_setting(cfg, 'log_level')
+    settings['debug_enable_MAME_render_cache'] = kodi_get_bool_setting(cfg, 'debug_enable_MAME_render_cache')
+    settings['debug_enable_MAME_asset_cache'] = kodi_get_bool_setting(cfg, 'debug_enable_MAME_asset_cache')
+    settings['debug_MAME_item_data'] = kodi_get_bool_setting(cfg, 'debug_MAME_item_data')
+    settings['debug_MAME_ROM_DB_data'] = kodi_get_bool_setting(cfg, 'debug_MAME_ROM_DB_data')
+    settings['debug_MAME_Audit_DB_data'] = kodi_get_bool_setting(cfg, 'debug_MAME_Audit_DB_data')
+    settings['debug_SL_item_data'] = kodi_get_bool_setting(cfg, 'debug_SL_item_data')
+    settings['debug_SL_ROM_DB_data'] = kodi_get_bool_setting(cfg, 'debug_SL_ROM_DB_data')
+    settings['debug_SL_Audit_DB_data'] = kodi_get_bool_setting(cfg, 'debug_SL_Audit_DB_data')
 
-    # --- Dump settings for DEBUG. Requires changes in run_plugin() to work ---
+    # --- Dump settings for DEBUG. ---
     # log_debug('Settings dump BEGIN')
     # for key in sorted(settings):
     #     log_debug('{} --> {:10s} {}'.format(key.rjust(21), str(settings[key]), type(settings[key])))
@@ -1024,24 +1032,28 @@ def set_render_root_data():
             ('Browse the contents of [COLOR orange]history.dat[/COLOR]. Note that '
              'history.dat is also available on the MAME machines and SL items context menu.'),
             misc_url_1_arg('catalog', 'History'),
+            COLOR_MAME_DAT_BROWSER,
         ],
         'MAMEINFO' : [
             'MAMEINFO DAT',
             ('Browse the contents of [COLOR orange]mameinfo.dat[/COLOR]. Note that '
              'mameinfo.dat is also available on the MAME machines context menu.'),
             misc_url_1_arg('catalog', 'MAMEINFO'),
+            COLOR_MAME_DAT_BROWSER,
         ],
         'Gameinit' : [
             'Gameinit DAT',
             ('Browse the contents of [COLOR orange]gameinit.dat[/COLOR]. Note that '
              'gameinit.dat is also available on the MAME machines context menu.'),
             misc_url_1_arg('catalog', 'Gameinit'),
+            COLOR_MAME_DAT_BROWSER,
         ],
         'Command' : [
             'Command DAT',
             ('Browse the contents of [COLOR orange]command.dat[/COLOR]. Note that '
              'command.dat is also available on the MAME machines context menu.'),
             misc_url_1_arg('catalog', 'Command'),
+            COLOR_MAME_DAT_BROWSER,
         ],
     }
 
@@ -1079,8 +1091,7 @@ def set_render_root_data():
         ],
     }
 
-    # Tuple: title, plot, URL, context_menu_list
-    root_special_CM = {
+    root_filters_CM = {
         'Custom_Filters' : [
             '[Custom MAME filters]',
             ('[COLOR orange]Custom filters[/COLOR] allows to generate machine '
@@ -1089,8 +1100,24 @@ def set_render_root_data():
              'complete default set of filters in XML format which can be edited.'),
             misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'),
             [('Setup custom filters', misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS'))],
-            COLOR_MAME_SPECIAL,
+            COLOR_MAME_CUSTOM_FILTERS,
         ],
+    }
+
+    root_ROLs_CM = {
+        'ROLs' : [
+            '[AEL Read Only Launchers]',
+            ('[COLOR orange]AEL Read Only Launchers[/COLOR] are special launchers '
+             'exported to AEL. You can select your Favourite MAME machines or setup a custom '
+             'filter to enjoy your MAME games in AEL togheter with other emulators.'),
+            misc_url_1_arg('command', 'SHOW_AEL_ROLS'),
+            [('Setup ROLs', misc_url_1_arg_RunPlugin('command', 'SETUP_AEL_ROLS'))],
+            COLOR_AEL_ROLS,
+        ],
+    }
+
+    # Tuple: title, plot, URL, context_menu_list
+    root_special_CM = {
         'MAME_Favs' : [
             '<Favourite MAME machines>',
             ('Display your [COLOR orange]Favourite MAME machines[/COLOR]. '
@@ -1145,6 +1172,8 @@ def set_render_root_data():
         'root_categories' : root_categories,
         'root_special' : root_special,
         'root_SL' : root_SL,
+        'root_filters_CM' : root_filters_CM,
+        'root_ROLs_CM' : root_ROLs_CM,
         'root_special_CM' : root_special_CM,
     }
 
@@ -1388,14 +1417,10 @@ def render_root_list(cfg):
 
     # --- Special launchers ---
     if cfg.settings['display_custom_filters']:
-        render_root_category_row_custom_CM(cfg, *rd['root_special_CM']['Custom_Filters'])
+        render_root_category_row_custom_CM(cfg, *rd['root_filters_CM']['Custom_Filters'])
 
     if cfg.settings['display_ROLs']:
-        ROLS_plot = ('[COLOR orange]AEL Read Only Launchers[/COLOR] are special launchers '
-            'exported to AEL. You can select your Favourite MAME machines or setup a custom '
-            'filter to enjoy your MAME games in AEL togheter with other emulators.')
-        URL = misc_url_1_arg('command', 'SHOW_AEL_ROLS')
-        render_root_category_row('[AEL Read Only Launchers]', ROLS_plot, URL)
+        render_root_category_row_custom_CM(cfg, *rd['root_ROLs_CM']['ROLs'])
 
     # --- MAME Favourite stuff ---
     if cfg.settings['display_MAME_favs']:
@@ -3484,8 +3509,8 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
         romof = machine['romof'] if machine['romof'] else 'None'
         info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
-            '[COLOR violet]romof[/COLOR] {}'.format(romof))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
+            '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
+            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
             '[COLOR skyblue]isDevice[/COLOR] {}'.format(str(machine['isDevice'])))
         info_text.append('')
 
@@ -3506,21 +3531,20 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
                 elif not rom['bios'] and not rom['merge']: r_type = 'ROM'
                 else:                                      r_type = 'ERROR'
                 table_row = [r_type, str(rom['name']), str(rom['size']),
-                             str(rom['crc']), str(rom['merge']), str(rom['bios'])]
+                    str(rom['crc']), str(rom['merge']), str(rom['bios'])]
                 table_str.append(table_row)
 
         # --- Table: device ROMs ---
         if device_roms_list:
             for rom in device_roms_list:
                 table_row = ['DROM', str(rom['name']), str(rom['size']),
-                             str(rom['crc']), str(rom['merge']), str(rom['device_name'])]
+                    str(rom['crc']), str(rom['merge']), str(rom['device_name'])]
                 table_str.append(table_row)
 
         # --- Table: machine CHDs ---
         if roms_dic['disks']:
             for disk in roms_dic['disks']:
-                table_row = ['DISK', str(disk['name']), '',
-                             str(disk['sha1'])[0:8], str(disk['merge']), '']
+                table_row = ['DISK', str(disk['name']), '', str(disk['sha1'])[0:8], str(disk['merge']), '']
                 table_str.append(table_row)
 
         # --- Table: machine Samples ---
@@ -3583,8 +3607,8 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
         romof = machine['romof'] if machine['romof'] else 'None'
         info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
-            '[COLOR violet]romof[/COLOR] {}'.format(romof))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
+            '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
+            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
             '[COLOR skyblue]isDevice[/COLOR] {}'.format(str(machine['isDevice'])))
         info_text.append('')
 
@@ -3605,7 +3629,7 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
                 table_row = [str(m_rom['type']), str(m_rom['name']), '', '', str(m_rom['location'])]
             else:
                 table_row = [str(m_rom['type']), str(m_rom['name']), str(m_rom['size']),
-                             str(m_rom['crc']), str(m_rom['location'])]
+                    str(m_rom['crc']), str(m_rom['location'])]
             table_str.append(table_row)
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
@@ -3635,12 +3659,12 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         rom = roms[SL_ROM]
         rom_db_list = roms_db[SL_ROM]
 
+        cloneof = rom['cloneof'] if rom['cloneof'] else 'None'
         info_text = []
         info_text.append('[COLOR violet]SL_name[/COLOR] {}'.format(SL_name))
         info_text.append('[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM))
         info_text.append('[COLOR violet]description[/COLOR] {}'.format(rom['description']))
-        if rom['cloneof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(rom['cloneof']))
+        info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(cloneof))
         info_text.append('')
 
         table_str = []
@@ -3690,12 +3714,12 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         rom = roms[SL_ROM]
         rom_db_list = rom_audit_db[SL_ROM]
 
+        cloneof = rom['cloneof'] if rom['cloneof'] else 'None'
         info_text = []
         info_text.append('[COLOR violet]SL_name[/COLOR] {}'.format(SL_name))
         info_text.append('[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM))
         info_text.append('[COLOR violet]description[/COLOR] {}'.format(rom['description']))
-        if rom['cloneof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(rom['cloneof']))
+        info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(cloneof))
         info_text.append('')
 
         # table_str = [    ['left', 'left',         'left', 'left',     'left'] ]
@@ -3780,8 +3804,8 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
         romof = machine['romof'] if machine['romof'] else 'None'
         info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
-            '[COLOR violet]romof[/COLOR] {}'.format(romof))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
+            '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
+            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
             '[COLOR skyblue]isDevice[/COLOR] {}'.format(str(machine['isDevice'])))
         info_text.append('')
 
@@ -3963,8 +3987,8 @@ def render_fav_machine_row(cfg, m_name, machine, m_assets, location):
     AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_CLONE if machine['cloneof'] else AEL_PCLONE_STAT_VALUE_PARENT
 
     # --- Assets/artwork ---
-    icon_path      = m_assets[g_mame_icon] if m_assets[g_mame_icon] else 'DefaultProgram.png'
-    fanart_path    = m_assets[g_mame_fanart]
+    icon_path      = m_assets[cfg.mame_icon] if m_assets[cfg.mame_icon] else 'DefaultProgram.png'
+    fanart_path    = m_assets[cfg.mame_fanart]
     banner_path    = m_assets['marquee']
     clearlogo_path = m_assets['clearlogo']
     poster_path    = m_assets['3dbox'] if m_assets['3dbox'] else m_assets['flyer']
@@ -4056,7 +4080,7 @@ def command_show_mame_fav(cfg):
     for m_name in fav_machines:
         machine = fav_machines[m_name]
         assets  = machine['assets']
-        render_fav_machine_row(m_name, machine, assets, LOCATION_MAME_FAVS)
+        render_fav_machine_row(cfg, m_name, machine, assets, LOCATION_MAME_FAVS)
     xbmcplugin.endOfDirectory(handle = cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 #
@@ -4194,7 +4218,7 @@ def command_show_mame_most_played(cfg):
     sorted_dic = sorted(most_played_roms_dic, key = lambda x : most_played_roms_dic[x]['launch_count'], reverse = True)
     for machine_name in sorted_dic:
         machine = most_played_roms_dic[machine_name]
-        render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_MOST_PLAYED)
+        render_fav_machine_row(cfg, machine['name'], machine, machine['assets'], LOCATION_MAME_MOST_PLAYED)
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 def command_context_manage_mame_most_played(cfg, machine_name):
@@ -4326,7 +4350,7 @@ def command_show_mame_recently_played(cfg):
 
     set_Kodi_unsorted_method(cfg)
     for machine in recent_roms_list:
-        render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_RECENT_PLAYED)
+        render_fav_machine_row(cfg, machine['name'], machine, machine['assets'], LOCATION_MAME_RECENT_PLAYED)
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 def command_context_manage_mame_recent_played(cfg, machine_name):
@@ -5211,7 +5235,7 @@ def command_show_custom_filters(cfg):
     for f_name in sorted(filter_index_dic, key = lambda x: filter_index_dic[x]['order'], reverse = False):
         num_machines = filter_index_dic[f_name]['num_machines']
         machine_str = 'machine' if num_machines == 1 else 'machines'
-        render_custom_filter_item_row(f_name, num_machines, machine_str, filter_index_dic[f_name]['plot'])
+        render_custom_filter_item_row(cfg, f_name, num_machines, machine_str, filter_index_dic[f_name]['plot'])
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_custom_filter_item_row(cfg, f_name, num_machines, machine_str, plot):
@@ -5288,7 +5312,7 @@ def render_custom_filter_machines(cfg, filter_name):
         c_dic[m_name] = render_db_dic[m_name]['description']
     catalog_dic = {category_name : c_dic}
     # Render a flat list and ignore filters.
-    r_list = render_process_machines(catalog_dic, catalog_name, category_name,
+    r_list = render_process_machines(cfg, catalog_dic, catalog_name, category_name,
         render_db_dic, assets_db_dic, fav_machines)
     processing_ticks_end = time.time()
     processing_time = processing_ticks_end - processing_ticks_start
@@ -5296,7 +5320,7 @@ def render_custom_filter_machines(cfg, filter_name):
     # --- Commit ROMs ---
     rendering_ticks_start = time.time()
     set_Kodi_all_sorting_methods(cfg)
-    render_commit_machines(r_list)
+    render_commit_machines(cfg, r_list)
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
     rendering_ticks_end = time.time()
     rendering_time = rendering_ticks_end - rendering_ticks_start
@@ -6534,6 +6558,8 @@ def command_exec_utility(cfg, which_utility):
         # --- Mandatory stuff ---
         slist.append('[COLOR orange]MAME executable[/COLOR]')
         if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+            # ROM path is mandatory.
+            aux_check_dir_ERR(slist, cfg.settings['rom_path_vanilla'], 'MAME ROM path')
             # Vanilla MAME checks.
             if cfg.settings['mame_prog']:
                 if FileName(cfg.settings['mame_prog']).exists():
@@ -6544,6 +6570,8 @@ def command_exec_utility(cfg, which_utility):
                 slist.append('{} MAME executable not set'.format(ERR))
         elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
             # MAME 2003 Plus checks.
+            # ROM path is mandatory.
+            aux_check_dir_ERR(slist, cfg.settings['rom_path_2003_plus'], 'MAME ROM path')
             # Retroarch executable.
             if cfg.settings['retroarch_prog']:
                 if FileName(cfg.settings['retroarch_prog']).exists():
@@ -6570,8 +6598,6 @@ def command_exec_utility(cfg, which_utility):
                 slist.append('{} MAME 2003 Plus XML not set'.format(ERR))
         else:
             slist.append('{} Unknown op_mode {}'.format(ERR, cfg.settings['op_mode']))
-        # ROM path is mandatory.
-        aux_check_dir_ERR(slist, cfg.settings['rom_path'], 'MAME ROM path')
         slist.append('')
 
         slist.append('[COLOR orange]MAME optional paths[/COLOR]')
@@ -7367,12 +7393,9 @@ def command_exec_report(cfg, which_report):
 # Launch MAME machine. Syntax: $ mame <machine_name> [options]
 # Example: $ mame dino
 #
-def run_machine(machine_name, location):
+def run_machine(cfg, machine_name, location):
     log_info('run_machine() Launching MAME machine  "{}"'.format(machine_name))
     log_info('run_machine() Launching MAME location "{}"'.format(location))
-
-    # --- Get paths ---
-    mame_prog_FN = FileName(cfg.settings['mame_prog'])
 
     # --- Load databases ---
     control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
@@ -7404,11 +7427,18 @@ def run_machine(machine_name, location):
         kodi_dialog_OK('Unknown location = "{}". This is a bug, please report it.'.format(location))
         return
 
-    # >> Check if ROM exist
-    if not cfg.settings['rom_path']:
+    # Check if ROM exist
+    # Check if ROM ZIP file exists.
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        rom_path = cfg.settings['rom_path_vanilla']
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        rom_path = cfg.settings['rom_path_2003_plus']
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
+    if not rom_path:
         kodi_dialog_OK('ROM directory not configured.')
         return
-    ROM_path_FN = FileName(cfg.settings['rom_path'])
+    ROM_path_FN = FileName(rom_path)
     if not ROM_path_FN.isdir():
         kodi_dialog_OK('ROM directory does not exist.')
         return
@@ -7429,6 +7459,12 @@ def run_machine(machine_name, location):
     BIOS_name = ''
 
     # Launch machine using subprocess module.
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        mame_prog_FN = FileName(cfg.settings['mame_prog'])
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        mame_prog_FN = FileName(cfg.settings['retroarch_prog'])
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
     log_debug('run_machine() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
     log_debug('run_machine() mame_dir     "{}"'.format(mame_dir))
@@ -7463,10 +7499,21 @@ def run_machine(machine_name, location):
     utils_write_JSON_file(cfg.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
 
     # --- Build final arguments to launch MAME ---
-    # arg_list = [mame_prog_FN.getPath(), '-window', machine_name]
-    arg_list = [mame_prog_FN.getPath(), machine_name]
-    if BIOS_name:
-        arg_list.extend(['-bios', BIOS_name])
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        # arg_list = [mame_prog_FN.getPath(), '-window', machine_name]
+        arg_list = [mame_prog_FN.getPath(), machine_name]
+        if BIOS_name: arg_list.extend(['-bios', BIOS_name])
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        if is_windows():
+            core_path = os.path.join(cfg.settings['libretro_dir'], 'mame2003_plus_libretro.dll')
+        elif is_linux():
+            core_path = os.path.join(cfg.settings['libretro_dir'], 'mame2003_plus_libretro.so')
+        else:
+            raise TypeError('Unsupported platform "{}"'.format(cached_sys_platform))
+        machine_path = os.path.join(cfg.settings['rom_path_2003_plus'], machine_name + '.zip')
+        arg_list = [mame_prog_FN.getPath(), '-L', core_path, machine_path]
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
     log_info('arg_list = {}'.format(arg_list))
 
     # --- User notification ---
@@ -7477,12 +7524,12 @@ def run_machine(machine_name, location):
         return
 
     # --- Run MAME ---
-    run_before_execution()
+    run_before_execution(cfg)
     run_process(cfg, arg_list, mame_dir)
-    run_after_execution()
+    run_after_execution(cfg)
     # Refresh list so Most Played and Recently played get updated.
-    kodi_refresh_container()
     log_info('run_machine() Exiting function.')
+    kodi_refresh_container()
 
 #
 # Launch a SL machine. See http://docs.mamedev.org/usingmame/usingmame.html
@@ -7538,7 +7585,7 @@ def run_machine(machine_name, location):
 #
 # Most common cases are A) and C).
 #
-def run_SL_machine(SL_name, SL_ROM_name, location):
+def run_SL_machine(cfg, SL_name, SL_ROM_name, location):
     SL_LAUNCH_WITH_MEDIA = 100
     SL_LAUNCH_NO_MEDIA   = 200
     log_info('run_SL_machine() Launching SL machine (location = {}) ...'.format(location))
@@ -7782,7 +7829,7 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
     kodi_refresh_container()
     log_info('run_SL_machine() Exiting function.')
 
-def run_before_execution():
+def run_before_execution(cfg):
     global g_flag_kodi_was_playing
     global g_flag_kodi_audio_suspended
     global g_flag_kodi_toggle_fullscreen
@@ -7851,7 +7898,7 @@ def run_process(cfg, arg_list, mame_dir):
     log_info('run_process() Function BEGIN...')
 
     # --- Prevent a console window to be shown in Windows. Not working yet! ---
-    if sys.platform == 'win32':
+    if is_windows():
         log_info('run_process() Platform is win32. Creating _info structure')
         _info = subprocess.STARTUPINFO()
         _info.dwFlags = subprocess.STARTF_USESHOWWINDOW
@@ -7867,18 +7914,20 @@ def run_process(cfg, arg_list, mame_dir):
         # SW_SHOWNORMAL = 1
         # MAME console window is shown, MAME graphical window on top, Kodi on bottom.
         _info.wShowWindow = 1
-    else:
+    elif is_linux():
         log_info('run_process() _info is None')
         _info = None
+    else:
+        raise TypeError('Unsupported platform "{}"'.format(cached_sys_platform))
 
     # --- Run MAME ---
     f = io.open(cfg.MAME_OUTPUT_PATH.getPath(), 'wb')
-    p = subprocess.Popen(arg_list, cwd=mame_dir, startupinfo=_info, stdout=f, stderr=subprocess.STDOUT)
+    p = subprocess.Popen(arg_list, cwd = mame_dir, startupinfo = _info, stdout = f, stderr = subprocess.STDOUT)
     p.wait()
     f.close()
     log_debug('run_process() function ENDS')
 
-def run_after_execution():
+def run_after_execution(cfg):
     log_info('run_after_execution() Function BEGIN ...')
 
     # --- Stop Kodi some time ---

@@ -3089,8 +3089,8 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
                 m_rom['status_colour'] = '[COLOR green]{}[/COLOR]'.format(m_rom['status'])
                 continue
 
-            # >> Test if ZIP file exists (use cached data). ZIP file must be in the cache always
-            # >> at this point.
+            # Test if ZIP file exists (use cached data). ZIP file must be in the cache always
+            # at this point.
             zip_FN = FileName(settings['rom_path']).pjoin(set_name + '.zip')
             zip_path = zip_FN.getPath()
             # log_debug('ZIP {}'.format(zip_FN.getPath()))
@@ -5984,8 +5984,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
         if render['isDevice']: continue
         for sl_name in machine['softwarelists']:
             catalog_key = sl_name
-            if catalog_key in SL_names_dic:
-                catalog_key = SL_names_dic[catalog_key]
+            if catalog_key in SL_names_dic: catalog_key = SL_names_dic[catalog_key]
             if catalog_key in catalog_parents:
                 catalog_parents[catalog_key][parent_name] = render['description']
                 catalog_all[catalog_key][parent_name] = render['description']
@@ -5993,6 +5992,13 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
                 catalog_parents[catalog_key] = { parent_name : render['description'] }
                 catalog_all[catalog_key] = { parent_name : render['description'] }
             mame_catalog_add_clones(parent_name, main_pclone_dic, renderdb_dic, catalog_all[catalog_key])
+    # Add orphaned Software Lists (SL that do not have an associated machine).
+    for sl_name in SL_names_dic:
+        catalog_key = sl_name
+        if catalog_key in SL_names_dic: catalog_key = SL_names_dic[catalog_key]
+        if catalog_key in catalog_parents: continue
+        catalog_parents[catalog_key] = {}
+        catalog_all[catalog_key] = {}
     mame_cache_index_builder('BySL', cache_index_dic, catalog_all, catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
     utils_write_JSON_file(cfg.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
@@ -7095,10 +7101,16 @@ def mame_check_before_scan_MAME_ROMs(cfg, st_dic, options_dic, control_dic):
 
     # ROM scanning is mandatory, even if ROM directory is empty.
     # Get paths and check they exist.
-    if not cfg.settings['rom_path']:
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        rom_path = cfg.settings['rom_path_vanilla']
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        rom_path = cfg.settings['rom_path_2003_plus']
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
+    if not rom_path:
         kodi_set_error_status(st_dic, 'ROM directory not configured. Aborting scanner.')
         return
-    ROM_path_FN = FileName(cfg.settings['rom_path'])
+    ROM_path_FN = FileName(rom_path)
     if not ROM_path_FN.isdir():
         kodi_set_error_status(st_dic, 'ROM directory does not exist. Aborting scanner.')
         return
@@ -7834,7 +7846,7 @@ def mame_scan_SL_ROMs(cfg, st_dic, options_dic, SL_dic):
     r_all_list = []
     r_have_list = []
     r_miss_list = []
-    d_text = 'Scanning Sofware Lists ROM ZIPs and CHDs ...'
+    d_text = 'Scanning Sofware Lists ROM ZIPs and CHDs...'
     pDialog.startProgress(d_text, len(SL_index_dic))
     for SL_name in sorted(SL_index_dic):
         pDialog.updateProgressInc('{}\nSoftware List [COLOR orange]{}[/COLOR]'.format(d_text, SL_name))
@@ -7858,7 +7870,6 @@ def mame_scan_SL_ROMs(cfg, st_dic, options_dic, SL_dic):
                 for i, rom_file in enumerate(rom_list):
                     SL_ROMs_total += 1
                     SL_ROM_FN = utils_file_cache_search(SL_ROM_path_str, rom_file, SL_ROM_EXTS)
-                    # ROM_path = SL_ROM_path_str + '/' + rom_file
                     if SL_ROM_FN:
                         have_rom_list[i] = True
                         m_have_str_list.append('HAVE ROM {}'.format(rom_file))
