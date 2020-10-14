@@ -28,7 +28,7 @@ WIP      [CORE] AML/AEL must report the aspect ratio of artwork to the skin.
 
 WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that include the
          launcher information as well as the ROMs information. ROLs are generated with AML,
-         can be exported as XML and then used with AEL. AEL will trear ROLs are read-only
+         can be exported as XML and then used with AEL. AEL will handle ROLs as read-only
          (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
          and then imported again into AML.
 
@@ -50,7 +50,7 @@ WIP      [GRAPHICS] Optimize the generation of 3D boxes.
 WIP      [GRAPHICS] Respect the aspect ratio in 3D boxes. For example, if the poster in the
          front size of the 3D box is square the 3D box must be square, do not strech the
          poster texture. ScreenScraper respects the aspect ratio of the 3D boxes, have
-         a look at examples there.
+         a look at examples there (for example, see Mega Drive 3D box and PSX 3D box).
 
 WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed by AML.
          In this core, the XML is extracted using the MAME internal menu, which must be

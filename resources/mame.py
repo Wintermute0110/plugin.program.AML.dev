@@ -3050,8 +3050,8 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
             # log_debug('set_name       {}'.format(set_name))
             # log_debug('sample_name    {}'.format(sample_name))
 
-            # >> Test if ZIP file exists (use cached data). ZIP file must be in the cache always
-            # >> at this point.
+            # Test if ZIP file exists (use cached data). ZIP file must be in the cache always
+            # at this point.
             zip_FN = FileName(settings['samples_path']).pjoin(set_name + '.zip')
             zip_path = zip_FN.getPath()
             # log_debug('ZIP {}'.format(zip_FN.getPath()))
