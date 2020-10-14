@@ -3091,7 +3091,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
 
             # Test if ZIP file exists (use cached data). ZIP file must be in the cache always
             # at this point.
-            zip_FN = FileName(settings['rom_path']).pjoin(set_name + '.zip')
+            zip_FN = FileName(rom_path).pjoin(set_name + '.zip')
             zip_path = zip_FN.getPath()
             # log_debug('ZIP {}'.format(zip_FN.getPath()))
             if z_cache_status[zip_path] == ZIP_NOT_FOUND:
@@ -7166,7 +7166,13 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
     kodi_reset_status(st_dic)
 
     # At this point paths have been verified and exists.
-    ROM_path_FN = FileName(cfg.settings['rom_path'])
+    if cfg.settings['op_mode'] == OP_MODE_VANILLA:
+        rom_path = cfg.settings['rom_path_vanilla']
+    elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        rom_path = cfg.settings['rom_path_2003_plus']
+    else:
+        raise TypeError('Unknown op_mode "{}"'.format(cfg.settings['op_mode']))
+    ROM_path_FN = FileName(rom_path)
     log_info('mame_scan_MAME_ROMs() ROM dir OP {}'.format(ROM_path_FN.getOriginalPath()))
     log_info('mame_scan_MAME_ROMs() ROM dir  P {}'.format(ROM_path_FN.getPath()))
 

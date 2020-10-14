@@ -622,7 +622,7 @@ def get_settings(cfg):
     settings['debug_SL_ROM_DB_data'] = kodi_get_bool_setting(cfg, 'debug_SL_ROM_DB_data')
     settings['debug_SL_Audit_DB_data'] = kodi_get_bool_setting(cfg, 'debug_SL_Audit_DB_data')
 
-    # --- Dump settings for DEBUG. ---
+    # --- Dump settings for DEBUG ---
     # log_debug('Settings dump BEGIN')
     # for key in sorted(settings):
     #     log_debug('{} --> {:10s} {}'.format(key.rjust(21), str(settings[key]), type(settings[key])))
@@ -7427,7 +7427,6 @@ def run_machine(cfg, machine_name, location):
         kodi_dialog_OK('Unknown location = "{}". This is a bug, please report it.'.format(location))
         return
 
-    # Check if ROM exist
     # Check if ROM ZIP file exists.
     if cfg.settings['op_mode'] == OP_MODE_VANILLA:
         rom_path = cfg.settings['rom_path_vanilla']
