@@ -12,10 +12,24 @@
 # See the GNU General Public License for more details.
 
 # Advanced MAME Launcher constants and globals.
+# This module must not include any other addon module to avoid circular dependencies.
 
 # --- Python standard library ---
 from __future__ import unicode_literals
 from __future__ import division
+
+# Transitional code from Python 2 to Python 3 (https://github.com/benjaminp/six/blob/master/six.py)
+import sys
+ADDON_RUNNING_PYTHON_2 = sys.version_info[0] == 2
+ADDON_RUNNING_PYTHON_3 = sys.version_info[0] == 3
+if ADDON_RUNNING_PYTHON_3:
+    text_type = str
+    binary_type = bytes
+elif ADDON_RUNNING_PYTHON_2:
+    text_type = unicode
+    binary_type = str
+else:
+    raise TypeError('Unknown Python runtime version')
 
 # -------------------------------------------------------------------------------------------------
 # Addon configuration options
