@@ -78,10 +78,10 @@ import xml.etree.ElementTree as ET
 #
 # Rendering on AML Machine Information text window.
 # devices[0]:
-#   att_interface: string
+#   att_interface: text_type
 #   att_mandatory: text_type(bool)
-#   att_tag: string
-#   att_type: string
+#   att_tag: text_type
+#   att_type: text_type
 #   ext_names: text_type(string list),
 #   instance: text_type(dictionary),
 # devices[1]:
