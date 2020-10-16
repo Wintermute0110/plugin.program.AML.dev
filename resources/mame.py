@@ -2928,7 +2928,7 @@ def mame_build_SL_plots(cfg, SL_dic):
 ZIP_NOT_FOUND = 0
 BAD_ZIP_FILE  = 1
 ZIP_FILE_OK   = 2
-def mame_audit_MAME_machine(cfg, settings, rom_list, audit_dic):
+def mame_audit_MAME_machine(cfg, rom_list, audit_dic):
     if cfg.settings['op_mode'] == OP_MODE_VANILLA:
         rom_path = cfg.settings['rom_path_vanilla']
     elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:

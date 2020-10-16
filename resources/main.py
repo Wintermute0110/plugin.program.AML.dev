@@ -3798,7 +3798,7 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
 
         # --- Open ZIP file, check CRC32 and also CHDs ---
         audit_dic = db_new_audit_dic()
-        mame_audit_MAME_machine(cfg.settings, rom_list, audit_dic)
+        mame_audit_MAME_machine(cfg, rom_list, audit_dic)
 
         # --- Generate report ---
         info_text = []
