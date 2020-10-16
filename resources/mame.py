@@ -698,7 +698,7 @@ def mame_load_nplayers_ini(filename):
                 read_status = 2
                 continue
             else:
-                machine_name, current_category = unicode(line_list[0]), unicode(line_list[1])
+                machine_name, current_category = text_type(line_list[0]), text_type(line_list[1])
                 if __debug_do_list_categories: log_debug('"{}" / "{}"'.format(machine_name, current_category))
                 ini_dic['categories'].add(current_category)
                 if machine_name in ini_dic['data']:
@@ -707,7 +707,7 @@ def mame_load_nplayers_ini(filename):
                     # ini_dic['data'][machine_name].add(current_category)
                     # log_debug('machine "{}"'.format(machine_name))
                     # log_debug('current_category "{}"'.format(current_category))
-                    # log_debug('"{}"'.format(unicode(ini_dic['data'][machine_name])))
+                    # log_debug('"{}"'.format(text_type(ini_dic['data'][machine_name])))
                     # raise ValueError('unique_categories False')
                 else:
                     ini_dic['data'][machine_name] =  [current_category]
@@ -903,7 +903,7 @@ def mame_load_INI_datfile_simple(filename):
         elif fsm_status == FSM_FOLDER_NAME:
             m = re.search(r'^\[(.*)\]', stripped_line)
             if m:
-                current_category = unicode(m.group(1))
+                current_category = text_type(m.group(1))
                 if current_category in ini_dic['categories']:
                     raise ValueError('Repeated category {}'.format(current_category))
                 ini_dic['categories'].add(current_category)
@@ -1770,7 +1770,7 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
         slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {}".format(machine['ver_mame_str']))
     # Most Played Favourites special fields
     if 'launch_count' in machine:
-        slist.append("[COLOR slateblue]launch_count[/COLOR]: {}".format(unicode(machine['launch_count'])))
+        slist.append("[COLOR slateblue]launch_count[/COLOR]: {}".format(text_type(machine['launch_count'])))
 
     # Standard fields in Render database
     slist.append("[COLOR violet]cloneof[/COLOR]: '{}'".format(machine['cloneof']))
@@ -1786,54 +1786,54 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
 
     # Standard fields in Main database
     slist.append('\n[COLOR orange]Machine Main data[/COLOR]')
-    slist.append("[COLOR skyblue]alltime[/COLOR]: {}".format(unicode(machine['alltime'])))
-    slist.append("[COLOR skyblue]artwork[/COLOR]: {}".format(unicode(machine['artwork'])))
+    slist.append("[COLOR skyblue]alltime[/COLOR]: {}".format(text_type(machine['alltime'])))
+    slist.append("[COLOR skyblue]artwork[/COLOR]: {}".format(text_type(machine['artwork'])))
     slist.append("[COLOR violet]bestgames[/COLOR]: '{}'".format(machine['bestgames']))
-    slist.append("[COLOR skyblue]category[/COLOR]: {}".format(unicode(machine['category'])))
+    slist.append("[COLOR skyblue]category[/COLOR]: {}".format(text_type(machine['category'])))
     slist.append("[COLOR violet]catlist[/COLOR]: '{}'".format(machine['catlist']))
     slist.append("[COLOR violet]catver[/COLOR]: '{}'".format(machine['catver']))
-    slist.append("[COLOR skyblue]chip_cpu_name[/COLOR]: {}".format(unicode(machine['chip_cpu_name'])))
+    slist.append("[COLOR skyblue]chip_cpu_name[/COLOR]: {}".format(text_type(machine['chip_cpu_name'])))
     # --- Devices list is a special case ---
     if machine['devices']:
         for i, device in enumerate(machine['devices']):
             slist.append("[COLOR lime]devices[/COLOR][{}]:".format(i))
             slist.append("  [COLOR violet]att_type[/COLOR]: {}".format(device['att_type']))
             slist.append("  [COLOR violet]att_tag[/COLOR]: {}".format(device['att_tag']))
-            slist.append("  [COLOR skyblue]att_mandatory[/COLOR]: {}".format(unicode(device['att_mandatory'])))
+            slist.append("  [COLOR skyblue]att_mandatory[/COLOR]: {}".format(text_type(device['att_mandatory'])))
             slist.append("  [COLOR violet]att_interface[/COLOR]: {}".format(device['att_interface']))
-            slist.append("  [COLOR skyblue]instance[/COLOR]: {}".format(unicode(device['instance'])))
-            slist.append("  [COLOR skyblue]ext_names[/COLOR]: {}".format(unicode(device['ext_names'])))
+            slist.append("  [COLOR skyblue]instance[/COLOR]: {}".format(text_type(device['instance'])))
+            slist.append("  [COLOR skyblue]ext_names[/COLOR]: {}".format(text_type(device['ext_names'])))
     else:
         slist.append("[COLOR lime]devices[/COLOR]: []")
-    slist.append("[COLOR skyblue]display_height[/COLOR]: {}".format(unicode(machine['display_height'])))
-    slist.append("[COLOR skyblue]display_refresh[/COLOR]: {}".format(unicode(machine['display_refresh'])))
-    slist.append("[COLOR skyblue]display_rotate[/COLOR]: {}".format(unicode(machine['display_rotate'])))
-    slist.append("[COLOR skyblue]display_type[/COLOR]: {}".format(unicode(machine['display_type'])))
-    slist.append("[COLOR skyblue]display_width[/COLOR]: {}".format(unicode(machine['display_width'])))
+    slist.append("[COLOR skyblue]display_height[/COLOR]: {}".format(text_type(machine['display_height'])))
+    slist.append("[COLOR skyblue]display_refresh[/COLOR]: {}".format(text_type(machine['display_refresh'])))
+    slist.append("[COLOR skyblue]display_rotate[/COLOR]: {}".format(text_type(machine['display_rotate'])))
+    slist.append("[COLOR skyblue]display_type[/COLOR]: {}".format(text_type(machine['display_type'])))
+    slist.append("[COLOR skyblue]display_width[/COLOR]: {}".format(text_type(machine['display_width'])))
     slist.append("[COLOR violet]genre[/COLOR]: '{}'".format(machine['genre']))
     # --- input is a special case ---
     if machine['input']:
         # Print attributes
         slist.append("[COLOR lime]input[/COLOR]:")
-        slist.append("  [COLOR skyblue]att_coins[/COLOR]: {}".format(unicode(machine['input']['att_coins'])))
-        slist.append("  [COLOR skyblue]att_players[/COLOR]: {}".format(unicode(machine['input']['att_players'])))
-        slist.append("  [COLOR skyblue]att_service[/COLOR]: {}".format(unicode(machine['input']['att_service'])))
-        slist.append("  [COLOR skyblue]att_tilt[/COLOR]: {}".format(unicode(machine['input']['att_tilt'])))
+        slist.append("  [COLOR skyblue]att_coins[/COLOR]: {}".format(text_type(machine['input']['att_coins'])))
+        slist.append("  [COLOR skyblue]att_players[/COLOR]: {}".format(text_type(machine['input']['att_players'])))
+        slist.append("  [COLOR skyblue]att_service[/COLOR]: {}".format(text_type(machine['input']['att_service'])))
+        slist.append("  [COLOR skyblue]att_tilt[/COLOR]: {}".format(text_type(machine['input']['att_tilt'])))
         # Print control tag list
         for i, control in enumerate(machine['input']['control_list']):
             slist.append("[COLOR lime]control[/COLOR][{}]:".format(i))
             slist.append("  [COLOR violet]type[/COLOR]: {}".format(control['type']))
-            slist.append("  [COLOR skyblue]player[/COLOR]: {}".format(unicode(control['player'])))
-            slist.append("  [COLOR skyblue]buttons[/COLOR]: {}".format(unicode(control['buttons'])))
-            slist.append("  [COLOR skyblue]ways[/COLOR]: {}".format(unicode(control['ways'])))
+            slist.append("  [COLOR skyblue]player[/COLOR]: {}".format(text_type(control['player'])))
+            slist.append("  [COLOR skyblue]buttons[/COLOR]: {}".format(text_type(control['buttons'])))
+            slist.append("  [COLOR skyblue]ways[/COLOR]: {}".format(text_type(control['ways'])))
     else:
         slist.append("[COLOR lime]input[/COLOR]: []")
-    slist.append("[COLOR skyblue]isDead[/COLOR]: {}".format(unicode(machine['isDead'])))
-    slist.append("[COLOR skyblue]isMechanical[/COLOR]: {}".format(unicode(machine['isMechanical'])))
+    slist.append("[COLOR skyblue]isDead[/COLOR]: {}".format(text_type(machine['isDead'])))
+    slist.append("[COLOR skyblue]isMechanical[/COLOR]: {}".format(text_type(machine['isMechanical'])))
     slist.append("[COLOR violet]romof[/COLOR]: '{}'".format(machine['romof']))
     slist.append("[COLOR violet]sampleof[/COLOR]: '{}'".format(machine['sampleof']))
     slist.append("[COLOR skyblue]series[/COLOR]: '{}'".format(machine['series']))
-    slist.append("[COLOR skyblue]softwarelists[/COLOR]: {}".format(unicode(machine['softwarelists'])))
+    slist.append("[COLOR skyblue]softwarelists[/COLOR]: {}".format(text_type(machine['softwarelists'])))
     slist.append("[COLOR violet]sourcefile[/COLOR]: '{}'".format(machine['sourcefile']))
     slist.append("[COLOR violet]veradded[/COLOR]: '{}'".format(machine['veradded']))
 
@@ -1867,10 +1867,10 @@ def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL
         slist.append("[COLOR slateblue]SL_name[/COLOR]: '{}'".format(rom['SL_name']))
     slist.append("[COLOR violet]cloneof[/COLOR]: '{}'".format(rom['cloneof']))
     slist.append("[COLOR violet]description[/COLOR]: '{}'".format(rom['description']))
-    slist.append("[COLOR skyblue]hasCHDs[/COLOR]: {}".format(unicode(rom['hasCHDs'])))
-    slist.append("[COLOR skyblue]hasROMs[/COLOR]: {}".format(unicode(rom['hasROMs'])))
+    slist.append("[COLOR skyblue]hasCHDs[/COLOR]: {}".format(text_type(rom['hasCHDs'])))
+    slist.append("[COLOR skyblue]hasROMs[/COLOR]: {}".format(text_type(rom['hasROMs'])))
     if 'launch_count' in rom:
-        slist.append("[COLOR slateblue]launch_count[/COLOR]: '{}'".format(unicode(rom['launch_count'])))
+        slist.append("[COLOR slateblue]launch_count[/COLOR]: '{}'".format(text_type(rom['launch_count'])))
     if 'launch_machine' in rom:
         slist.append("[COLOR slateblue]launch_machine[/COLOR]: '{}'".format(rom['launch_machine']))
     if rom['parts']:
@@ -1901,8 +1901,8 @@ def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL
 
     slist.append('\n[COLOR orange]Software List {}[/COLOR]'.format(SL_name))
     slist.append("[COLOR violet]display_name[/COLOR]: '{}'".format(SL_dic['display_name']))
-    slist.append("[COLOR skyblue]num_with_CHDs[/COLOR]: {}".format(unicode(SL_dic['num_with_CHDs'])))
-    slist.append("[COLOR skyblue]num_with_ROMs[/COLOR]: {}".format(unicode(SL_dic['num_with_ROMs'])))
+    slist.append("[COLOR skyblue]num_with_CHDs[/COLOR]: {}".format(text_type(SL_dic['num_with_CHDs'])))
+    slist.append("[COLOR skyblue]num_with_ROMs[/COLOR]: {}".format(text_type(SL_dic['num_with_ROMs'])))
     slist.append("[COLOR violet]rom_DB_noext[/COLOR]: '{}'".format(SL_dic['rom_DB_noext']))
 
     slist.append('\n[COLOR orange]Runnable by[/COLOR]')
@@ -2326,30 +2326,30 @@ def mame_stats_audit_print_slist(cfg, slist, control_dic):
     table_str.append(['Type', 'Total', 'Good',   'Bad'])
     table_row = [
         'Machines with ROMs and/or CHDs',
-        unicode(control_dic['audit_MAME_machines_with_arch']),
-        unicode(control_dic['audit_MAME_machines_with_arch_OK']),
-        unicode(control_dic['audit_MAME_machines_with_arch_BAD']),
+        text_type(control_dic['audit_MAME_machines_with_arch']),
+        text_type(control_dic['audit_MAME_machines_with_arch_OK']),
+        text_type(control_dic['audit_MAME_machines_with_arch_BAD']),
     ]
     table_str.append(table_row)
     table_row = [
         'Machines with ROMs',
-        unicode(control_dic['audit_MAME_machines_with_ROMs']),
-        unicode(control_dic['audit_MAME_machines_with_ROMs_OK']),
-        unicode(control_dic['audit_MAME_machines_with_ROMs_BAD']),
+        text_type(control_dic['audit_MAME_machines_with_ROMs']),
+        text_type(control_dic['audit_MAME_machines_with_ROMs_OK']),
+        text_type(control_dic['audit_MAME_machines_with_ROMs_BAD']),
     ]
     table_str.append(table_row)
     table_row = [
         'Machines with CHDs',
-        unicode(control_dic['audit_MAME_machines_with_CHDs']),
-        unicode(control_dic['audit_MAME_machines_with_CHDs_OK']),
-        unicode(control_dic['audit_MAME_machines_with_CHDs_BAD']),
+        text_type(control_dic['audit_MAME_machines_with_CHDs']),
+        text_type(control_dic['audit_MAME_machines_with_CHDs_OK']),
+        text_type(control_dic['audit_MAME_machines_with_CHDs_BAD']),
     ]
     table_str.append(table_row)
     table_row = [
         'Machines with Samples',
-        unicode(control_dic['audit_MAME_machines_with_SAMPLES']),
-        unicode(control_dic['audit_MAME_machines_with_SAMPLES_OK']),
-        unicode(control_dic['audit_MAME_machines_with_SAMPLES_BAD']),
+        text_type(control_dic['audit_MAME_machines_with_SAMPLES']),
+        text_type(control_dic['audit_MAME_machines_with_SAMPLES_OK']),
+        text_type(control_dic['audit_MAME_machines_with_SAMPLES_BAD']),
     ]
     table_str.append(table_row)
     slist.extend(text_render_table_str(table_str))
@@ -2362,23 +2362,23 @@ def mame_stats_audit_print_slist(cfg, slist, control_dic):
         table_str.append(['Type', 'Total', 'Good',   'Bad'])
         table_row = [
             'SL items with ROMs and/or CHDs',
-            unicode(control_dic['audit_SL_items_with_arch']),
-            unicode(control_dic['audit_SL_items_with_arch_OK']),
-            unicode(control_dic['audit_SL_items_with_arch_BAD']),
+            text_type(control_dic['audit_SL_items_with_arch']),
+            text_type(control_dic['audit_SL_items_with_arch_OK']),
+            text_type(control_dic['audit_SL_items_with_arch_BAD']),
         ]
         table_str.append(table_row)
         table_row = [
             'SL items with ROMs',
-            unicode(control_dic['audit_SL_items_with_arch_ROM']),
-            unicode(control_dic['audit_SL_items_with_arch_ROM_OK']),
-            unicode(control_dic['audit_SL_items_with_arch_ROM_BAD']),
+            text_type(control_dic['audit_SL_items_with_arch_ROM']),
+            text_type(control_dic['audit_SL_items_with_arch_ROM_OK']),
+            text_type(control_dic['audit_SL_items_with_arch_ROM_BAD']),
         ]
         table_str.append(table_row)
         table_row = [
             'SL items with CHDs',
-            unicode(control_dic['audit_SL_items_with_CHD']),
-            unicode(control_dic['audit_SL_items_with_CHD_OK']),
-            unicode(control_dic['audit_SL_items_with_CHD_BAD']),
+            text_type(control_dic['audit_SL_items_with_CHD']),
+            text_type(control_dic['audit_SL_items_with_CHD_OK']),
+            text_type(control_dic['audit_SL_items_with_CHD_BAD']),
         ]
         table_str.append(table_row)
         slist.extend(text_render_table_str(table_str))
@@ -2947,8 +2947,8 @@ def mame_audit_MAME_machine(cfg, rom_list, audit_dic):
     #
     # z_cache = {
     #     'zip_filename' : {
-    #         'fname' : {'size' : int, 'crc' : unicode},
-    #         'fname' : {'size' : int, 'crc' : unicode}, ...
+    #         'fname' : {'size' : int, 'crc' : text_type},
+    #         'fname' : {'size' : int, 'crc' : text_type}, ...
     #     }
     # }
     #
@@ -3217,13 +3217,13 @@ def mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, item_name, ro
                     z_info_file_size = z_info.file_size
                     z_info_crc_hex_str = '{0:08x}'.format(z_info.CRC)
                     # Unicode filenames in ZIP files cause problems later in this function.
-                    # zfile has type unicode and it's not encoded in utf-8.
+                    # zfile has type Unicode and it's not encoded in utf-8.
                     # How to know encoding of ZIP files?
                     # https://stackoverflow.com/questions/15918314/how-to-detect-string-byte-encoding/15918519
                     try:
-                        # zfile sometimes has type unicode, sometimes unicode. If type is unicode then
+                        # zfile sometimes has type Unicode, sometimes str. If type is str then
                         # try to decode it as UTF-8.
-                        if type(zfile) == unicode:
+                        if type(zfile) == text_type:
                             zfile_unicode = zfile
                         else:
                             zfile_unicode = zfile.decode('utf-8')
@@ -3565,7 +3565,7 @@ def mame_audit_MAME_all(cfg, db_dic_in):
         if not rom_list: continue
 
         # >> Check if audit was canceled.
-        # log_debug(unicode(rom_list))
+        # log_debug(text_type(rom_list))
         if 'status' not in rom_list[0]:
             report_list.append('Audit was canceled at machine {}'.format(m_name))
             break
@@ -3586,7 +3586,7 @@ def mame_audit_MAME_all(cfg, db_dic_in):
             elif m_rom['type'] == ROM_TYPE_SAMPLE:
                 table_row = [m_rom['type'], m_rom['name'], '', '', m_rom['location'], m_rom['status']]
             else:
-                table_row = [m_rom['type'], m_rom['name'], unicode(m_rom['size']), m_rom['crc'],
+                table_row = [m_rom['type'], m_rom['name'], text_type(m_rom['size']), m_rom['crc'],
                     m_rom['location'], m_rom['status']]
             table_str.append(table_row)
         local_str_list = text_render_table_str_NO_HEADER(table_str)
@@ -3811,7 +3811,7 @@ def mame_audit_SL_all(cfg, db_dic_in):
                     table_row = [m_rom['type'], '',
                                  m_rom['sha1'][0:8], m_rom['location'], m_rom['status']]
                 else:
-                    table_row = [m_rom['type'], unicode(m_rom['size']),
+                    table_row = [m_rom['type'], text_type(m_rom['size']),
                                  m_rom['crc'], m_rom['location'], m_rom['status']]
                 table_str.append(table_row)
             local_str_list = text_render_table_str_NO_HEADER(table_str)
@@ -4229,7 +4229,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
     for event, elem in xml_iter:
         # Debug the elements we are iterating from the XML file
         # log_debug('event "{}"'.format(event))
-        # log_debug('elem.tag "{}" | elem.text "{}" | elem.attrib "{}"'.format(elem.tag, elem.text, unicode(elem.attrib)))
+        # log_debug('elem.tag "{}" | elem.text "{}" | elem.attrib "{}"'.format(elem.tag, elem.text, text_type(elem.attrib)))
 
         # <machine> tag start event includes <machine> attributes
         if event == 'start' and (elem.tag == 'machine' or elem.tag == 'game'):
@@ -4304,21 +4304,21 @@ def mame_build_MAME_main_database(cfg, st_dic):
             m_render['nplayers'] = nplayers_dic['data'][m_name] if m_name in nplayers_dic['data'] else '[ Not set ]'
 
         elif event == 'start' and elem.tag == 'description':
-            m_render['description'] = unicode(elem.text)
+            m_render['description'] = text_type(elem.text)
 
         elif event == 'start' and elem.tag == 'year':
-            m_render['year'] = unicode(elem.text)
+            m_render['year'] = text_type(elem.text)
 
         elif event == 'start' and elem.tag == 'manufacturer':
-            m_render['manufacturer'] = unicode(elem.text)
+            m_render['manufacturer'] = text_type(elem.text)
 
         # Check in machine has BIOS
         # <biosset> name and description attributes are mandatory
         elif event == 'start' and elem.tag == 'biosset':
             # --- Add BIOS to ROMS_DB_PATH ---
             bios = db_new_bios_dic()
-            bios['name'] = unicode(elem.attrib['name'])
-            bios['description'] = unicode(elem.attrib['description'])
+            bios['name'] = text_type(elem.attrib['name'])
+            bios['description'] = text_type(elem.attrib['description'])
             m_roms['bios'].append(bios)
 
         # Check in machine has ROMs
@@ -4340,15 +4340,15 @@ def mame_build_MAME_main_database(cfg, st_dic):
 
             # --- Add BIOS to ROMS_DB_PATH ---
             rom = db_new_rom_dic()
-            rom['name']  = unicode(elem.attrib['name'])
-            rom['merge'] = unicode(elem.attrib['merge']) if 'merge' in elem.attrib else ''
-            rom['bios']  = unicode(elem.attrib['bios']) if 'bios' in elem.attrib else ''
+            rom['name']  = text_type(elem.attrib['name'])
+            rom['merge'] = text_type(elem.attrib['merge']) if 'merge' in elem.attrib else ''
+            rom['bios']  = text_type(elem.attrib['bios']) if 'bios' in elem.attrib else ''
             rom['size']  = int(elem.attrib['size']) if 'size' in elem.attrib else 0
-            rom['crc']   = unicode(elem.attrib['crc']) if 'crc' in elem.attrib else ''
+            rom['crc']   = text_type(elem.attrib['crc']) if 'crc' in elem.attrib else ''
             m_roms['roms'].append(rom)
 
             # --- ROMs SHA1 database ---
-            sha1 = unicode(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
+            sha1 = text_type(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
             # Only add valid ROMs, ignore invalid.
             if sha1:
                 rom_nonmerged_location = m_name + '/' + rom['name']
@@ -4367,18 +4367,18 @@ def mame_build_MAME_main_database(cfg, st_dic):
 
             # Add BIOS to ROMS_DB_PATH.
             disk = db_new_disk_dic()
-            disk['name']  = unicode(elem.attrib['name'])
-            disk['merge'] = unicode(elem.attrib['merge']) if 'merge' in elem.attrib else ''
-            disk['sha1']  = unicode(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
+            disk['name']  = text_type(elem.attrib['name'])
+            disk['merge'] = text_type(elem.attrib['merge']) if 'merge' in elem.attrib else ''
+            disk['sha1']  = text_type(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
             m_roms['disks'].append(disk)
 
         # Machine devices
         elif event == 'start' and elem.tag == 'device_ref':
-            device_list.append(unicode(elem.attrib['name']))
+            device_list.append(text_type(elem.attrib['name']))
 
         # Machine samples
         elif event == 'start' and elem.tag == 'sample':
-            sample = { 'name' : unicode(elem.attrib['name']) }
+            sample = { 'name' : text_type(elem.attrib['name']) }
             m_roms['samples'].append(sample)
 
         # Chips define CPU and audio circuits.
@@ -4490,7 +4490,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
 
         elif event == 'start' and elem.tag == 'driver':
             # status is #REQUIRED attribute
-            m_render['driver_status'] = unicode(elem.attrib['status'])
+            m_render['driver_status'] = text_type(elem.attrib['status'])
 
         elif event == 'start' and elem.tag == 'softwarelist':
             # name is #REQUIRED attribute
@@ -4717,7 +4717,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
     # The XML control file is required to create the new control_dic.
     # ---------------------------------------------------------------------------------------------
     log_info('Creating new control_dic.')
-    log_info('AML version unicode "{}"'.format(cfg.__addon_version__))
+    log_info('AML version string "{}"'.format(cfg.__addon_version__))
     log_info('AML version int {}'.format(cfg.__addon_version_int__))
     control_dic = db_new_control_dic()
     db_safe_edit(control_dic, 'op_mode_raw', cfg.settings['op_mode_raw'])
@@ -5444,7 +5444,7 @@ def mame_check_before_build_MAME_catalogs(cfg, st_dic, control_dic):
 #            'cat_key' : {
 #                'num_machines' : int,
 #                'num_parents' : int,
-#                'hash' : unicode
+#                'hash' : text_type
 #            }, ...
 #        }, ...
 #    }

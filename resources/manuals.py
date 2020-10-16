@@ -92,7 +92,7 @@ def _extract_image_from_XObject(xobj_dic):
     num_filters = 0
     filter_list = []
     if type(xobj_dic['/Filter']) is PdfArray:
-        # log_info('Filter list = "{}"'.format(unicode(xobj_dic['/Filter'])))
+        # log_info('Filter list = "{}"'.format(text_type(xobj_dic['/Filter'])))
         for filter_name in xobj_dic['/Filter']:
             filter_list.append(filter_name)
         num_filters = len(xobj_dic['/Filter'])
@@ -446,7 +446,7 @@ def manuals_get_PDF_filter_list(status_dic, man_file_FN, img_dir_FN):
                 num_filters = 0
                 filter_list = []
                 if type(xobj_dic['/Filter']) is PdfArray:
-                    # log_info('Filter list = "{}"'.format(unicode(xobj_dic['/Filter'])))
+                    # log_info('Filter list = "{}"'.format(text_type(xobj_dic['/Filter'])))
                     for filter_name in xobj_dic['/Filter']:
                         filter_list.append(filter_name)
                     num_filters = len(xobj_dic['/Filter'])

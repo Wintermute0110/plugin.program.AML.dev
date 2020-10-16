@@ -271,7 +271,7 @@ class Configuration:
 # g_base_url must be a global variable because it is used in the misc_url_*() functions.
 g_base_url = ''
 # Module loading time. This variable is read only (only modified here).
-g_time_str = unicode(datetime.datetime.now())
+g_time_str = text_type(datetime.datetime.now())
 
 # ---------------------------------------------------------------------------------------------
 # This is the plugin entry point.
@@ -625,7 +625,7 @@ def get_settings(cfg):
     # --- Dump settings for DEBUG ---
     # log_debug('Settings dump BEGIN')
     # for key in sorted(settings):
-    #     log_debug('{} --> {:10s} {}'.format(key.rjust(21), unicode(settings[key]), type(settings[key])))
+    #     log_debug('{} --> {:10s} {}'.format(key.rjust(21), text_type(settings[key]), type(settings[key])))
     # log_debug('Settings dump END')
 
 #
@@ -2227,9 +2227,9 @@ def render_catalog_clone_list(cfg, catalog_name, category_name, parent_name):
 # Returns a list of dictionaries:
 # r_list = [
 #   {
-#     'm_name' : unicode, 'render_name' : unicode,
+#     'm_name' : text_type, 'render_name' : text_type,
 #     'info' : {}, 'props' : {}, 'art' : {},
-#     'context' : [], 'URL' ; unicode
+#     'context' : [], 'URL' ; text_type
 #   }, ...
 # ]
 #
@@ -3510,8 +3510,8 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         romof = machine['romof'] if machine['romof'] else 'None'
         info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
             '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
-            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
-            '[COLOR skyblue]isDevice[/COLOR] {}'.format(unicode(machine['isDevice'])))
+            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(text_type(machine['isBIOS'])) +
+            '[COLOR skyblue]isDevice[/COLOR] {}'.format(text_type(machine['isDevice'])))
         info_text.append('')
 
         # --- Table header ---
@@ -3530,27 +3530,28 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
                 elif not rom['bios'] and     rom['merge']: r_type = 'MROM'
                 elif not rom['bios'] and not rom['merge']: r_type = 'ROM'
                 else:                                      r_type = 'ERROR'
-                table_row = [r_type, unicode(rom['name']), unicode(rom['size']),
-                    unicode(rom['crc']), unicode(rom['merge']), unicode(rom['bios'])]
+                table_row = [r_type, text_type(rom['name']), text_type(rom['size']),
+                    text_type(rom['crc']), text_type(rom['merge']), text_type(rom['bios'])]
                 table_str.append(table_row)
 
         # --- Table: device ROMs ---
         if device_roms_list:
             for rom in device_roms_list:
-                table_row = ['DROM', unicode(rom['name']), unicode(rom['size']),
-                    unicode(rom['crc']), unicode(rom['merge']), unicode(rom['device_name'])]
+                table_row = ['DROM', text_type(rom['name']), text_type(rom['size']),
+                    text_type(rom['crc']), text_type(rom['merge']), text_type(rom['device_name'])]
                 table_str.append(table_row)
 
         # --- Table: machine CHDs ---
         if roms_dic['disks']:
             for disk in roms_dic['disks']:
-                table_row = ['DISK', unicode(disk['name']), '', unicode(disk['sha1'])[0:8], unicode(disk['merge']), '']
+                table_row = ['DISK', text_type(disk['name']), '', text_type(disk['sha1'])[0:8],
+                    text_type(disk['merge']), '']
                 table_str.append(table_row)
 
         # --- Table: machine Samples ---
         if roms_dic['samples']:
             for sample in roms_dic['samples']:
-                table_row = ['SAM', unicode(sample['name']), '', '', '', '']
+                table_row = ['SAM', text_type(sample['name']), '', '', '', '']
                 table_str.append(table_row)
 
         # --- Table: BIOSes ---
@@ -3559,7 +3560,7 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
             bios_table_str.append(['right',     'left'])
             bios_table_str.append(['BIOS name', 'Description'])
             for bios in roms_dic['bios']:
-                table_row = [unicode(bios['name']), unicode(bios['description'])]
+                table_row = [text_type(bios['name']), text_type(bios['description'])]
                 bios_table_str.append(table_row)
 
         # --- Render text information window ---
@@ -3608,8 +3609,8 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         romof = machine['romof'] if machine['romof'] else 'None'
         info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
             '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
-            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
-            '[COLOR skyblue]isDevice[/COLOR] {}'.format(unicode(machine['isDevice'])))
+            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(text_type(machine['isBIOS'])) +
+            '[COLOR skyblue]isDevice[/COLOR] {}'.format(text_type(machine['isDevice'])))
         info_text.append('')
 
         # --- Table header ---
@@ -3623,13 +3624,13 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         # --- Table rows ---
         for m_rom in rom_list:
             if m_rom['type'] == ROM_TYPE_DISK:
-                sha1_str = unicode(m_rom['sha1'])[0:8]
-                table_row = [unicode(m_rom['type']), unicode(m_rom['name']), '', sha1_str, m_rom['location']]
+                sha1_str = text_type(m_rom['sha1'])[0:8]
+                table_row = [text_type(m_rom['type']), text_type(m_rom['name']), '', sha1_str, m_rom['location']]
             elif m_rom['type'] == ROM_TYPE_SAMPLE:
-                table_row = [unicode(m_rom['type']), unicode(m_rom['name']), '', '', unicode(m_rom['location'])]
+                table_row = [text_type(m_rom['type']), text_type(m_rom['name']), '', '', text_type(m_rom['location'])]
             else:
-                table_row = [unicode(m_rom['type']), unicode(m_rom['name']), unicode(m_rom['size']),
-                    unicode(m_rom['crc']), unicode(m_rom['location'])]
+                table_row = [text_type(m_rom['type']), text_type(m_rom['name']), text_type(m_rom['size']),
+                    text_type(m_rom['crc']), text_type(m_rom['location'])]
             table_str.append(table_row)
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
@@ -3681,7 +3682,7 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
                     # Interate ROMs in dataarea
                     for rom_dic in dataarea_dic['roms']:
                         table_row = [part_name, part_interface, 'dataarea', dataarea_name,
-                            rom_dic['name'], unicode(rom_dic['size']), rom_dic['crc']]
+                            rom_dic['name'], text_type(rom_dic['size']), rom_dic['crc']]
                         table_str.append(table_row)
             if 'diskarea' in part_dic:
                 # Iterate Diskareas
@@ -3733,7 +3734,7 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
                 table_str.append(table_row)
             else:
                 table_row = [rom_dic['type'], # rom_dic['name'],
-                    unicode(rom_dic['size']), rom_dic['crc'], rom_dic['location']]
+                    text_type(rom_dic['size']), rom_dic['crc'], rom_dic['location']]
                 table_str.append(table_row)
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
@@ -3805,8 +3806,8 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         romof = machine['romof'] if machine['romof'] else 'None'
         info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
             '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
-            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
-            '[COLOR skyblue]isDevice[/COLOR] {}'.format(unicode(machine['isDevice'])))
+            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(text_type(machine['isBIOS'])) +
+            '[COLOR skyblue]isDevice[/COLOR] {}'.format(text_type(machine['isDevice'])))
         info_text.append('')
 
         # --- Table header ---
@@ -3823,11 +3824,11 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
                 table_row = [m_rom['type'], m_rom['name'], '', sha1_srt,
                     m_rom['location'], m_rom['status_colour']]
             elif m_rom['type'] == ROM_TYPE_SAMPLE:
-                table_row = [unicode(m_rom['type']), unicode(m_rom['name']), '', '',
+                table_row = [text_type(m_rom['type']), text_type(m_rom['name']), '', '',
                     m_rom['location'], m_rom['status_colour']]
             else:
-                table_row = [unicode(m_rom['type']), unicode(m_rom['name']),
-                    unicode(m_rom['size']), unicode(m_rom['crc']), m_rom['location'], m_rom['status_colour']]
+                table_row = [text_type(m_rom['type']), text_type(m_rom['name']),
+                    text_type(m_rom['size']), text_type(m_rom['crc']), m_rom['location'], m_rom['status_colour']]
             table_str.append(table_row)
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
@@ -3875,7 +3876,7 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
                 table_str.append(table_row)
             else:
                 table_row = [m_rom['type'], # m_rom['name'],
-                    unicode(m_rom['size']), m_rom['crc'], m_rom['location'], m_rom['status_colour']]
+                    text_type(m_rom['size']), m_rom['crc'], m_rom['location'], m_rom['status_colour']]
                 table_str.append(table_row)
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
@@ -6814,7 +6815,7 @@ def command_exec_utility(cfg, which_utility):
                         coliding_crc = rom['crc']
                         coliding_sha1 = db_dic['roms_sha1_dic'][coliding_name]
                         table_str.append(
-                            ['Collision', rom_nonmerged_location, unicode(rom['size']), rom['crc'], sha1])
+                            ['Collision', rom_nonmerged_location, text_type(rom['size']), rom['crc'], sha1])
                         table_str.append(['with', coliding_name, ' ', coliding_crc, coliding_sha1])
                     else:
                         crc_roms_dic[rom['crc']] = rom_nonmerged_location
@@ -6898,7 +6899,7 @@ def command_exec_utility(cfg, which_utility):
                                     coliding_sha1 = roms_sha1_dic[coliding_name]
                                     table_str.append([
                                         'Collision', rom_nonmerged_location,
-                                        unicode(rom['size']), rom['crc'], sha1
+                                        text_type(rom['size']), rom['crc'], sha1
                                     ])
                                     table_str.append([
                                         'with', coliding_name, ' ',
@@ -7755,7 +7756,7 @@ def run_SL_machine(cfg, SL_name, SL_ROM_name, location):
         sl_launch_mode = SL_LAUNCH_NO_MEDIA
 
     else:
-        log_info(unicode(machine_interfaces))
+        log_info(text_type(machine_interfaces))
         log_warning('run_SL_machine() Logical error in SL launch case.')
         launch_case = SL_LAUNCH_CASE_ERROR
         kodi_dialog_OK('Logical error in SL launch case. This is a bug, please report it.')

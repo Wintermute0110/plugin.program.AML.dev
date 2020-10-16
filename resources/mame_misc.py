@@ -30,7 +30,7 @@ import hashlib
 # Functions
 # -------------------------------------------------------------------------------------------------
 # Builds a string separated by a | character. Replaces | occurrences with _
-# The string can be separated with unicode.split('|')
+# The string can be separated with text_type.split('|')
 def misc_build_db_str_3(str1, str2, str3):
     if str1.find('|') >= 0: str1 = str1.replace('|', '_')
     if str2.find('|') >= 0: str2 = str2.replace('|', '_')
@@ -99,7 +99,7 @@ def misc_get_mame_screen_str(machine_name, machine):
         elif len(d_list) == 6:
             screen_str = 'Six unrecognised screens'
         else:
-            log_error('mame_get_screen_str() d_list = {}'.format(unicode(d_list)))
+            log_error('mame_get_screen_str() d_list = {}'.format(text_type(d_list)))
             raise TypeError
     else:
         screen_str = 'No screen'

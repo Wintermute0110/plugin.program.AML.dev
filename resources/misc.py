@@ -22,6 +22,9 @@
 from __future__ import unicode_literals
 from __future__ import division
 
+# --- Addon modules ---
+from .constants import *
+
 # --- Python standard library ---
 import re
 import time
@@ -429,7 +432,7 @@ def misc_look_for_file(rootPath, filename_noext, file_exts):
 def misc_generate_random_SID():
     t1 = time.time()
     t2 = t1 + random.getrandbits(32)
-    base = hashlib.md5(unicode(t1 + t2))
+    base = hashlib.md5(text_type(t1 + t2))
     sid = base.hexdigest()
 
     return sid
