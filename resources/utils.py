@@ -471,6 +471,8 @@ def utils_file_cache_search(dir_str, filename_noext, file_exts):
 
 # -------------------------------------------------------------------------------------------------
 # Logging functions
+# Kodi Matrix has changed the log levels. See
+# https://forum.kodi.tv/showthread.php?tid=344263&pid=2943703#pid2943703
 # -------------------------------------------------------------------------------------------------
 # Constants
 LOG_ERROR   = 0
@@ -504,19 +506,19 @@ def log_debug_KR(text_line):
     # Kodi functions (Python 3) require Unicode strings as arguments.
     # Kodi functions (Python 2) require UTF-8 encoded bytes as arguments.
     log_text = 'AML DEBUG: ' + text_line
-    xbmc.log(log_text, level = xbmc.LOGNOTICE)
+    xbmc.log(log_text, level = xbmc.LOGINFO)
 
 def log_verb_KR(text_line):
     if current_log_level < LOG_VERB: return
     if isinstance(text_line, binary_type): text_line = text_line.decode('utf-8')
     log_text = 'AML VERB : ' + text_line
-    xbmc.log(log_text, level = xbmc.LOGNOTICE)
+    xbmc.log(log_text, level = xbmc.LOGINFO)
 
 def log_info_KR(text_line):
     if current_log_level < LOG_INFO: return
     if isinstance(text_line, binary_type): text_line = text_line.decode('utf-8')
     log_text = 'AML INFO : ' + text_line
-    xbmc.log(log_text, level = xbmc.LOGNOTICE)
+    xbmc.log(log_text, level = xbmc.LOGINFO)
 
 def log_warning_KR(text_line):
     if current_log_level < LOG_WARNING: return
@@ -805,7 +807,7 @@ def kodi_get_int_setting(cfg, setting_str):
     return cfg.__addon__.getSettingInt(setting_str)
 
 def kodi_get_float_setting_as_int(cfg, setting_str):
-    return int(round(cfg.__addon__.getSettingFloat(setting_str)))
+    return int(round(cfg.__addon__.getSettingNumber(setting_str)))
 
 def kodi_get_bool_setting(cfg, setting_str):
     return cfg.__addon__.getSettingBool(setting_str)

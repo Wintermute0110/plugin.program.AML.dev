@@ -608,7 +608,7 @@ def get_settings(cfg):
 
     # --- Advanced ---
     settings['media_state_action'] = kodi_get_int_setting(cfg, 'media_state_action')
-    settings['delay_tempo'] = kodi_get_float_setting_as_int(cfg, 'delay_tempo')
+    settings['delay_tempo'] = kodi_get_int_setting(cfg, 'delay_tempo')
     settings['suspend_audio_engine'] = kodi_get_bool_setting(cfg, 'suspend_audio_engine')
     settings['suspend_screensaver'] = kodi_get_bool_setting(cfg, 'suspend_screensaver')
     settings['toggle_window'] = kodi_get_bool_setting(cfg, 'toggle_window')
