@@ -502,7 +502,7 @@ def log_debug_KR(text_line):
 
     # If it is bytes we assume it's "utf-8" encoded.
     # will fail if called with other encodings (latin, etc).
-    if isinstance(text_line, str): text_line = text_line.decode('utf-8')
+    if isinstance(text_line, binary_type): text_line = text_line.decode('utf-8')
 
     # At this point we are sure text_line is a Unicode string.
     # Kodi functions (Python 3) require Unicode strings as arguments.
@@ -512,25 +512,25 @@ def log_debug_KR(text_line):
 
 def log_verb_KR(text_line):
     if current_log_level < LOG_VERB: return
-    if isinstance(text_line, str): text_line = text_line.decode('utf-8')
+    if isinstance(text_line, binary_type): text_line = text_line.decode('utf-8')
     log_text = 'AML VERB : ' + text_line
     xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
 
 def log_info_KR(text_line):
     if current_log_level < LOG_INFO: return
-    if isinstance(text_line, str): text_line = text_line.decode('utf-8')
+    if isinstance(text_line, binary_type): text_line = text_line.decode('utf-8')
     log_text = 'AML INFO : ' + text_line
     xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
 
 def log_warning_KR(text_line):
     if current_log_level < LOG_WARNING: return
-    if isinstance(text_line, str): text_line = text_line.decode('utf-8')
+    if isinstance(text_line, binary_type): text_line = text_line.decode('utf-8')
     log_text = 'AML WARN : ' + text_line
     xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGWARNING)
 
 def log_error_KR(text_line):
     if current_log_level < LOG_ERROR: return
-    if isinstance(text_line, str): text_line = text_line.decode('utf-8')
+    if isinstance(text_line, binary_type): text_line = text_line.decode('utf-8')
     log_text = 'AML ERROR: ' + text_line
     xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGERROR)
 
