@@ -56,12 +56,14 @@ changing settings in the development version will not affect your stable AML ins
 The name of the AML stable version is **Advanced MAME Launcher** and the name of the
 development version is **Advanced MAME Launcher (dev version)**.
 
+**IMPORTANT** If you are using Kodi Matrix use the `master` branch. If you are using Kodi Krypton or Kodi Leia use the `python2` branch. To change the branch use the drop-down button on top of the page. The default branch is `master`.
+
 It is important that you follow this instructions or the Advanced MAME Launcher development
 version won't work well.
 
   1) In this page click on the green button `Clone or Download` --> `Download ZIP`
 
-  2) Uncompress this ZIP file. This will create a folder named `plugin.program.AML.dev-master`
+  2) Uncompress this ZIP file. This will create a folder named `plugin.program.AML.dev-master` or `plugin.program.AML.dev-python2`
 
   3) Rename that folder to `plugin.program.AML.dev`.
 
