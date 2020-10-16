@@ -426,7 +426,7 @@ def utils_file_cache_add_dir(dir_str, verbose = True):
     # file_list = os.listdir(dir_FN.getPath())
     file_list = []
     root_dir_str = dir_FN.getPath()
-    # For unicode errors in os.walk() see
+    # For Unicode errors in os.walk() see
     # https://stackoverflow.com/questions/21772271/unicodedecodeerror-when-performing-os-walk
     for root, dirs, files in os.walk(text_type(root_dir_str)):
         # log_debug('----------')

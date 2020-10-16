@@ -2928,7 +2928,7 @@ def mame_build_SL_plots(cfg, SL_dic):
 ZIP_NOT_FOUND = 0
 BAD_ZIP_FILE  = 1
 ZIP_FILE_OK   = 2
-def mame_audit_MAME_machine(settings, rom_list, audit_dic):
+def mame_audit_MAME_machine(cfg, settings, rom_list, audit_dic):
     if cfg.settings['op_mode'] == OP_MODE_VANILLA:
         rom_path = cfg.settings['rom_path_vanilla']
     elif cfg.settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
@@ -2961,7 +2961,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
         # Process ROM ZIP files.
         set_name = m_rom['location'].split('/')[0]
         if m_rom['type'] == ROM_TYPE_SAMPLE:
-            zip_FN = FileName(settings['samples_path']).pjoin(set_name + '.zip')
+            zip_FN = FileName(cfg.settings['samples_path']).pjoin(set_name + '.zip')
         else:
             zip_FN = FileName(rom_path).pjoin(set_name + '.zip')
         zip_path = zip_FN.getPath()
@@ -3012,7 +3012,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
                 continue
 
             # >> Test if DISK file exists
-            chd_FN = FileName(settings['chd_path']).pjoin(set_name).pjoin(disk_name + '.chd')
+            chd_FN = FileName(cfg.settings['chd_path']).pjoin(set_name).pjoin(disk_name + '.chd')
             # log_debug('chd_FN P {}'.format(chd_FN.getPath()))
             if not chd_FN.exists():
                 m_rom['status'] = AUDIT_STATUS_CHD_NO_FOUND
@@ -3048,7 +3048,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
 
             # Test if ZIP file exists (use cached data). ZIP file must be in the cache always
             # at this point.
-            zip_FN = FileName(settings['samples_path']).pjoin(set_name + '.zip')
+            zip_FN = FileName(cfg.settings['samples_path']).pjoin(set_name + '.zip')
             zip_path = zip_FN.getPath()
             # log_debug('ZIP {}'.format(zip_FN.getPath()))
             if z_cache_status[zip_path] == ZIP_NOT_FOUND:
@@ -3151,8 +3151,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
         audit_dic['machine_has_ROMs_or_CHDs'] = True
         if m_rom['type'] == ROM_TYPE_DISK:
             audit_dic['machine_has_CHDs'] = True
-            if m_rom['status'] == AUDIT_STATUS_OK or \
-               m_rom['status'] == AUDIT_STATUS_OK_INVALID_CHD:
+            if m_rom['status'] == AUDIT_STATUS_OK or m_rom['status'] == AUDIT_STATUS_OK_INVALID_CHD:
                 CHD_OK_status_list.append(True)
             else:
                 CHD_OK_status_list.append(False)
@@ -3165,8 +3164,8 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
         else:
             audit_dic['machine_has_ROMs'] = True
             if m_rom['status'] == AUDIT_STATUS_OK or \
-               m_rom['status'] == AUDIT_STATUS_OK_INVALID_ROM or \
-               m_rom['status'] == AUDIT_STATUS_OK_WRONG_NAME_ROM:
+                m_rom['status'] == AUDIT_STATUS_OK_INVALID_ROM or \
+                m_rom['status'] == AUDIT_STATUS_OK_WRONG_NAME_ROM:
                 ROM_OK_status_list.append(True)
             else:
                 ROM_OK_status_list.append(False)
@@ -3174,8 +3173,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
     audit_dic['machine_SAMPLES_are_OK'] = all(SAM_OK_status_list) if audit_dic['machine_has_SAMPLES'] else True
     audit_dic['machine_CHDs_are_OK']    = all(CHD_OK_status_list) if audit_dic['machine_has_CHDs'] else True
     audit_dic['machine_is_OK'] = audit_dic['machine_ROMs_are_OK'] and \
-                                 audit_dic['machine_SAMPLES_are_OK'] and \
-                                 audit_dic['machine_CHDs_are_OK'] 
+        audit_dic['machine_SAMPLES_are_OK'] and audit_dic['machine_CHDs_are_OK'] 
 
 # -------------------------------------------------------------------------------------------------
 # SL ROM/CHD audit code
@@ -3405,7 +3403,7 @@ def mame_audit_MAME_all(cfg, db_dic_in):
         # audit_roms_dic[m_name] is mutable and edited inside mame_audit_MAME_machine()
         audit_dic = db_new_audit_dic()
         if m_name in audit_roms_dic:
-            mame_audit_MAME_machine(cfg.settings, audit_roms_dic[m_name], audit_dic)
+            mame_audit_MAME_machine(cfg, audit_roms_dic[m_name], audit_dic)
         machine_audit_dic[m_name] = audit_dic
     pDialog.endProgress()
 

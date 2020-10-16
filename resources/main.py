@@ -5651,8 +5651,7 @@ def command_context_setup_plugin(cfg):
         else:
             kodi_notify('Finished extracting, DB build, scanning and filters')
 
-    # --- Build everything ---
-    # NOTE This chunk of code is the example for the new error reporting.
+    # --- Build all databases ---
     elif menu_item == 2:
         log_info('command_context_setup_plugin() Build everything starting...')
 
@@ -5676,8 +5675,8 @@ def command_context_setup_plugin(cfg):
         del db_dic['mameinfo_idx_dic']
         del db_dic['gameinit_idx_list']
         del db_dic['command_idx_list']
-        del audit_dic['audit_roms']
-        del audit_dic['machine_archives']
+        del db_dic['audit_roms']
+        del db_dic['machine_archives']
         # Force garbage collection here to free memory?
 
         # --- Build MAME catalogs (mandatory) ---
@@ -5693,9 +5692,9 @@ def command_context_setup_plugin(cfg):
         db_build_asset_cache(cfg, db_dic['control_dic'], db_dic['cache_index'], db_dic['assetdb'])
 
         # --- Release some memory before building the SL databases ---
+        del db_dic['assetdb']
         del db_dic['roms']
         del db_dic['main_pclone_dic']
-        del db_dic['assets']
         del db_dic['cache_index']
 
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs (optional) ---
