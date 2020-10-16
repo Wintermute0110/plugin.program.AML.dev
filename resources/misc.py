@@ -18,6 +18,9 @@
 # This module can be loaded anywhere without creating circular dependencies.
 # Optionally this module can include utils.py to use the log_*() functions but better avoid it.
 
+# --- Addon modules ---
+from .constants import *
+
 # --- Python standard library ---
 import re
 import time
@@ -425,7 +428,7 @@ def misc_look_for_file(rootPath, filename_noext, file_exts):
 def misc_generate_random_SID():
     t1 = time.time()
     t2 = t1 + random.getrandbits(32)
-    base = hashlib.md5(str(t1 + t2))
+    base = hashlib.md5(text_type(t1 + t2))
     sid = base.hexdigest()
 
     return sid

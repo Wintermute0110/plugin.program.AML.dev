@@ -74,12 +74,12 @@ import xml.etree.ElementTree as ET
 #
 # Rendering on AML Machine Information text window.
 # devices[0]:
-#   att_interface: string
-#   att_mandatory: str(bool)
-#   att_tag: string
-#   att_type: string
-#   ext_names: str(string list),
-#   instance: str(dictionary),
+#   att_interface: text_type
+#   att_mandatory: text_type(bool)
+#   att_tag: text_type
+#   att_type: text_type
+#   ext_names: text_type(string list),
+#   instance: text_type(dictionary),
 # devices[1]:
 #   ...
 #
@@ -319,7 +319,7 @@ def db_new_MAME_XML_control_dic():
         'st_size' : 0,                # Bytes [integer]
         'st_mtime' : 0.0,             # seconds [float]
         'ver_mame_int' : 0,           # Allows version comparisons [integer]
-        'ver_mame_str' : 'undefined', # [str]
+        'ver_mame_str' : 'undefined', # [Unicode string]
     }
 
 def db_new_control_dic():

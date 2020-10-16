@@ -29,7 +29,7 @@
 #
 # How to report errors on the low-level filesystem functions??? See the end of the file.
 
-# --- AML modules ---
+# --- Addon modules ---
 from .constants import *
 
 # --- Kodi modules ---
@@ -361,7 +361,7 @@ def utils_write_JSON_file_lowmem(json_filename, json_data, verbose = True):
         # --- Chunk by chunk JSON writer ---
         with io.open(json_filename, 'wt', encoding = 'utf-8') as file:
             for chunk in jobj.iterencode(json_data):
-                file.write(str(chunk))
+                file.write(text_type(chunk))
     except OSError:
         kodi_notify('Advanced MAME Launcher',
                     'Cannot write {} file (OSError)'.format(json_filename))
@@ -428,11 +428,11 @@ def utils_file_cache_add_dir(dir_str, verbose = True):
     root_dir_str = dir_FN.getPath()
     # For unicode errors in os.walk() see
     # https://stackoverflow.com/questions/21772271/unicodedecodeerror-when-performing-os-walk
-    for root, dirs, files in os.walk(str(root_dir_str)):
+    for root, dirs, files in os.walk(text_type(root_dir_str)):
         # log_debug('----------')
         # log_debug('root = {}'.format(root))
-        # log_debug('dirs = {}'.format(str(dirs)))
-        # log_debug('files = {}'.format(str(files)))
+        # log_debug('dirs = {}'.format(text_type(dirs)))
+        # log_debug('files = {}'.format(text_type(files)))
         # log_debug('\n')
         for f in files:
             my_file = os.path.join(root, f)
@@ -459,7 +459,7 @@ def utils_file_cache_search(dir_str, filename_noext, file_exts):
     current_cache_set = file_cache[dir_str]
     # if filename_noext == '005':
     #     log_debug('utils_file_cache_search() Searching in "{}"'.format(dir_str))
-    #     log_debug('utils_file_cache_search() current_cache_set "{}"'.format(str(current_cache_set)))
+    #     log_debug('utils_file_cache_search() current_cache_set "{}"'.format(text_type(current_cache_set)))
     for ext in file_exts:
         file_base = filename_noext + '.' + ext
         # log_debug('utils_file_cache_search() file_Base = "{}"'.format(file_base))
@@ -498,7 +498,7 @@ def log_debug_KR(text_line):
 
     # If it is bytes we assume it's "utf-8" encoded.
     # will fail if called with other encodings (latin, etc).
-    if isinstance(text_line, bytes): text_line = text_line.decode('utf-8')
+    if isinstance(text_line, binary_type): text_line = text_line.decode('utf-8')
 
     # At this point we are sure text_line is a Unicode string.
     # Kodi functions (Python 3) require Unicode strings as arguments.
@@ -508,25 +508,25 @@ def log_debug_KR(text_line):
 
 def log_verb_KR(text_line):
     if current_log_level < LOG_VERB: return
-    if isinstance(text_line, bytes): text_line = text_line.decode('utf-8')
+    if isinstance(text_line, binary_type): text_line = text_line.decode('utf-8')
     log_text = 'AML VERB : ' + text_line
     xbmc.log(log_text, level = xbmc.LOGNOTICE)
 
 def log_info_KR(text_line):
     if current_log_level < LOG_INFO: return
-    if isinstance(text_line, bytes): text_line = text_line.decode('utf-8')
+    if isinstance(text_line, binary_type): text_line = text_line.decode('utf-8')
     log_text = 'AML INFO : ' + text_line
     xbmc.log(log_text, level = xbmc.LOGNOTICE)
 
 def log_warning_KR(text_line):
     if current_log_level < LOG_WARNING: return
-    if isinstance(text_line, bytes): text_line = text_line.decode('utf-8')
+    if isinstance(text_line, binary_type): text_line = text_line.decode('utf-8')
     log_text = 'AML WARN : ' + text_line
     xbmc.log(log_text, level = xbmc.LOGWARNING)
 
 def log_error_KR(text_line):
     if current_log_level < LOG_ERROR: return
-    if isinstance(text_line, bytes): text_line = text_line.decode('utf-8')
+    if isinstance(text_line, binary_type): text_line = text_line.decode('utf-8')
     log_text = 'AML ERROR: ' + text_line
     xbmc.log(log_text, level = xbmc.LOGERROR)
 
@@ -652,7 +652,7 @@ class KodiProgressDialog(object):
         if message is None:
             self.progressDialog.update(self.progress)
         else:
-            if type(message) is not str: raise TypeError
+            if type(message) is not text_type: raise TypeError
             self.message = message
             self.progressDialog.update(self.progress, self.message)
 
@@ -665,14 +665,14 @@ class KodiProgressDialog(object):
         if message is None:
             self.progressDialog.update(self.progress)
         else:
-            if type(message) is not str: raise TypeError
+            if type(message) is not text_type: raise TypeError
             self.message = message
             self.progressDialog.update(self.progress, self.message)
 
     # Update dialog message but keep same progress.
     def updateMessage(self, message):
         if not self.dialog_active: raise TypeError
-        if type(message) is not str: raise TypeError
+        if type(message) is not text_type: raise TypeError
         self.message = message
         self.progressDialog.update(self.progress, self.message)
 
