@@ -7664,7 +7664,7 @@ def run_SL_machine(cfg, SL_name, SL_ROM_name, location):
         SL_machine_names_list = []
         SL_machine_desc_list  = []
         SL_machine_devices    = []
-        for SL_machine in sorted(SL_machine_list):
+        for SL_machine in sorted(SL_machine_list, key=lambda x: (x['machine'])):
             SL_machine_names_list.append(SL_machine['machine'])
             SL_machine_desc_list.append(SL_machine['description'])
             SL_machine_devices.append(SL_machine['devices'])
@@ -7821,9 +7821,9 @@ def run_SL_machine(cfg, SL_name, SL_ROM_name, location):
         return
 
     # --- Run MAME ---
-    run_before_execution()
+    run_before_execution(cfg)
     run_process(cfg, arg_list, mame_dir)
-    run_after_execution()
+    run_after_execution(cfg)
     # Refresh list so Most Played and Recently played get updated.
     kodi_refresh_container()
     log_info('run_SL_machine() Exiting function.')
