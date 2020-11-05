@@ -2088,7 +2088,7 @@ def render_catalog_parent_list(cfg, catalog_name, category_name):
     l_render_db_start = time.time()
     if cfg.settings['debug_enable_MAME_render_cache']:
         cache_index_dic = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
-        render_db_dic = db_load_render_dic_all(cfg, cache_index_dic, catalog_name, category_name)
+        render_db_dic = db_get_render_cache_row(cfg, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME machine cache disabled.')
         render_db_dic = utils_load_JSON_file_dic(cfg.RENDER_DB_PATH.getPath())
@@ -2097,7 +2097,7 @@ def render_catalog_parent_list(cfg, catalog_name, category_name):
     if cfg.settings['debug_enable_MAME_asset_cache']:
         if 'cache_index_dic' not in locals():
             cache_index_dic = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
-        assets_db_dic = db_load_assets_all(cfg, cache_index_dic, catalog_name, category_name)
+        assets_db_dic = db_get_asset_cache_row(cfg, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME asset cache disabled.')
         assets_db_dic = utils_load_JSON_file_dic(cfg.ASSET_DB_PATH.getPath())
@@ -2170,14 +2170,14 @@ def render_catalog_clone_list(cfg, catalog_name, category_name, parent_name):
     catalog_dic = db_get_cataloged_dic_all(cfg, catalog_name)
     if cfg.settings['debug_enable_MAME_render_cache']:
         cache_index_dic = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
-        render_db_dic = db_load_render_dic_all(cfg, cache_index_dic, catalog_name, category_name)
+        render_db_dic = db_get_render_cache_row(cfg, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME machine cache disabled.')
         render_db_dic = utils_load_JSON_file_dic(cfg.RENDER_DB_PATH.getPath())
     if cfg.settings['debug_enable_MAME_asset_cache']:
         if 'cache_index_dic' not in locals():
             cache_index_dic = utils_load_JSON_file_dic(cfg.CACHE_INDEX_PATH.getPath())
-        assets_db_dic = db_load_assets_all(cfg, cache_index_dic, catalog_name, category_name)
+        assets_db_dic = db_get_asset_cache_row(cfg, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME asset cache disabled.')
         assets_db_dic = utils_load_JSON_file_dic(cfg.ASSET_DB_PATH.getPath())

@@ -1163,7 +1163,7 @@ def db_build_asset_cache(cfg, control_dic, cache_index_dic, assets_dic, force_bu
     db_safe_edit(control_dic, 't_MAME_asset_cache_build', time.time())
     utils_write_JSON_file(cfg.MAIN_CONTROL_PATH.getPath(), control_dic)
 
-def db_load_assets_all(cfg, cache_index_dic, catalog_name, category_name):
+def db_get_asset_cache_row(cfg, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
     ROMs_all_FN = cfg.CACHE_DIR.pjoin(hash_str + '_assets.json')
 
