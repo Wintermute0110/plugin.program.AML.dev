@@ -113,6 +113,8 @@ FEATURE  [CORE] Disable Kodi screensaver when launching MAME and reenable after 
 FIX      [CORE] Fixed crash when creating ROM audit database when MAME CHD set was SPLIT.
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=2975566#pid2975566
 
+FIX      [CORE] Fix parsing of mameinfo.dat 0.226.
+
 
 [B]Advanced MAME Launcher | version 0.9.12 | 10 February 2020[/B]
 
