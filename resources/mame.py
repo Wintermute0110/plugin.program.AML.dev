@@ -929,6 +929,7 @@ def mame_load_INI_datfile_simple(filename):
 
     return ini_dic
 
+# --- BEGIN code in dev-parsers/test_parser_history_dat.py ----------------------------------------
 # Loads History.dat
 #
 # One description can be for several MAME machines:
@@ -1125,9 +1126,10 @@ def mame_load_History_DAT(filename):
     log_info('mame_load_History_DAT() Rows in history_dic {}'.format(len(history_dic)))
 
     return (history_idx_dic, history_dic, version_str)
+# --- END code in dev-parsers/test_parser_history_dat.py ------------------------------------------
 
-#
-# Looks that mameinfo.dat has information for both machines and drivers.
+# --- BEGIN code in dev-parsers/test_parser_mameinfo_dat.py ---------------------------------------
+# mameinfo.dat has information for both MAME machines and MAME drivers.
 #
 # idx_dic  = { 
 #     'mame' : {
@@ -1159,6 +1161,7 @@ def mame_load_MameInfo_DAT(filename):
     }
     data_dic = {}
     __debug_function = False
+    line_counter = 0
 
     # --- read_status FSM values ---
     # 0 -> Looking for '$(xxxx)=(machine_name)'
@@ -1172,17 +1175,18 @@ def mame_load_MameInfo_DAT(filename):
         log_info('mame_load_MameInfo_DAT() (IOError) opening "{}"'.format(filename))
         return (idx_dic, data_dic, version_str)
     for file_line in f:
+        line_counter += 1
         line_uni = file_line.strip()
         # if __debug_function: log_debug('Line "{}"'.format(line_uni))
         if read_status == 0:
-            # >> Skip comments: lines starting with '#'
-            # >> Look for version string in comments
+            # Skip comments: lines starting with '#'
+            # Look for version string in comments
             if re.search(r'^#', line_uni):
                 m = re.search(r'# MAMEINFO.DAT v([0-9\.]+)', line_uni)
                 if m: version_str = m.group(1)
                 continue
             if line_uni == '': continue
-            # >> New machine or driver information
+            # New machine or driver information
             m = re.search(r'^\$info=(.+?)$', line_uni)
             if m:
                 machine_name = m.group(1)
@@ -1200,26 +1204,27 @@ def mame_load_MameInfo_DAT(filename):
                 info_str_list = []
                 list_name = 'drv'
                 idx_dic[list_name][machine_name] = machine_name
+            # Ignore empty lines between "$info=xxxxx" and "$mame" or "$drv"
+            elif line_uni == '':
+                continue
             else:
-                raise TypeError('Wrong second line = "{}"'.format(line_uni))
+                raise TypeError('Wrong second line = "{}" (line {:,})'.format(line_uni, line_counter))
         elif read_status == 2:
             if line_uni == '$end':
-                if list_name in data_dic:
-                    data_dic[list_name][machine_name] = '\n'.join(info_str_list)
-                else:
-                    data_dic[list_name] = {}
-                    data_dic[list_name][machine_name] = '\n'.join(info_str_list)
+                if list_name not in data_dic: data_dic[list_name] = {}
+                data_dic[list_name][machine_name] = '\n'.join(info_str_list).strip()
                 read_status = 0
             else:
                 info_str_list.append(line_uni)
         else:
-            raise TypeError('Wrong read_status = {}'.format(read_status))
+            raise TypeError('Wrong read_status = {} (line {:,})'.format(read_status, line_counter))
     f.close()
     log_info('mame_load_MameInfo_DAT() Version "{}"'.format(version_str))
     log_info('mame_load_MameInfo_DAT() Rows in idx_dic {}'.format(len(idx_dic)))
     log_info('mame_load_MameInfo_DAT() Rows in data_dic {}'.format(len(data_dic)))
 
     return (idx_dic, data_dic, version_str)
+# --- END code in dev-parsers/test_parser_mameinfo_dat.py -----------------------------------------
 
 #
 # NOTE set objects are not JSON-serializable. Use lists and transform lists to sets if

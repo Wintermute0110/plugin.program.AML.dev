@@ -1,13 +1,13 @@
 #!/usr/bin/python3 -B
 
+import io
 import json
 import pprint
 import re
 import sys
 
 # --- compatibility functions ---------------------------------------------------------------------
-def log_variable(var_name, var):
-    print('Dumping variable "{}"\n{}'.format(var_name, pprint.pformat(var)))
+def log_variable(var_name, var): print('Dumping variable "{}"\n{}'.format(var_name, pprint.pformat(var)))
 
 def log_error(str): print(str)
 def log_warning(str): print(str)
@@ -35,6 +35,7 @@ def misc_build_db_str_3(str1, str2, str3):
 
     return '{}|{}|{}'.format(str1, str2, str3)
 
+# --- BEGIN code in dev-parsers/test_parser_history_dat.py ----------------------------------------
 # Loads History.dat
 #
 # One description can be for several MAME machines:
@@ -102,33 +103,29 @@ def mame_load_History_DAT(filename):
     # 1 -> Reading information. If '$end' found go to 2.
     # 2 -> Add information to database if no errors. Then go to 0.
     read_status = 0
-
-    # Open file
     try:
-        f = open(filename, 'rt')
+        f = io.open(filename, 'rt', encoding = 'utf-8')
     except IOError:
         log_info('mame_load_History_DAT() (IOError) opening "{}"'.format(filename))
         return (history_idx_dic, history_dic, version_str)
     for file_line in f:
         line_number += 1
-        stripped_line = file_line.strip()
-        line_str = stripped_line.decode('utf-8', 'replace')
-        if __debug_function: log_debug('Line "{}"'.format(line_str))
+        line_uni = file_line.strip()
+        if __debug_function: log_debug('Line "{}"'.format(line_uni))
         if read_status == 0:
             # Skip comments: lines starting with '##'
             # Look for version string in comments
-            if re.search(r'^##', line_str):
-                m = re.search(r'## REVISION\: ([0-9\.]+)$', line_str)
+            if re.search(r'^##', line_uni):
+                m = re.search(r'## REVISION\: ([0-9\.]+)$', line_uni)
                 if m: version_str = m.group(1)
                 continue
-            if line_str == '':
-                continue
+            if line_uni == '': continue
             # Machine list line
             # Parses lines like "$info=99lstwar,99lstwara,99lstwarb,"
             # Parses lines like "$info=99lstwar,99lstwara,99lstwarb"
             # History.dat has syntactic errors like "$dc=,".
             # History.dat has syntactic errors like "$megadriv=".
-            m = re.search(r'^\$(.+?)=(.*?),?$', line_str)
+            m = re.search(r'^\$(.+?)=(.*?),?$', line_uni)
             if m:
                 num_header_line += 1
                 list_name = m.group(1)
@@ -142,14 +139,14 @@ def mame_load_History_DAT(filename):
                 mname_list = machine_name_raw.split(',')
                 m_data.append([num_header_line, list_name, mname_list])
                 continue
-            if line_str == '$bio':
+            if line_uni == '$bio':
                 read_status = 1
                 info_str_list = []
                 continue
             # If we reach this point it's an error.
-            raise TypeError('Wrong header "{}" (line {:,})'.format(line_str, line_number))
+            raise TypeError('Wrong header "{}" (line {:,})'.format(line_uni, line_number))
         elif read_status == 1:
-            if line_str == '$end':
+            if line_uni == '$end':
                 # Generate biography text.
                 bio_str = '\n'.join(info_str_list)
                 if bio_str[0] == '\n': bio_str = bio_str[1:]
@@ -181,7 +178,7 @@ def mame_load_History_DAT(filename):
                 m_data = []
                 info_str_list = []
             else:
-                info_str_list.append(line_str)
+                info_str_list.append(line_uni)
         elif read_status == 2:
             # Go to state 0 of the FSM.
             read_status = 0
@@ -235,6 +232,7 @@ def mame_load_History_DAT(filename):
     log_info('mame_load_History_DAT() Rows in history_dic {}'.format(len(history_dic)))
 
     return (history_idx_dic, history_dic, version_str)
+# --- END code in dev-parsers/test_parser_history_dat.py ------------------------------------------
 
 # --- main code -----------------------------------------------------------------------------------
 # Test all possible sintactic errors in History.dat
