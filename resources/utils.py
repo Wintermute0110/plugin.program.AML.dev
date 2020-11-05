@@ -36,6 +36,7 @@ from .constants import *
 try:
     import xbmc
     import xbmcgui
+    import xbmcvfs
     KODI_RUNTIME_AVAILABLE_UTILS = True
 except:
     KODI_RUNTIME_AVAILABLE_UTILS = False
@@ -81,7 +82,7 @@ def is_linux(): return is_linux_bool
 # caller code.
 #
 # A) Transform paths like smb://server/directory/ into \\server\directory\
-# B) Use xbmc.translatePath() for paths starting with special://
+# B) Use xbmcvfs.translatePath() for paths starting with special://
 #
 # Decomposes a file name path or directory into its constituents
 #   FileName.getOriginalPath()  Full path                                     /home/Wintermute/Sonic.zip
@@ -106,7 +107,7 @@ class FileName:
             self.path = self.path.replace('/', '\\')
 
         elif self.originalPath.lower().startswith('special:'):
-            self.path = xbmc.translatePath(self.path)
+            self.path = xbmcvfs.translatePath(self.path)
 
     def _join_raw(self, arg):
         self.path         = os.path.join(self.path, arg)
