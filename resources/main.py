@@ -2584,14 +2584,14 @@ def render_SL_pclone_set(cfg, SL_name, parent_name):
     ROM = SL_roms[parent_name]
     assets = SL_asset_dic[parent_name] if parent_name in SL_asset_dic else db_new_SL_asset()
     ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
-    render_SL_ROM_row(SL_name, parent_name, ROM, assets, False, view_mode_property)
+    render_SL_ROM_row(cfg, SL_name, parent_name, ROM, assets, False, view_mode_property)
 
     # Render clones belonging to parent in this category.
     for clone_name in sorted(SL_PClone_dic[SL_name][parent_name]):
         ROM = SL_roms[clone_name]
         assets = SL_asset_dic[clone_name] if clone_name in SL_asset_dic else db_new_SL_asset()
         ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
-        render_SL_ROM_row(SL_name, clone_name, ROM, assets)
+        render_SL_ROM_row(cfg, SL_name, clone_name, ROM, assets)
     xbmcplugin.endOfDirectory(handle = cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_SL_list_row(cfg, SL_name, SL):
