@@ -1907,8 +1907,8 @@ def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL
     slist.append("[COLOR violet]rom_DB_noext[/COLOR]: '{}'".format(SL_dic['rom_DB_noext']))
 
     slist.append('\n[COLOR orange]Runnable by[/COLOR]')
-    for machine_dic in sorted(SL_machine_list):
-        t = "[COLOR violet]machine[/COLOR]: '{}' [COLOR slateblue]({})[/COLOR]"
+    for machine_dic in sorted(SL_machine_list, key = lambda x: x['description'].lower()):
+        t = "[COLOR violet]machine[/COLOR]: '{}' [COLOR slateblue]{}[/COLOR]"
         slist.append(t.format(machine_dic['description'], machine_dic['machine']))
 
 # slist is a list of strings that will be joined like '\n'.join(slist)

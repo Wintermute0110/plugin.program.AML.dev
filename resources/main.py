@@ -4537,8 +4537,8 @@ def render_sl_fav_machine_row(cfg, SL_fav_key, ROM, assets, location):
             display_name = '{} [COLOR orange][{} times][/COLOR]'.format(display_name, ROM['launch_count'])
 
     # --- Assets/artwork ---
-    icon_path   = assets[g_SL_icon] if assets[g_SL_icon] else 'DefaultProgram.png'
-    fanart_path = assets[g_SL_fanart]
+    icon_path   = assets[cfg.SL_icon] if assets[cfg.SL_icon] else 'DefaultProgram.png'
+    fanart_path = assets[cfg.SL_fanart]
     poster_path = assets['3dbox'] if assets['3dbox'] else assets['boxfront']
 
     # --- Create listitem row ---
@@ -4547,16 +4547,16 @@ def render_sl_fav_machine_row(cfg, SL_fav_key, ROM, assets, location):
     # Make all the infolabels compatible with Advanced Emulator Launcher
     if cfg.settings['display_hide_trailers']:
         listitem.setInfo('video', {
-            'title'   : display_name,      'year'    : ROM['year'],
-            'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
-            'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY
+            'title' : display_name, 'year' : ROM['year'],
+            'genre' : ROM['genre'], 'studio' : ROM['publisher'],
+            'plot' : ROM['plot'], 'overlay' : ICON_OVERLAY,
         })
     else:
         listitem.setInfo('video', {
-            'title'   : display_name,      'year'    : ROM['year'],
-            'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
-            'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY,
-            'trailer' : assets['trailer']
+            'title' : display_name, 'year' : ROM['year'],
+            'genre' : ROM['genre'], 'studio' : ROM['publisher'],
+            'plot' : ROM['plot'], 'overlay' : ICON_OVERLAY,
+            'trailer' : assets['trailer'],
         })
     listitem.setProperty('platform', 'MAME Software List')
 
@@ -4620,7 +4620,7 @@ def command_show_sl_fav(cfg):
         # Add the SL name as 'genre'
         SL_name = SL_fav_ROM['SL_name']
         SL_fav_ROM['genre'] = SL_catalog_dic[SL_name]['display_name']
-        render_sl_fav_machine_row(SL_fav_key, SL_fav_ROM, assets, LOCATION_SL_FAVS)
+        render_sl_fav_machine_row(cfg, SL_fav_key, SL_fav_ROM, assets, LOCATION_SL_FAVS)
     xbmcplugin.endOfDirectory(handle = cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 #
@@ -4798,7 +4798,7 @@ def command_show_SL_most_played(cfg):
         # Add the SL name as 'genre'
         SL_name = SL_fav_ROM['SL_name']
         SL_fav_ROM['genre'] = SL_catalog_dic[SL_name]['display_name']
-        render_sl_fav_machine_row(SL_fav_key, SL_fav_ROM, assets, LOCATION_SL_MOST_PLAYED)
+        render_sl_fav_machine_row(cfg, SL_fav_key, SL_fav_ROM, assets, LOCATION_SL_MOST_PLAYED)
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 def command_context_manage_SL_most_played(cfg, SL_name, ROM_name):
@@ -4943,7 +4943,7 @@ def command_show_SL_recently_played(cfg):
         # Add the SL name as 'genre'
         SL_name = SL_fav_ROM['SL_name']
         SL_fav_ROM['genre'] = SL_catalog_dic[SL_name]['display_name']
-        render_sl_fav_machine_row(SL_fav_key, SL_fav_ROM, assets, LOCATION_SL_RECENT_PLAYED)
+        render_sl_fav_machine_row(cfg, SL_fav_key, SL_fav_ROM, assets, LOCATION_SL_RECENT_PLAYED)
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 def command_context_manage_SL_recent_played(cfg, SL_name, ROM_name):
@@ -7664,7 +7664,7 @@ def run_SL_machine(cfg, SL_name, SL_ROM_name, location):
         SL_machine_names_list = []
         SL_machine_desc_list  = []
         SL_machine_devices    = []
-        for SL_machine in sorted(SL_machine_list, key=lambda x: (x['machine'])):
+        for SL_machine in sorted(SL_machine_list, key = lambda x: x['description'].lower()):
             SL_machine_names_list.append(SL_machine['machine'])
             SL_machine_desc_list.append(SL_machine['description'])
             SL_machine_devices.append(SL_machine['devices'])
