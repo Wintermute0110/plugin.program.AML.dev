@@ -3539,9 +3539,8 @@ def action_view_sl_item_data(cfg, machine_name, SL_name, SL_ROM, location):
 def action_view_machine_roms(cfg, machine_name, SL_name, SL_ROM, location):
     # Load machine dictionary, ROM database and Devices database.
     d_text = 'Loading databases ...'
-    num_items = 3
     pDialog = KodiProgressDialog()
-    pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machines main'), num_items)
+    pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machines main'), 3)
     machine = db_get_machine_main_hashed_db(cfg, machine_name)
     pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine ROMs'))
     roms_db_dic = utils_load_JSON_file_dic(cfg.ROMS_DB_PATH.getPath())
@@ -3937,7 +3936,7 @@ def command_context_utilities(cfg, catalog_name, category_name):
 
         # Ask user for a path to export the launcher configuration
         vlauncher_str_name = 'AML_VLauncher_' + catalog_name + '_' + category_name + '.xml'
-        dir_path = xbmcgui.Dialog().browse(0, 'Select XML export directory', 'files', '', False, False)
+        dir_path = kodi_dialog_get_directory('Select XML export directory')
         if not dir_path: return
         export_FN = FileName(dir_path).pjoin(vlauncher_str_name)
         if export_FN.exists():
@@ -3983,8 +3982,7 @@ def command_context_add_mame_fav(cfg, machine_name):
 
     # If machine already in Favourites ask user if overwrite.
     if machine_name in fav_machines:
-        ret = kodi_dialog_yesno(
-            'Machine {} ({}) '.format(machine['description'], machine_name) +
+        ret = kodi_dialog_yesno('Machine {} ({}) '.format(machine['description'], machine_name) +
             'already in MAME Favourites. Overwrite?')
         if ret < 1: return
 
