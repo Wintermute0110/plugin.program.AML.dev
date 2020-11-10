@@ -73,7 +73,7 @@ WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi 
          Github wiki.
 
 
-[B]Advanced MAME Launcher | version 1.0.0 | xx November 2020[/B]
+[B]Advanced MAME Launcher | version 1.0.0 | 10 November 2020[/B]
 
 FEATURE  [CORE] Port the addon to Kodi Matrix and Python 3.
 
