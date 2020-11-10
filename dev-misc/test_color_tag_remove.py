@@ -22,7 +22,7 @@ def text_remove_color_tags_slist(slist):
         # Remove all [COLOR colorname] tags.
         fa_list = re.findall('(\[COLOR \w+?\])', s_temp)
         fa_set = set(fa_list)
-        if len(fa_set) > 1:
+        if len(fa_set) > 0:
             modified = True
             for m in fa_set:
                 s_temp = s_temp.replace(m, '')
