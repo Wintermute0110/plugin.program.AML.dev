@@ -246,14 +246,14 @@ class Configuration:
         self.REPORT_CF_HISTOGRAMS_PATH = self.REPORTS_DIR.pjoin('Custom_filter_histogram.txt')
 
         # DEBUG data
-        self.REPORT_DEBUG_MAME_ITEM_DATA_PATH       = self.REPORTS_DIR.pjoin('debug_MAME_item_data.txt')
-        self.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH   = self.REPORTS_DIR.pjoin('debug_MAME_item_ROM_DB_data.txt')
-        self.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH = self.REPORTS_DIR.pjoin('debug_MAME_item_Audit_DB_data.txt')
-        self.REPORT_DEBUG_SL_ITEM_DATA_PATH         = self.REPORTS_DIR.pjoin('debug_SL_item_data.txt')
-        self.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH     = self.REPORTS_DIR.pjoin('debug_SL_item_ROM_DB_data.txt')
-        self.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH   = self.REPORTS_DIR.pjoin('debug_SL_item_Audit_DB_data.txt')
-        self.REPORT_DEBUG_MAME_COLLISIONS_PATH      = self.REPORTS_DIR.pjoin('debug_MAME_collisions.txt')
-        self.REPORT_DEBUG_SL_COLLISIONS_PATH        = self.REPORTS_DIR.pjoin('debug_SL_collisions.txt')
+        self.REPORT_DEBUG_MAME_MACHINE_DATA_PATH = self.REPORTS_DIR.pjoin('debug_MAME_machine_data.txt')
+        self.REPORT_DEBUG_MAME_MACHINE_ROM_DATA_PATH = self.REPORTS_DIR.pjoin('debug_MAME_machine_ROM_DB_data.txt')
+        self.REPORT_DEBUG_MAME_MACHINE_AUDIT_DATA_PATH = self.REPORTS_DIR.pjoin('debug_MAME_machine_Audit_DB_data.txt')
+        self.REPORT_DEBUG_SL_ITEM_DATA_PATH = self.REPORTS_DIR.pjoin('debug_SL_item_data.txt')
+        self.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH = self.REPORTS_DIR.pjoin('debug_SL_item_ROM_DB_data.txt')
+        self.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH = self.REPORTS_DIR.pjoin('debug_SL_item_Audit_DB_data.txt')
+        self.REPORT_DEBUG_MAME_COLLISIONS_PATH = self.REPORTS_DIR.pjoin('debug_MAME_collisions.txt')
+        self.REPORT_DEBUG_SL_COLLISIONS_PATH = self.REPORTS_DIR.pjoin('debug_SL_collisions.txt')
 
         # --- Former global variables ---
         self.settings = {}
@@ -615,7 +615,7 @@ def get_settings(cfg):
     settings['log_level'] = kodi_get_int_setting(cfg, 'log_level')
     settings['debug_enable_MAME_render_cache'] = kodi_get_bool_setting(cfg, 'debug_enable_MAME_render_cache')
     settings['debug_enable_MAME_asset_cache'] = kodi_get_bool_setting(cfg, 'debug_enable_MAME_asset_cache')
-    settings['debug_MAME_item_data'] = kodi_get_bool_setting(cfg, 'debug_MAME_item_data')
+    settings['debug_MAME_machine_data'] = kodi_get_bool_setting(cfg, 'debug_MAME_machine_data')
     settings['debug_MAME_ROM_DB_data'] = kodi_get_bool_setting(cfg, 'debug_MAME_ROM_DB_data')
     settings['debug_MAME_Audit_DB_data'] = kodi_get_bool_setting(cfg, 'debug_MAME_Audit_DB_data')
     settings['debug_SL_item_data'] = kodi_get_bool_setting(cfg, 'debug_SL_item_data')
@@ -3278,14 +3278,14 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
     VIEW_SL_ROM       = 200
 
     ACTION_VIEW_MACHINE_DATA       = 100
-    ACTION_VIEW_SL_ROM_DATA        = 200
+    ACTION_VIEW_SL_ITEM_DATA       = 200
     ACTION_VIEW_MACHINE_ROMS       = 300
     ACTION_VIEW_MACHINE_AUDIT_ROMS = 400
-    ACTION_VIEW_SL_ROM_ROMS        = 500
-    ACTION_VIEW_SL_ROM_AUDIT_ROMS  = 600
+    ACTION_VIEW_SL_ITEM_ROMS       = 500
+    ACTION_VIEW_SL_ITEM_AUDIT_ROMS = 600
     ACTION_VIEW_MANUAL_JSON        = 700
     ACTION_AUDIT_MAME_MACHINE      = 800
-    ACTION_AUDIT_SL_MACHINE        = 900
+    ACTION_AUDIT_SL_ITEM           = 900
 
     # --- Determine view type ---
     log_debug('command_context_view() machine_name "{}"'.format(machine_name))
@@ -3336,10 +3336,10 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
                 'This is a bug, please report it.')
             return
     elif view_type == VIEW_SL_ROM:
-        if   selected_value == 0: action = ACTION_VIEW_SL_ROM_DATA
-        elif selected_value == 1: action = ACTION_VIEW_SL_ROM_ROMS
-        elif selected_value == 2: action = ACTION_VIEW_SL_ROM_AUDIT_ROMS
-        elif selected_value == 3: action = ACTION_AUDIT_SL_MACHINE
+        if   selected_value == 0: action = ACTION_VIEW_SL_ITEM_DATA
+        elif selected_value == 1: action = ACTION_VIEW_SL_ITEM_ROMS
+        elif selected_value == 2: action = ACTION_VIEW_SL_ITEM_AUDIT_ROMS
+        elif selected_value == 3: action = ACTION_AUDIT_SL_ITEM
         else:
             kodi_dialog_OK('view_type == VIEW_SL_ROM and selected_value = {}. '.format(selected_value) +
                 'This is a bug, please report it.')
@@ -3351,401 +3351,28 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
 
     # --- Execute action ---
     if action == ACTION_VIEW_MACHINE_DATA:
-        pDialog = KodiProgressDialog()
-        d_text = 'Loading databases...'
-        if location == LOCATION_STANDARD:
-            pDialog.startProgress('{}\n{}'.format(d_text, 'ROM hashed database'), 2)
-            machine = db_get_machine_main_hashed_db(cfg, machine_name)
-            pDialog.updateProgress(1, '{}\n{}'.format(d_text, 'Assets hashed database'))
-            assets = db_get_machine_assets_hashed_db(cfg, machine_name)
-            pDialog.endProgress()
-            window_title = 'MAME Machine Information'
+        action_view_machine_data(cfg, machine_name, SL_name, SL_ROM, location)
 
-        elif location == LOCATION_MAME_FAVS:
-            pDialog.startProgress('{}\n{}'.format(d_text, 'MAME Favourites database'))
-            machines = utils_load_JSON_file_dic(cfg.FAV_MACHINES_PATH.getPath())
-            pDialog.endProgress()
-            machine = machines[machine_name]
-            assets = machine['assets']
-            window_title = 'Favourite MAME Machine Information'
+    elif action == ACTION_VIEW_SL_ITEM_DATA:
+        action_view_sl_item_data(cfg, machine_name, SL_name, SL_ROM, location)
 
-        elif location == LOCATION_MAME_MOST_PLAYED:
-            pDialog.startProgress('{}\n{}'.format(d_text, 'MAME Most Played database'))
-            most_played_roms_dic = utils_load_JSON_file_dic(cfg.MAME_MOST_PLAYED_FILE_PATH.getPath())
-            pDialog.endProgress()
-            machine = most_played_roms_dic[machine_name]
-            assets = machine['assets']
-            window_title = 'Most Played MAME Machine Information'
-
-        elif location == LOCATION_MAME_RECENT_PLAYED:
-            pDialog.startProgress('{}\n{}'.format(d_text, 'MAME Recently Played database'))
-            recent_roms_list = utils_load_JSON_file_list(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath())
-            pDialog.endProgress()
-            machine_index = -1
-            for i, recent_rom in enumerate(recent_roms_list):
-                if machine_name == recent_rom['name']:
-                    machine_index = i
-                    break
-            if machine_index < 0:
-                kodi_dialog_OK('machine_index < 0. Please report this bug.')
-                return
-            machine = recent_roms_list[machine_index]
-            assets = machine['assets']
-            window_title = 'Recently Played MAME Machine Information'
-
-        # --- Make information string and display text window ---
-        slist = []
-        mame_info_MAME_print(slist, location, machine_name, machine, assets)
-        kodi_display_text_window_mono(window_title, '\n'.join(slist))
-
-        # --- Write DEBUG TXT file ---
-        if cfg.settings['debug_MAME_item_data']:
-            log_info('Writing file "{}"'.format(cfg.REPORT_DEBUG_MAME_ITEM_DATA_PATH.getPath()))
-            text_remove_color_tags_slist(slist)
-            utils_write_slist_to_file(cfg.REPORT_DEBUG_MAME_ITEM_DATA_PATH.getPath(), slist)
-
-    # --- View Software List ROM Machine data ---
-    elif action == ACTION_VIEW_SL_ROM_DATA:
-        if location == LOCATION_STANDARD:
-            # --- Load databases ---
-            SL_machines_dic = utils_load_JSON_file_dic(cfg.SL_MACHINES_PATH.getPath())
-            SL_catalog_dic = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
-            assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
-            SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
-            SL_asset_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
-            SL_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_items.json')
-            roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
-
-            # --- Prepare data ---
-            rom = roms[SL_ROM]
-            assets = SL_asset_dic[SL_ROM]
-            SL_dic = SL_catalog_dic[SL_name]
-            SL_machine_list = SL_machines_dic[SL_name]
-            window_title = 'Software List ROM Information'
-
-        elif location == LOCATION_SL_FAVS:
-            # --- Load databases ---
-            SL_machines_dic = utils_load_JSON_file_dic(cfg.SL_MACHINES_PATH.getPath())
-            SL_catalog_dic = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
-            fav_SL_roms = utils_load_JSON_file_dic(cfg.FAV_SL_ROMS_PATH.getPath())
-
-            # --- Prepare data ---
-            fav_key = SL_name + '-' + SL_ROM
-            rom = fav_SL_roms[fav_key]
-            assets = rom['assets']
-            SL_dic = SL_catalog_dic[SL_name]
-            SL_machine_list = SL_machines_dic[SL_name]
-            window_title = 'Favourite Software List Item Information'
-
-        elif location == LOCATION_SL_MOST_PLAYED:
-            SL_machines_dic = utils_load_JSON_file_dic(cfg.SL_MACHINES_PATH.getPath())
-            SL_catalog_dic = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
-            most_played_roms_dic = utils_load_JSON_file_dic(cfg.SL_MOST_PLAYED_FILE_PATH.getPath())
-
-            # --- Prepare data ---
-            fav_key = SL_name + '-' + SL_ROM
-            rom = most_played_roms_dic[fav_key]
-            assets = rom['assets']
-            SL_dic = SL_catalog_dic[SL_name]
-            SL_machine_list = SL_machines_dic[SL_name]
-            window_title = 'Most Played SL Item Information'
-
-        elif location == LOCATION_SL_RECENT_PLAYED:
-            SL_machines_dic = utils_load_JSON_file_dic(cfg.SL_MACHINES_PATH.getPath())
-            SL_catalog_dic = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
-            recent_roms_list = utils_load_JSON_file_list(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath())
-
-            # --- Prepare data ---
-            fav_key = SL_name + '-' + SL_ROM
-            machine_index = -1
-            for i, recent_rom in enumerate(recent_roms_list):
-                if fav_key == recent_rom['SL_DB_key']:
-                    machine_index = i
-                    break
-            if machine_index < 0:
-                kodi_dialog_OK('machine_index < 0. Please report this bug.')
-                return
-            rom = recent_roms_list[machine_index]
-            assets = rom['assets']
-            SL_dic = SL_catalog_dic[SL_name]
-            SL_machine_list = SL_machines_dic[SL_name]
-            window_title = 'Recently Played SL Item Information'
-
-        # Build information string.
-        slist = []
-        mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL_machine_list)
-        kodi_display_text_window_mono(window_title, '\n'.join(slist))
-
-        # --- Write DEBUG TXT file ---
-        if cfg.settings['debug_SL_item_data']:
-            log_info('Writing file "{}"'.format(cfg.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath()))
-            text_remove_color_tags_slist(slist)
-            utils_write_slist_to_file(cfg.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath(), slist)
-
-    # --- View MAME machine ROMs (ROMs database) ---
     elif action == ACTION_VIEW_MACHINE_ROMS:
-        # Load machine dictionary, ROM database and Devices database.
-        d_text = 'Loading databases ...'
-        num_items = 3
-        pDialog = KodiProgressDialog()
-        pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machines main'), num_items)
-        machine = db_get_machine_main_hashed_db(cfg, machine_name)
-        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine ROMs'))
-        roms_db_dic = utils_load_JSON_file_dic(cfg.ROMS_DB_PATH.getPath())
-        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine Devices'))
-        devices_db_dic = utils_load_JSON_file_dic(cfg.DEVICES_DB_PATH.getPath())
-        pDialog.endProgress()
+        action_view_machine_roms(cfg, machine_name, SL_name, SL_ROM, location)
 
-        # --- Make a dictionary with device ROMs ---
-        device_roms_list = []
-        for device in devices_db_dic[machine_name]:
-            device_roms_dic = roms_db_dic[device]
-            for rom in device_roms_dic['roms']:
-                rom['device_name'] = device
-                device_roms_list.append(copy.deepcopy(rom))
-
-        # --- ROM info ---
-        info_text = []
-        cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
-        romof = machine['romof'] if machine['romof'] else 'None'
-        info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
-            '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
-            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(text_type(machine['isBIOS'])) +
-            '[COLOR skyblue]isDevice[/COLOR] {}'.format(text_type(machine['isDevice'])))
-        info_text.append('')
-
-        # --- Table header ---
-        # Table cell padding: left, right
-        table_str = [
-            ['right', 'left',     'right', 'left',     'left',  'left'],
-            ['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS/Device'],
-        ]
-
-        # --- Table: Machine ROMs ---
-        roms_dic = roms_db_dic[machine_name]
-        if roms_dic['roms']:
-            for rom in roms_dic['roms']:
-                if       rom['bios'] and     rom['merge']: r_type = 'BROM'
-                elif     rom['bios'] and not rom['merge']: r_type = 'XROM'
-                elif not rom['bios'] and     rom['merge']: r_type = 'MROM'
-                elif not rom['bios'] and not rom['merge']: r_type = 'ROM'
-                else:                                      r_type = 'ERROR'
-                table_row = [r_type, text_type(rom['name']), text_type(rom['size']),
-                    text_type(rom['crc']), text_type(rom['merge']), text_type(rom['bios'])]
-                table_str.append(table_row)
-
-        # --- Table: device ROMs ---
-        if device_roms_list:
-            for rom in device_roms_list:
-                table_row = ['DROM', text_type(rom['name']), text_type(rom['size']),
-                    text_type(rom['crc']), text_type(rom['merge']), text_type(rom['device_name'])]
-                table_str.append(table_row)
-
-        # --- Table: machine CHDs ---
-        if roms_dic['disks']:
-            for disk in roms_dic['disks']:
-                table_row = ['DISK', text_type(disk['name']), '', text_type(disk['sha1'])[0:8],
-                    text_type(disk['merge']), '']
-                table_str.append(table_row)
-
-        # --- Table: machine Samples ---
-        if roms_dic['samples']:
-            for sample in roms_dic['samples']:
-                table_row = ['SAM', text_type(sample['name']), '', '', '', '']
-                table_str.append(table_row)
-
-        # --- Table: BIOSes ---
-        if roms_dic['bios']:
-            bios_table_str = []
-            bios_table_str.append(['right',     'left'])
-            bios_table_str.append(['BIOS name', 'Description'])
-            for bios in roms_dic['bios']:
-                table_row = [text_type(bios['name']), text_type(bios['description'])]
-                bios_table_str.append(table_row)
-
-        # --- Render text information window ---
-        table_str_list = text_render_table_str(table_str)
-        info_text.extend(table_str_list)
-        if roms_dic['bios']:
-            bios_table_str_list = text_render_table_str(bios_table_str)
-            info_text.append('')
-            info_text.extend(bios_table_str_list)
-        window_title = 'Machine {} ROMs'.format(machine_name)
-        kodi_display_text_window_mono(window_title, '\n'.join(info_text))
-
-        # --- Write DEBUG TXT file ---
-        if cfg.settings['debug_MAME_ROM_DB_data']:
-            log_info('Writing file "{}"'.format(cfg.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH.getPath()))
-            text_remove_color_tags_slist(info_text)
-            utils_write_slist_to_file(cfg.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH.getPath(), info_text)
-
-    # --- View MAME machine ROMs (Audit ROM database) ---
     elif action == ACTION_VIEW_MACHINE_AUDIT_ROMS:
-        # --- Load machine dictionary and ROM database ---
-        rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][cfg.settings['mame_rom_set']]
-        log_debug('command_context_view() View Machine ROMs (Audit database)')
-        log_debug('command_context_view() rom_set {}'.format(rom_set))
+        action_view_machine_audit_roms(cfg, machine_name, SL_name, SL_ROM, location)
 
-        d_text = 'Loading databases...'
-        num_items = 2
-        pDialog = KodiProgressDialog()
-        pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machine hash'), num_items)
-        machine = db_get_machine_main_hashed_db(cfg, machine_name)
-        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME ROM Audit'))
-        audit_roms_dic = utils_load_JSON_file_dic(cfg.ROM_AUDIT_DB_PATH.getPath())
-        pDialog.endProgress()
+    elif action == ACTION_VIEW_SL_ITEM_ROMS:
+        action_view_sl_item_roms(cfg, machine_name, SL_name, SL_ROM, location)
 
-        # --- Grab data and settings ---
-        rom_list = audit_roms_dic[machine_name]
-        cloneof = machine['cloneof']
-        romof = machine['romof']
-        log_debug('command_context_view() machine {}'.format(machine_name))
-        log_debug('command_context_view() cloneof {}'.format(cloneof))
-        log_debug('command_context_view() romof   {}'.format(romof))
+    elif action == ACTION_VIEW_SL_ITEM_AUDIT_ROMS:
+        action_view_sl_item_audit_roms(cfg, machine_name, SL_name, SL_ROM, location)
 
-        # --- Generate report ---
-        info_text = []
-        cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
-        romof = machine['romof'] if machine['romof'] else 'None'
-        info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
-            '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
-            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(text_type(machine['isBIOS'])) +
-            '[COLOR skyblue]isDevice[/COLOR] {}'.format(text_type(machine['isDevice'])))
-        info_text.append('')
+    elif action == ACTION_AUDIT_MAME_MACHINE:
+        action_audit_mame_machine(cfg, machine_name, SL_name, SL_ROM, location)
 
-        # --- Table header ---
-        # Table cell padding: left, right
-        # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
-        table_str = [
-            ['right', 'left',     'right', 'left',     'left'],
-            ['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Location'],
-        ]
-
-        # --- Table rows ---
-        for m_rom in rom_list:
-            if m_rom['type'] == ROM_TYPE_DISK:
-                sha1_str = text_type(m_rom['sha1'])[0:8]
-                table_row = [text_type(m_rom['type']), text_type(m_rom['name']), '', sha1_str, m_rom['location']]
-            elif m_rom['type'] == ROM_TYPE_SAMPLE:
-                table_row = [text_type(m_rom['type']), text_type(m_rom['name']), '', '', text_type(m_rom['location'])]
-            else:
-                table_row = [text_type(m_rom['type']), text_type(m_rom['name']), text_type(m_rom['size']),
-                    text_type(m_rom['crc']), text_type(m_rom['location'])]
-            table_str.append(table_row)
-        table_str_list = text_render_table_str(table_str)
-        info_text.extend(table_str_list)
-        window_title = 'Machine {} ROM audit'.format(machine_name)
-        kodi_display_text_window_mono(window_title, '\n'.join(info_text))
-
-        # --- Write DEBUG TXT file ---
-        if cfg.settings['debug_MAME_Audit_DB_data']:
-            log_info('Writing file "{}"'.format(cfg.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH.getPath()))
-            text_remove_color_tags_slist(info_text)
-            utils_write_slist_to_file(cfg.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH.getPath(), info_text)
-
-    # --- View SL ROMs ---
-    elif action == ACTION_VIEW_SL_ROM_ROMS:
-        SL_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_items.json')
-        SL_ROMS_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_ROMs.json')
-        # SL_catalog_dic = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
-        # SL_machines_dic = utils_load_JSON_file_dic(cfg.SL_MACHINES_PATH.getPath())
-        # assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
-        # SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
-        # SL_asset_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
-        # SL_dic = SL_catalog_dic[SL_name]
-        # SL_machine_list = SL_machines_dic[SL_name]
-        # assets = SL_asset_dic[SL_ROM] if SL_ROM in SL_asset_dic else db_new_SL_asset()
-        roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
-        roms_db = utils_load_JSON_file_dic(SL_ROMS_DB_FN.getPath())
-        rom = roms[SL_ROM]
-        rom_db_list = roms_db[SL_ROM]
-
-        cloneof = rom['cloneof'] if rom['cloneof'] else 'None'
-        info_text = []
-        info_text.append('[COLOR violet]SL_name[/COLOR] {}'.format(SL_name))
-        info_text.append('[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM))
-        info_text.append('[COLOR violet]description[/COLOR] {}'.format(rom['description']))
-        info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(cloneof))
-        info_text.append('')
-
-        table_str = []
-        table_str.append(['left',      'left',       'left',      'left',   'left',         'left', 'left'])
-        table_str.append(['Part name', 'Part iface', 'Area type', 'A name', 'ROM/CHD name', 'Size', 'CRC/SHA1'])
-        # Iterate Parts
-        for part_dic in rom_db_list:
-            part_name = part_dic['part_name']
-            part_interface = part_dic['part_interface']
-            if 'dataarea' in part_dic:
-                # Iterate Dataareas
-                for dataarea_dic in part_dic['dataarea']:
-                    dataarea_name = dataarea_dic['name']
-                    # Interate ROMs in dataarea
-                    for rom_dic in dataarea_dic['roms']:
-                        table_row = [part_name, part_interface, 'dataarea', dataarea_name,
-                            rom_dic['name'], text_type(rom_dic['size']), rom_dic['crc']]
-                        table_str.append(table_row)
-            if 'diskarea' in part_dic:
-                # Iterate Diskareas
-                for diskarea_dic in part_dic['diskarea']:
-                    diskarea_name = diskarea_dic['name']
-                    # Iterate DISKs in diskarea
-                    for rom_dic in diskarea_dic['disks']:
-                        table_row = [part_name, part_interface, 'diskarea', diskarea_name,
-                            rom_dic['name'], '', rom_dic['sha1'][0:8]]
-                        table_str.append(table_row)
-        table_str_list = text_render_table_str(table_str)
-        info_text.extend(table_str_list)
-        window_title = 'Software List ROM List (ROMs DB)'
-        kodi_display_text_window_mono(window_title, '\n'.join(info_text))
-
-        # --- Write DEBUG TXT file ---
-        if cfg.settings['debug_SL_ROM_DB_data']:
-            log_info('Writing file "{}"'.format(cfg.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath()))
-            text_remove_color_tags_slist(info_text)
-            utils_write_slist_to_file(cfg.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath(), info_text)
-
-    # --- View SL ROM Audit ROMs ---
-    elif action == ACTION_VIEW_SL_ROM_AUDIT_ROMS:
-        SL_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_items.json')
-        # SL_ROMs_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_roms.json')
-        SL_ROM_Audit_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_ROM_audit.json')
-
-        roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
-        rom_audit_db = utils_load_JSON_file_dic(SL_ROM_Audit_DB_FN.getPath())
-        rom = roms[SL_ROM]
-        rom_db_list = rom_audit_db[SL_ROM]
-
-        cloneof = rom['cloneof'] if rom['cloneof'] else 'None'
-        info_text = []
-        info_text.append('[COLOR violet]SL_name[/COLOR] {}'.format(SL_name))
-        info_text.append('[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM))
-        info_text.append('[COLOR violet]description[/COLOR] {}'.format(rom['description']))
-        info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(cloneof))
-        info_text.append('')
-
-        # table_str = [    ['left', 'left',         'left', 'left',     'left'] ]
-        # table_str.append(['Type', 'ROM/CHD name', 'Size', 'CRC/SHA1', 'Location'])
-        table_str = [    ['left', 'left', 'left',     'left'] ]
-        table_str.append(['Type', 'Size', 'CRC/SHA1', 'Location'])
-        for rom_dic in rom_db_list:
-            if rom_dic['type'] == ROM_TYPE_DISK:
-                table_row = [rom_dic['type'], # rom_dic['name'],
-                    '', rom_dic['sha1'][0:8], rom_dic['location']]
-                table_str.append(table_row)
-            else:
-                table_row = [rom_dic['type'], # rom_dic['name'],
-                    text_type(rom_dic['size']), rom_dic['crc'], rom_dic['location']]
-                table_str.append(table_row)
-        table_str_list = text_render_table_str(table_str)
-        info_text.extend(table_str_list)
-        window_title = 'Software List ROM List (Audit DB)'
-        kodi_display_text_window_mono(window_title, '\n'.join(info_text))
-
-        # --- Write DEBUG TXT file ---
-        if cfg.settings['debug_SL_Audit_DB_data']:
-            log_info('Writing file "{}"'.format(cfg.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath()))
-            text_remove_color_tags_slist(info_text)
-            utils_write_slist_to_file(cfg.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath(), info_text)
+    elif action == ACTION_AUDIT_SL_ITEM:
+        action_audit_sl_item(cfg, machine_name, SL_name, SL_ROM, location)
 
     # --- View manual JSON INFO file of a MAME machine ---
     elif action == ACTION_VIEW_MANUAL_JSON:
@@ -3773,120 +3400,526 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
         info_text = utils_load_file_to_str(info_FN.getPath())
         kodi_display_text_window_mono(window_title, info_text)
 
-    # --- Audit ROMs of a single machine ---
-    elif action == ACTION_AUDIT_MAME_MACHINE:
-        # --- Load machine dictionary and ROM database ---
-        rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][cfg.settings['mame_rom_set']]
-        log_debug('command_context_view() Auditing Machine ROMs\n')
-        log_debug('command_context_view() rom_set {}\n'.format(rom_set))
-
-        d_text = 'Loading databases...'
-        pDialog = KodiProgressDialog()
-        pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machine hash'), 2)
-        machine = db_get_machine_main_hashed_db(cfg, machine_name)
-        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME ROM Audit'))
-        audit_roms_dic = utils_load_JSON_file_dic(cfg.ROM_AUDIT_DB_PATH.getPath())
-        pDialog.endProgress()
-
-        # --- Grab data and settings ---
-        rom_list = audit_roms_dic[machine_name]
-        cloneof = machine['cloneof']
-        romof = machine['romof']
-        log_debug('command_context_view() machine {}\n'.format(machine_name))
-        log_debug('command_context_view() cloneof {}\n'.format(cloneof))
-        log_debug('command_context_view() romof   {}\n'.format(romof))
-
-        # --- Open ZIP file, check CRC32 and also CHDs ---
-        audit_dic = db_new_audit_dic()
-        mame_audit_MAME_machine(cfg, rom_list, audit_dic)
-
-        # --- Generate report ---
-        info_text = []
-        cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
-        romof = machine['romof'] if machine['romof'] else 'None'
-        info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
-            '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
-            '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(text_type(machine['isBIOS'])) +
-            '[COLOR skyblue]isDevice[/COLOR] {}'.format(text_type(machine['isDevice'])))
-        info_text.append('')
-
-        # --- Table header ---
-        # Table cell padding: left, right
-        # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
-        table_str = []
-        table_str.append(['right', 'left',     'right', 'left',     'left',     'left'])
-        table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Location', 'Status'])
-
-        # --- Table rows ---
-        for m_rom in rom_list:
-            if m_rom['type'] == ROM_TYPE_DISK:
-                sha1_srt = m_rom['sha1'][0:8]
-                table_row = [m_rom['type'], m_rom['name'], '', sha1_srt,
-                    m_rom['location'], m_rom['status_colour']]
-            elif m_rom['type'] == ROM_TYPE_SAMPLE:
-                table_row = [text_type(m_rom['type']), text_type(m_rom['name']), '', '',
-                    m_rom['location'], m_rom['status_colour']]
-            else:
-                table_row = [text_type(m_rom['type']), text_type(m_rom['name']),
-                    text_type(m_rom['size']), text_type(m_rom['crc']), m_rom['location'], m_rom['status_colour']]
-            table_str.append(table_row)
-        table_str_list = text_render_table_str(table_str)
-        info_text.extend(table_str_list)
-        window_title = 'Machine {} ROM audit'.format(machine_name)
-        kodi_display_text_window_mono(window_title, '\n'.join(info_text))
-
-    # --- Audit ROMs of SL item ---
-    elif action == ACTION_AUDIT_SL_MACHINE:
-        # --- Load machine dictionary and ROM database ---
-        log_debug('command_context_view() Auditing SL Software ROMs\n')
-        log_debug('command_context_view() SL_name {}\n'.format(SL_name))
-        log_debug('command_context_view() SL_ROM {}\n'.format(SL_ROM))
-
-        SL_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_items.json')
-        SL_ROM_Audit_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_ROM_audit.json')
-
-        roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
-        roms_audit_db = utils_load_JSON_file_dic(SL_ROM_Audit_DB_FN.getPath())
-        rom = roms[SL_ROM]
-        rom_db_list = roms_audit_db[SL_ROM]
-
-        # --- Open ZIP file and check CRC32 ---
-        audit_dic = db_new_audit_dic()
-        SL_ROM_path_FN = FileName(cfg.settings['SL_rom_path'])
-        SL_CHD_path_FN = FileName(cfg.settings['SL_chd_path'])
-        mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, SL_ROM, rom_db_list, audit_dic)
-
-        info_text = [
-            '[COLOR violet]SL_name[/COLOR] {}'.format(SL_name),
-            '[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM),
-            '[COLOR violet]description[/COLOR] {}'.format(rom['description']),
-            '',
-        ]
-
-        # --- Table header and rows ---
-        # Do not render ROM name in SLs, cos they are really long.
-        # table_str = [    ['right', 'left',     'right', 'left',     'left',     'left'] ]
-        # table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Location', 'Status'])
-        table_str = [    ['right', 'right', 'left',     'left',     'left'] ]
-        table_str.append(['Type',  'Size',  'CRC/SHA1', 'Location', 'Status'])
-        for m_rom in rom_db_list:
-            if m_rom['type'] == ROM_TYPE_DISK:
-                table_row = [m_rom['type'], # m_rom['name'],
-                    '', m_rom['sha1'][0:8], m_rom['location'], m_rom['status_colour']]
-                table_str.append(table_row)
-            else:
-                table_row = [m_rom['type'], # m_rom['name'],
-                    text_type(m_rom['size']), m_rom['crc'], m_rom['location'], m_rom['status_colour']]
-                table_str.append(table_row)
-        table_str_list = text_render_table_str(table_str)
-        info_text.extend(table_str_list)
-        window_title = 'SL {} Software {} ROM audit'.format(SL_name, SL_ROM)
-        kodi_display_text_window_mono(window_title, '\n'.join(info_text))
-
     else:
         t = 'Wrong action == {}. This is a bug, please report it.'.format(action)
         log_error(t)
         kodi_dialog_OK(t)
+
+def action_view_machine_data(cfg, machine_name, SL_name, SL_ROM, location):
+    pDialog = KodiProgressDialog()
+    d_text = 'Loading databases...'
+    if location == LOCATION_STANDARD:
+        pDialog.startProgress('{}\n{}'.format(d_text, 'ROM hashed database'), 2)
+        machine = db_get_machine_main_hashed_db(cfg, machine_name)
+        pDialog.updateProgress(1, '{}\n{}'.format(d_text, 'Assets hashed database'))
+        assets = db_get_machine_assets_hashed_db(cfg, machine_name)
+        pDialog.endProgress()
+        window_title = 'MAME Machine Information'
+
+    elif location == LOCATION_MAME_FAVS:
+        pDialog.startProgress('{}\n{}'.format(d_text, 'MAME Favourites database'))
+        machines = utils_load_JSON_file_dic(cfg.FAV_MACHINES_PATH.getPath())
+        pDialog.endProgress()
+        machine = machines[machine_name]
+        assets = machine['assets']
+        window_title = 'Favourite MAME Machine Information'
+
+    elif location == LOCATION_MAME_MOST_PLAYED:
+        pDialog.startProgress('{}\n{}'.format(d_text, 'MAME Most Played database'))
+        most_played_roms_dic = utils_load_JSON_file_dic(cfg.MAME_MOST_PLAYED_FILE_PATH.getPath())
+        pDialog.endProgress()
+        machine = most_played_roms_dic[machine_name]
+        assets = machine['assets']
+        window_title = 'Most Played MAME Machine Information'
+
+    elif location == LOCATION_MAME_RECENT_PLAYED:
+        pDialog.startProgress('{}\n{}'.format(d_text, 'MAME Recently Played database'))
+        recent_roms_list = utils_load_JSON_file_list(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+        pDialog.endProgress()
+        machine_index = -1
+        for i, recent_rom in enumerate(recent_roms_list):
+            if machine_name == recent_rom['name']:
+                machine_index = i
+                break
+        if machine_index < 0:
+            kodi_dialog_OK('machine_index < 0. Please report this bug.')
+            return
+        machine = recent_roms_list[machine_index]
+        assets = machine['assets']
+        window_title = 'Recently Played MAME Machine Information'
+
+    # --- Make information string and display text window ---
+    slist = []
+    mame_info_MAME_print(slist, location, machine_name, machine, assets)
+    kodi_display_text_window_mono(window_title, '\n'.join(slist))
+
+    # --- Write DEBUG TXT file ---
+    if cfg.settings['debug_MAME_machine_data']:
+        log_info('Writing file "{}"'.format(cfg.REPORT_DEBUG_MAME_MACHINE_DATA_PATH.getPath()))
+        text_remove_color_tags_slist(slist)
+        utils_write_slist_to_file(cfg.REPORT_DEBUG_MAME_MACHINE_DATA_PATH.getPath(), slist)
+
+def action_view_sl_item_data(cfg, machine_name, SL_name, SL_ROM, location):
+    if location == LOCATION_STANDARD:
+        # --- Load databases ---
+        SL_machines_dic = utils_load_JSON_file_dic(cfg.SL_MACHINES_PATH.getPath())
+        SL_catalog_dic = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
+        assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+        SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
+        SL_asset_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
+        SL_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_items.json')
+        roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
+
+        # --- Prepare data ---
+        rom = roms[SL_ROM]
+        assets = SL_asset_dic[SL_ROM]
+        SL_dic = SL_catalog_dic[SL_name]
+        SL_machine_list = SL_machines_dic[SL_name]
+        window_title = 'Software List ROM Information'
+
+    elif location == LOCATION_SL_FAVS:
+        # --- Load databases ---
+        SL_machines_dic = utils_load_JSON_file_dic(cfg.SL_MACHINES_PATH.getPath())
+        SL_catalog_dic = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
+        fav_SL_roms = utils_load_JSON_file_dic(cfg.FAV_SL_ROMS_PATH.getPath())
+
+        # --- Prepare data ---
+        fav_key = SL_name + '-' + SL_ROM
+        rom = fav_SL_roms[fav_key]
+        assets = rom['assets']
+        SL_dic = SL_catalog_dic[SL_name]
+        SL_machine_list = SL_machines_dic[SL_name]
+        window_title = 'Favourite Software List Item Information'
+
+    elif location == LOCATION_SL_MOST_PLAYED:
+        SL_machines_dic = utils_load_JSON_file_dic(cfg.SL_MACHINES_PATH.getPath())
+        SL_catalog_dic = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
+        most_played_roms_dic = utils_load_JSON_file_dic(cfg.SL_MOST_PLAYED_FILE_PATH.getPath())
+
+        # --- Prepare data ---
+        fav_key = SL_name + '-' + SL_ROM
+        rom = most_played_roms_dic[fav_key]
+        assets = rom['assets']
+        SL_dic = SL_catalog_dic[SL_name]
+        SL_machine_list = SL_machines_dic[SL_name]
+        window_title = 'Most Played SL Item Information'
+
+    elif location == LOCATION_SL_RECENT_PLAYED:
+        SL_machines_dic = utils_load_JSON_file_dic(cfg.SL_MACHINES_PATH.getPath())
+        SL_catalog_dic = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
+        recent_roms_list = utils_load_JSON_file_list(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath())
+
+        # --- Prepare data ---
+        fav_key = SL_name + '-' + SL_ROM
+        machine_index = -1
+        for i, recent_rom in enumerate(recent_roms_list):
+            if fav_key == recent_rom['SL_DB_key']:
+                machine_index = i
+                break
+        if machine_index < 0:
+            kodi_dialog_OK('machine_index < 0. Please report this bug.')
+            return
+        rom = recent_roms_list[machine_index]
+        assets = rom['assets']
+        SL_dic = SL_catalog_dic[SL_name]
+        SL_machine_list = SL_machines_dic[SL_name]
+        window_title = 'Recently Played SL Item Information'
+
+    # Build information string.
+    slist = []
+    mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL_machine_list)
+    kodi_display_text_window_mono(window_title, '\n'.join(slist))
+
+    # --- Write DEBUG TXT file ---
+    if cfg.settings['debug_SL_item_data']:
+        log_info('Writing file "{}"'.format(cfg.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath()))
+        text_remove_color_tags_slist(slist)
+        utils_write_slist_to_file(cfg.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath(), slist)
+
+def action_view_machine_roms(cfg, machine_name, SL_name, SL_ROM, location):
+    # Load machine dictionary, ROM database and Devices database.
+    d_text = 'Loading databases ...'
+    num_items = 3
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machines main'), num_items)
+    machine = db_get_machine_main_hashed_db(cfg, machine_name)
+    pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine ROMs'))
+    roms_db_dic = utils_load_JSON_file_dic(cfg.ROMS_DB_PATH.getPath())
+    pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine Devices'))
+    devices_db_dic = utils_load_JSON_file_dic(cfg.DEVICES_DB_PATH.getPath())
+    pDialog.endProgress()
+
+    # --- Make a dictionary with device ROMs ---
+    device_roms_list = []
+    for device in devices_db_dic[machine_name]:
+        device_roms_dic = roms_db_dic[device]
+        for rom in device_roms_dic['roms']:
+            rom['device_name'] = device
+            device_roms_list.append(copy.deepcopy(rom))
+
+    # --- ROM info ---
+    info_text = []
+    cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
+    romof = machine['romof'] if machine['romof'] else 'None'
+    info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
+        '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
+        '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(text_type(machine['isBIOS'])) +
+        '[COLOR skyblue]isDevice[/COLOR] {}'.format(text_type(machine['isDevice'])))
+    info_text.append('')
+
+    # --- Table header ---
+    # Table cell padding: left, right
+    table_str = [
+        ['right', 'left',     'right', 'left',     'left',  'left'],
+        ['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS/Device'],
+    ]
+
+    # --- Table: Machine ROMs ---
+    roms_dic = roms_db_dic[machine_name]
+    if roms_dic['roms']:
+        for rom in roms_dic['roms']:
+            if       rom['bios'] and     rom['merge']: r_type = 'BROM'
+            elif     rom['bios'] and not rom['merge']: r_type = 'XROM'
+            elif not rom['bios'] and     rom['merge']: r_type = 'MROM'
+            elif not rom['bios'] and not rom['merge']: r_type = 'ROM'
+            else:                                      r_type = 'ERROR'
+            table_row = [r_type, text_type(rom['name']), text_type(rom['size']),
+                text_type(rom['crc']), text_type(rom['merge']), text_type(rom['bios'])]
+            table_str.append(table_row)
+
+    # --- Table: device ROMs ---
+    if device_roms_list:
+        for rom in device_roms_list:
+            table_row = ['DROM', text_type(rom['name']), text_type(rom['size']),
+                text_type(rom['crc']), text_type(rom['merge']), text_type(rom['device_name'])]
+            table_str.append(table_row)
+
+    # --- Table: machine CHDs ---
+    if roms_dic['disks']:
+        for disk in roms_dic['disks']:
+            table_row = ['DISK', text_type(disk['name']), '', text_type(disk['sha1'])[0:8],
+                text_type(disk['merge']), '']
+            table_str.append(table_row)
+
+    # --- Table: machine Samples ---
+    if roms_dic['samples']:
+        for sample in roms_dic['samples']:
+            table_row = ['SAM', text_type(sample['name']), '', '', '', '']
+            table_str.append(table_row)
+
+    # --- Table: BIOSes ---
+    if roms_dic['bios']:
+        bios_table_str = []
+        bios_table_str.append(['right',     'left'])
+        bios_table_str.append(['BIOS name', 'Description'])
+        for bios in roms_dic['bios']:
+            table_row = [text_type(bios['name']), text_type(bios['description'])]
+            bios_table_str.append(table_row)
+
+    # --- Render text information window ---
+    table_str_list = text_render_table_str(table_str)
+    info_text.extend(table_str_list)
+    if roms_dic['bios']:
+        bios_table_str_list = text_render_table_str(bios_table_str)
+        info_text.append('')
+        info_text.extend(bios_table_str_list)
+    window_title = 'Machine {} ROMs'.format(machine_name)
+    kodi_display_text_window_mono(window_title, '\n'.join(info_text))
+
+    # --- Write DEBUG TXT file ---
+    if cfg.settings['debug_MAME_ROM_DB_data']:
+        log_info('Writing file "{}"'.format(cfg.REPORT_DEBUG_MAME_MACHINE_ROM_DATA_PATH.getPath()))
+        text_remove_color_tags_slist(info_text)
+        utils_write_slist_to_file(cfg.REPORT_DEBUG_MAME_MACHINE_ROM_DATA_PATH.getPath(), info_text)
+
+def action_view_machine_audit_roms(cfg, machine_name, SL_name, SL_ROM, location):
+    log_debug('command_context_view() View Machine ROMs (Audit database)')
+    d_text = 'Loading databases...'
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machine hash'), 3)
+    machine = db_get_machine_main_hashed_db(cfg, machine_name)
+    pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME ROM Audit'))
+    audit_roms_dic = utils_load_JSON_file_dic(cfg.ROM_AUDIT_DB_PATH.getPath())
+    pDialog.updateProgressInc('{}\n{}'.format(d_text, 'Machine archives'))
+    machine_archives = utils_load_JSON_file_dic(cfg.ROM_SET_MACHINE_FILES_DB_PATH.getPath())
+    pDialog.endProgress()
+
+    # --- Grab data and settings ---
+    rom_list = audit_roms_dic[machine_name]
+    cloneof = machine['cloneof']
+    romof = machine['romof']
+    rom_set = ROMSET_NAME_LIST[cfg.settings['mame_rom_set']]
+    chd_set = CHDSET_NAME_LIST[cfg.settings['mame_chd_set']]
+    log_debug('command_context_view() machine {}'.format(machine_name))
+    log_debug('command_context_view() cloneof {}'.format(cloneof))
+    log_debug('command_context_view() romof   {}'.format(romof))
+    log_debug('command_context_view() rom_set {}'.format(rom_set))
+    log_debug('command_context_view() chd_set {}'.format(chd_set))
+
+    # --- Generate report ---
+    info_text = []
+    cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
+    romof = machine['romof'] if machine['romof'] else 'None'
+    info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
+        '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
+        '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(text_type(machine['isBIOS'])) +
+        '[COLOR skyblue]isDevice[/COLOR] {}'.format(text_type(machine['isDevice'])))
+    info_text.append('MAME ROM set [COLOR orange]{}[/COLOR] / '.format(rom_set) +
+        'MAME CHD set [COLOR orange]{}[/COLOR]'.format(chd_set))
+    info_text.append('')
+
+    # --- Audit ROM table ---
+    # Table cell padding: left, right
+    # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
+    table_str = [
+        ['right', 'left', 'right', 'left', 'left'],
+        ['Type', 'ROM name', 'Size', 'CRC/SHA1', 'Location'],
+    ]
+    for m_rom in rom_list:
+        if m_rom['type'] == ROM_TYPE_DISK:
+            sha1_str = text_type(m_rom['sha1'])[0:8]
+            table_row = [text_type(m_rom['type']), text_type(m_rom['name']), '', sha1_str, m_rom['location']]
+        elif m_rom['type'] == ROM_TYPE_SAMPLE:
+            table_row = [text_type(m_rom['type']), text_type(m_rom['name']), '', '', text_type(m_rom['location'])]
+        else:
+            table_row = [text_type(m_rom['type']), text_type(m_rom['name']), text_type(m_rom['size']),
+                text_type(m_rom['crc']), text_type(m_rom['location'])]
+        table_str.append(table_row)
+    info_text.extend(text_render_table_str(table_str))
+    info_text.append('')
+
+    # --- ZIP/CHD/Sample file list ---
+    table_str = [
+        ['right', 'left'],
+        ['Type', 'File name'],
+    ]
+    for m_file in machine_archives[machine_name]['ROMs']:
+        table_str.append(['ROM', 'ROM path/' + m_file + '.zip'])
+    for m_file in machine_archives[machine_name]['CHDs']:
+        table_str.append(['CHD', 'CHD path/' + m_file + '.chd'])
+    for m_file in machine_archives[machine_name]['Samples']:
+        table_str.append(['Sample', 'Samples path/' + m_file + '.zip'])
+    info_text.extend(text_render_table_str(table_str))
+
+
+    window_title = 'Machine {} ROM audit'.format(machine_name)
+    kodi_display_text_window_mono(window_title, '\n'.join(info_text))
+
+    # --- Write DEBUG TXT file ---
+    if cfg.settings['debug_MAME_Audit_DB_data']:
+        log_info('Writing file "{}"'.format(cfg.REPORT_DEBUG_MAME_MACHINE_AUDIT_DATA_PATH.getPath()))
+        text_remove_color_tags_slist(info_text)
+        utils_write_slist_to_file(cfg.REPORT_DEBUG_MAME_MACHINE_AUDIT_DATA_PATH.getPath(), info_text)
+
+def action_view_sl_item_roms(cfg, machine_name, SL_name, SL_ROM, location):
+    SL_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_items.json')
+    SL_ROMS_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_ROMs.json')
+    # SL_catalog_dic = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
+    # SL_machines_dic = utils_load_JSON_file_dic(cfg.SL_MACHINES_PATH.getPath())
+    # assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+    # SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
+    # SL_asset_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
+    # SL_dic = SL_catalog_dic[SL_name]
+    # SL_machine_list = SL_machines_dic[SL_name]
+    # assets = SL_asset_dic[SL_ROM] if SL_ROM in SL_asset_dic else db_new_SL_asset()
+    roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
+    roms_db = utils_load_JSON_file_dic(SL_ROMS_DB_FN.getPath())
+    rom = roms[SL_ROM]
+    rom_db_list = roms_db[SL_ROM]
+
+    cloneof = rom['cloneof'] if rom['cloneof'] else 'None'
+    info_text = []
+    info_text.append('[COLOR violet]SL_name[/COLOR] {}'.format(SL_name))
+    info_text.append('[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM))
+    info_text.append('[COLOR violet]description[/COLOR] {}'.format(rom['description']))
+    info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(cloneof))
+    info_text.append('')
+
+    table_str = []
+    table_str.append(['left',      'left',       'left',      'left',   'left',         'left', 'left'])
+    table_str.append(['Part name', 'Part iface', 'Area type', 'A name', 'ROM/CHD name', 'Size', 'CRC/SHA1'])
+    # Iterate Parts
+    for part_dic in rom_db_list:
+        part_name = part_dic['part_name']
+        part_interface = part_dic['part_interface']
+        if 'dataarea' in part_dic:
+            # Iterate Dataareas
+            for dataarea_dic in part_dic['dataarea']:
+                dataarea_name = dataarea_dic['name']
+                # Interate ROMs in dataarea
+                for rom_dic in dataarea_dic['roms']:
+                    table_row = [part_name, part_interface, 'dataarea', dataarea_name,
+                        rom_dic['name'], text_type(rom_dic['size']), rom_dic['crc']]
+                    table_str.append(table_row)
+        if 'diskarea' in part_dic:
+            # Iterate Diskareas
+            for diskarea_dic in part_dic['diskarea']:
+                diskarea_name = diskarea_dic['name']
+                # Iterate DISKs in diskarea
+                for rom_dic in diskarea_dic['disks']:
+                    table_row = [part_name, part_interface, 'diskarea', diskarea_name,
+                        rom_dic['name'], '', rom_dic['sha1'][0:8]]
+                    table_str.append(table_row)
+    table_str_list = text_render_table_str(table_str)
+    info_text.extend(table_str_list)
+    window_title = 'Software List ROM List (ROMs DB)'
+    kodi_display_text_window_mono(window_title, '\n'.join(info_text))
+
+    # --- Write DEBUG TXT file ---
+    if cfg.settings['debug_SL_ROM_DB_data']:
+        log_info('Writing file "{}"'.format(cfg.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath()))
+        text_remove_color_tags_slist(info_text)
+        utils_write_slist_to_file(cfg.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath(), info_text)
+
+def action_view_sl_item_audit_roms(cfg, machine_name, SL_name, SL_ROM, location):
+    SL_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_items.json')
+    # SL_ROMs_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_roms.json')
+    SL_ROM_Audit_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_ROM_audit.json')
+
+    roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
+    rom_audit_db = utils_load_JSON_file_dic(SL_ROM_Audit_DB_FN.getPath())
+    rom = roms[SL_ROM]
+    rom_db_list = rom_audit_db[SL_ROM]
+
+    cloneof = rom['cloneof'] if rom['cloneof'] else 'None'
+    info_text = []
+    info_text.append('[COLOR violet]SL_name[/COLOR] {}'.format(SL_name))
+    info_text.append('[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM))
+    info_text.append('[COLOR violet]description[/COLOR] {}'.format(rom['description']))
+    info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(cloneof))
+    info_text.append('')
+
+    # table_str = [    ['left', 'left',         'left', 'left',     'left'] ]
+    # table_str.append(['Type', 'ROM/CHD name', 'Size', 'CRC/SHA1', 'Location'])
+    table_str = [    ['left', 'left', 'left',     'left'] ]
+    table_str.append(['Type', 'Size', 'CRC/SHA1', 'Location'])
+    for rom_dic in rom_db_list:
+        if rom_dic['type'] == ROM_TYPE_DISK:
+            table_row = [rom_dic['type'], # rom_dic['name'],
+                '', rom_dic['sha1'][0:8], rom_dic['location']]
+            table_str.append(table_row)
+        else:
+            table_row = [rom_dic['type'], # rom_dic['name'],
+                text_type(rom_dic['size']), rom_dic['crc'], rom_dic['location']]
+            table_str.append(table_row)
+    table_str_list = text_render_table_str(table_str)
+    info_text.extend(table_str_list)
+    window_title = 'Software List ROM List (Audit DB)'
+    kodi_display_text_window_mono(window_title, '\n'.join(info_text))
+
+    # --- Write DEBUG TXT file ---
+    if cfg.settings['debug_SL_Audit_DB_data']:
+        log_info('Writing file "{}"'.format(cfg.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath()))
+        text_remove_color_tags_slist(info_text)
+        utils_write_slist_to_file(cfg.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath(), info_text)
+
+def action_audit_mame_machine(cfg, machine_name, SL_name, SL_ROM, location):
+    # --- Load machine dictionary and ROM database ---
+    rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][cfg.settings['mame_rom_set']]
+    log_debug('command_context_view() Auditing Machine ROMs\n')
+    log_debug('command_context_view() rom_set {}\n'.format(rom_set))
+
+    d_text = 'Loading databases...'
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machine hash'), 2)
+    machine = db_get_machine_main_hashed_db(cfg, machine_name)
+    pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME ROM Audit'))
+    audit_roms_dic = utils_load_JSON_file_dic(cfg.ROM_AUDIT_DB_PATH.getPath())
+    pDialog.endProgress()
+
+    # --- Grab data and settings ---
+    rom_list = audit_roms_dic[machine_name]
+    cloneof = machine['cloneof']
+    romof = machine['romof']
+    log_debug('command_context_view() machine {}\n'.format(machine_name))
+    log_debug('command_context_view() cloneof {}\n'.format(cloneof))
+    log_debug('command_context_view() romof   {}\n'.format(romof))
+
+    # --- Open ZIP file, check CRC32 and also CHDs ---
+    audit_dic = db_new_audit_dic()
+    mame_audit_MAME_machine(cfg, rom_list, audit_dic)
+
+    # --- Generate report ---
+    info_text = []
+    cloneof = machine['cloneof'] if machine['cloneof'] else 'None'
+    romof = machine['romof'] if machine['romof'] else 'None'
+    info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(cloneof) +
+        '[COLOR violet]romof[/COLOR] {} / '.format(romof) +
+        '[COLOR skyblue]isBIOS[/COLOR] {} / '.format(text_type(machine['isBIOS'])) +
+        '[COLOR skyblue]isDevice[/COLOR] {}'.format(text_type(machine['isDevice'])))
+    info_text.append('')
+
+    # --- Table header ---
+    # Table cell padding: left, right
+    # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
+    table_str = []
+    table_str.append(['right', 'left',     'right', 'left',     'left',     'left'])
+    table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Location', 'Status'])
+
+    # --- Table rows ---
+    for m_rom in rom_list:
+        if m_rom['type'] == ROM_TYPE_DISK:
+            sha1_srt = m_rom['sha1'][0:8]
+            table_row = [m_rom['type'], m_rom['name'], '', sha1_srt,
+                m_rom['location'], m_rom['status_colour']]
+        elif m_rom['type'] == ROM_TYPE_SAMPLE:
+            table_row = [text_type(m_rom['type']), text_type(m_rom['name']), '', '',
+                m_rom['location'], m_rom['status_colour']]
+        else:
+            table_row = [text_type(m_rom['type']), text_type(m_rom['name']),
+                text_type(m_rom['size']), text_type(m_rom['crc']), m_rom['location'], m_rom['status_colour']]
+        table_str.append(table_row)
+    table_str_list = text_render_table_str(table_str)
+    info_text.extend(table_str_list)
+    window_title = 'Machine {} ROM audit'.format(machine_name)
+    kodi_display_text_window_mono(window_title, '\n'.join(info_text))
+
+def action_audit_sl_item(cfg, machine_name, SL_name, SL_ROM, location):
+    # --- Load machine dictionary and ROM database ---
+    log_debug('command_context_view() Auditing SL Software ROMs\n')
+    log_debug('command_context_view() SL_name {}\n'.format(SL_name))
+    log_debug('command_context_view() SL_ROM {}\n'.format(SL_ROM))
+
+    SL_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_items.json')
+    SL_ROM_Audit_DB_FN = cfg.SL_DB_DIR.pjoin(SL_name + '_ROM_audit.json')
+
+    roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
+    roms_audit_db = utils_load_JSON_file_dic(SL_ROM_Audit_DB_FN.getPath())
+    rom = roms[SL_ROM]
+    rom_db_list = roms_audit_db[SL_ROM]
+
+    # --- Open ZIP file and check CRC32 ---
+    audit_dic = db_new_audit_dic()
+    SL_ROM_path_FN = FileName(cfg.settings['SL_rom_path'])
+    SL_CHD_path_FN = FileName(cfg.settings['SL_chd_path'])
+    mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, SL_ROM, rom_db_list, audit_dic)
+
+    info_text = [
+        '[COLOR violet]SL_name[/COLOR] {}'.format(SL_name),
+        '[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM),
+        '[COLOR violet]description[/COLOR] {}'.format(rom['description']),
+        '',
+    ]
+
+    # --- Table header and rows ---
+    # Do not render ROM name in SLs, cos they are really long.
+    # table_str = [    ['right', 'left',     'right', 'left',     'left',     'left'] ]
+    # table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Location', 'Status'])
+    table_str = [    ['right', 'right', 'left',     'left',     'left'] ]
+    table_str.append(['Type',  'Size',  'CRC/SHA1', 'Location', 'Status'])
+    for m_rom in rom_db_list:
+        if m_rom['type'] == ROM_TYPE_DISK:
+            table_row = [m_rom['type'], # m_rom['name'],
+                '', m_rom['sha1'][0:8], m_rom['location'], m_rom['status_colour']]
+            table_str.append(table_row)
+        else:
+            table_row = [m_rom['type'], # m_rom['name'],
+                text_type(m_rom['size']), m_rom['crc'], m_rom['location'], m_rom['status_colour']]
+            table_str.append(table_row)
+    table_str_list = text_render_table_str(table_str)
+    info_text.extend(table_str_list)
+    window_title = 'SL {} Software {} ROM audit'.format(SL_name, SL_ROM)
+    kodi_display_text_window_mono(window_title, '\n'.join(info_text))
 
 def command_context_utilities(cfg, catalog_name, category_name):
     log_debug('command_context_utilities() catalog_name  "{}"'.format(catalog_name))
@@ -5104,7 +5137,7 @@ def command_context_setup_custom_filters(cfg):
             ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
             ['renderdb', 'MAME machines render', cfg.RENDER_DB_PATH.getPath()],
             ['assetdb', 'MAME machine assets', cfg.ASSET_DB_PATH.getPath()],
-            ['machine_archives', 'Machine archives list', cfg.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
+            ['machine_archives', 'Machine archives', cfg.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
         # Compatibility with "All in one" code.
