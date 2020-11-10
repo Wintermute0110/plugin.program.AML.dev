@@ -442,7 +442,7 @@ def mame_init_MAME_XML(cfg, st_dic, force_rebuild = False):
                 log_debug('XML_control_dic["ver_mame_str"] "{}"'.format(XML_control_dic['ver_mame_str']))
                 log_debug('mame_exe_version_str "{}"'.format(mame_exe_version_str))
                 if mame_exe_version_str != XML_control_dic['ver_mame_str']:
-                    log_info('Vanilla MAME version is different than verion in the XML control file. '
+                    log_info('Vanilla MAME version is different from the version in the XML control file. '
                         'Forcing new preprocessing.')
                     process_XML_flag = True
                 else:
