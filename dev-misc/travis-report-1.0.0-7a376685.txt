@@ -1,0 +1,593 @@
+INFO: Checking add-on plugin.program.AML
+INFO: Created by Wintermute0110
+INFO: Addon id matches folder name
+INFO: plugin.program.AML addon also exists in leia branch but with update compatible version: 0.9.12
+INFO: plugin.program.AML addon also exists in krypton branch but with update compatible version: 0.9.12
+INFO: Valid XML file found
+INFO: Image icon exists
+INFO: icon dimensions are fine 256x256
+INFO: Image fanart exists
+INFO: fanart dimensions are fine 1920x1080
+INFO: fanart file size is fine 92KB
+INFO: Image screenshot exists
+INFO: screenshot dimensions are fine 1920x1080
+ERROR: screenshot is too large 1475KB, maximum file size of 750KB.
+INFO: Image screenshot exists
+INFO: screenshot dimensions are fine 1920x1080
+ERROR: screenshot is too large 1749KB, maximum file size of 750KB.
+INFO: Image screenshot exists
+INFO: screenshot dimensions are fine 1920x1080
+ERROR: screenshot is too large 2075KB, maximum file size of 750KB.
+INFO: Image screenshot exists
+INFO: screenshot dimensions are fine 1920x1080
+ERROR: screenshot is too large 2468KB, maximum file size of 750KB.
+INFO: Image screenshot exists
+INFO: screenshot dimensions are fine 1920x1080
+ERROR: screenshot is too large 2109KB, maximum file size of 750KB.
+INFO: Image screenshot exists
+INFO: screenshot dimensions are fine 1920x1080
+ERROR: screenshot is too large 1860KB, maximum file size of 750KB.
+INFO: Image screenshot exists
+INFO: screenshot dimensions are fine 1920x1080
+ERROR: screenshot is too large 1388KB, maximum file size of 750KB.
+INFO: Image screenshot exists
+INFO: screenshot dimensions are fine 1920x1080
+INFO: screenshot file size is fine 273KB
+INFO: ./plugin.program.AML/pdfrw/pdfrw/findobjs.py
+--- ./plugin.program.AML/pdfrw/pdfrw/findobjs.py	(original)
++++ ./plugin.program.AML/pdfrw/pdfrw/findobjs.py	(refactored)
+@@ -49,7 +49,7 @@
+         if isinstance(obj, PdfDict):
+             if obj.Type in valid_types and obj.Subtype in valid_subtypes:
+                 yield obj
+-            obj = [y for (x, y) in sorted(obj.iteritems())
++            obj = [y for (x, y) in sorted(obj.items())
+                    if x not in no_follow]
+         else:
+             # TODO: This forces resolution of any indirect objects in
+INFO: ./plugin.program.AML/pdfrw/pdfrw/pagemerge.py
+--- ./plugin.program.AML/pdfrw/pdfrw/pagemerge.py	(original)
++++ ./plugin.program.AML/pdfrw/pdfrw/pagemerge.py	(refactored)
+@@ -196,7 +196,7 @@
+         if xobjs is None:
+             xobjs = resources.XObject = PdfDict()
+         else:
+-            allkeys = xobjs.keys()
++            allkeys = list(xobjs.keys())
+             if allkeys:
+                 keys = (x for x in allkeys if x.startswith('/pdfrw_'))
+                 keys = (x for x in keys if x[7:].isdigit())
+@@ -246,5 +246,5 @@
+         ''' Return the smallest box that encloses every object
+             in the list.
+         '''
+-        a, b, c, d = zip(*(xobj.box for xobj in self))
++        a, b, c, d = list(zip(*(xobj.box for xobj in self)))
+         return PdfArray((min(a), min(b), max(c), max(d)))
+INFO: ./plugin.program.AML/pdfrw/pdfrw/pdfreader.py
+--- ./plugin.program.AML/pdfrw/pdfrw/pdfreader.py	(original)
++++ ./plugin.program.AML/pdfrw/pdfrw/pdfreader.py	(refactored)
+@@ -63,7 +63,7 @@
+         '''
+         specialget = self.special.get
+         result = PdfDict()
+-        next = source.next
++        next = source.__next__
+ 
+         tok = next()
+         while tok != '>>':
+@@ -198,7 +198,7 @@
+         ok = ok and objid[2] == 'obj'
+         if not ok:
+             source.floc = offset
+-            source.next()
++            next(source)
+             objheader = '%d %d obj' % (objnum, gennum)
+             fdata = source.fdata
+             offset2 = (fdata.find('\n' + objheader) + 1 or
+@@ -214,7 +214,7 @@
+ 
+         # Read the object, and call special code if it starts
+         # an array or dictionary
+-        obj = source.next()
++        obj = next(source)
+         func = self.special.get(obj)
+         if func is not None:
+             obj = func(source)
+@@ -225,7 +225,7 @@
+         # Mark the object as indirect, and
+         # just return it if it is a simple object.
+         obj.indirect = key
+-        tok = source.next()
++        tok = next(source)
+         if tok == 'endobj':
+             return obj
+ 
+@@ -271,13 +271,13 @@
+ 
+         if self.crypt_filters is not None:
+             crypt.decrypt_objects(
+-                self.indirect_objects.values(), self.stream_crypt_filter,
++                list(self.indirect_objects.values()), self.stream_crypt_filter,
+                 self.crypt_filters)
+ 
+     def uncompress(self):
+         self.read_all()
+ 
+-        uncompress(self.indirect_objects.values())
++        uncompress(list(self.indirect_objects.values()))
+ 
+     def load_stream_objects(self, object_streams):
+         # read object streams
+@@ -299,7 +299,7 @@
+ 
+             for obj in objs:
+                 objsource = PdfTokens(obj.stream, 0, False)
+-                next = objsource.next
++                next = objsource.__next__
+                 offsets = []
+                 firstoffset = int(obj.First)
+                 while objsource.floc < firstoffset:
+@@ -329,7 +329,7 @@
+         if startloc < 0:
+             raise PdfParseError('Did not find "startxref" at end of file')
+         source = PdfTokens(fdata, startloc, False, self.verbose)
+-        tok = source.next()
++        tok = next(source)
+         assert tok == 'startxref'  # (We just checked this...)
+         tableloc = source.next_default()
+         if not tableloc.isdigit():
+@@ -353,7 +353,7 @@
+                 offset = next
+ 
+         setdefault = source.obj_offsets.setdefault
+-        next = source.next
++        next = source.__next__
+         # check for xref stream object
+         objid = source.multiple(3)
+         ok = len(objid) == 3
+@@ -376,7 +376,7 @@
+         stream = stream if stream is not old_strm else convert_store(old_strm)
+         num_pairs = obj.Index or PdfArray(['0', obj.Size])
+         num_pairs = [int(x) for x in num_pairs]
+-        num_pairs = zip(num_pairs[0::2], num_pairs[1::2])
++        num_pairs = list(zip(num_pairs[0::2], num_pairs[1::2]))
+         entry_sizes = [int(x) for x in obj.W]
+         if len(entry_sizes) != 3:
+             source.exception('Invalid entry size')
+@@ -399,7 +399,7 @@
+         ''' Parse (one of) the cross-reference file section(s)
+         '''
+         setdefault = source.obj_offsets.setdefault
+-        next = source.next
++        next = source.__next__
+         # plain xref table
+         start = source.floc
+         try:
+@@ -448,7 +448,7 @@
+     def parsexref(self, source):
+         ''' Parse (one of) the cross-reference file section(s)
+         '''
+-        next = source.next
++        next = source.__next__
+         try:
+             tok = next()
+         except StopIteration:
+@@ -619,7 +619,7 @@
+                 trailer, is_stream = self.parsexref(source)
+                 prev = trailer.Prev
+                 if prev is None:
+-                    token = source.next()
++                    token = next(source)
+                     if token != 'startxref' and not xref_list:
+                         source.warning('Expected "startxref" '
+                                        'at end of xref table')
+INFO: ./plugin.program.AML/pdfrw/pdfrw/pdfwriter.py
+--- ./plugin.program.AML/pdfrw/pdfrw/pdfwriter.py	(original)
++++ ./plugin.program.AML/pdfrw/pdfrw/pdfwriter.py	(refactored)
+@@ -138,7 +138,7 @@
+                     if compress and obj.stream:
+                         do_compress([obj])
+                     pairs = sorted((getattr(x, 'encoded', None) or x, y)
+-                                   for (x, y) in obj.iteritems())
++                                   for (x, y) in obj.items())
+                     myarray = []
+                     for key, value in pairs:
+                         myarray.append(key)
+@@ -380,6 +380,6 @@
+                 if isinstance(obj, PdfArray):
+                     workitems += obj
+                 else:
+-                    workitems += obj.values()
++                    workitems += list(obj.values())
+ 
+     replaceable = set(vars())
+INFO: ./plugin.program.AML/pdfrw/pdfrw/toreportlab.py
+--- ./plugin.program.AML/pdfrw/pdfrw/toreportlab.py	(original)
++++ ./plugin.program.AML/pdfrw/pdfrw/toreportlab.py	(refactored)
+@@ -67,7 +67,7 @@
+         rlobj = rldoc.Reference(rlobj)
+     pdfobj.derived_rl_obj[rldoc] = rlobj, None
+ 
+-    for key, value in pdfobj.iteritems():
++    for key, value in pdfobj.items():
+         rldict[key[1:]] = makerl_recurse(rldoc, value)
+ 
+     return rlobj
+@@ -85,7 +85,7 @@
+     result = rldoc.Reference(rlobj, fullname)
+     pdfobj.derived_rl_obj[rldoc] = result, shortname
+ 
+-    for key, value in pdfobj.iteritems():
++    for key, value in pdfobj.items():
+         rldict[key[1:]] = makerl_recurse(rldoc, value)
+ 
+     return result
+INFO: ./plugin.program.AML/pdfrw/pdfrw/uncompress.py
+--- ./plugin.program.AML/pdfrw/pdfrw/uncompress.py	(original)
++++ ./plugin.program.AML/pdfrw/pdfrw/uncompress.py	(refactored)
+@@ -94,21 +94,21 @@
+     def subfilter(data, prior_row_data, start, length, pixel_size):
+         # filter type 1: Sub
+         # Recon(x) = Filt(x) + Recon(a)
+-        for i in xrange(pixel_size, length):
++        for i in range(pixel_size, length):
+             left = data[start + i - pixel_size]
+             data[start + i] = (data[start + i] + left) % 256
+ 
+     def upfilter(data, prior_row_data, start, length, pixel_size):
+         # filter type 2: Up
+         # Recon(x) = Filt(x) + Recon(b)
+-        for i in xrange(length):
++        for i in range(length):
+             up = prior_row_data[i]
+             data[start + i] = (data[start + i] + up) % 256
+ 
+     def avgfilter(data, prior_row_data, start, length, pixel_size):
+         # filter type 3: Avg
+         # Recon(x) = Filt(x) + floor((Recon(a) + Recon(b)) / 2)
+-        for i in xrange(length):
++        for i in range(length):
+             left = data[start + i - pixel_size] if i >= pixel_size else 0
+             up = prior_row_data[i]
+             floor = math.floor((left + up) / 2)
+@@ -128,7 +128,7 @@
+                 return b
+             else:
+                 return c
+-        for i in xrange(length):
++        for i in range(length):
+             left = data[start + i - pixel_size] if i >= pixel_size else 0
+             up = prior_row_data[i]
+             up_left = prior_row_data[i - pixel_size] if i >= pixel_size else 0
+@@ -143,8 +143,8 @@
+         data.extend([0] * padding)
+     assert len(data) % rowlen == 0
+ 
+-    rows = xrange(0, len(data), rowlen)
+-    prior_row_data = [ 0 for i in xrange(columnbytes) ]
++    rows = range(0, len(data), rowlen)
++    prior_row_data = [ 0 for i in range(columnbytes) ]
+     for row_index in rows:
+ 
+         filter_type = data[row_index]
+INFO: ./plugin.program.AML/pdfrw/pdfrw/objects/pdfdict.py
+--- ./plugin.program.AML/pdfrw/pdfrw/objects/pdfdict.py	(original)
++++ ./plugin.program.AML/pdfrw/pdfrw/objects/pdfdict.py	(refactored)
+@@ -180,20 +180,20 @@
+                 yield key, value
+ 
+     def items(self):
+-        return list(self.iteritems())
++        return list(self.items())
+ 
+     def itervalues(self):
+-        for key, value in self.iteritems():
++        for key, value in self.items():
+             yield value
+ 
+     def values(self):
+-        return list((value for key, value in self.iteritems()))
++        return list((value for key, value in self.items()))
+ 
+     def keys(self):
+-        return list((key for key, value in self.iteritems()))
++        return list((key for key, value in self.items()))
+ 
+     def __iter__(self):
+-        for key, value in self.iteritems():
++        for key, value in self.items():
+             yield key
+ 
+     def iterkeys(self):
+INFO: ./plugin.program.AML/pdfrw/pdfrw/objects/pdfstring.py
+--- ./plugin.program.AML/pdfrw/pdfrw/objects/pdfstring.py	(original)
++++ ./plugin.program.AML/pdfrw/pdfrw/objects/pdfstring.py	(refactored)
+@@ -291,13 +291,13 @@
+     decoding_map = dict((x, x) for x in decoding_map)
+ 
+     # Add in the special Unicode characters
+-    decoding_map.update(zip(range(0x18, 0x20), (
+-            0x02D8, 0x02C7, 0x02C6, 0x02D9, 0x02DD, 0x02DB, 0x02DA, 0x02DC)))
+-    decoding_map.update(zip(range(0x80, 0x9F), (
++    decoding_map.update(list(zip(list(range(0x18, 0x20)), (
++            0x02D8, 0x02C7, 0x02C6, 0x02D9, 0x02DD, 0x02DB, 0x02DA, 0x02DC))))
++    decoding_map.update(list(zip(list(range(0x80, 0x9F)), (
+             0x2022, 0x2020, 0x2021, 0x2026, 0x2014, 0x2013, 0x0192, 0x2044,
+             0x2039, 0x203A, 0x2212, 0x2030, 0x201E, 0x201C, 0x201D, 0x2018,
+             0x2019, 0x201A, 0x2122, 0xFB01, 0xFB02, 0x0141, 0x0152, 0x0160,
+-            0x0178, 0x017D, 0x0131, 0x0142, 0x0153, 0x0161, 0x017E)))
++            0x0178, 0x017D, 0x0131, 0x0142, 0x0153, 0x0161, 0x017E))))
+     decoding_map[0xA0] = 0x20AC
+ 
+     # Make the encoding map from the decoding map
+@@ -350,7 +350,7 @@
+         cls.unescape_func = unescape_func
+ 
+         unescape_dict = dict(((chr(x), chr(x)) for x in range(0x100)))
+-        unescape_dict.update(zip('nrtbf', '\n\r\t\b\f'))
++        unescape_dict.update(list(zip('nrtbf', '\n\r\t\b\f')))
+         unescape_dict['\r'] = ''
+         unescape_dict['\n'] = ''
+         unescape_dict['\r\n'] = ''
+INFO: ./plugin.program.AML/resources/db.py
+--- ./plugin.program.AML/resources/db.py	(original)
++++ ./plugin.program.AML/resources/db.py	(refactored)
+@@ -1212,7 +1212,7 @@
+     sl.append('<?xml version="1.0" encoding="utf-8" standalone="yes"?>')
+     sl.append('<!-- Exported by AML on {} -->'.format(time.strftime("%Y-%m-%d %H:%M:%S")))
+     sl.append('<advanced_MAME_launcher_virtual_launcher>')
+-    for m_name, r_name in catalog_dic.items():
++    for m_name, r_name in list(catalog_dic.items()):
+         sl.append('<machine>')
+         sl.append(XML_text('name', m_name))
+         sl.append(XML_text('description', machines_render[m_name]['description']))
+INFO: ./plugin.program.AML/resources/filters.py
+--- ./plugin.program.AML/resources/filters.py	(original)
++++ ./plugin.program.AML/resources/filters.py	(refactored)
+@@ -1160,7 +1160,7 @@
+ 
+     # Resolve DEFINE tags (substitute by the defined value)
+     for f_definition in filters_list:
+-        for initial_str, final_str in define_dic.items():
++        for initial_str, final_str in list(define_dic.items()):
+             f_definition['driver']           = f_definition['driver'].replace(initial_str, final_str)
+             f_definition['manufacturer']     = f_definition['manufacturer'].replace(initial_str, final_str)
+             f_definition['genre']            = f_definition['genre'].replace(initial_str, final_str)
+@@ -1311,7 +1311,7 @@
+         ['right', 'right'],
+         ['Genre', 'Number of machines'],
+     ]
+-    for dname, dnumber in sorted(genres_drivers_dic.items(), key = lambda x: x[1], reverse = True):
++    for dname, dnumber in sorted(list(genres_drivers_dic.items()), key = lambda x: x[1], reverse = True):
+         table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
+     rslist.extend(text_render_table_str(table_str))
+     rslist.append('')
+@@ -1320,7 +1320,7 @@
+         ['right', 'right'],
+         ['Control', 'Number of machines'],
+     ]
+-    for dname, dnumber in sorted(controls_drivers_dic.items(), key = lambda x: x[1], reverse = True):
++    for dname, dnumber in sorted(list(controls_drivers_dic.items()), key = lambda x: x[1], reverse = True):
+         table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
+     rslist.extend(text_render_table_str(table_str))
+     rslist.append('')
+@@ -1329,7 +1329,7 @@
+         ['right', 'right'],
+         ['Device', 'Number of machines'],
+     ]
+-    for dname, dnumber in sorted(pdevices_drivers_dic.items(), key = lambda x: x[1], reverse = True):
++    for dname, dnumber in sorted(list(pdevices_drivers_dic.items()), key = lambda x: x[1], reverse = True):
+         table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
+     rslist.extend(text_render_table_str(table_str))
+     rslist.append('')
+INFO: ./plugin.program.AML/resources/graphics.py
+--- ./plugin.program.AML/resources/graphics.py	(original)
++++ ./plugin.program.AML/resources/graphics.py	(refactored)
+@@ -323,7 +323,7 @@
+     # Quickly check if machine has valid assets, and skip fanart generation if not.
+     # log_debug('graphs_build_MAME_Fanart() Building fanart for machine {}'.format(m_name))
+     machine_has_valid_assets = False
+-    for asset_key, asset_db_name in MAME_layout_assets.items():
++    for asset_key, asset_db_name in list(MAME_layout_assets.items()):
+         m_assets = assets_dic[m_name]
+         if m_assets[asset_db_name]:
+             machine_has_valid_assets = True
+@@ -430,7 +430,7 @@
+     # Quickly check if machine has valid assets, and skip fanart generation if not.
+     # log_debug('graphs_build_SL_Fanart() Building fanart for SL {} item {}'.format(SL_name, m_name))
+     machine_has_valid_assets = False
+-    for asset_key, asset_db_name in SL_layout_assets.items():
++    for asset_key, asset_db_name in list(SL_layout_assets.items()):
+         m_assets = assets_dic[m_name]
+         if m_assets[asset_db_name]:
+             machine_has_valid_assets = True
+INFO: ./plugin.program.AML/resources/main.py
+--- ./plugin.program.AML/resources/main.py	(original)
++++ ./plugin.program.AML/resources/main.py	(refactored)
+@@ -1252,7 +1252,7 @@
+             num_SL_CHDs = 0
+             num_SL_mixed = 0
+             num_SL_empty = 0
+-            for l_name, l_dic in SL_index_dic.items():
++            for l_name, l_dic in list(SL_index_dic.items()):
+                 num_SL_all += 1
+                 if l_dic['num_with_ROMs'] > 0 and l_dic['num_with_CHDs'] == 0:
+                     num_SL_ROMs += 1
+@@ -1463,7 +1463,7 @@
+         rd = set_render_root_data()
+         # Remove special markers (first and last character)
+         rsCM = root_special_CM.copy()
+-        for key, value in rsCM.items(): value[0] = value[0][1:-1]
++        for key, value in list(rsCM.items()): value[0] = value[0][1:-1]
+         render_root_category_row_custom_CM(*rd['rsCM']['MAME_Favs'])
+         render_root_category_row_custom_CM(*rd['rsCM']['MAME_Most'])
+         render_root_category_row_custom_CM(*rd['rsCM']['MAME_Recent'])
+@@ -2251,7 +2251,7 @@
+ 
+     # --- Traverse machines ---
+     r_list = []
+-    for machine_name, render_name in catalog_dic[category_name].items():
++    for machine_name, render_name in list(catalog_dic[category_name].items()):
+         machine = render_db_dic[machine_name]
+         m_assets = assets_dic[machine_name]
+         if not flag_ignore_filters:
+@@ -2409,7 +2409,7 @@
+         for r_dict in r_list:
+             listitem = xbmcgui.ListItem(r_dict['render_name'])
+             listitem.setInfo('video', r_dict['info'])
+-            for prop_name, prop_value in r_dict['props'].items():
++            for prop_name, prop_value in list(r_dict['props'].items()):
+                 listitem.setProperty(prop_name, prop_value)
+             listitem.setArt(r_dict['art'])
+             listitem.addContextMenuItems(r_dict['context'])
+@@ -2480,22 +2480,22 @@
+     SL_main_catalog_dic = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
+     SL_catalog_dic = {}
+     if catalog_name == 'SL':
+-        for SL_name, SL_dic in SL_main_catalog_dic.items():
++        for SL_name, SL_dic in list(SL_main_catalog_dic.items()):
+             SL_catalog_dic[SL_name] = SL_dic
+     elif catalog_name == 'SL_ROM':
+-        for SL_name, SL_dic in SL_main_catalog_dic.items():
++        for SL_name, SL_dic in list(SL_main_catalog_dic.items()):
+             if SL_dic['num_with_ROMs'] > 0 and SL_dic['num_with_CHDs'] == 0:
+                 SL_catalog_dic[SL_name] = SL_dic
+     elif catalog_name == 'SL_CHD':
+-        for SL_name, SL_dic in SL_main_catalog_dic.items():
++        for SL_name, SL_dic in list(SL_main_catalog_dic.items()):
+             if SL_dic['num_with_ROMs'] == 0 and SL_dic['num_with_CHDs'] > 0:
+                 SL_catalog_dic[SL_name] = SL_dic
+     elif catalog_name == 'SL_ROM_CHD':
+-        for SL_name, SL_dic in SL_main_catalog_dic.items():
++        for SL_name, SL_dic in list(SL_main_catalog_dic.items()):
+             if SL_dic['num_with_ROMs'] > 0 and SL_dic['num_with_CHDs'] > 0:
+                 SL_catalog_dic[SL_name] = SL_dic
+     elif catalog_name == 'SL_empty':
+-        for SL_name, SL_dic in SL_main_catalog_dic.items():
++        for SL_name, SL_dic in list(SL_main_catalog_dic.items()):
+             if SL_dic['num_with_ROMs'] == 0 and SL_dic['num_with_CHDs'] == 0:
+                 SL_catalog_dic[SL_name] = SL_dic
+     else:
+INFO: ./plugin.program.AML/resources/mame.py
+--- ./plugin.program.AML/resources/mame.py	(original)
++++ ./plugin.program.AML/resources/mame.py	(refactored)
+@@ -2824,7 +2824,7 @@
+     # --- Built machine plots ---
+     pDialog = KodiProgressDialog()
+     pDialog.startProgress('Generating MAME machine plots...', len(machines))
+-    for mname, m in machines.items():
++    for mname, m in list(machines.items()):
+         pDialog.updateProgressInc()
+         plot_str_list = mame_MAME_plot_slits(mname, m, assetdb_dic,
+             history_info_set, mameinfo_info_set, gameinit_idx_dic, command_idx_dic)
+@@ -4599,7 +4599,7 @@
+     log_info('Making PClone list...')
+     main_pclone_dic = {}
+     main_clone_to_parent_dic = {}
+-    for machine_name, m_render in renderdb_dic.items():
++    for machine_name, m_render in list(renderdb_dic.items()):
+         if m_render['cloneof']:
+             parent_name = m_render['cloneof']
+             # If parent already in main_pclone_dic then add clone to parent list.
+@@ -4620,14 +4620,14 @@
+     assetdb_dic = {key : db_new_MAME_asset() for key in machines}
+     if cfg.settings['generate_history_infolabel'] and history_idx_dic:
+         log_debug('Adding History.DAT to MAME asset database.')
+-        for m_name, asset in assetdb_dic.items():
++        for m_name, asset in list(assetdb_dic.items()):
+             asset['flags'] = db_initial_flags(machines[m_name], renderdb_dic[m_name], machines_roms[m_name])
+             if m_name in history_idx_dic['mame']['machines']:
+                 d_name, db_list, db_machine = history_idx_dic['mame']['machines'][m_name].split('|')
+                 asset['history'] = history_dic[db_list][db_machine]
+     else:
+         log_debug('Not including History.DAT in MAME asset database.')
+-        for m_name, asset in assetdb_dic.items():
++        for m_name, asset in list(assetdb_dic.items()):
+             asset['flags'] = db_initial_flags(machines[m_name], renderdb_dic[m_name], machines_roms[m_name])
+ 
+     # ---------------------------------------------------------------------------------------------
+@@ -5056,21 +5056,21 @@
+ # This list is different depending on the ROM set (Merged, Split or Non-merged).
+ def mame_get_ROM_ZIP_list(machine_archives_dic):
+     rom_list = []
+-    for key, machine in machine_archives_dic.items():
++    for key, machine in list(machine_archives_dic.items()):
+         rom_list.extend(machine['ROMs'])
+ 
+     return list(sorted(set(rom_list)))
+ 
+ def mame_get_Sample_ZIP_list(machine_archives_dic):
+     rom_list = []
+-    for key, machine in machine_archives_dic.items():
++    for key, machine in list(machine_archives_dic.items()):
+         rom_list.extend(machine['Samples'])
+ 
+     return list(sorted(set(rom_list)))
+ 
+ def mame_get_CHD_list(machine_archives_dic):
+     rom_list = []
+-    for key, machine in machine_archives_dic.items():
++    for key, machine in list(machine_archives_dic.items()):
+         rom_list.extend(machine['CHDs'])
+ 
+     return list(sorted(set(rom_list)))
+INFO: ./plugin.program.AML/resources/manuals.py
+--- ./plugin.program.AML/resources/manuals.py	(original)
++++ ./plugin.program.AML/resources/manuals.py	(refactored)
+@@ -232,7 +232,7 @@
+         # --- Iterate /Resources in page ---
+         # log_debug('###### Processing page {} ######'.format(page_index))
+         resource_dic = page['/Resources']
+-        for r_name, resource in resource_dic.items():
++        for r_name, resource in list(resource_dic.items()):
+             # >> Skip non /XObject keys in /Resources
+             if r_name != '/XObject': continue
+ 
+@@ -246,7 +246,7 @@
+             # >> Some /XObjects are not images, for example, /Subtype = /Form.
+             # >> NOTE Also, images may be inside the /Resources of a /From /XObject.
+             img_index = 0
+-            for xobj_name, xobj_dic in resource.items():
++            for xobj_name, xobj_dic in list(resource.items()):
+                 xobj_type = xobj_dic['/Type']
+                 xobj_subtype = xobj_dic['/Subtype']
+                 # >> Skip XObject forms
+@@ -403,7 +403,7 @@
+         # log_debug('###### Processing page {} ######'.format(page_index))
+         resource_dic = page['/Resources']
+         # --- Iterate /Resources in page ---
+-        for resource_name, resource in resource_dic.items():
++        for resource_name, resource in list(resource_dic.items()):
+             # >> Skip non /XObject keys in /Resources
+             if resource_name != '/XObject': continue
+ 
+@@ -417,7 +417,7 @@
+             # >> Some /XObjects are not images, for example, /Subtype = /Form.
+             # >> Also, images may be inside the /Resources of a /From /XObject.
+             img_index = 0
+-            for xobj_name, xobj_dic in resource.items():
++            for xobj_name, xobj_dic in list(resource.items()):
+                 xobj_type = xobj_dic['/Type']
+                 xobj_subtype = xobj_dic['/Subtype']
+                 # >> Skip XObject forms
+@@ -472,13 +472,13 @@
+     image_counter = 0
+     log_debug('###### Processing page {} ######'.format(page_index))
+     resource_dic = page['/Resources']
+-    for resource_name, resource in resource_dic.items():
++    for resource_name, resource in list(resource_dic.items()):
+         # >> Skip non /XObject keys in /Resources
+         if resource_name != '/XObject': continue
+ 
+         # >> Traverse /XObject dictionary data.
+         img_index = 0
+-        for xobj_name, xobj_dic in resource.items():
++        for xobj_name, xobj_dic in list(resource.items()):
+             xobj_type = xobj_dic['/Type']
+             xobj_subtype = xobj_dic['/Subtype']
+             # >> Skip XObject forms
+WARN: Found non whitelisted file ending in filename ./plugin.program.AML/version.sha
+WARN: Found non whitelisted file ending in filename ./plugin.program.AML/templates/datafile.dtd
+WARN: Found non whitelisted file ending in filename ./plugin.program.AML/fonts/Inconsolata.otf
+ERROR: We found 7 problems and 3 warnings, please check the logfile.
