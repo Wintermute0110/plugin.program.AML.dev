@@ -5373,68 +5373,56 @@ def render_custom_filter_machines(cfg, filter_name):
 # Recursive function. Conditions are a fall-trough. For example, if user checks
 # MAME_MAIN_DB_BUILT but XML has not been extracted/processed then MAME_MAIN_DB_BUILT fails.
 #
-# Return options dictionary:
-# options_dic['condition']  True if condition is met, False otherwise.
-# options_dic['msg']        if condition is not met a message to print to the user.
-#
-def check_MAME_DB_status(condition, control_dic):
-    if not control_dic:
+def check_MAME_DB_status(st_dic, condition, ctrl_dic):
+    if not ctrl_dic:
+        log_debug('check_MAME_DB_status() ERROR: Control dictionary empty.')
         t = ('MAME control file not found. You need to build the MAME main database '
             'using the context menu "Setup plugin" in the AML main window.')
-        options_dic = {'msg' : t, 'condition' : False }
-        log_debug('check_MAME_DB_status() Control dictionary empty.')
-        return options_dic
-
-    if condition == MAME_MAIN_DB_BUILT:
-        test_MAIN_DB_BUILT = True if control_dic['t_MAME_DB_build'] > 0.0 else False
+        kodi_set_error_status(st_dic, t)
+    elif condition == MAME_MAIN_DB_BUILT:
+        test_MAIN_DB_BUILT = True if ctrl_dic['t_MAME_DB_build'] > 0.0 else False
         if not test_MAIN_DB_BUILT:
+            log_debug('check_MAME_DB_status() ERROR: MAME_MAIN_DB_BUILT fails.')
             t = 'MAME Main database needs to be built. Use the context menu "Setup plugin" in root window.'
-            options_dic = {'msg' : t, 'condition' : False }
-            log_debug('check_MAME_DB_status() MAME_MAIN_DB_BUILT fails.')
+            kodi_set_error_status(st_dic, t)
         else:
-            options_dic = {'msg' : '', 'condition' : True }
-            log_debug('check_MAME_DB_status() Everything OK')
-        return options_dic
-
+            log_debug('check_MAME_DB_status() MAME_MAIN_DB_BUILT OK')
     elif condition == MAME_AUDIT_DB_BUILT:
-        test_AUDIT_DB_BUILT = True if control_dic['t_MAME_Audit_DB_build'] > control_dic['t_MAME_DB_build'] else False
+        test_AUDIT_DB_BUILT = True if ctrl_dic['t_MAME_Audit_DB_build'] > ctrl_dic['t_MAME_DB_build'] else False
         if not test_AUDIT_DB_BUILT:
+            log_debug('check_MAME_DB_status() ERROR: MAME_AUDIT_DB_BUILT fails.')
             t = 'MAME Audit database needs to be built. Use the context menu "Setup plugin" in root window.'
-            options_dic = {'msg' : t, 'condition' : False }
-            log_debug('check_MAME_DB_status() MAME_AUDIT_DB_BUILT fails.')
-            return options_dic
+            kodi_set_error_status(st_dic, t)
         else:
-            return check_MAME_DB_status(MAME_MAIN_DB_BUILT, control_dic)
-
+            log_debug('check_MAME_DB_status() MAME_AUDIT_DB_BUILT OK')
+            check_MAME_DB_status(st_dic, MAME_MAIN_DB_BUILT, ctrl_dic)
     elif condition == MAME_CATALOG_BUILT:
-        test_CATALOG_BUILT = True if control_dic['t_MAME_Catalog_build'] > control_dic['t_MAME_Audit_DB_build'] else False
+        test_CATALOG_BUILT = True if ctrl_dic['t_MAME_Catalog_build'] > ctrl_dic['t_MAME_Audit_DB_build'] else False
         if not test_CATALOG_BUILT:
+            log_debug('check_MAME_DB_status() ERROR: MAME_CATALOG_BUILT fails.')
             t = 'MAME Catalog database needs to be built. Use the context menu "Setup plugin" in root window.'
-            options_dic = {'msg' : t, 'condition' : False }
-            log_debug('check_MAME_DB_status() MAME_CATALOG_BUILT fails.')
-            return options_dic
+            kodi_set_error_status(st_dic, t)
         else:
-            return check_MAME_DB_status(MAME_AUDIT_DB_BUILT, control_dic)
-
+            log_debug('check_MAME_DB_status() MAME_CATALOG_BUILT OK')
+            check_MAME_DB_status(st_dic, MAME_AUDIT_DB_BUILT, ctrl_dic)
     elif condition == MAME_MACHINES_SCANNED:
-        test_MACHINES_SCANNED = True if control_dic['t_MAME_ROMs_scan'] > control_dic['t_MAME_Catalog_build'] else False
+        test_MACHINES_SCANNED = True if ctrl_dic['t_MAME_ROMs_scan'] > ctrl_dic['t_MAME_Catalog_build'] else False
         if not test_MACHINES_SCANNED:
+            log_debug('check_MAME_DB_status() ERROR: MAME_MACHINES_SCANNED fails.')
             t = 'MAME machines need to be scanned. Use the context menu "Setup plugin" in root window.'
-            options_dic = {'msg' : t, 'condition' : False }
-            log_debug('check_MAME_DB_status() MAME_MACHINES_SCANNED fails.')
-            return options_dic
+            kodi_set_error_status(st_dic, t)
         else:
-            return check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
-
+            log_debug('check_MAME_DB_status() MAME_MACHINES_SCANNED OK')
+            check_MAME_DB_status(st_dic, MAME_CATALOG_BUILT, ctrl_dic)
     elif condition == MAME_ASSETS_SCANNED:
-        test_ASSETS_SCANNED = True if control_dic['t_MAME_assets_scan'] > control_dic['t_MAME_ROMs_scan'] else False
+        test_ASSETS_SCANNED = True if ctrl_dic['t_MAME_assets_scan'] > ctrl_dic['t_MAME_ROMs_scan'] else False
         if not test_ASSETS_SCANNED:
+            log_debug('check_MAME_DB_status() ERROR: MAME_ASSETS_SCANNED fails.')
             t = 'MAME assets need to be scanned. Use the context menu "Setup plugin" in root window.'
-            options_dic = {'msg' : t, 'condition' : False }
-            log_debug('check_MAME_DB_status() MAME_ASSETS_SCANNED fails.')
-            return options_dic
+            kodi_set_error_status(st_dic, t)
         else:
-            return check_MAME_DB_status(MAME_MACHINES_SCANNED, control_dic)
+            log_debug('check_MAME_DB_status() MAME_ASSETS_SCANNED OK')
+            check_MAME_DB_status(st_dic, MAME_MACHINES_SCANNED, ctrl_dic)
 
     else:
         raise ValueError('check_MAME_DB_status() Recursive logic error. condition = {}'.format(condition))
@@ -5442,42 +5430,40 @@ def check_MAME_DB_status(condition, control_dic):
 #
 # Look at check_MAME_DB_status()
 #
-def check_SL_DB_status(condition, control_dic):
-    # Conditions are a fall-trough. For example, if user checks MAME_MAIN_DB_BUILT but
-    # XML has not been extracted/processed then MAME_MAIN_DB_BUILT fails.
-    if condition == SL_MAIN_DB_BUILT:
-        test_MAIN_DB_BUILT = True if control_dic['t_SL_DB_build'] > control_dic['t_MAME_DB_build'] else False
+def check_SL_DB_status(st_dic, condition, ctrl_dic):
+    if not ctrl_dic:
+        log_debug('check_MAME_DB_status() ERROR: Control dictionary empty.')
+        t = ('MAME control file not found. You need to build the MAME main database '
+            'using the context menu "Setup plugin" in the AML main window.')
+        kodi_set_error_status(st_dic, t)
+    elif condition == SL_MAIN_DB_BUILT:
+        test_MAIN_DB_BUILT = True if ctrl_dic['t_SL_DB_build'] > ctrl_dic['t_MAME_DB_build'] else False
         if not test_MAIN_DB_BUILT:
-            t = 'Software List databases not built or outdated. Use the context menu "Setup plugin" in root window.'
-            options_dic = {'msg' : t, 'condition' : False }
             log_debug('check_SL_DB_status() SL_MAIN_DB_BUILT fails')
+            t = 'Software List databases not built or outdated. Use the context menu "Setup plugin" in root window.'
+            kodi_set_error_status(st_dic, t)
         else:
-            options_dic = {'msg' : '', 'condition' : True }
-            log_debug('check_SL_DB_status() Everything OK')
-        return options_dic
-
+            log_debug('check_SL_DB_status() SL_MAIN_DB_BUILT OK')
     elif condition == SL_ITEMS_SCANNED:
-        test_ITEMS_SCANNED = True if control_dic['t_SL_ROMs_scan'] > control_dic['t_SL_DB_build'] else False
+        test_ITEMS_SCANNED = True if ctrl_dic['t_SL_ROMs_scan'] > ctrl_dic['t_SL_DB_build'] else False
         if not test_ITEMS_SCANNED:
-            t = 'Software List items not scanned. Use the context menu "Setup plugin" in root window.'
-            options_dic = {'msg' : t, 'condition' : False }
             log_debug('check_SL_DB_status() SL_ITEMS_SCANNED fails')
-            return options_dic
+            t = 'Software List items not scanned. Use the context menu "Setup plugin" in root window.'
+            kodi_set_error_status(st_dic, t)
         else:
-            return check_SL_DB_status(SL_MAIN_DB_BUILT, control_dic)
-
+            log_debug('check_SL_DB_status() SL_ITEMS_SCANNED OK')
+            check_SL_DB_status(st_dic, SL_MAIN_DB_BUILT, ctrl_dic)
     elif condition == SL_ASSETS_SCANNED:
-        test_ASSETS_SCANNED = True if control_dic['t_SL_assets_scan'] > control_dic['t_SL_ROMs_scan'] else False
+        test_ASSETS_SCANNED = True if ctrl_dic['t_SL_assets_scan'] > ctrl_dic['t_SL_ROMs_scan'] else False
         if not test_ASSETS_SCANNED:
-            t = 'Software List assets not scanned. Use the context menu "Setup plugin" in root window.'
-            options_dic = {'msg' : t, 'condition' : False }
             log_debug('check_SL_DB_status() SL_ASSETS_SCANNED fails')
-            return options_dic
+            t = 'Software List assets not scanned. Use the context menu "Setup plugin" in root window.'
+            kodi_set_error_status(st_dic, t)
         else:
-            return check_SL_DB_status(SL_ITEMS_SCANNED, control_dic)
-
+            log_debug('check_SL_DB_status() SL_ASSETS_SCANNED OK')
+            check_SL_DB_status(st_dic, SL_ITEMS_SCANNED, ctrl_dic)
     else:
-        raise ValueError('check_SL_DB_status() Recursive logic error')
+        raise ValueError('check_SL_DB_status() Recursive logic error. condition = {}'.format(condition))
 
 #
 # This function is called before rendering a Catalog.
@@ -6783,7 +6769,7 @@ def command_exec_utility(cfg, which_utility):
 
         # --- Ensure databases are built and assets scanned before updating Favourites ---
         st_dic = kodi_new_status_dic()
-        check_MAME_DB_status(MAME_ASSETS_SCANNED, st_dic, db_dic['control_dic'])
+        check_MAME_DB_status(st_dic, MAME_ASSETS_SCANNED, db_dic['control_dic'])
         if kodi_display_status_message(st_dic): return False
 
         mame_update_MAME_Fav_objects(cfg, db_dic)
@@ -6803,10 +6789,9 @@ def command_exec_utility(cfg, which_utility):
 
         # --- Check database ---
         control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
-        options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
-        if not options['condition']:
-            kodi_dialog_OK(options['msg'])
-            return False
+        st_dic = kodi_new_status_dic()
+        options = check_MAME_DB_status(st_dic, MAME_CATALOG_BUILT, control_dic)
+        if kodi_display_status_message(st_dic): return False
 
         # --- Open ROMs database ---
         db_files = [
@@ -6871,6 +6856,10 @@ def command_exec_utility(cfg, which_utility):
         log_info('command_exec_utility() Initialising CHECK_SL_COLLISIONS ...')
 
         # --- Load SL catalog and check for errors ---
+        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
+        st_dic = kodi_new_status_dic()
+        options = check_SL_DB_status(st_dic, SL_MAIN_DB_BUILT, control_dic)
+        if kodi_display_status_message(st_dic): return False
         SL_catalog_dic = utils_load_JSON_file_dic(cfg.SL_INDEX_PATH.getPath())
 
         # --- Process all SLs ---
@@ -6964,14 +6953,18 @@ def command_exec_utility(cfg, which_utility):
         db_files = [
             ['control_dic', 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
             ['renderdb', 'MAME machines Render', cfg.RENDER_DB_PATH.getPath()],
-            ['assetsdb', 'MAME machine Assets', cfg.ASSET_DB_PATH.getPath()],
+            ['assetdb', 'MAME machine Assets', cfg.ASSET_DB_PATH.getPath()],
             ['roms', 'MAME machine ROMs', cfg.ROMS_DB_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
+        control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
+        st_dic = kodi_new_status_dic()
+        options = check_MAME_DB_status(st_dic, MAME_MAIN_DB_BUILT, control_dic)
+        if kodi_display_status_message(st_dic): return False
 
         # { mname : size (int), ... }
         m_size_dic = {}
-        for mname in db_dic['render']:
+        for mname in db_dic['renderdb']:
             roms = db_dic['roms'][mname]
             ROMs_size = 0
             invalid_ROMs = False
@@ -6995,8 +6988,8 @@ def command_exec_utility(cfg, which_utility):
                 machine_i += 1
                 if machine_i >= NUM_MACHINES: break
             for mname in sorted_machine_list:
-                table_str.append([mname, db_dic['assets'][mname]['flags'],
-                    text_limit_string(db_dic['render'][mname]['description'], DESC_MAX_LENGTH),
+                table_str.append([mname, db_dic['assetdb'][mname]['flags'],
+                    text_limit_string(db_dic['renderdb'][mname]['description'], DESC_MAX_LENGTH),
                     '{:7.2f}'.format(m_size_dic[mname] / 1024**2),
                 ])
         else:
@@ -7006,8 +6999,8 @@ def command_exec_utility(cfg, which_utility):
                 machine_i += 1
                 if machine_i >= NUM_MACHINES: break
             for mname in sorted_machine_list:
-                table_str.append([mname, db_dic['assets'][mname]['flags'],
-                    text_limit_string(db_dic['render'][mname]['description'], DESC_MAX_LENGTH),
+                table_str.append([mname, db_dic['assetdb'][mname]['flags'],
+                    text_limit_string(db_dic['renderdb'][mname]['description'], DESC_MAX_LENGTH),
                     '{:,d}'.format(m_size_dic[mname]),
                 ])
 
