@@ -23,8 +23,7 @@ import xbmcaddon
 # --- Load pdfrw module ---
 import sys
 __addon_id__ = xbmcaddon.Addon().getAddonInfo('id')
-pdfrw_FN = FileName('special://home/addons').pjoin(__addon_id__).pjoin('pdfrw')
-sys.path.insert(0, pdfrw_FN.getPath())
+sys.path.insert(0, FileName('special://home/addons').pjoin(__addon_id__).pjoin('pdfrw').getPath())
 from pdfrw import PdfReader
 from pdfrw.objects.pdfarray import PdfArray
 from pdfrw.objects.pdfname import BasePdfName

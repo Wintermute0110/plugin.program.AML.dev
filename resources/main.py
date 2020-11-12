@@ -442,13 +442,13 @@ def run_plugin(addon_argv):
             SL       = args['SL'][0]       if 'SL'       in args else ''
             ROM      = args['ROM'][0]      if 'ROM'      in args else ''
             location = args['location'][0] if 'location' in args else LOCATION_STANDARD
-            command_context_view_DAT(cfg, machine, SL, ROM, location)
+            command_context_info_utils(cfg, machine, SL, ROM, location)
         elif command == 'VIEW':
             machine  = args['machine'][0]  if 'machine'  in args else ''
             SL       = args['SL'][0]       if 'SL'       in args else ''
             ROM      = args['ROM'][0]      if 'ROM'      in args else ''
             location = args['location'][0] if 'location' in args else LOCATION_STANDARD
-            command_context_view(cfg, machine, SL, ROM, location)
+            command_context_view_audit(cfg, machine, SL, ROM, location)
         elif command == 'UTILITIES':
             catalog_name  = args['catalog'][0] if 'catalog' in args else ''
             category_name = args['category'][0] if 'category' in args else ''
@@ -2916,7 +2916,7 @@ def command_context_display_settings_SL(cfg, SL_name):
 # ---------------------------------------------------------------------------------------------
 # Information display / Utilities
 # ---------------------------------------------------------------------------------------------
-def command_context_view_DAT(cfg, machine_name, SL_name, SL_ROM, location):
+def command_context_info_utils(cfg, machine_name, SL_name, SL_ROM, location):
     VIEW_MAME_MACHINE = 100
     VIEW_SL_ROM       = 200
 
@@ -2931,17 +2931,17 @@ def command_context_view_DAT(cfg, machine_name, SL_name, SL_ROM, location):
     ACTION_VIEW_SAME_MANUFACTURER = 900
 
     # --- Determine if we are in a category, launcher or ROM ---
-    log_debug('command_context_view_DAT() machine_name "{}"'.format(machine_name))
-    log_debug('command_context_view_DAT() SL_name      "{}"'.format(SL_name))
-    log_debug('command_context_view_DAT() SL_ROM       "{}"'.format(SL_ROM))
-    log_debug('command_context_view_DAT() location     "{}"'.format(location))
+    log_debug('command_context_info_utils() machine_name "{}"'.format(machine_name))
+    log_debug('command_context_info_utils() SL_name      "{}"'.format(SL_name))
+    log_debug('command_context_info_utils() SL_ROM       "{}"'.format(SL_ROM))
+    log_debug('command_context_info_utils() location     "{}"'.format(location))
     if machine_name:
         view_type = VIEW_MAME_MACHINE
     elif SL_name:
         view_type = VIEW_SL_ROM
     else:
-        raise TypeError('Logic error in command_context_view_DAT()')
-    log_debug('command_context_view_DAT() view_type = {}'.format(view_type))
+        raise TypeError('Logic error in command_context_info_utils()')
+    log_debug('command_context_info_utils() view_type = {}'.format(view_type))
 
     if view_type == VIEW_MAME_MACHINE:
         # --- Load DAT indices ---
@@ -3198,6 +3198,14 @@ def command_context_view_DAT(cfg, machine_name, SL_name, SL_ROM, location):
         # the images if the images are newer than the PDF.
         status_dic = manuals_check_img_extraction_needed(man_file_FN, img_dir_FN)
         if status_dic['extraction_needed']:
+            # Disable PDF image extracion in Python 3 until the problems with the pdfrw library
+            # are solved.
+            if ADDON_RUNNING_PYTHON_3:
+                log_error('Image extraction from PDF files is disabled in Python 3. Exiting.')
+                kodi_dialog_OK('Image extraction from PDF files is disabled in Python 3. '
+                    'This feature will be ported to Python 3 as soon as possible.')
+                return
+
             log_info('Extracting images from PDF file.')
             # --- Open manual file ---
             manuals_open_PDF_file(status_dic, man_file_FN, img_dir_FN)
@@ -3273,7 +3281,7 @@ def command_context_view_DAT(cfg, machine_name, SL_name, SL_ROM, location):
 # ---------------------------------------------------------------------------------------------
 # Information display
 # ---------------------------------------------------------------------------------------------
-def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
+def command_context_view_audit(cfg, machine_name, SL_name, SL_ROM, location):
     VIEW_MAME_MACHINE = 100
     VIEW_SL_ROM       = 200
 
@@ -3288,19 +3296,19 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
     ACTION_AUDIT_SL_ITEM           = 900
 
     # --- Determine view type ---
-    log_debug('command_context_view() machine_name "{}"'.format(machine_name))
-    log_debug('command_context_view() SL_name      "{}"'.format(SL_name))
-    log_debug('command_context_view() SL_ROM       "{}"'.format(SL_ROM))
-    log_debug('command_context_view() location     "{}"'.format(location))
+    log_debug('command_context_view_audit() machine_name "{}"'.format(machine_name))
+    log_debug('command_context_view_audit() SL_name      "{}"'.format(SL_name))
+    log_debug('command_context_view_audit() SL_ROM       "{}"'.format(SL_ROM))
+    log_debug('command_context_view_audit() location     "{}"'.format(location))
     if machine_name:
         view_type = VIEW_MAME_MACHINE
     elif SL_name:
         view_type = VIEW_SL_ROM
     else:
         kodi_dialog_OK(
-            'In command_context_view(), undetermined view_type. This is a bug, please report it.')
+            'In command_context_view_audit(), undetermined view_type. This is a bug, please report it.')
         return
-    log_debug('command_context_view() view_type = {}'.format(view_type))
+    log_debug('command_context_view_audit() view_type = {}'.format(view_type))
 
     # --- Build menu base on view_type ---
     if view_type == VIEW_MAME_MACHINE:
@@ -3347,7 +3355,7 @@ def command_context_view(cfg, machine_name, SL_name, SL_ROM, location):
     else:
         kodi_dialog_OK('Wrong view_type = {}. This is a bug, please report it.'.format(view_type))
         return
-    log_debug('command_context_view() action = {}'.format(action))
+    log_debug('command_context_view_audit() action = {}'.format(action))
 
     # --- Execute action ---
     if action == ACTION_VIEW_MACHINE_DATA:
