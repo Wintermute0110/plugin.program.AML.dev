@@ -1982,8 +1982,11 @@ def render_catalog_list(cfg, catalog_name):
     # Check if databases have been built, print warning messages, etc. This function returns
     # False if no issues, True if there is issues and a dialog has been printed.
     control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
-    if not check_MAME_DB_before_rendering_catalog(cfg, control_dic):
+    st_dic = kodi_new_status_dic()
+    check_MAME_DB_before_rendering_catalog(cfg, st_dic, control_dic)
+    if kodi_is_error_status(st_dic):
         xbmcplugin.endOfDirectory(handle = cfg.addon_handle, succeeded = True, cacheToDisc = False)
+        kodi_display_status_message(st_dic)
         return
 
     # Render categories in catalog index
@@ -2070,8 +2073,11 @@ def render_catalog_parent_list(cfg, catalog_name, category_name):
     # --- General AML plugin check ---
     # Check if databases have been built, print warning messages, etc.
     control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
-    if not check_MAME_DB_before_rendering_machines(cfg, control_dic):
+    st_dic = kodi_new_status_dic()
+    check_MAME_DB_before_rendering_machines(cfg, st_dic, control_dic)
+    if kodi_is_error_status(st_dic):
         xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
+        kodi_display_status_message(st_dic)
         return
 
     # --- Load main MAME info databases and catalog ---
@@ -2472,8 +2478,11 @@ def render_SL_list(cfg, catalog_name):
 
     # --- General AML plugin check ---
     control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
-    if not check_SL_DB_before_rendering_catalog(cfg, control_dic):
+    st_dic = kodi_new_status_dic()
+    check_SL_DB_before_rendering_catalog(cfg, st_dic, control_dic)
+    if kodi_is_error_status(st_dic):
         xbmcplugin.endOfDirectory(handle = cfg.addon_handle, succeeded = True, cacheToDisc = False)
+        kodi_display_status_message(st_dic)
         return
 
     # --- Load Software List catalog and build render catalog ---
@@ -2514,8 +2523,11 @@ def render_SL_ROMs(cfg, SL_name):
 
     # --- General AML plugin check ---
     control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
-    if not check_SL_DB_before_rendering_machines(cfg, control_dic):
+    st_dic = kodi_new_status_dic()
+    check_SL_DB_before_rendering_machines(cfg, st_dic, control_dic)
+    if kodi_is_error_status(st_dic):
         xbmcplugin.endOfDirectory(handle = cfg.addon_handle, succeeded = True, cacheToDisc = False)
+        kodi_display_status_message(st_dic)
         return
 
     # Load ListItem properties (Not used at the moment)
@@ -3244,18 +3256,16 @@ def command_context_info_utils(cfg, machine_name, SL_name, SL_ROM, location):
     elif action == ACTION_VIEW_BROTHERS:
         machine = db_get_machine_main_hashed_db(cfg, machine_name)
         # Some (important) drivers have a different name
-        sourcefile_str = machine['sourcefile']
-        log_debug('Original driver "{}"'.format(sourcefile_str))
-        if sourcefile_str in mame_driver_name_dic:
-            sourcefile_str = mame_driver_name_dic[sourcefile_str]
-        log_debug('Final driver    "{}"'.format(sourcefile_str))
+        sourcefile = machine['sourcefile']
+        log_debug('Original driver "{}"'.format(sourcefile))
+        mdbn_dic = mame_driver_better_name_dic
+        sourcefile = mdbn_dic[sourcefile] if sourcefile in mdbn_dic else sourcefile
+        log_debug('Final driver    "{}"'.format(sourcefile))
 
         # --- Replace current window by search window ---
-        # When user press Back in search window it returns to the original window (either showing
-        # launcher in a cateogory or displaying ROMs in a launcher/virtual launcher).
-        #
+        # When user press Back in search window it returns to the previous window.
         # NOTE ActivateWindow() / RunPlugin() / RunAddon() seem not to work here
-        url = misc_url_2_arg('catalog', 'Driver', 'category', sourcefile_str)
+        url = misc_url_2_arg('catalog', 'Driver', 'category', sourcefile)
         log_debug('Container.Update URL "{}"'.format(url))
         xbmc.executebuiltin('Container.Update({})'.format(url))
 
@@ -5473,21 +5483,13 @@ def check_SL_DB_status(st_dic, condition, ctrl_dic):
     else:
         raise ValueError('check_SL_DB_status() Recursive logic error. condition = {}'.format(condition))
 
-#
 # This function is called before rendering a Catalog.
-#
-def check_MAME_DB_before_rendering_catalog(cfg, control_dic):
+def check_MAME_DB_before_rendering_catalog(cfg, st_dic, control_dic):
     # Check if MAME catalogs are built.
-    options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
-    if not options['condition']:
-        kodi_dialog_OK(options['msg'])
-        return False
-
-    # All good!
+    check_MAME_DB_status(st_dic, MAME_CATALOG_BUILT, control_dic)
+    if kodi_is_error_status(st_dic): return
     log_debug('check_MAME_DB_before_rendering_catalog() All good!')
-    return True
 
-#
 # This function checks if the database is OK and machines inside a Category can be rendered.
 # This function is called before rendering machines.
 # This function does not affect MAME Favourites, Recently Played, etc. Those can always be rendered.
@@ -5495,59 +5497,45 @@ def check_MAME_DB_before_rendering_catalog(cfg, control_dic):
 #
 # Returns True if everything is OK and machines inside a Category can be rendered.
 # Returns False and prints warning message if machines inside a category cannot be rendered.
-#
-def check_MAME_DB_before_rendering_machines(cfg, control_dic):
+def check_MAME_DB_before_rendering_machines(cfg, st_dic, control_dic):
     # Check if MAME catalogs are built.
-    options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
-    if not options['condition']:
-        kodi_dialog_OK(options['msg'])
-        return False
+    check_MAME_DB_status(st_dic, MAME_CATALOG_BUILT, control_dic)
+    if kodi_is_error_status(st_dic): return
 
     # If MAME render cache is enabled then check that it is up-to-date.
-    if cfg.settings['debug_enable_MAME_render_cache']:
-        if control_dic['t_MAME_render_cache_build'] < control_dic['t_MAME_Catalog_build']:
-            log_warning('t_MAME_render_cache_build < t_MAME_Catalog_build')
-            t = ('MAME render cache needs to be updated. '
-                 'Open the context menu "Setup plugin", then '
-                 '"Step by Step", and then "Rebuild MAME machine and asset caches."')
-            kodi_dialog_OK(t)
-            return False
+    if cfg.settings['debug_enable_MAME_render_cache'] and \
+        (control_dic['t_MAME_render_cache_build'] < control_dic['t_MAME_Catalog_build']):
+        log_warning('t_MAME_render_cache_build < t_MAME_Catalog_build')
+        t = ('MAME render cache needs to be updated. '
+            'Open the context menu "Setup plugin", then '
+            '"Step by Step", and then "Rebuild MAME machine and asset caches."')
+        kodi_set_error_status(st_dic, t)
+        return
 
-    if cfg.settings['debug_enable_MAME_asset_cache']:
-        if control_dic['t_MAME_asset_cache_build'] < control_dic['t_MAME_Catalog_build']:
-            log_warning('t_MAME_asset_cache_build < t_MAME_Catalog_build')
-            t = ('MAME asset cache needs to be updated. '
-                 'Open the context menu "Setup plugin", then '
-                 '"Step by Step", and then "Rebuild MAME machine and asset caches."')
-            kodi_dialog_OK(t)
-            return False
+    if cfg.settings['debug_enable_MAME_asset_cache'] and \
+        (control_dic['t_MAME_asset_cache_build'] < control_dic['t_MAME_Catalog_build']):
+        log_warning('t_MAME_asset_cache_build < t_MAME_Catalog_build')
+        t = ('MAME asset cache needs to be updated. '
+            'Open the context menu "Setup plugin", then '
+            '"Step by Step", and then "Rebuild MAME machine and asset caches."')
+        kodi_set_error_status(st_dic, t)
+        return
 
     log_debug('check_MAME_DB_before_rendering_machines() All good.')
-    return True
 
-#
-# Same function for Software Lists. Called before rendering SL Items inside a Software List.
+# Same functions for Software Lists. Called before rendering SL Items inside a Software List.
 # WARNING This must be completed!!! Look at the MAME functions.
-#
-def check_SL_DB_before_rendering_catalog(cfg, control_dic):
+def check_SL_DB_before_rendering_catalog(cfg, st_dic, control_dic):
     # Check if SL databases are built.
-    options = check_SL_DB_status(SL_MAIN_DB_BUILT, control_dic)
-    if not options['condition']:
-        kodi_dialog_OK(options['msg'])
-        return False
-
+    check_SL_DB_status(st_dic, SL_MAIN_DB_BUILT, control_dic)
+    if kodi_is_error_status(st_dic): return
     log_debug('check_SL_DB_before_rendering_catalog() All good.')
-    return True
 
-def check_SL_DB_before_rendering_machines(cfg, control_dic):
+def check_SL_DB_before_rendering_machines(cfg, st_dic, control_dic):
     # Check if SL databases are built.
-    options = check_SL_DB_status(SL_MAIN_DB_BUILT, control_dic)
-    if not options['condition']:
-        kodi_dialog_OK(options['msg'])
-        return False
-
+    check_SL_DB_status(st_dic, SL_MAIN_DB_BUILT, control_dic)
+    if kodi_is_error_status(st_dic): return
     log_debug('check_SL_DB_before_rendering_machines() All good.')
-    return True
 
 # -------------------------------------------------------------------------------------------------
 # Setup plugin databases
