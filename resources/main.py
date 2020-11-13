@@ -1574,7 +1574,7 @@ def render_root_catalog_row(cfg, catalog_name, catalog_key, display_name, plot_s
     URL_utils = misc_url_3_arg_RunPlugin(
         'command', 'UTILITIES', 'catalog', catalog_name, 'category', catalog_key)
     commands = [
-        ('Setup plugin', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
+        ('Setup addon', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Utilities', URL_utils),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
         ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
@@ -1599,7 +1599,7 @@ def render_root_category_row(cfg, display_name, plot_str, root_URL, color_str = 
 
     # --- Create context menu ---
     commands = [
-        ('Setup plugin', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
+        ('Setup addon', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
         ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
     ]
@@ -1619,7 +1619,7 @@ def render_root_category_row_custom_CM(cfg, display_name, plot_str, root_URL, cm
 
     # --- Create context menu ---
     commands = [
-        ('Setup plugin', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
+        ('Setup addon', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
         ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
     ]
@@ -2125,7 +2125,7 @@ def render_catalog_parent_list(cfg, catalog_name, category_name):
 
     # --- Check if catalog is empty ---
     if not catalog_dic:
-        kodi_dialog_OK('Catalog is empty. Check out "Setup plugin" context menu.')
+        kodi_dialog_OK('Catalog is empty. Check out "Setup addon" in the context menu.')
         xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -2806,7 +2806,7 @@ def render_DAT_list(cfg, catalog_name):
             xbmcplugin.addDirectoryItem(cfg.addon_handle, URL, listitem, isFolder = False)
     else:
         kodi_dialog_OK(
-            'DAT database file "{}" not found. Check out "Setup plugin" context menu.'.format(catalog_name))
+            'DAT database file "{}" not found. Check out "Setup addon" in the context menu.'.format(catalog_name))
         xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
         return
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
@@ -2819,7 +2819,7 @@ def render_DAT_category(catalog_name, category_name):
     elif catalog_name == 'MAMEINFO':
         DAT_catalog_dic = utils_load_JSON_file_dic(cfg.MAMEINFO_IDX_PATH.getPath())
     else:
-        kodi_dialog_OK('DAT database file "{}" not found. Check out "Setup plugin" context menu.'.format(catalog_name))
+        kodi_dialog_OK('DAT database file "{}" not found. Check out "Setup addon" in the context menu.'.format(catalog_name))
         xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
         return
     if not DAT_catalog_dic:
@@ -5321,7 +5321,7 @@ def render_custom_filter_machines(cfg, filter_name):
 
     # Check id main DB exists.
     if not cfg.RENDER_DB_PATH.exists():
-        kodi_dialog_OK('MAME database not found. Check out "Setup plugin" context menu.')
+        kodi_dialog_OK('MAME database not found. Check out "Setup addon" in the context menu.')
         xbmcplugin.endOfDirectory(handle = cfg.addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -5349,7 +5349,7 @@ def render_custom_filter_machines(cfg, filter_name):
 
     # Check if catalog is empty
     if not render_db_dic:
-        kodi_dialog_OK('Catalog is empty. Check out "Setup plugin" context menu.')
+        kodi_dialog_OK('Catalog is empty. Check out "Setup addon" in the context menu.')
         xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -5395,13 +5395,13 @@ def check_MAME_DB_status(st_dic, condition, ctrl_dic):
     if not ctrl_dic:
         log_debug('check_MAME_DB_status() ERROR: Control dictionary empty.')
         t = ('MAME control file not found. You need to build the MAME main database '
-            'using the context menu "Setup plugin" in the AML main window.')
+            'using the context menu "Setup addon" in the AML main window.')
         kodi_set_error_status(st_dic, t)
     elif condition == MAME_MAIN_DB_BUILT:
         test_MAIN_DB_BUILT = True if ctrl_dic['t_MAME_DB_build'] > 0.0 else False
         if not test_MAIN_DB_BUILT:
             log_debug('check_MAME_DB_status() ERROR: MAME_MAIN_DB_BUILT fails.')
-            t = 'MAME Main database needs to be built. Use the context menu "Setup plugin" in root window.'
+            t = 'MAME Main database needs to be built. Use the context menu "Setup addon" in the main window.'
             kodi_set_error_status(st_dic, t)
         else:
             log_debug('check_MAME_DB_status() MAME_MAIN_DB_BUILT OK')
@@ -5409,7 +5409,7 @@ def check_MAME_DB_status(st_dic, condition, ctrl_dic):
         test_AUDIT_DB_BUILT = True if ctrl_dic['t_MAME_Audit_DB_build'] > ctrl_dic['t_MAME_DB_build'] else False
         if not test_AUDIT_DB_BUILT:
             log_debug('check_MAME_DB_status() ERROR: MAME_AUDIT_DB_BUILT fails.')
-            t = 'MAME Audit database needs to be built. Use the context menu "Setup plugin" in root window.'
+            t = 'MAME Audit database needs to be built. Use the context menu "Setup addon " in the main window.'
             kodi_set_error_status(st_dic, t)
         else:
             log_debug('check_MAME_DB_status() MAME_AUDIT_DB_BUILT OK')
@@ -5418,7 +5418,7 @@ def check_MAME_DB_status(st_dic, condition, ctrl_dic):
         test_CATALOG_BUILT = True if ctrl_dic['t_MAME_Catalog_build'] > ctrl_dic['t_MAME_Audit_DB_build'] else False
         if not test_CATALOG_BUILT:
             log_debug('check_MAME_DB_status() ERROR: MAME_CATALOG_BUILT fails.')
-            t = 'MAME Catalog database needs to be built. Use the context menu "Setup plugin" in root window.'
+            t = 'MAME Catalog database needs to be built. Use the context menu "Setup addon" in the main window.'
             kodi_set_error_status(st_dic, t)
         else:
             log_debug('check_MAME_DB_status() MAME_CATALOG_BUILT OK')
@@ -5427,7 +5427,7 @@ def check_MAME_DB_status(st_dic, condition, ctrl_dic):
         test_MACHINES_SCANNED = True if ctrl_dic['t_MAME_ROMs_scan'] > ctrl_dic['t_MAME_Catalog_build'] else False
         if not test_MACHINES_SCANNED:
             log_debug('check_MAME_DB_status() ERROR: MAME_MACHINES_SCANNED fails.')
-            t = 'MAME machines need to be scanned. Use the context menu "Setup plugin" in root window.'
+            t = 'MAME machines need to be scanned. Use the context menu "Setup addon" in the main window.'
             kodi_set_error_status(st_dic, t)
         else:
             log_debug('check_MAME_DB_status() MAME_MACHINES_SCANNED OK')
@@ -5436,7 +5436,7 @@ def check_MAME_DB_status(st_dic, condition, ctrl_dic):
         test_ASSETS_SCANNED = True if ctrl_dic['t_MAME_assets_scan'] > ctrl_dic['t_MAME_ROMs_scan'] else False
         if not test_ASSETS_SCANNED:
             log_debug('check_MAME_DB_status() ERROR: MAME_ASSETS_SCANNED fails.')
-            t = 'MAME assets need to be scanned. Use the context menu "Setup plugin" in root window.'
+            t = 'MAME assets need to be scanned. Use the context menu "Setup addon" in the main window.'
             kodi_set_error_status(st_dic, t)
         else:
             log_debug('check_MAME_DB_status() MAME_ASSETS_SCANNED OK')
@@ -5452,13 +5452,13 @@ def check_SL_DB_status(st_dic, condition, ctrl_dic):
     if not ctrl_dic:
         log_debug('check_MAME_DB_status() ERROR: Control dictionary empty.')
         t = ('MAME control file not found. You need to build the MAME main database '
-            'using the context menu "Setup plugin" in the AML main window.')
+            'using the context menu "Setup addon" in the AML main window.')
         kodi_set_error_status(st_dic, t)
     elif condition == SL_MAIN_DB_BUILT:
         test_MAIN_DB_BUILT = True if ctrl_dic['t_SL_DB_build'] > ctrl_dic['t_MAME_DB_build'] else False
         if not test_MAIN_DB_BUILT:
             log_debug('check_SL_DB_status() SL_MAIN_DB_BUILT fails')
-            t = 'Software List databases not built or outdated. Use the context menu "Setup plugin" in root window.'
+            t = 'Software List databases not built or outdated. Use the context menu "Setup addon" in the main window.'
             kodi_set_error_status(st_dic, t)
         else:
             log_debug('check_SL_DB_status() SL_MAIN_DB_BUILT OK')
@@ -5466,7 +5466,7 @@ def check_SL_DB_status(st_dic, condition, ctrl_dic):
         test_ITEMS_SCANNED = True if ctrl_dic['t_SL_ROMs_scan'] > ctrl_dic['t_SL_DB_build'] else False
         if not test_ITEMS_SCANNED:
             log_debug('check_SL_DB_status() SL_ITEMS_SCANNED fails')
-            t = 'Software List items not scanned. Use the context menu "Setup plugin" in root window.'
+            t = 'Software List items not scanned. Use the context menu "Setup addon" in the main window.'
             kodi_set_error_status(st_dic, t)
         else:
             log_debug('check_SL_DB_status() SL_ITEMS_SCANNED OK')
@@ -5475,7 +5475,7 @@ def check_SL_DB_status(st_dic, condition, ctrl_dic):
         test_ASSETS_SCANNED = True if ctrl_dic['t_SL_assets_scan'] > ctrl_dic['t_SL_ROMs_scan'] else False
         if not test_ASSETS_SCANNED:
             log_debug('check_SL_DB_status() SL_ASSETS_SCANNED fails')
-            t = 'Software List assets not scanned. Use the context menu "Setup plugin" in root window.'
+            t = 'Software List assets not scanned. Use the context menu "Setup addon" in the main window.'
             kodi_set_error_status(st_dic, t)
         else:
             log_debug('check_SL_DB_status() SL_ASSETS_SCANNED OK')
@@ -5507,7 +5507,7 @@ def check_MAME_DB_before_rendering_machines(cfg, st_dic, control_dic):
         (control_dic['t_MAME_render_cache_build'] < control_dic['t_MAME_Catalog_build']):
         log_warning('t_MAME_render_cache_build < t_MAME_Catalog_build')
         t = ('MAME render cache needs to be updated. '
-            'Open the context menu "Setup plugin", then '
+            'Open the context menu "Setup addon", then '
             '"Step by Step", and then "Rebuild MAME machine and asset caches."')
         kodi_set_error_status(st_dic, t)
         return
@@ -5516,7 +5516,7 @@ def check_MAME_DB_before_rendering_machines(cfg, st_dic, control_dic):
         (control_dic['t_MAME_asset_cache_build'] < control_dic['t_MAME_Catalog_build']):
         log_warning('t_MAME_asset_cache_build < t_MAME_Catalog_build')
         t = ('MAME asset cache needs to be updated. '
-            'Open the context menu "Setup plugin", then '
+            'Open the context menu "Setup addon", then '
             '"Step by Step", and then "Rebuild MAME machine and asset caches."')
         kodi_set_error_status(st_dic, t)
         return
@@ -5541,7 +5541,7 @@ def check_SL_DB_before_rendering_machines(cfg, st_dic, control_dic):
 # Setup plugin databases
 # -------------------------------------------------------------------------------------------------
 def command_context_setup_plugin(cfg):
-    menu_item = xbmcgui.Dialog().select('Setup plugin', [
+    menu_item = xbmcgui.Dialog().select('Setup AML addon', [
         'All in one (Build DB, Scan, Plots, Filters)',
         'All in one (Build DB, Scan, Plots, Filters, Audit)',
         'Build all databases',
@@ -5883,7 +5883,7 @@ def command_context_setup_plugin(cfg):
 
     # --- Build Step by Step (database and scanner) ---
     elif menu_item == 7:
-        submenu = xbmcgui.Dialog().select('Setup plugin (step by step)', [
+        submenu = xbmcgui.Dialog().select('Setup AML addon (step by step)', [
             'Extract/Process MAME.xml',
             'Build MAME main database',
             'Build MAME audit/scanner databases',

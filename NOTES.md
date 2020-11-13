@@ -64,6 +64,18 @@ Remove tasks once finished.
 
    All progress dialogs (search for `pDialog.create()` in the code) must use the new `KodiProgressDialog()` class.
 
+**Travis errors**
+
+Travis suggest using `list(dic.items())` instead of `dic.items()` when iterating the keys and values of a dictionary in Python 3. However, this can be harmful for performance!
+
+```
+-    for m_name, r_name in catalog_dic.items():
++    for m_name, r_name in list(catalog_dic.items()):
+         sl.append('<machine>')
+```
+
+[Stack overflow: Difference between iterate dictionary.items() vs list(dictionary.items())](https://stackoverflow.com/questions/63706787/difference-between-iterate-dictionary-items-vs-listdictionary-items)
+
 **References**
 
 [The Conservative Python 3 Porting Guide](https://portingguide.readthedocs.io/en/latest/index.html)
