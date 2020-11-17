@@ -3711,13 +3711,12 @@ def action_view_machine_audit_roms(cfg, machine_name, SL_name, SL_ROM, location)
         ['Type', 'File name'],
     ]
     for m_file in machine_archives[machine_name]['ROMs']:
-        table_str.append(['ROM', 'ROM path/' + m_file + '.zip'])
+        table_str.append(['ROM', '[COLOR orange]ROM_path[/COLOR]/' + m_file + '.zip'])
     for m_file in machine_archives[machine_name]['CHDs']:
-        table_str.append(['CHD', 'CHD path/' + m_file + '.chd'])
+        table_str.append(['CHD', '[COLOR orange]CHD_path[/COLOR]/' + m_file + '.chd'])
     for m_file in machine_archives[machine_name]['Samples']:
-        table_str.append(['Sample', 'Samples path/' + m_file + '.zip'])
+        table_str.append(['Sample', '[COLOR orange]Samples_path[/COLOR]/' + m_file + '.zip'])
     info_text.extend(text_render_table_str(table_str))
-
 
     window_title = 'Machine {} ROM audit'.format(machine_name)
     kodi_display_text_window_mono(window_title, '\n'.join(info_text))
