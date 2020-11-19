@@ -475,6 +475,8 @@ def utils_file_cache_search(dir_str, filename_noext, file_exts):
 
 # -------------------------------------------------------------------------------------------------
 # Logging functions
+# Kodi Matrix has changed the log levels. See
+# https://forum.kodi.tv/showthread.php?tid=344263&pid=2943703#pid2943703
 # -------------------------------------------------------------------------------------------------
 # Constants
 LOG_ERROR   = 0
@@ -918,17 +920,19 @@ def kodi_display_status_message(st_dic):
 
     return st_dic['abort']
 
+def kodi_is_error_status(st_dic): return st_dic['abort']
+
 # Utility function to write more compact code.
 # By default error messages are shown in modal OK dialogs.
 def kodi_set_error_status(st_dic, msg, dialog = KODI_MESSAGE_DIALOG):
     st_dic['abort'] = True
-    st_dic['dialog'] = dialog
     st_dic['msg'] = msg
+    st_dic['dialog'] = dialog
 
 def kodi_reset_status(st_dic):
     st_dic['abort'] = False
-    st_dic['dialog'] = KODI_MESSAGE_NONE
     st_dic['msg'] = ''
+    st_dic['dialog'] = KODI_MESSAGE_NONE
 
 # -------------------------------------------------------------------------------------------------
 # Alternative Kodi GUI error reporting.
