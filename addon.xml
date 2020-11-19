@@ -31,14 +31,17 @@
         <assets>
             <icon>media/icon.png</icon>
             <fanart>media/fanart.jpg</fanart>
-            <screenshot>media/shot_root.png</screenshot>
-            <screenshot>media/shot_MAME_pclone_list_A.png</screenshot>
-            <screenshot>media/shot_MAME_pclone_list_B.png</screenshot>
-            <screenshot>media/shot_SL_pclone_list.png</screenshot>
-            <screenshot>media/shot_MAME_fanart.png</screenshot>
-            <screenshot>media/shot_SL_fanart.png</screenshot>
-            <screenshot>media/shot_SL_3dbox.png</screenshot>
-            <screenshot>media/shot_MAME_audit.png</screenshot>
+            <screenshot>media/shot_01_main_window.jpg</screenshot>
+            <screenshot>media/shot_02_MAME_pclone_list.jpg</screenshot>
+            <screenshot>media/shot_03_SL_pclone_list.jpg</screenshot>
+            <screenshot>media/shot_04_MAME_fanart.jpg</screenshot>
+            <screenshot>media/shot_05_SL_fanart.jpg</screenshot>
+            <screenshot>media/shot_06_MAME_3dbox.jpg</screenshot>
+            <screenshot>media/shot_07_SL_3dbox.jpg</screenshot>
+            <screenshot>media/shot_08_MAME_History_viewer.jpg</screenshot>
+            <screenshot>media/shot_09_MAME_ROMs_db.jpg</screenshot>
+            <screenshot>media/shot_10_MAME_Audit_db.jpg</screenshot>
+            <screenshot>media/shot_11_MAME_Audit_machine.jpg</screenshot>
         </assets>
         <news>See changelog.txt for information about the latest release.</news>
     </extension>
