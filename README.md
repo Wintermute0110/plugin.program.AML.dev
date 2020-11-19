@@ -19,7 +19,7 @@ this guide is far from complete and I will try to improve it soon.
 
 ## Screenshot gallery ##
 
-All the screenshots have been taken using the skin [Estuary AEL MOD](https://forum.kodi.tv/showthread.php?tid=287826&pid=2398922#pid2398922)
+All the screenshots have been taken using the skin [Estuary AEL MOD](https://forum.kodi.tv/showthread.php?tid=287826&pid=2398922#pid2398922). Kodi skins may not show all AML metadata and artwork.
 
 **Addon main window**
 
