@@ -3237,7 +3237,7 @@ def command_context_info_utils(cfg, machine_name, SL_name, SL_ROM, location):
                 pDialog.updateProgressInc()
                 manuals_extract_PDF_page(status_dic, man_file_FN, img_dir_FN, page_index)
             manuals_close_PDF_file()
-            pDialog.close()
+            pDialog.endProgress()
 
             # --- Create JSON INFO file ---
             manuals_create_INFO_file(status_dic, man_file_FN, img_dir_FN)
@@ -4222,10 +4222,9 @@ def command_context_manage_mame_fav(cfg, machine_name):
 
         # --- Ensure MAME Catalog have been built ---
         control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
-        options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
-        if not options['condition']:
-            kodi_dialog_OK(options['msg'])
-            return False
+        st_dic = kodi_new_status_dic()
+        options = check_MAME_DB_status(st_dic, MAME_CATALOG_BUILT, control_dic)
+        if kodi_display_status_message(st_dic): return False
 
         # --- Load databases ---
         db_files = [
@@ -4357,10 +4356,9 @@ def command_context_manage_mame_most_played(cfg, machine_name):
 
         # --- Ensure MAME Catalog have been built ---
         control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
-        options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
-        if not options['condition']:
-            kodi_dialog_OK(options['msg'])
-            return False
+        st_dic = kodi_new_status_dic()
+        options = check_MAME_DB_status(st_dic, MAME_CATALOG_BUILT, control_dic)
+        if kodi_display_status_message(st_dic): return False
 
         # --- Load databases ---
         db_files = [
@@ -4493,10 +4491,9 @@ def command_context_manage_mame_recent_played(cfg, machine_name):
 
         # --- Ensure MAME Catalog have been built ---
         control_dic = utils_load_JSON_file_dic(cfg.MAIN_CONTROL_PATH.getPath())
-        options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
-        if not options['condition']:
-            kodi_dialog_OK(options['msg'])
-            return False
+        st_dic = kodi_new_status_dic()
+        options = check_MAME_DB_status(st_dic, MAME_CATALOG_BUILT, control_dic)
+        if kodi_display_status_message(st_dic): return False
 
         # --- Load databases ---
         db_files = [
@@ -5453,7 +5450,7 @@ def check_MAME_DB_status(st_dic, condition, ctrl_dic):
 #
 def check_SL_DB_status(st_dic, condition, ctrl_dic):
     if not ctrl_dic:
-        log_debug('check_MAME_DB_status() ERROR: Control dictionary empty.')
+        log_debug('check_SL_DB_status() ERROR: Control dictionary empty.')
         t = ('MAME control file not found. You need to build the MAME main database '
             'using the context menu "Setup addon" in the AML main window.')
         kodi_set_error_status(st_dic, t)

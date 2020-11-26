@@ -18,6 +18,7 @@
 # from __future__ import unicode_literals
 
 # --- Modules/packages in this plugin ---
+from .constants import *
 from .utils import *
 from .db import *
 
@@ -41,6 +42,8 @@ import struct
 import time
 import types
 import zlib
+if ADDON_RUNNING_PYTHON_2:
+    import StringIO
 try:
     from PIL import Image
     PYTHON_PIL_AVAILABLE = True
