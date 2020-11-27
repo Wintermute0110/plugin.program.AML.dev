@@ -47,12 +47,12 @@ import copy
 import datetime
 import os
 import subprocess
-try:
+if ADDON_RUNNING_PYTHON_2:
     import urlparse
-    ADDON_RUNNING_PYTHON_2 = True
-except:
+elif ADDON_RUNNING_PYTHON_3:
     import urllib.parse
-    ADDON_RUNNING_PYTHON_2 = False
+else:
+    raise TypeError('Undefined Python runtime version.')
 
 # --- Plugin database indices ---
 # _PATH is a filename | _DIR is a directory
@@ -333,8 +333,10 @@ def run_plugin(addon_argv):
     cfg.addon_handle = int(addon_argv[1])
     if ADDON_RUNNING_PYTHON_2:
         args = urlparse.parse_qs(addon_argv[2][1:])
-    else:
+    elif ADDON_RUNNING_PYTHON_3:
         args = urllib.parse.parse_qs(addon_argv[2][1:])
+    else:
+        raise TypeError('Undefined Python runtime version.')
     # log_debug('args = {}'.format(args))
     # Interestingly, if plugin is called as type executable then args is empty.
     # However, if plugin is called as type game then Kodi adds the following
