@@ -73,7 +73,7 @@ WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi 
          Github wiki.
 
 
-[B]Advanced MAME Launcher | version 1.0.0 | 10 November 2020[/B]
+[B]Advanced MAME Launcher | version 1.0.0 | 27 November 2020[/B]
 
 FEATURE  [CORE] Port the addon to Kodi Matrix and Python 3.
 
@@ -83,7 +83,7 @@ FIX      [MANUALS] The pdfwr library is not working well with Python 3. PDF imag
          have been disabled until this issue is fixed.
 
 
-[B]Advanced MAME Launcher | version 0.10.0 | xx November 2020[/B]
+[B]Advanced MAME Launcher | version 0.10.0 | 27 November 2020[/B]
 
 FEATURE  [CORE] Big code refactoring to prepare Kodi Python API changes.
 
