@@ -72,6 +72,9 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
 WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
          Github wiki.
 
+FIX      [CORE] Fix crash when building Controls (Expanded) catalog in MAME 2003 Plus mode.
+         Also fixed Controls (Expanded) and Controls (Compact) catalogues for empty controls.
+
 
 [B]Advanced MAME Launcher | version 1.0.0 | 27 November 2020[/B]
 
@@ -81,6 +84,11 @@ FEATURE  [CORE] xbmc.translatePath is deprecated in Matrix, use xbmcvfs.translat
 
 FIX      [MANUALS] The pdfwr library is not working well with Python 3. PDF image extraction
          have been disabled until this issue is fixed.
+
+
+[B]Advanced MAME Launcher | version 0.10.0 | xx xxxxxx 2021[/B]
+
+FIX      Copy bugfixes only from release 1.0.1.
 
 
 [B]Advanced MAME Launcher | version 0.10.0 | 27 November 2020[/B]
