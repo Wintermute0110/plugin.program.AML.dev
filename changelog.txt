@@ -83,6 +83,11 @@ FIX      [MANUALS] The pdfwr library is not working well with Python 3. PDF imag
          have been disabled until this issue is fixed.
 
 
+[B]Advanced MAME Launcher | version 0.10.1 | xx December 2020[/B]
+
+FIX      [CORE] Fix SKIN_SHOW_* launchers.
+
+
 [B]Advanced MAME Launcher | version 0.10.0 | 27 November 2020[/B]
 
 FEATURE  [CORE] Big code refactoring to prepare Kodi Python API changes.
