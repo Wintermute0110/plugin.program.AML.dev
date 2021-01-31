@@ -2545,9 +2545,9 @@ def mame_update_MAME_Fav_objects(cfg, db_dic):
 
 def mame_update_MAME_MostPlay_objects(cfg, db_dic):
     control_dic = db_dic['control_dic']
-    machines = db_dic['control_dic']
-    renderdb_dic = db_dic['control_dic']
-    assets_dic = db_dic['control_dic']
+    machines = db_dic['machines']
+    renderdb_dic = db_dic['renderdb']
+    assets_dic = db_dic['assetdb']
     most_played_roms_dic = utils_load_JSON_file_dic(cfg.MAME_MOST_PLAYED_FILE_PATH.getPath())
     if len(most_played_roms_dic) < 1:
         kodi_notify('MAME Most Played empty')
