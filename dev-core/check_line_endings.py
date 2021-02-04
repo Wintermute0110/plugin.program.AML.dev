@@ -44,6 +44,7 @@ BIN_EXTENSION_SET = {
     '.otf',
     '.png',
     '.pyc',
+    '.pyo',
 }
 
 CRED = '\033[31m'
@@ -99,7 +100,7 @@ for root, dirs, files in os.walk(directory, topdown = True):
         elif filename_ext in BIN_EXTENSION_SET:
             print('{}skipping binary file{} "{}"'.format(CYELLOW, CEND, filename))
         else:
-            print('Unknown file extension "{}" for file "{}"'.format(filename_ext, filename))
+            print('ERROR: Unknown file extension "{}" for file "{}"'.format(filename_ext, filename))
             sys.exit(1)
 
 # Print files with Windows line endings.
