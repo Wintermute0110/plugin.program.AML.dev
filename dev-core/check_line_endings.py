@@ -33,9 +33,11 @@ TEXT_EXTENSION_SET = {
     '.dtd',
     '.json',
     '.md',
+    '.po',
     '.py',
     '.txt',
     '.xml',
+    '.xsp',
     '.yml',
 }
 
@@ -45,6 +47,7 @@ BIN_EXTENSION_SET = {
     '.png',
     '.pyc',
     '.pyo',
+    '.ttf',
 }
 
 CRED = '\033[31m'
