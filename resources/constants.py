@@ -74,6 +74,9 @@ ROMSET_MAME_FULLYNONMERGED = 3 # 'Fully non-merged'
 ROMSET_SL_MERGED           = 0 # 'Merged'
 ROMSET_SL_SPLIT            = 1 # 'Split'
 
+ROMSET_NAME_LIST = ['Merged', 'Split', 'Non-merged', 'Fully non-merged']
+CHDSET_NAME_LIST = ['Merged', 'Split', 'Non-merged']
+
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher constants
 # -------------------------------------------------------------------------------------------------

@@ -64,6 +64,18 @@ Remove tasks once finished.
 
    All progress dialogs (search for `pDialog.create()` in the code) must use the new `KodiProgressDialog()` class.
 
+**Travis errors**
+
+Travis suggest using `list(dic.items())` instead of `dic.items()` when iterating the keys and values of a dictionary in Python 3. However, this can be harmful for performance!
+
+```
+-    for m_name, r_name in catalog_dic.items():
++    for m_name, r_name in list(catalog_dic.items()):
+         sl.append('<machine>')
+```
+
+[Stack overflow: Difference between iterate dictionary.items() vs list(dictionary.items())](https://stackoverflow.com/questions/63706787/difference-between-iterate-dictionary-items-vs-listdictionary-items)
+
 **References**
 
 [The Conservative Python 3 Porting Guide](https://portingguide.readthedocs.io/en/latest/index.html)
@@ -125,6 +137,23 @@ Updating your pull request can be done by applying your changes and squashing th
 **References**
 
 [Kodi xbmc-repoplugins: CONTRIBUTING](https://github.com/xbmc/repo-plugins/blob/master/CONTRIBUTING.md)
+
+## Kodi repository Travis rules ##
+
+ * Screenshots maximum file size is 750 KB.
+
+## Resolution table ##
+
+| Name           | Resolution    | Notes                                                      |
+|----------------|---------------|------------------------------------------------------------|
+| SDTV 480i NTSC | ` 704 x  480` | AR 4:3 NTSC, 720 x 480 full frame with horizontal blanking |
+| SDTV 576i PAL  | ` 704 x  576` | AR 4:3 NTSC, 720 x 576 full frame with horizontal blanking |
+| Standard HD    | `1280 x  720` | AR 16:9                                                    |
+| Full HD        | `1920 x 1080` | AR 16:9, informally referred as 2K                         |
+| 4K Ultra HD    | `3840 x 2160` | AR 16:9                                                    |
+| 8K Ultra HD    | `7680 x 4320` | AR 16:9                                                    |
+
+ * In **SDTV** the pixel aspect ratio (PAR) is not square, and the PAR changes depending on the display aspect ratio (DAR). In other words, the SDTV resolution for 4:3 DAR or 16:9 DAR is the same, what changes is the pixel aspect ratio and hence the physical size of the display.
 
 ## MAME implicit/explicit ROM merging ##
 

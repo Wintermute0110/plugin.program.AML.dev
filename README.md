@@ -19,25 +19,37 @@ this guide is far from complete and I will try to improve it soon.
 
 ## Screenshot gallery ##
 
-All the screenshots have been taken using the skin [Estuary AEL MOD](https://forum.kodi.tv/showthread.php?tid=287826&pid=2398922#pid2398922)
+All the screenshots have been taken using the skin [Estuary AEL MOD](https://forum.kodi.tv/showthread.php?tid=287826&pid=2398922#pid2398922). Kodi skins may not show all AML metadata and artwork.
 
-**Addon root window**
+**Addon main window**
 
-![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_root.png)
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_01_main_window.jpg)
 
 **Browsing MAME machines**
 
-![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_MAME_pclone_list_A.png)
-
-![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_MAME_pclone_list_B.png)
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_02_MAME_pclone_list.jpg)
 
 **Browsing Software Lists**
 
-![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_SL_pclone_list.png)
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_03_SL_pclone_list.jpg)
 
-**Audit of a MAME machine**
+**Fanart and 3D Box generation**
 
-![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_MAME_audit.png)
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_04_MAME_fanart.jpg)
+
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_05_SL_fanart.jpg)
+
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_06_MAME_3dbox.jpg)
+
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_07_SL_3dbox.jpg)
+
+**Audit and ROM browser**
+
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_09_MAME_ROMs_db.jpg)
+
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_10_MAME_Audit_db.jpg)
+
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_11_MAME_Audit_machine.jpg)
 
 ## Installing the latest released version ##
 

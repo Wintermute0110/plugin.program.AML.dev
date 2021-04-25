@@ -67,20 +67,34 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
          See https://github.com/libretro/mame2010-libretro/tree/master/metadata
 
 
-[B]Advanced MAME Launcher | version 1.0.1 | xx xxxxxx 2021[/B]
+[B]Advanced MAME Launcher | version 1.0.1 | xx April 2021[/B]
 
 WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
          Github wiki.
 
+WIP      [CORE] There is a new XML format for history.dat, now named history.xml. Do a parser
+         for the new XML format and deprecate the use of the DAT format. It seems that for
+         a time both old and XML formats will be released.
 
-[B]Advanced MAME Launcher | version 1.0.0 | xx November 2020[/B]
+FIX      [CORE] Fix crash when building Controls (Expanded) catalog in MAME 2003 Plus mode.
+         Also fixed Controls (Expanded) and Controls (Compact) catalogues for empty controls.
+
+FIX      [CORE] Fix SKIN_SHOW_* launchers. 
+
+FIX      [CORE] Fix bug in mame_update_MAME_MostPlay_objects().
+
+
+[B]Advanced MAME Launcher | version 1.0.0 | 27 November 2020[/B]
 
 FEATURE  [CORE] Port the addon to Kodi Matrix and Python 3.
 
 FEATURE  [CORE] xbmc.translatePath is deprecated in Matrix, use xbmcvfs.translatePath instead.
 
+FIX      [MANUALS] The pdfwr library is not working well with Python 3. PDF image extraction
+         have been disabled until this issue is fixed.
 
-[B]Advanced MAME Launcher | version 0.10.0 | xx November 2020[/B]
+
+[B]Advanced MAME Launcher | version 0.10.0 | 27 November 2020[/B]
 
 FEATURE  [CORE] Big code refactoring to prepare Kodi Python API changes.
 
