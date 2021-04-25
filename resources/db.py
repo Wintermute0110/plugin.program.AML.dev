@@ -205,8 +205,8 @@ ASSET_MAME_T_LIST  = [
     ('flyer',      'flyers'),
     ('manual',     'manuals'),
     ('marquee',    'marquees'),
-    ('PCB',        'PCBs'),
-    ('snap',       'snaps'),
+    ('PCB',        'pcb'),
+    ('snap',       'snap'),
     ('title',      'titles'),
     ('trailer',    'videosnaps'),
 ]
@@ -290,7 +290,7 @@ def db_new_SL_DISK_audit_dic():
 ASSET_SL_T_LIST = [
     ('3dbox',    '3dboxes_SL'),
     ('title',    'titles_SL'),
-    ('snap',     'snaps_SL'),
+    ('snap',     'snap_SL'),
     ('boxfront', 'covers_SL'),
     ('fanart',   'fanarts_SL'),
     ('trailer',  'videosnaps_SL'),
