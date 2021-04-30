@@ -16,12 +16,14 @@
 # The idea if this module is to share it between AEL and AML.
 #
 # All functions that depends on Kodi modules are here. This includes IO functions
-# and logging functions.
+# and logging functions. Misc function that do not depend on Kodi modules are
+# located in the misc module.
 #
-# Low-level filesystem and IO functions are here. disk_IO module contains high level functions.
+# Low-level filesystem and IO functions are here (FileName class).
+# db module (formaer disk_IO module) contains high level IO functions.
 #
-# When Kodi modules are not available replaces can be provided. This is useful to use addon
-# modules with CPython.
+# When Kodi modules are not available replacements can be provided. This is useful
+# to use addon modules with CPython for testing or debugging.
 #
 # This module must NOT include any other addon modules to avoid circular dependencies. The
 # only exception to this rule is the module .constants. This module is virtually included
@@ -55,7 +57,9 @@ import sys
 import threading
 import time
 
-# --- Determine interpreter running platform ---
+# -------------------------------------------------------------------------------------------------
+# Interpreter running platform
+# -------------------------------------------------------------------------------------------------
 # Cache all possible platform values in global variables for maximum speed.
 # See http://stackoverflow.com/questions/446209/possible-values-from-sys-platform
 cached_sys_platform = sys.platform
@@ -873,13 +877,13 @@ else:
 #   function calls it is irrelevant its return value because addon always finishes.
 #
 # How to use:
-# def high_level_function():
+# high_level_function():
 #     st_dic = kodi_new_status_dic()
 #     function_that_does_something_that_may_fail(..., st_dic)
 #     if kodi_display_status_message(st_dic): return # Display error message and abort addon execution.
 #     if not st_dic['status']: return # Alternative code to return to caller function.
 #
-# def function_that_does_something_that_may_fail(..., st_dic):
+# function_that_does_something_that_may_fail(..., st_dic):
 #     code_that_fails
 #     kodi_set_error_status(st_dic, 'Message') # Or change st_dic manually.
 #     return
@@ -948,7 +952,7 @@ def kodi_reset_status(st_dic):
 # else:
 #     kodi_notify('Operation completed')
 #
-# def function_that_may_fail():
+# function_that_may_fail():
 #     raise KodiAddonError(msg, dialog)
 class KodiAddonError(Exception):
     def __init__(self, msg, dialog = KODI_MESSAGE_DIALOG):
