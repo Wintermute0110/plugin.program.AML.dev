@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2016-2020 Wintermute0110 <wintermute0110@gmail.com>
+# Copyright (c) 2016-2021 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -11,7 +11,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
-# Advanced MAME Launcher Kodi utility functions.
+# Advanced Emulator/MAME Launcher utility functions.
 #
 # The idea if this module is to share it between AEL and AML.
 #
@@ -46,14 +46,22 @@ except:
 
 # --- Python standard library ---
 # Check what modules are really used and remove not used ones.
+import collections
 import fnmatch
 import io
 import json
 import math
+import hashlib
+import HTMLParser
 import os
+import random
+import re
+import shutil
+import string
 import sys
 import threading
 import time
+import zlib
 
 # --- Determine interpreter running platform ---
 # Cache all possible platform values in global variables for maximum speed.
@@ -101,7 +109,7 @@ class FileName:
     def __init__(self, pathString):
         self.originalPath = pathString
         self.path         = pathString
-        
+
         # --- Path transformation ---
         if self.originalPath.lower().startswith('smb:'):
             self.path = self.path.replace('smb:', '')
@@ -135,6 +143,21 @@ class FileName:
 
         return child
 
+    # Behaves like os.path.join()
+    #
+    # See http://blog.teamtreehouse.com/operator-overloading-python
+    # other is a FileName object. other originalPath is expected to be a subdirectory (path
+    # transformation not required)
+    # def __add__(self, other):
+    #     current_path = self.originalPath
+    #     if type(other) is FileName:  other_path = other.originalPath
+    #     elif type(other) is unicode: other_path = other
+    #     elif type(other) is str:     other_path = other.decode('utf-8')
+    #     else: raise NameError('Unknown type for overloaded + in FileName object')
+    #     new_path = os.path.join(current_path, other_path)
+    #     child    = FileName(new_path)
+    #     return child
+
     def escapeQuotes(self):
         self.path = self.path.replace("'", "\\'")
         self.path = self.path.replace('"', '\\"')
@@ -159,15 +182,13 @@ class FileName:
     def getBase(self):
         return os.path.basename(self.path)
 
-    def getBase_noext(self):
+    def getBaseNoExt(self):
         basename  = os.path.basename(self.path)
         root, ext = os.path.splitext(basename)
-        
         return root
 
     def getExt(self):
         root, ext = os.path.splitext(self.path)
-        
         return ext
 
     # ---------------------------------------------------------------------------------------------
@@ -224,7 +245,7 @@ class FileName:
         return os.path.isfile(self.path)
 
     def makedirs(self):
-        if not os.path.exists(self.path): 
+        if not os.path.exists(self.path):
             os.makedirs(self.path)
 
     # os.remove() and os.unlink() are exactly the same.
@@ -234,7 +255,6 @@ class FileName:
     def rename(self, to):
         os.rename(self.path, to.getPath())
 
-#
 # How to report errors in these IO functions? That's the eternal question.
 # 1) Raise an exception and make the addon crash? Crashes are always reported in the GUI.
 # 2) Use AEL approach and report status in a control dictionary? Caller code is responsible
@@ -495,8 +515,8 @@ def set_log_level(level):
 
 def log_variable(var_name, var):
     if current_log_level < LOG_DEBUG: return
-    log_text = 'AML DUMP : Dumping variable "{}"\n{}'.format(var_name, pprint.pformat(var))
-    xbmc.log(log_text, level = xbmc.LOGERROR)
+    log_text = 'AXL DUMP : Dumping variable "{}"\n{}'.format(var_name, pprint.pformat(var))
+    xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGERROR)
 
 # For Unicode stuff in Kodi log see https://github.com/romanvm/kodi.six
 def log_debug_KR(text_line):
@@ -557,12 +577,19 @@ def log_error_Python(text_line): print(text_line)
 # Call examples:
 #  1) ret = kodi_dialog_OK('Launch ROM?')
 #  2) ret = kodi_dialog_OK('Launch ROM?', title = 'AML - Launcher')
-def kodi_dialog_OK(text, title = 'Advanced MAME Launcher'):
+def kodi_dialog_OK(text, title = dialog_title_str):
     xbmcgui.Dialog().ok(title, text)
 
 # Returns True is YES was pressed, returns False if NO was pressed or dialog canceled.
-def kodi_dialog_yesno(text, title = 'Advanced MAME Launcher'):
+def kodi_dialog_yesno(text, title = dialog_title_str):
     return xbmcgui.Dialog().yesno(title, text)
+
+# Returns True is YES was pressed, returns False if NO was pressed or dialog canceled.
+def kodi_dialog_yesno_custom(text, yeslabel_str, nolabel_str, title = dialog_title_str):
+    return xbmcgui.Dialog().yesno(title, text, yeslabel = yeslabel_str, nolabel = nolabel_str)
+
+def kodi_dialog_yesno_timer(text, timer_ms = 30000, title = dialog_title_str):
+    return xbmcgui.Dialog().yesno(title, text, autoclose = timer_ms)
 
 # Returns a directory.
 def kodi_dialog_get_directory(dialog_heading):
@@ -585,15 +612,15 @@ def kodi_dialog_get_wdirectory(dialog_heading):
     return xbmcgui.Dialog().browse(3, dialog_heading, '').decode('utf-8')
 
 # Displays a small box in the bottom right corner
-def kodi_notify(text, title = 'Advanced MAME Launcher', time = 5000):
+def kodi_notify(text, title = dialog_title_str, time = 5000):
     xbmcgui.Dialog().notification(title, text, xbmcgui.NOTIFICATION_INFO, time)
 
-def kodi_notify_warn(text, title = 'Advanced MAME Launcher warning', time = 7000):
+def kodi_notify_warn(text, title = dialog_title_str, time = 7000):
     xbmcgui.Dialog().notification(title, text, xbmcgui.NOTIFICATION_WARNING, time)
 
 # Do not use this function much because it is the same icon displayed when Python fails
 # with an exception and that may confuse the user.
-def kodi_notify_error(text, title = 'Advanced MAME Launcher error', time = 7000):
+def kodi_notify_error(text, title = dialog_title_str, time = 7000):
     xbmcgui.Dialog().notification(title, text, xbmcgui.NOTIFICATION_ERROR, time)
 
 def kodi_refresh_container():
@@ -809,8 +836,20 @@ def kodi_display_text_window_mono(window_title, info_text):
 def kodi_display_text_window(window_title, info_text):
     xbmcgui.Dialog().textviewer(window_title, info_text)
 
+# Displays a text window and requests a monospaced font.
+# def kodi_display_text_window_mono(window_title, info_text):
+#     log_debug('Setting Window(10000) Property "FontWidth" = "monospaced"')
+#     xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+#     xbmcgui.Dialog().textviewer(window_title, info_text)
+#     log_debug('Setting Window(10000) Property "FontWidth" = "proportional"')
+#     xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+
+# Displays a text window with a proportional font (default).
+# def kodi_display_text_window(window_title, info_text):
+#     xbmcgui.Dialog().textviewer(window_title, info_text)
+
 # -------------------------------------------------------------------------------------------------
-# Astraction layer for settings to easy the Leia-Matrix transition.
+# Abstraction layer for settings to easy the Leia-Matrix transition.
 # Settings are only read once on every execution and they are not performance critical.
 # -------------------------------------------------------------------------------------------------
 def kodi_get_int_setting(cfg, setting_str):
@@ -964,3 +1003,79 @@ def kodi_display_exception(ex):
     st_dic['dialog'] = ex.dialog
     st_dic['msg'] = ex.msg
     kodi_display_status_message(st_dic)
+
+# -------------------------------------------------------------------------------------------------
+# Kodi specific stuff
+# -------------------------------------------------------------------------------------------------
+# About Kodi image cache
+#
+# See http://kodi.wiki/view/Caches_explained
+# See http://kodi.wiki/view/Artwork
+# See http://kodi.wiki/view/HOW-TO:Reduce_disk_space_usage
+# See http://forum.kodi.tv/showthread.php?tid=139568 (What are .tbn files for?)
+#
+# Whenever Kodi downloads images from the internet, or even loads local images saved along
+# side your media, it caches these images inside of ~/.kodi/userdata/Thumbnails/. By default,
+# large images are scaled down to the default values shown below, but they can be sized
+# even smaller to save additional space.
+
+#
+# Gets where in Kodi image cache an image is located.
+# image_path is a Unicode string.
+# cache_file_path is a Unicode string.
+#
+def kodi_get_cached_image_FN(image_path):
+    THUMBS_CACHE_PATH = os.path.join(xbmc.translatePath('special://profile/' ), 'Thumbnails')
+
+    # --- Get the Kodi cached image ---
+    # This function return the cache file base name
+    base_name = xbmc.getCacheThumbName(image_path)
+    cache_file_path = os.path.join(THUMBS_CACHE_PATH, base_name[0], base_name)
+
+    return cache_file_path
+
+#
+# Updates Kodi image cache for the image provided in img_path.
+# In other words, copies the image img_path into Kodi cache entry.
+# Needles to say, only update image cache if image already was on the cache.
+# img_path is a Unicode string
+#
+def kodi_update_image_cache(img_path):
+    # What if image is not cached?
+    cached_thumb = kodi_get_cached_image_FN(img_path)
+    log_debug('kodi_update_image_cache()       img_path {0}'.format(img_path))
+    log_debug('kodi_update_image_cache()   cached_thumb {0}'.format(cached_thumb))
+
+    # For some reason Kodi xbmc.getCacheThumbName() returns a filename ending in TBN.
+    # However, images in the cache have the original extension. Replace TBN extension
+    # with that of the original image.
+    cached_thumb_root, cached_thumb_ext = os.path.splitext(cached_thumb)
+    if cached_thumb_ext == '.tbn':
+        img_path_root, img_path_ext = os.path.splitext(img_path)
+        cached_thumb = cached_thumb.replace('.tbn', img_path_ext)
+        log_debug('kodi_update_image_cache() U cached_thumb {0}'.format(cached_thumb))
+
+    # --- Check if file exists in the cache ---
+    # xbmc.getCacheThumbName() seems to return a filename even if the local file does not exist!
+    if not os.path.isfile(cached_thumb):
+        log_debug('kodi_update_image_cache() Cached image not found. Doing nothing')
+        return
+
+    # --- Copy local image into Kodi image cache ---
+    # >> See https://docs.python.org/2/library/sys.html#sys.getfilesystemencoding
+    log_debug('kodi_update_image_cache() Image found in cache. Updating Kodi image cache')
+    log_debug('kodi_update_image_cache() copying {0}'.format(img_path))
+    log_debug('kodi_update_image_cache() into    {0}'.format(cached_thumb))
+    fs_encoding = sys.getfilesystemencoding()
+    log_debug('kodi_update_image_cache() fs_encoding = "{0}"'.format(fs_encoding))
+    encoded_img_path = img_path.encode(fs_encoding, 'ignore')
+    encoded_cached_thumb = cached_thumb.encode(fs_encoding, 'ignore')
+    try:
+        shutil.copy2(encoded_img_path, encoded_cached_thumb)
+    except OSError:
+        log_kodi_notify_warn('AEL warning', 'Cannot update cached image (OSError)')
+        lod_error('Exception in kodi_update_image_cache()')
+        lod_error('(OSError) Cannot update cached image')
+
+    # Is this really needed?
+    # xbmc.executebuiltin('XBMC.ReloadSkin()')

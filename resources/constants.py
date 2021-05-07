@@ -42,6 +42,9 @@ OPTION_COMPACT_JSON = True
 # This setting must be True when releasing.
 OPTION_LOWMEM_WRITE_JSON = True
 
+# Title of dialog windows.
+dialog_title_str = 'Advanced MAME Launcher'
+
 # -------------------------------------------------------------------------------------------------
 # DEBUG/TEST settings
 # -------------------------------------------------------------------------------------------------
