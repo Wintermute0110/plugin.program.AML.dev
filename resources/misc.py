@@ -14,6 +14,7 @@
 # Advanced MAME Launcher miscellaneous functions.
 #
 # The idea if this module is to share it between AEL and AML.
+#
 # Functions in this module only depend on the Python standard library.
 # This module can be loaded anywhere without creating circular dependencies.
 # Optionally this module can include utils.py to use the log_*() functions but better avoid it.

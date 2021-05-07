@@ -26,15 +26,21 @@ if __name__ == "__main__" and __package__ is None:
 # from resources.utils import *
 
 # --- Python standard library ---
+import codecs
 import re
 
 # --- configuration ------------------------------------------------------------------------------
 TEXT_EXTENSION_SET = {
+    '.css',
+    '.csv',
     '.dtd',
+    '.info',
     '.json',
     '.md',
+    '.old',
     '.po',
     '.py',
+    '.sh',
     '.txt',
     '.xml',
     '.xsp',
@@ -47,6 +53,7 @@ BIN_EXTENSION_SET = {
     '.png',
     '.pyc',
     '.pyo',
+    '.svg',
     '.ttf',
 }
 
@@ -73,6 +80,7 @@ print('sys.argv {}'.format(sys.argv))
 directory = '..' if len(sys.argv) < 2 else sys.argv[1]
 print('Scanning directory "{}"'.format(directory))
 windows_file_list = []
+BOM_file_list = []
 for root, dirs, files in os.walk(directory, topdown = True):
     # Ignore .git directories
     if root.find('.git') >= 0:
@@ -95,11 +103,20 @@ for root, dirs, files in os.walk(directory, topdown = True):
             elif unix_count == 0 and windows_count > 0:
                 print('Windows line ending "{}"'.format(filename))
                 windows_file_list.append(filename)
+            elif unix_count == 0 and windows_count == 0:
+                print('No line endings "{}"'.format(filename))
             else:
                 print('Mixed line endings "{}"'.format(filename))
                 print('unix_count {}, windows_count {}'.format(unix_count, windows_count))
                 print('Exit')
                 sys.exit(1)
+
+            # Check if files has BOM
+            header_data = open(filename, 'rb').read(16)
+            if header_data.startswith(codecs.BOM_UTF8):
+                print('{}BOM{} "{}"'.format(CRED, CEND, filename))
+                BOM_file_list.append(filename)
+
         elif filename_ext in BIN_EXTENSION_SET:
             print('{}skipping binary file{} "{}"'.format(CYELLOW, CEND, filename))
         else:
@@ -112,4 +129,11 @@ if len(windows_file_list) > 0:
     for f in windows_file_list: print(f)
 else:
     print('Found no Windows line endings in text files. Good.')
+
+print('\n--- List of files with BOM ---')
+if len(BOM_file_list) > 0:
+    for f in BOM_file_list: print(f)
+else:
+    print('Found no BOM in text files. Good.')
+
 sys.exit(0)
