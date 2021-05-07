@@ -43,6 +43,6 @@
             <screenshot>media/shot_10_MAME_Audit_db.jpg</screenshot>
             <screenshot>media/shot_11_MAME_Audit_machine.jpg</screenshot>
         </assets>
-        <news>See changelog.txt for information about the latest release.</news>
+        <news>See changelog.txt file in https://github.com/Wintermute0110/plugin.program.AML.dev/ for information about the latest release.</news>
     </extension>
 </addon>
