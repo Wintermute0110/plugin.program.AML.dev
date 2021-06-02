@@ -59,6 +59,10 @@ else:
 class Configuration:
     def __init__(self):
         # --- Kodi-related variables and data ---
+        # TODO Use this instead of the bottom deprecated code.
+        # Change self.__addon_id__ with self.addon.info_id
+        self.addon = kodi_addon_obj()
+
         # Addon object (used to access settings).
         self.__addon__         = xbmcaddon.Addon()
         self.__addon_id__      = self.__addon__.getAddonInfo('id')
@@ -68,12 +72,24 @@ class Configuration:
         self.__addon_profile__ = self.__addon__.getAddonInfo('profile')
         self.__addon_type__    = self.__addon__.getAddonInfo('type')
 
+        # Former global variables
+        self.settings = {}
+        self.base_url = ''
+        self.addon_handle = 0
+        self.content_type = ''
+
+        # Map of AEL artwork types to Kodi standard types,
+        self.mame_icon = ''
+        self.mame_fanart = ''
+        self.SL_icon = ''
+        self.SL_fanart = ''
+
         # --- File and directory names ---
-        self.HOME_DIR         = FileName('special://home')
-        self.PROFILE_DIR      = FileName('special://profile')
-        self.ADDON_CODE_DIR   = self.HOME_DIR.pjoin('addons/' + self.__addon_id__)
-        self.ADDON_DATA_DIR   = self.PROFILE_DIR.pjoin('addon_data/' + self.__addon_id__)
-        self.ICON_FILE_PATH   = self.ADDON_CODE_DIR.pjoin('media/icon.png')
+        self.HOME_DIR = FileName('special://home')
+        self.PROFILE_DIR = FileName('special://profile')
+        self.ADDON_CODE_DIR = self.HOME_DIR.pjoin('addons/' + self.__addon_id__)
+        self.ADDON_DATA_DIR = self.PROFILE_DIR.pjoin('addon_data/' + self.__addon_id__)
+        self.ICON_FILE_PATH = self.ADDON_CODE_DIR.pjoin('media/icon.png')
         self.FANART_FILE_PATH = self.ADDON_CODE_DIR.pjoin('media/fanart.jpg')
 
         # MAME stdout/strderr files.
@@ -259,20 +275,10 @@ class Configuration:
         self.REPORT_DEBUG_MAME_COLLISIONS_PATH = self.REPORTS_DIR.pjoin('debug_MAME_collisions.txt')
         self.REPORT_DEBUG_SL_COLLISIONS_PATH = self.REPORTS_DIR.pjoin('debug_SL_collisions.txt')
 
-        # --- Former global variables ---
-        self.settings = {}
-        self.base_url = ''
-        self.addon_handle = 0
-        self.content_type = ''
-        # Map of AEL artwork types to Kodi standard types,
-        self.mame_icon = ''
-        self.mame_fanart = ''
-        self.SL_icon = ''
-        self.SL_fanart = ''
-
 # --- Global variables ---
 # Use functional programming as much as possible and avoid global variables.
-# g_base_url must be a global variable because it is used in the misc_url_*() functions.
+# g_base_url must be a global variable because it is used in the misc_url_*() functions
+# for speed reasons.
 g_base_url = ''
 # Module loading time. This variable is read only (only modified here).
 g_time_str = text_type(datetime.datetime.now())
