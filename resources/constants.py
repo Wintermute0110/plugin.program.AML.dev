@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2020 Wintermute0110 <wintermute0110@gmail.com>
+# Copyright (c) 2016-2021 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -11,8 +11,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
-# Advanced MAME Launcher constants and globals.
-# This module must not include any other addon module to avoid circular dependencies.
+# Advanced Emulator/MAME Launcher constants and globals.
+# This module has no external dependencies.
 
 # --- Python standard library ---
 from __future__ import unicode_literals
@@ -32,18 +32,26 @@ else:
     raise TypeError('Unknown Python runtime version')
 
 # -------------------------------------------------------------------------------------------------
-# Addon configuration options
+# Addon options and tuneables.
 # -------------------------------------------------------------------------------------------------
-# Compact, smaller size, non-human readable JSON.
-# This setting must be True when releasing.
-OPTION_COMPACT_JSON = True
+# Compact, smaller size, non-human readable JSON. False forces human-readable JSON for development.
+# In AEL speed is not as critical so False. In AML this must be True when releasing.
+OPTION_COMPACT_JSON = False
 
 # Use less memory when writing big JSON files, but writing is slower.
-# This setting must be True when releasing.
-OPTION_LOWMEM_WRITE_JSON = True
+# In AEL this can be False when releasing. In AML it must be True.
+OPTION_LOWMEM_WRITE_JSON = False
 
-# Title of dialog windows.
-dialog_title_str = 'Advanced MAME Launcher'
+# The addon name in the GUI. Title of Kodi dialogs (yesno, progress, etc.) and used also in log functions.
+ADDON_LONG_NAME = 'Advanced MAME Launcher'
+ADDON_SHORT_NAME = 'AML'
+
+# These parameters are used in utils_write_JSON_file() when pprint is True or
+# OPTION_COMPACT_JSON is False. Otherwise non-human readable, compact JSON is written.
+# pprint = True function parameter overrides option OPTION_COMPACT_JSON.
+# More compact JSON files (less blanks) load faster because file size is smaller.
+JSON_INDENT = 1
+JSON_SEP = (', ', ': ')
 
 # -------------------------------------------------------------------------------------------------
 # DEBUG/TEST settings
@@ -53,7 +61,18 @@ dialog_title_str = 'Advanced MAME Launcher'
 DISABLE_MAME_LAUNCHING = False
 
 # -------------------------------------------------------------------------------------------------
-# Advanced MAME Launcher settings
+# This is to ease printing colors in Kodi.
+# -------------------------------------------------------------------------------------------------
+KC_RED        = '[COLOR red]'
+KC_ORANGE     = '[COLOR orange]'
+KC_GREEN      = '[COLOR green]'
+KC_YELLOW     = '[COLOR yellow]'
+KC_VIOLET     = '[COLOR violet]'
+KC_BLUEVIOLET = '[COLOR blueviolet]'
+KC_END        = '[/COLOR]'
+
+# -------------------------------------------------------------------------------------------------
+# Addon constants
 # -------------------------------------------------------------------------------------------------
 # Operational modes
 # This must match setting op_mode_raw in settings.xml or bad things will happen.
