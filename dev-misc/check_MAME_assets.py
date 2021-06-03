@@ -61,7 +61,7 @@ def fs_load_JSON_file(json_filename):
         return data_dic
 
     # --- Parse using json module ---
-    # log_verb('fs_load_ROMs_JSON() Loading JSON file {}'.format(json_filename))
+    # log_debug('fs_load_ROMs_JSON() Loading JSON file {}'.format(json_filename))
     with open(json_filename) as file:    
         data_dic = json.load(file)
 

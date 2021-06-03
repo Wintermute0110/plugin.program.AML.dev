@@ -322,7 +322,7 @@ def manuals_check_img_extraction_needed(PDF_file_FN, img_dir_FN):
         return status_dic
 
     # JSON INFO file exists. Open JSON file and check timestamps.
-    info_dic = utils_load_JSON_file_dic(info_FN.getPath())
+    info_dic = utils_load_JSON_file(info_FN.getPath())
     man_file_mtime = PDF_file_FN.getmtime()
     if man_file_mtime > info_dic['IMG_timestamp']:
         status_dic['extraction_needed'] = True

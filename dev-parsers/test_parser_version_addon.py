@@ -19,7 +19,6 @@ import re
 import sys
 
 # --- Helper code ---------------------------------------------------------------------------------
-def log_verb(string): print(string)
 def log_debug(string): print(string)
 
 # --- AML code ------------------------------------------------------------------------------------
@@ -41,7 +40,7 @@ def log_debug(string): print(string)
 #  |------------> Major version 0, ..., infinity
 #
 def fs_AML_version_str_to_int(AML_version_str):
-    log_verb('fs_AML_version_str_to_int() AML_version_str = "{}"'.format(AML_version_str))
+    log_debug('fs_AML_version_str_to_int() AML_version_str = "{}"'.format(AML_version_str))
     version_int = 0
     # Parse versions like "0.9.8[-|~]alpha[jj]"
     m_obj_alpha_n = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)(\d+?)$', AML_version_str)
@@ -90,7 +89,7 @@ def fs_AML_version_str_to_int(AML_version_str):
     else:
         log_error('AML addon version "{}" cannot be parsed.'.format(AML_version_str))
         raise TypeError
-    log_verb('fs_AML_version_str_to_int() version_int = {}'.format(version_int))
+    log_debug('fs_AML_version_str_to_int() version_int = {}'.format(version_int))
 
     return version_int
 

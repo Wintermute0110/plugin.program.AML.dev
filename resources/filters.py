@@ -25,7 +25,7 @@ from .db import *
 from .mame_misc import *
 
 # --- Python standard library ---
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree
 
 # -------------------------------------------------------------------------------------------------
 # Constants

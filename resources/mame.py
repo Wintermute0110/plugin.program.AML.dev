@@ -229,7 +229,7 @@ SL_better_name_dic = {
 #
 # re.search() returns a MatchObject https://docs.python.org/2/library/re.html#re.MatchObject
 def mame_get_numerical_version(mame_version_str):
-    log_verb('mame_get_numerical_version() mame_version_str = "{}"'.format(mame_version_str))
+    log_debug('mame_get_numerical_version() mame_version_str = "{}"'.format(mame_version_str))
     mame_version_int = 0
     # Search for old version scheme x.yyybzz
     m_obj_old = re.search('^(\d+)\.(\d+)b(\d+)', mame_version_str)
@@ -240,22 +240,22 @@ def mame_get_numerical_version(mame_version_str):
         minor = int(m_obj_old.group(2))
         beta  = int(m_obj_old.group(3))
         release_flag = 1
-        # log_verb('mame_get_numerical_version() major = {}'.format(major))
-        # log_verb('mame_get_numerical_version() minor = {}'.format(minor))
-        # log_verb('mame_get_numerical_version() beta  = {}'.format(beta))
+        # log_debug('mame_get_numerical_version() major = {}'.format(major))
+        # log_debug('mame_get_numerical_version() minor = {}'.format(minor))
+        # log_debug('mame_get_numerical_version() beta  = {}'.format(beta))
         mame_version_int = major * 1000000 + minor * 1000 + release_flag * 100 + beta
     elif m_obj_modern:
         major = int(m_obj_modern.group(1))
         minor = int(m_obj_modern.group(2))
         release_flag = 5
-        # log_verb('mame_get_numerical_version() major = {}'.format(major))
-        # log_verb('mame_get_numerical_version() minor = {}'.format(minor))
+        # log_debug('mame_get_numerical_version() major = {}'.format(major))
+        # log_debug('mame_get_numerical_version() minor = {}'.format(minor))
         mame_version_int = major * 1000000 + minor * 1000 + release_flag * 100
     else:
         t = 'MAME version "{}" cannot be parsed.'.format(mame_version_str)
         log_error(t)
         raise TypeError(t)
-    log_verb('mame_get_numerical_version() mame_version_int = {}'.format(mame_version_int))
+    log_debug('mame_get_numerical_version() mame_version_int = {}'.format(mame_version_int))
 
     return mame_version_int
 
@@ -437,7 +437,7 @@ def mame_init_MAME_XML(cfg, st_dic, force_rebuild = False):
                 # is the same as in the XML control file.
                 # If so reset everything, if not use the cached information in the XML control file.
                 log_info('Vanilla MAME XML control file found.')
-                XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())
+                XML_control_dic = utils_load_JSON_file(XML_control_FN.getPath())
                 mame_exe_version_str = mame_get_MAME_exe_version(cfg, MAME_exe_path)
                 log_debug('XML_control_dic["ver_mame_str"] "{}"'.format(XML_control_dic['ver_mame_str']))
                 log_debug('mame_exe_version_str "{}"'.format(mame_exe_version_str))
@@ -488,7 +488,7 @@ def mame_init_MAME_XML(cfg, st_dic, force_rebuild = False):
             # the one stored in the XML control file.
             # If so reset everything, if not use the cached information in the XML control file.
             log_info('MAME 2003 XML control file found.')
-            XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())
+            XML_control_dic = utils_load_JSON_file(XML_control_FN.getPath())
             statinfo = os.stat(MAME_XML_path.getPath())
             log_debug('XML_control_dic["st_mtime"] "{}"'.format(XML_control_dic['st_mtime']))
             log_debug('statinfo.st_mtime "{}"'.format(statinfo.st_mtime))
@@ -2509,7 +2509,7 @@ def mame_update_MAME_Fav_objects(cfg, db_dic):
     machines = db_dic['machines']
     renderdb_dic = db_dic['renderdb']
     assets_dic = db_dic['assetdb']
-    fav_machines = utils_load_JSON_file_dic(cfg.FAV_MACHINES_PATH.getPath())
+    fav_machines = utils_load_JSON_file(cfg.FAV_MACHINES_PATH.getPath())
     # If no MAME Favourites return
     if len(fav_machines) < 1:
         kodi_notify('MAME Favourites empty')
@@ -2548,7 +2548,7 @@ def mame_update_MAME_MostPlay_objects(cfg, db_dic):
     machines = db_dic['machines']
     renderdb_dic = db_dic['renderdb']
     assets_dic = db_dic['assetdb']
-    most_played_roms_dic = utils_load_JSON_file_dic(cfg.MAME_MOST_PLAYED_FILE_PATH.getPath())
+    most_played_roms_dic = utils_load_JSON_file(cfg.MAME_MOST_PLAYED_FILE_PATH.getPath())
     if len(most_played_roms_dic) < 1:
         kodi_notify('MAME Most Played empty')
         return
@@ -2622,7 +2622,7 @@ def mame_update_SL_Fav_objects(cfg, db_dic):
     SL_index = db_dic['SL_index']
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Loading SL Most Played JSON DB...')
-    fav_SL_roms = utils_load_JSON_file_dic(cfg.FAV_SL_ROMS_PATH.getPath())
+    fav_SL_roms = utils_load_JSON_file(cfg.FAV_SL_ROMS_PATH.getPath())
     if len(fav_SL_roms) < 1:
         kodi_notify_warn('SL Most Played empty')
         return
@@ -2643,8 +2643,8 @@ def mame_update_SL_Fav_objects(cfg, db_dic):
         SL_DB_FN = cfg.SL_DB_DIR.pjoin(file_name)
         assets_file_name =  SL_index[fav_SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
-        SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
-        SL_assets_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath(), verbose = False)
+        SL_roms = utils_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
+        SL_assets_dic = utils_load_JSON_file(SL_asset_DB_FN.getPath(), verbose = False)
 
         # --- Check ---
         if fav_ROM_name in SL_roms:
@@ -2671,7 +2671,7 @@ def mame_update_SL_MostPlay_objects(cfg, db_dic):
     SL_index = db_dic['SL_index']
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Loading SL Most Played JSON DB...')
-    most_played_roms_dic = utils_load_JSON_file_dic(cfg.SL_MOST_PLAYED_FILE_PATH.getPath())
+    most_played_roms_dic = utils_load_JSON_file(cfg.SL_MOST_PLAYED_FILE_PATH.getPath())
     if len(most_played_roms_dic) < 1:
         kodi_notify_warn('SL Most Played empty')
         return
@@ -2698,8 +2698,8 @@ def mame_update_SL_MostPlay_objects(cfg, db_dic):
         SL_DB_FN = cfg.SL_DB_DIR.pjoin(file_name)
         assets_file_name =  SL_index[fav_SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
-        SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
-        SL_assets_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath(), verbose = False)
+        SL_roms = utils_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
+        SL_assets_dic = utils_load_JSON_file(SL_asset_DB_FN.getPath(), verbose = False)
 
         # --- Check ---
         if fav_ROM_name in SL_roms:
@@ -2745,8 +2745,8 @@ def mame_update_SL_RecentPlay_objects(cfg, db_dic):
         SL_DB_FN = cfg.SL_DB_DIR.pjoin(file_name)
         assets_file_name =  SL_index[fav_SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
-        SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
-        SL_assets_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath(), verbose = False)
+        SL_roms = utils_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
+        SL_assets_dic = utils_load_JSON_file(SL_asset_DB_FN.getPath(), verbose = False)
 
         # --- Check ---
         if fav_ROM_name in SL_roms:
@@ -2867,9 +2867,9 @@ def mame_build_SL_plots(cfg, SL_dic):
         SL_ROMs_FN = cfg.SL_DB_DIR.pjoin(SL_DB_prefix + '_items.json')
         SL_assets_FN = cfg.SL_DB_DIR.pjoin(SL_DB_prefix + '_assets.json')
         SL_ROM_audit_FN = cfg.SL_DB_DIR.pjoin(SL_DB_prefix + '_ROM_audit.json')
-        SL_roms = utils_load_JSON_file_dic(SL_ROMs_FN.getPath(), verbose = False)
-        SL_assets_dic = utils_load_JSON_file_dic(SL_assets_FN.getPath(), verbose = False)
-        SL_ROM_audit_dic = utils_load_JSON_file_dic(SL_ROM_audit_FN.getPath(), verbose = False)
+        SL_roms = utils_load_JSON_file(SL_ROMs_FN.getPath(), verbose = False)
+        SL_assets_dic = utils_load_JSON_file(SL_assets_FN.getPath(), verbose = False)
+        SL_ROM_audit_dic = utils_load_JSON_file(SL_ROM_audit_FN.getPath(), verbose = False)
         History_SL_set  = {m for m in History_idx_dic[SL_name]['machines']} if SL_name in History_idx_dic else set()
         # Machine_list = [ m['machine'] for m in SL_machines_dic[SL_name] ]
         # Machines_str = 'Machines: {}'.format(', '.join(sorted(Machine_list)))
@@ -3758,8 +3758,8 @@ def mame_audit_SL_all(cfg, db_dic_in):
         SL_dic = SL_index_dic[SL_name]
         SL_DB_FN = cfg.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_items.json')
         SL_AUDIT_ROMs_DB_FN = cfg.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_ROM_audit.json')
-        roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
-        audit_roms = utils_load_JSON_file_dic(SL_AUDIT_ROMs_DB_FN.getPath(), verbose = False)
+        roms = utils_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
+        audit_roms = utils_load_JSON_file(SL_AUDIT_ROMs_DB_FN.getPath(), verbose = False)
 
         # Iterate SL ROMs
         for rom_key in sorted(roms):
@@ -4121,7 +4121,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
     # 2) valid and verified for existence MAME_XML_path.
     MAME_XML_path, XML_control_FN = mame_init_MAME_XML(cfg, st_dic)
     if st_dic['abort']: return
-    XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())
+    XML_control_dic = utils_load_JSON_file(XML_control_FN.getPath())
 
     # Main progress dialog.
     pDialog = KodiProgressDialog()
@@ -4672,7 +4672,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
     # --- History DAT categories are Software List names ---
     if history_idx_dic:
         log_debug('Updating History DAT categories and machine names ...')
-        SL_names_dic = utils_load_JSON_file_dic(cfg.SL_NAMES_PATH.getPath())
+        SL_names_dic = utils_load_JSON_file(cfg.SL_NAMES_PATH.getPath())
         for cat_name in history_idx_dic:
             if cat_name == 'mame':
                 # Improve MAME machine names
@@ -5983,7 +5983,7 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
     pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Software List catalog'))
     log_info('Making Software List catalog ...')
     # Load proper Software List proper names, if available
-    SL_names_dic = utils_load_JSON_file_dic(cfg.SL_NAMES_PATH.getPath())
+    SL_names_dic = utils_load_JSON_file(cfg.SL_NAMES_PATH.getPath())
     catalog_parents, catalog_all = {}, {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
@@ -6863,8 +6863,8 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
         SL_ROMs_DB_FN = cfg.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json')
         SL_ROM_Audit_DB_FN = cfg.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_audit.json')
         SL_Soft_Archives_DB_FN = cfg.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_archives.json')
-        SL_Items = utils_load_JSON_file_dic(SL_Items_DB_FN.getPath(), verbose = False)
-        SL_ROMs = utils_load_JSON_file_dic(SL_ROMs_DB_FN.getPath(), verbose = False)
+        SL_Items = utils_load_JSON_file(SL_Items_DB_FN.getPath(), verbose = False)
+        SL_ROMs = utils_load_JSON_file(SL_ROMs_DB_FN.getPath(), verbose = False)
 
         # --- First add the SL item ROMs to the audit database ---
         SL_Audit_ROMs_dic = {}
@@ -6968,7 +6968,7 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
         total_SL_XML_files += 1
         pclone_dic = {}
         SL_database_FN = cfg.SL_DB_DIR.pjoin(sl_name + '_items.json')
-        ROMs = utils_load_JSON_file_dic(SL_database_FN.getPath(), verbose = False)
+        ROMs = utils_load_JSON_file(SL_database_FN.getPath(), verbose = False)
         for rom_name in ROMs:
             total_SL_software_items += 1
             ROM = ROMs[rom_name]
@@ -7020,7 +7020,7 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
         # --- Load SL databases ---
         file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
         SL_DB_FN = cfg.SL_DB_DIR.pjoin(file_name)
-        SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+        SL_roms = utils_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
         assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = cfg.SL_DB_DIR.pjoin(assets_file_name)
 
@@ -7867,8 +7867,8 @@ def mame_scan_SL_ROMs(cfg, st_dic, options_dic, SL_dic):
         # Load SL databases
         SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_items.json')
         SL_SOFT_ARCHIVES_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_ROM_archives.json')
-        sl_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
-        soft_archives = utils_load_JSON_file_dic(SL_SOFT_ARCHIVES_DB_FN.getPath(), verbose = False)
+        sl_roms = utils_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
+        soft_archives = utils_load_JSON_file(SL_SOFT_ARCHIVES_DB_FN.getPath(), verbose = False)
 
         # Scan
         for rom_key in sorted(sl_roms):
@@ -8060,7 +8060,7 @@ def mame_scan_SL_assets(cfg, st_dic, SL_dic):
         # --- Load SL databases ---
         file_name = SL_index_dic[SL_name]['rom_DB_noext'] + '_items.json'
         SL_DB_FN = cfg.SL_DB_DIR.pjoin(file_name)
-        SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+        SL_roms = utils_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
 
         # --- Cache files ---
         utils_file_cache_clear(verbose = False)

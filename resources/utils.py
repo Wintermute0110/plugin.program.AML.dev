@@ -350,15 +350,15 @@ def utils_load_JSON_file(json_filename, default_obj = {}, verbose = True):
     # If file does not exist return default object (usually empty object)
     json_data = default_obj
     if not os.path.isfile(json_filename):
-        log_warning('utils_load_JSON_file_dic() Not found "{}"'.format(json_filename))
+        log_warning('utils_load_JSON_file() Not found "{}"'.format(json_filename))
         return json_data
     # Load and parse JSON file.
-    if verbose: log_debug('utils_load_JSON_file_dic() "{}"'.format(json_filename))
+    if verbose: log_debug('utils_load_JSON_file() "{}"'.format(json_filename))
     with io.open(json_filename, 'rt', encoding = 'utf-8') as file:
         try:
             json_data = json.load(file)
         except ValueError as ex:
-            log_error('utils_load_JSON_file_dic() ValueError exception in json.load() function')
+            log_error('utils_load_JSON_file() ValueError exception in json.load() function')
 
     return json_data
 
@@ -432,7 +432,7 @@ class Threaded_Load_JSON(threading.Thread):
         self.json_filename = json_filename
 
     def run(self):
-        self.output_dic = utils_load_JSON_file_dic(self.json_filename)
+        self.output_dic = utils_load_JSON_file(self.json_filename)
 
 # -------------------------------------------------------------------------------------------------
 # File cache functions.

@@ -78,7 +78,7 @@ FIX      [MANUALS] The pdfwr library is not working well with Python 3. PDF imag
 
 [B]Advanced MAME Launcher | version 0.10.2 | xx xxxxxx 2021[/B]
 
-FEATURE  Ported misc and util modules from AEL.
+FEATURE  Ported misc.py and utils.py modules from AEL.
 
 WIP      Support new history.dat XML format.
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=3029005#pid3029005
