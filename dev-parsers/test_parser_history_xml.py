@@ -149,7 +149,7 @@ def mame_load_History_xml(filename):
     xml_tree = utils_load_XML_to_ET(filename)
     if not xml_tree: return history_dic
     xml_root = xml_tree.getroot()
-    history_dic['version'] = xml_root.attrib['version']
+    history_dic['version'] = xml_root.attrib['version'] + ' XML ' + xml_root.attrib['date']
     history_dic['date'] = xml_root.attrib['date']
     for root_el in xml_root:
         if __debug_xml_parser: log_debug('Root child tag "{}"'.format(root_el.tag))

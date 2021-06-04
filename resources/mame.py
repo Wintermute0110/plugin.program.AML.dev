@@ -1022,7 +1022,7 @@ def mame_load_History_DAT(filename):
             # Look for version string in comments
             if re.search(r'^##', line_uni):
                 m = re.search(r'## REVISION\: ([0-9\.]+)$', line_uni)
-                if m: history_dic['version'] = m.group(1)
+                if m: history_dic['version'] = m.group(1) + ' DAT'
                 continue
             if line_uni == '': continue
             # Machine list line
@@ -1221,7 +1221,7 @@ def mame_load_History_xml(filename):
     xml_tree = utils_load_XML_to_ET(filename)
     if not xml_tree: return history_dic
     xml_root = xml_tree.getroot()
-    history_dic['version'] = xml_root.attrib['version']
+    history_dic['version'] = xml_root.attrib['version'] + ' XML ' + xml_root.attrib['date']
     history_dic['date'] = xml_root.attrib['date']
     for root_el in xml_root:
         if __debug_xml_parser: log_debug('Root child tag "{}"'.format(root_el.tag))
@@ -2967,8 +2967,8 @@ def mame_build_MAME_plots(cfg, db_dic_in):
     assetdb_dic = db_dic_in['assetdb']
     history_idx_dic = db_dic_in['history_idx_dic']
     mameinfo_idx_dic = db_dic_in['mameinfo_idx_dic']
-    gameinit_idx_dic = db_dic_in['gameinit_idx_list']
-    command_idx_dic = db_dic_in['command_idx_list']
+    gameinit_idx_dic = db_dic_in['gameinit_idx_dic']
+    command_idx_dic = db_dic_in['command_idx_dic']
 
     # Do not crash if DAT files are not configured.
     history_info_set  = {m for m in history_idx_dic['mame']['machines']} if history_idx_dic else set()
@@ -4987,11 +4987,11 @@ def mame_build_MAME_main_database(cfg, st_dic):
         'roms' : machines_roms,
         'devices' : machines_devices,
         'main_pclone_dic' : main_pclone_dic,
-        'history_idx_dic' : history_idx_dic,
-        'mameinfo_idx_dic' : mameinfo_idx_dic,
-        'gameinit_idx_list' : gameinit_idx_dic,
-        'command_idx_list' : command_idx_dic,
-        'history_dic' : history_dic,
+        'history_idx_dic' : history_dic['index'],
+        'mameinfo_idx_dic' : mameinfo_dic['index'],
+        'gameinit_idx_dic' : gameinit_dic['index'],
+        'command_idx_dic' : command_dic['index'],
+        'history_data_dic' : history_dic['data'],
         'control_dic' : control_dic,
     }
 

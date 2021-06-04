@@ -280,6 +280,7 @@ class Configuration:
 # g_base_url must be a global variable because it is used in the misc_url_*() functions
 # for speed reasons.
 g_base_url = ''
+
 # Module loading time. This variable is read only (only modified here).
 g_time_str = text_type(datetime.datetime.now())
 
@@ -5694,8 +5695,8 @@ def command_context_setup_plugin(cfg):
         del db_dic['devices']
         del db_dic['history_idx_dic']
         del db_dic['mameinfo_idx_dic']
-        del db_dic['gameinit_idx_list']
-        del db_dic['command_idx_list']
+        del db_dic['gameinit_idx_dic']
+        del db_dic['command_idx_dic']
         del db_dic['audit_roms']
         del db_dic['machine_archives']
         # Force garbage collection here to free memory?
@@ -5745,8 +5746,8 @@ def command_context_setup_plugin(cfg):
             ['cache_index', 'MAME cache index', cfg.CACHE_INDEX_PATH.getPath()],
             ['history_idx_dic', 'History DAT index', cfg.HISTORY_IDX_PATH.getPath()],
             ['mameinfo_idx_dic', 'Mameinfo DAT index', cfg.MAMEINFO_IDX_PATH.getPath()],
-            ['gameinit_idx_list', 'Gameinit DAT index', cfg.GAMEINIT_IDX_PATH.getPath()],
-            ['command_idx_list', 'Command DAT index', cfg.COMMAND_IDX_PATH.getPath()],
+            ['gameinit_idx_dic', 'Gameinit DAT index', cfg.GAMEINIT_IDX_PATH.getPath()],
+            ['command_idx_dic', 'Command DAT index', cfg.COMMAND_IDX_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
 
@@ -6145,8 +6146,8 @@ def command_context_setup_plugin(cfg):
                 ['cache_index', 'MAME cache index', cfg.CACHE_INDEX_PATH.getPath()],
                 ['history_idx_dic', 'History DAT index', cfg.HISTORY_IDX_PATH.getPath()],
                 ['mameinfo_idx_dic', 'Mameinfo DAT index', cfg.MAMEINFO_IDX_PATH.getPath()],
-                ['gameinit_idx_list', 'Gameinit DAT index', cfg.GAMEINIT_IDX_PATH.getPath()],
-                ['command_idx_list', 'Command DAT index', cfg.COMMAND_IDX_PATH.getPath()],
+                ['gameinit_idx_dic', 'Gameinit DAT index', cfg.GAMEINIT_IDX_PATH.getPath()],
+                ['command_idx_dic', 'Command DAT index', cfg.COMMAND_IDX_PATH.getPath()],
             ]
             db_dic = db_load_files(db_files)
 

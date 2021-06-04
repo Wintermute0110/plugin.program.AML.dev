@@ -124,7 +124,7 @@ def mame_load_History_DAT(filename):
             # Look for version string in comments
             if re.search(r'^##', line_uni):
                 m = re.search(r'## REVISION\: ([0-9\.]+)$', line_uni)
-                if m: history_dic['version'] = m.group(1)
+                if m: history_dic['version'] = m.group(1) + ' DAT'
                 continue
             if line_uni == '': continue
             # Machine list line
