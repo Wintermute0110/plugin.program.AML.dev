@@ -15,7 +15,7 @@
 # GNU General Public License for more details.
 
 # --- Python standard library ---
-import xml.etree.ElementTree as ET 
+import xml.etree.ElementTree as ET
 import re
 import sys
 import json
@@ -28,12 +28,12 @@ MAIN_PCLONE_DIC_FILE_PATH        = 'MAME_PClone_dic.json'
 ASSETS_DB_FILE_PATH              = 'MAME_assets.json'
 
 ASSETS_FILE_LIST = [
-    'artpreview', 'bosses', 'cabinets', 
-    'covers_SL', 'cpanel', 'devices', 
-    'ends', 'flyers', 'gameover', 
+    'artpreview', 'bosses', 'cabinets',
+    'covers_SL', 'cpanel', 'devices',
+    'ends', 'flyers', 'gameover',
     'howto', 'icons', 'logo',
-    'marquees', 'pcb', 'scores', 
-    'select', 'snap_SL', 'snap', 
+    'marquees', 'pcb', 'scores',
+    'select', 'snap_SL', 'snap',
     'titles_SL', 'titles', 'versus'
 ]
 
@@ -61,8 +61,8 @@ def fs_load_JSON_file(json_filename):
         return data_dic
 
     # --- Parse using json module ---
-    # log_verb('fs_load_ROMs_JSON() Loading JSON file {}'.format(json_filename))
-    with open(json_filename) as file:    
+    # log_debug('fs_load_ROMs_JSON() Loading JSON file {}'.format(json_filename))
+    with open(json_filename) as file:
         data_dic = json.load(file)
 
     return data_dic
@@ -78,12 +78,12 @@ machines = fs_load_JSON_file(MAIN_DB_FILE_PATH)
 # -----------------------------------------------------------------------------
 print('Checking artwork...')
 assets_stats = {
-    'artpreview' : 0, 'bosses' : 0, 'cabinets' : 0, 
-    'cpanel' : 0, 'devices' : 0, 
-    'ends' : 0, 'flyers' : 0, 'gameover' : 0, 
+    'artpreview' : 0, 'bosses' : 0, 'cabinets' : 0,
+    'cpanel' : 0, 'devices' : 0,
+    'ends' : 0, 'flyers' : 0, 'gameover' : 0,
     'howto' : 0, 'icons' : 0, 'logo' : 0,
-    'marquees' : 0, 'pcb' : 0, 'scores' : 0, 
-    'select' : 0, 'snap' : 0, 
+    'marquees' : 0, 'pcb' : 0, 'scores' : 0,
+    'select' : 0, 'snap' : 0,
     'titles' : 0, 'versus' : 0
 }
 
@@ -91,15 +91,15 @@ MAME_assets_dic = {}
 for machine_name in machines:
     # >> Excluded manuals_SL.zip and manuals.zip
     assets_dic = {
-        'artpreview' : False, 'bosses' : False, 'cabinets' : False, 
-        'cpanel' : False, 'devices' : False, 
-        'ends' : False, 'flyers' : False, 'gameover' : False, 
+        'artpreview' : False, 'bosses' : False, 'cabinets' : False,
+        'cpanel' : False, 'devices' : False,
+        'ends' : False, 'flyers' : False, 'gameover' : False,
         'howto' : False, 'icons' : False, 'logo' : False,
-        'marquees' : False, 'pcb' : False, 'scores' : False, 
-        'select' : False, 'snap' : False, 
+        'marquees' : False, 'pcb' : False, 'scores' : False,
+        'select' : False, 'snap' : False,
         'titles' : False, 'versus' : False
     }
-    
+
     # >> Check all artwork types
     for artwork_name in assets_dic:
         if artwork_name == 'icons':
@@ -107,7 +107,7 @@ for machine_name in machines:
         else:
             asset_filename = os.path.join(ASSETS_DIR, artwork_name, machine_name + '.png')
         # print('Checking {}'.format(asset_filename))
-        if os.path.exists(asset_filename): 
+        if os.path.exists(asset_filename):
             assets_dic[artwork_name] = True
             assets_stats[artwork_name] += 1
     MAME_assets_dic[machine_name] = assets_dic

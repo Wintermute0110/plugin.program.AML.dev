@@ -36,7 +36,7 @@ def misc_build_db_str_3(str1, str2, str3):
     return '{}|{}|{}'.format(str1, str2, str3)
 
 # --- BEGIN code in dev-parsers/test_parser_history_dat.py ----------------------------------------
-# Loads History.dat
+# Loads History.dat. This function is deprecated in favour of the XML format.
 #
 # One description can be for several MAME machines:
 #     $info=99lstwar,99lstwara,99lstwarb,
@@ -50,7 +50,7 @@ def misc_build_db_str_3(str1, str2, str3):
 #
 # key_in_history_dic is the first machine on the list on the first line.
 #
-# history_idx_dic = {
+# history_idx = {
 #    'nes' : {
 #        'name': string,
 #        'machines' : {
@@ -80,9 +80,12 @@ def misc_build_db_str_3(str1, str2, str3):
 # }
 def mame_load_History_DAT(filename):
     log_info('mame_load_History_DAT() Parsing "{}"'.format(filename))
-    version_str = 'Not found'
-    history_idx_dic = {}
-    history_dic = {}
+    history_dic = {
+        'version' : 'Unknown',
+        'date' : 'Unknown',
+        'index' : {},
+        'data' : {},
+    }
     __debug_function = False
     line_number = 0
     num_header_line = 0
@@ -93,6 +96,10 @@ def mame_load_History_DAT(filename):
     #     ...
     # ]
     m_data = []
+
+    # Convenience variables.
+    history_idx = history_dic['index']
+    history_data = history_dic['data']
 
     # --- read_status FSM values ---
     # History.dat has some syntax errors, like empty machine names. To fix this, do
@@ -107,7 +114,7 @@ def mame_load_History_DAT(filename):
         f = io.open(filename, 'rt', encoding = 'utf-8')
     except IOError:
         log_info('mame_load_History_DAT() (IOError) opening "{}"'.format(filename))
-        return (history_idx_dic, history_dic, version_str)
+        return history_dic
     for file_line in f:
         line_number += 1
         line_uni = file_line.strip()
@@ -117,7 +124,7 @@ def mame_load_History_DAT(filename):
             # Look for version string in comments
             if re.search(r'^##', line_uni):
                 m = re.search(r'## REVISION\: ([0-9\.]+)$', line_uni)
-                if m: version_str = m.group(1)
+                if m: history_dic['version'] = m.group(1) + ' DAT'
                 continue
             if line_uni == '': continue
             # Machine list line
@@ -149,8 +156,9 @@ def mame_load_History_DAT(filename):
             if line_uni == '$end':
                 # Generate biography text.
                 bio_str = '\n'.join(info_str_list)
-                if bio_str[0] == '\n': bio_str = bio_str[1:]
-                if bio_str[-1] == '\n': bio_str = bio_str[:-1]
+                bio_str = bio_str[1:] if bio_str[0] == '\n' else bio_str
+                bio_str = bio_str[:-1] if bio_str[-1] == '\n' else bio_str
+                bio_str = bio_str.replace('\n\t\t', '')
 
                 # Clean m_data of bad data due to History.dat syntax errors, for example
                 # empty machine names.
@@ -214,30 +222,28 @@ def mame_load_History_DAT(filename):
             # Add list and machine names to index database.
             for dtuple in clean_m_data:
                 list_name, machine_name_list = dtuple
-                if list_name not in history_idx_dic:
-                    history_idx_dic[list_name] = {'name' : list_name, 'machines' : {}}
+                if list_name not in history_idx:
+                    history_idx[list_name] = {'name' : list_name, 'machines' : {}}
                 for machine_name in machine_name_list:
                     m_str = misc_build_db_str_3(machine_name, db_list_name, db_machine_name)
-                    history_idx_dic[list_name]['machines'][machine_name] = m_str
+                    history_idx[list_name]['machines'][machine_name] = m_str
 
             # Add biography string to main database.
-            if db_list_name not in history_dic: history_dic[db_list_name] = {}
-            history_dic[db_list_name][db_machine_name] = bio_str
+            if db_list_name not in history_data: history_data[db_list_name] = {}
+            history_data[db_list_name][db_machine_name] = bio_str
         else:
             raise TypeError('Wrong read_status = {} (line {:,})'.format(read_status, line_number))
-    # Close file
     f.close()
-    log_info('mame_load_History_DAT() Version "{}"'.format(version_str))
-    log_info('mame_load_History_DAT() Rows in history_idx_dic {}'.format(len(history_idx_dic)))
-    log_info('mame_load_History_DAT() Rows in history_dic {}'.format(len(history_dic)))
-
-    return (history_idx_dic, history_dic, version_str)
+    log_info('mame_load_History_DAT() Version "{}"'.format(history_dic['version']))
+    log_info('mame_load_History_DAT() Rows in index {}'.format(len(history_dic['index'])))
+    log_info('mame_load_History_DAT() Rows in data {}'.format(len(history_dic['data'])))
+    return history_dic
 # --- END code in dev-parsers/test_parser_history_dat.py ------------------------------------------
 
 # --- main code -----------------------------------------------------------------------------------
 # Test all possible sintactic errors in History.dat
 print('*** Testing regular expressions')
-re_str = r'^\$(.+?)=(.*?),?$' 
+re_str = r'^\$(.+?)=(.*?),?$'
 test_re(re_str, '$megadriv=sonic1')
 test_re(re_str, '$megadriv=sonic1,')
 test_re(re_str, '$megadriv=sonic1,,')
@@ -254,14 +260,21 @@ str_list = [
     '99lstwar,99lstwara,99lstwarb',
     '99lstwar,99lstwara,99lstwarb,',
 ]
-for test_str in str_list:
-    print('Str   "{}"'.format(test_str))
-    print('Split {}\n'.format(test_str.split(',')))
+# for test_str in str_list:
+#     print('Str   "{}"'.format(test_str))
+#     print('Split {}\n'.format(test_str.split(',')))
 
-print('*** Testing function mame_load_History_DAT()')
-(history_idx_dic, history_dic, version_str) = mame_load_History_DAT('history.dat')
-print('version_str {}'.format(version_str))
-with open('history_idx_dic.json', 'w') as f:
-    f.write(json.dumps(history_idx_dic, sort_keys = True, indent = 2))
-with open('history_dic.json', 'w') as f:
-    f.write(json.dumps(history_dic, sort_keys = True, indent = 2))
+print('*** Testing function mame_load_History_DAT() ***')
+history_dic = mame_load_History_DAT('history.dat')
+print('version "{}"'.format(history_dic['version']))
+print('date "{}"'.format(history_dic['date']))
+
+filename = 'history_idx_dat.json'
+print('Writing "{}"'.format(filename))
+with open(filename, 'w') as file:
+    file.write(json.dumps(history_dic['index'], sort_keys = True, indent = 2))
+
+filename = 'history_data_dat.json'
+print('Writing "{}"'.format(filename))
+with open(filename, 'w') as file:
+    file.write(json.dumps(history_dic['data'], sort_keys = True, indent = 2))

@@ -19,7 +19,7 @@ import re
 import sys
 
 # --- Helper code ---------------------------------------------------------------------------------
-def log_verb(string): print(string)
+def log_debug(string): print(string)
 
 # --- AML code ------------------------------------------------------------------------------------
 #
@@ -29,7 +29,7 @@ def log_verb(string): print(string)
 #
 # M.mmm.Xbb
 # |   | | |-> Beta flag 0, 1, ..., 99
-# |   | |---> Release kind flag 
+# |   | |---> Release kind flag
 # |   |       5 for non-beta, non-alpha, non RC versions.
 # |   |       2 for RC versions
 # |   |       1 for beta versions
@@ -55,7 +55,7 @@ def log_verb(string): print(string)
 #
 # re.search() returns a MatchObject https://docs.python.org/2/library/re.html#re.MatchObject
 def mame_get_numerical_version(mame_version_str):
-    log_verb('mame_get_numerical_version() mame_version_str = "{}"'.format(mame_version_str))
+    log_debug('mame_get_numerical_version() mame_version_str = "{}"'.format(mame_version_str))
     version_int = 0
     # Search for old version scheme x.yyybzz
     m_obj_old = re.search('^(\d+)\.(\d+)b(\d+)', mame_version_str)
@@ -67,21 +67,21 @@ def mame_get_numerical_version(mame_version_str):
         minor = int(m_obj_old.group(2))
         beta  = int(m_obj_old.group(3))
         release_flag = 1
-        # log_verb('mame_get_numerical_version() major = {}'.format(major))
-        # log_verb('mame_get_numerical_version() minor = {}'.format(minor))
-        # log_verb('mame_get_numerical_version() beta  = {}'.format(beta))
+        # log_debug('mame_get_numerical_version() major = {}'.format(major))
+        # log_debug('mame_get_numerical_version() minor = {}'.format(minor))
+        # log_debug('mame_get_numerical_version() beta  = {}'.format(beta))
         version_int = major * 1000000 + minor * 1000 + release_flag * 100 + beta
     elif m_obj_modern:
         major = int(m_obj_modern.group(1))
         minor = int(m_obj_modern.group(2))
         release_flag = 5
-        # log_verb('mame_get_numerical_version() major = {}'.format(major))
-        # log_verb('mame_get_numerical_version() minor = {}'.format(minor))
+        # log_debug('mame_get_numerical_version() major = {}'.format(major))
+        # log_debug('mame_get_numerical_version() minor = {}'.format(minor))
         version_int = major * 1000000 + minor * 1000 + release_flag * 100
     else:
         log_error('MAME version "{}" cannot be parsed.'.format(mame_version_str))
         raise TypeError
-    log_verb('mame_get_numerical_version() version_int = {}'.format(version_int))
+    log_debug('mame_get_numerical_version() version_int = {}'.format(version_int))
 
     return version_int
 
