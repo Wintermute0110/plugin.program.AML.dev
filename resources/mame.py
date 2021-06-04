@@ -2736,7 +2736,7 @@ def mame_update_MAME_RecentPlay_objects(cfg, db_dic):
     machines = db_dic['machines']
     renderdb_dic = db_dic['renderdb']
     assets_dic = db_dic['assetdb']
-    recent_roms_list = utils_load_JSON_file_list(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+    recent_roms_list = utils_load_JSON_file(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath(), [])
     if len(recent_roms_list) < 1:
         kodi_notify('MAME Recently Played empty')
         return
@@ -2873,7 +2873,7 @@ def mame_update_SL_RecentPlay_objects(cfg, db_dic):
     SL_index = db_dic['SL_index']
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Loading SL Recently Played JSON DB...')
-    recent_roms_list = utils_load_JSON_file_list(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath())
+    recent_roms_list = utils_load_JSON_file(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath(), [])
     if len(recent_roms_list) < 1:
         kodi_notify_warn('SL Recently Played empty')
         return

@@ -2825,14 +2825,15 @@ def render_DAT_list(cfg, catalog_name):
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 # Only History.dat and MAMEinfo.dat have categories.
-def render_DAT_category(catalog_name, category_name):
+def render_DAT_category(cfg, catalog_name, category_name):
     # Load Software List catalog
     if catalog_name == 'History':
         DAT_catalog_dic = utils_load_JSON_file(cfg.HISTORY_IDX_PATH.getPath())
     elif catalog_name == 'MAMEINFO':
         DAT_catalog_dic = utils_load_JSON_file(cfg.MAMEINFO_IDX_PATH.getPath())
     else:
-        kodi_dialog_OK('DAT database file "{}" not found. Check out "Setup addon" in the context menu.'.format(catalog_name))
+        kodi_dialog_OK('DAT database file "{}" not found. '
+            'Check out "Setup addon" in the context menu.'.format(catalog_name))
         xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
         return
     if not DAT_catalog_dic:
@@ -2845,12 +2846,12 @@ def render_DAT_category(catalog_name, category_name):
         category_machine_dic = DAT_catalog_dic[category_name]['machines']
         for machine_key in category_machine_dic:
             display_name, db_list, db_machine = category_machine_dic[machine_key].split('|')
-            render_DAT_category_row(catalog_name, category_name, machine_key, display_name)
+            render_DAT_category_row(cfg, catalog_name, category_name, machine_key, display_name)
     elif catalog_name == 'MAMEINFO':
         category_machine_dic = DAT_catalog_dic[category_name]
         for machine_key in category_machine_dic:
             display_name = category_machine_dic[machine_key]
-            render_DAT_category_row(catalog_name, category_name, machine_key, display_name)
+            render_DAT_category_row(cfg, catalog_name, category_name, machine_key, display_name)
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_DAT_category_row(cfg, catalog_name, category_name, machine_key, display_name):
@@ -3465,7 +3466,7 @@ def action_view_machine_data(cfg, machine_name, SL_name, SL_ROM, location):
 
     elif location == LOCATION_MAME_RECENT_PLAYED:
         pDialog.startProgress('{}\n{}'.format(d_text, 'MAME Recently Played database'))
-        recent_roms_list = utils_load_JSON_file_list(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+        recent_roms_list = utils_load_JSON_file(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath(), [])
         pDialog.endProgress()
         machine_index = -1
         for i, recent_rom in enumerate(recent_roms_list):
@@ -3538,7 +3539,7 @@ def action_view_sl_item_data(cfg, machine_name, SL_name, SL_ROM, location):
     elif location == LOCATION_SL_RECENT_PLAYED:
         SL_machines_dic = utils_load_JSON_file(cfg.SL_MACHINES_PATH.getPath())
         SL_catalog_dic = utils_load_JSON_file(cfg.SL_INDEX_PATH.getPath())
-        recent_roms_list = utils_load_JSON_file_list(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath())
+        recent_roms_list = utils_load_JSON_file(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath(), [])
 
         # --- Prepare data ---
         fav_key = SL_name + '-' + SL_ROM
@@ -4402,7 +4403,7 @@ def command_context_manage_mame_most_played(cfg, machine_name):
         kodi_dialog_OK(t)
 
 def command_show_mame_recently_played(cfg):
-    recent_roms_list = utils_load_JSON_file_list(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+    recent_roms_list = utils_load_JSON_file(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath(), [])
     if not recent_roms_list:
         kodi_dialog_OK('No Recently Played MAME machines. Play a bit and try later.')
         xbmcplugin.endOfDirectory(handle = cfg.addon_handle, succeeded = True, cacheToDisc = False)
@@ -4455,7 +4456,7 @@ def command_context_manage_mame_recent_played(cfg, machine_name):
         log_debug('machine_name "{}"'.format(machine_name))
 
         # --- Load Recently Played machine list ---
-        recent_roms_list = utils_load_JSON_file_list(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+        recent_roms_list = utils_load_JSON_file(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath(), [])
 
         # --- Search index of this machine in the list ---
         machine_index = db_locate_idx_by_name(recent_roms_list, machine_name)
@@ -4480,7 +4481,7 @@ def command_context_manage_mame_recent_played(cfg, machine_name):
 
     elif action == ACTION_DELETE_ALL:
         log_debug('command_context_manage_mame_recent_played() ACTION_DELETE_ALL')
-        recent_roms_list = utils_load_JSON_file_list(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+        recent_roms_list = utils_load_JSON_file(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath(), [])
 
         # Confirm with user
         num_machines = len(recent_roms_list)
@@ -4509,7 +4510,7 @@ def command_context_manage_mame_recent_played(cfg, machine_name):
             ['machines', 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
         ]
         db_dic = db_load_files(db_files)
-        recent_roms_list = utils_load_JSON_file_list(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+        recent_roms_list = utils_load_JSON_file(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath(), [])
 
         # --- Delete missing MAME machines ---
         num_deleted_machines = 0
@@ -4988,7 +4989,7 @@ def command_context_manage_SL_most_played(cfg, SL_name, ROM_name):
 
 def command_show_SL_recently_played(cfg):
     SL_catalog_dic = utils_load_JSON_file(cfg.SL_INDEX_PATH.getPath())
-    recent_roms_list = utils_load_JSON_file_list(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath())
+    recent_roms_list = utils_load_JSON_file(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath(), [])
     if not recent_roms_list:
         kodi_dialog_OK('No Recently Played SL machines. Play a bit and try later.')
         xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
@@ -5051,7 +5052,7 @@ def command_context_manage_SL_recent_played(cfg, SL_name, ROM_name):
         log_debug('command_context_manage_SL_recent_played() Delete SL Recently Played machine')
 
         # --- Load Recently Played machine list ---
-        recent_roms_list = utils_load_JSON_file_list(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath())
+        recent_roms_list = utils_load_JSON_file(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath(), [])
         machine_index = db_locate_idx_by_SL_item_name(recent_roms_list, SL_name, ROM_name)
         if machine_index < 0:
             a = 'Item {}-{} cannot be located in SL Recently Played list. This is a bug.'
@@ -7446,7 +7447,7 @@ def run_machine(cfg, machine_name, location):
         assets = machine['assets']
     elif location == LOCATION_MAME_RECENT_PLAYED:
         log_debug('Reading info from MAME Recently Played DB')
-        recent_roms_list = utils_load_JSON_file_list(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+        recent_roms_list = utils_load_JSON_file(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath(), [])
         machine_index = db_locate_idx_by_MAME_name(recent_roms_list, machine_name)
         if machine_index < 0:
             a = 'Machine {} cannot be located in Recently Played list. This is a bug.'
@@ -7506,7 +7507,7 @@ def run_machine(cfg, machine_name, location):
     # If the machine is already in the list remove it and place it on the first position.
     MAX_RECENT_PLAYED_ROMS = 100
     recent_rom = db_get_MAME_Favourite_simple(machine_name, machine, assets, control_dic)
-    recent_roms_list = utils_load_JSON_file_list(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+    recent_roms_list = utils_load_JSON_file(cfg.MAME_RECENT_PLAYED_FILE_PATH.getPath(), [])
     # Machine names are unique in this list.
     recent_roms_list = [machine for machine in recent_roms_list if machine_name != machine['name']]
     recent_roms_list.insert(0, recent_rom)
@@ -7668,7 +7669,7 @@ def run_SL_machine(cfg, SL_name, SL_ROM_name, location):
         launch_machine_desc = '[ Not available ]'
     elif location == LOCATION_SL_RECENT_PLAYED:
         log_debug('Reading info from MAME Recently Played DB')
-        recent_roms_list = utils_load_JSON_file_list(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath())
+        recent_roms_list = utils_load_JSON_file(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath(), [])
         machine_index = db_locate_idx_by_SL_item_name(recent_roms_list, SL_name, SL_ROM_name)
         if machine_index < 0:
             a = 'SL Item {} cannot be located in Recently Played list. This is a bug.'
@@ -7813,7 +7814,7 @@ def run_SL_machine(cfg, SL_name, SL_ROM_name, location):
     # If the machine is already in the list remove it and place it on the first position.
     MAX_RECENT_PLAYED_ROMS = 100
     recent_ROM = db_get_SL_Favourite(SL_name, SL_ROM_name, SL_ROM, SL_assets, control_dic)
-    recent_roms_list = utils_load_JSON_file_list(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath())
+    recent_roms_list = utils_load_JSON_file(cfg.SL_RECENT_PLAYED_FILE_PATH.getPath(), [])
     # Machine names are unique in this list
     recent_roms_list = [item for item in recent_roms_list if SL_fav_DB_key != item['SL_DB_key']]
     recent_roms_list.insert(0, recent_ROM)
