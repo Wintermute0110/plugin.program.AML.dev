@@ -64,6 +64,18 @@ class Configuration:
         self.__addon_profile__ = self.__addon__.getAddonInfo('profile')
         self.__addon_type__    = self.__addon__.getAddonInfo('type')
 
+        # --- Former global variables ---
+        self.settings = {}
+        self.base_url = ''
+        self.addon_handle = 0
+        self.content_type = ''
+
+        # Map of AEL artwork types to Kodi standard types,
+        self.mame_icon = ''
+        self.mame_fanart = ''
+        self.SL_icon = ''
+        self.SL_fanart = ''
+
         # --- File and directory names ---
         self.HOME_DIR         = FileName('special://home')
         self.PROFILE_DIR      = FileName('special://profile')
@@ -254,17 +266,6 @@ class Configuration:
         self.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH = self.REPORTS_DIR.pjoin('debug_SL_item_Audit_DB_data.txt')
         self.REPORT_DEBUG_MAME_COLLISIONS_PATH = self.REPORTS_DIR.pjoin('debug_MAME_collisions.txt')
         self.REPORT_DEBUG_SL_COLLISIONS_PATH = self.REPORTS_DIR.pjoin('debug_SL_collisions.txt')
-
-        # --- Former global variables ---
-        self.settings = {}
-        self.base_url = ''
-        self.addon_handle = 0
-        self.content_type = ''
-        # Map of AEL artwork types to Kodi standard types,
-        self.mame_icon = ''
-        self.mame_fanart = ''
-        self.SL_icon = ''
-        self.SL_fanart = ''
 
 # --- Global variables ---
 # Use functional programming as much as possible and avoid global variables.
@@ -657,11 +658,14 @@ def get_settings_log_enabled(cfg):
         raise TypeError('Wrong cfg.settings["op_mode"] = {}'.format(cfg.settings['op_mode']))
 
 # ---------------------------------------------------------------------------------------------
-# Misc URL building functions. Placed here because these functions are used for building
-# global read-only variables using in the addon.
-# NOTE '&' must be scaped to '%26' in all URLs
+# URL building functions.
+# g_base_url is plugin://plugin.program.AML/
+# A class URLs: plugin://plugin.program.AML/?command=xxxxx
+# B class URLs: RunPlugin(plugin://plugin.program.AML/?command=xxxxx)
+# A class URLs are used in xbmcplugin.addDirectoryItem()
+# B class URLs are used in listitem.addContextMenuItems()
+# '&' must be scaped to '%26' in all URLs
 # ---------------------------------------------------------------------------------------------
-# Functions used in xbmcplugin.addDirectoryItem()
 def misc_url(command):
     command_escaped = command.replace('&', '%26')
 
@@ -697,7 +701,9 @@ def misc_url_4_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3,
         arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped,
         arg_name_3, arg_value_3_escaped,arg_name_4, arg_value_4_escaped)
 
-# Functions used in context menus, in listitem.addContextMenuItems()
+# Kodi Matrix do not support XBMC.RunPlugin() anymore.
+# Leia can run RunPlugin() commands w/o XBMC prefix.
+# What about Krypton?
 def misc_url_RunPlugin(command):
     command_esc = command.replace('&', '%26')
 
