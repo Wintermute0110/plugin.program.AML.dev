@@ -15,13 +15,13 @@ def log_debug(str): print(str)
 # --- BEGIN code in dev-parsers/test_parser_mameinfo_dat.py ---------------------------------------
 # mameinfo.dat has information for both MAME machines and MAME drivers.
 #
-# idx_dic  = { 
+# idx_dic  = {
 #     'mame' : {
 #         '88games' : 'beautiful_name',
 #         'flagrall' : 'beautiful_name',
 #     },
 #     'drv' : {
-#         '88games.cpp' : 'beautiful_name'], 
+#         '88games.cpp' : 'beautiful_name'],
 #         'flagrall.cpp' : 'beautiful_name'],
 #     }
 # }

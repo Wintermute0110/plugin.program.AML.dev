@@ -13,7 +13,7 @@
 
 # Advanced MAME Launcher main script file.
 
-# First include modules in this package. 
+# First include modules in this package.
 # Then include Kodi modules.
 # Finally include standard library modules.
 
@@ -1725,13 +1725,13 @@ def render_Utilities_vlaunchers(cfg):
     # --- Export SL ROMs DAT file ---
     # In AML 0.9.10 only export MAME XMLs and see how it goes. SL XMLs cause more trouble
     # than MAME.
-    # listitem = aux_get_generic_listitem(cfg, 
+    # listitem = aux_get_generic_listitem(cfg,
     #     'Export SL ROMs Logiqx XML DAT file', 'Export SL ROMs Logiqx XML DAT file', commands)
     # url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'EXPORT_SL_ROM_DAT')
     # xbmcplugin.addDirectoryItem(cfg.addon_handle, url_str, listitem, isFolder = False)
 
     # --- Export SL CHDs DAT file ---
-    # listitem = aux_get_generic_listitem(cfg, 
+    # listitem = aux_get_generic_listitem(cfg,
     #     'Export SL CHDs Logiqx XML DAT file', 'Export SL CHDs Logiqx XML DAT file', commands)
     # url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'EXPORT_SL_CHD_DAT')
     # xbmcplugin.addDirectoryItem(cfg.addon_handle, url_str, listitem, isFolder = False)

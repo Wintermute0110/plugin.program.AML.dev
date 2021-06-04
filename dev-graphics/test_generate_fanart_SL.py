@@ -3,7 +3,7 @@
 #
 from PIL import Image
 from PIL import ImageFont
-from PIL import ImageDraw 
+from PIL import ImageDraw
 
 #
 # Scales and centers img into a box of size (box_x_size, box_y_size).
@@ -51,7 +51,7 @@ def PIL_resize_proportional(img, layout, dic_key, CANVAS_COLOR = (0, 0, 0)):
 def PIL_paste_image(img, img_title, layout, dic_key):
     box = (
         layout[dic_key]['x_pos'],
-        layout[dic_key]['y_pos'], 
+        layout[dic_key]['y_pos'],
         layout[dic_key]['x_pos'] + layout[dic_key]['x_size'],
         layout[dic_key]['y_pos'] + layout[dic_key]['y_size']
     )

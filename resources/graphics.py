@@ -89,8 +89,8 @@ def ETA_update(build_OK_flag, total_processed_items, build_time):
 # ------------------------------------------------------------------------------------------------
 # Math functions
 # ------------------------------------------------------------------------------------------------
-# Here is a more elegant and scalable solution, imo. It'll work for any nxn matrix and 
-# you may find use for the other methods. Note that getMatrixInverse(m) takes in an 
+# Here is a more elegant and scalable solution, imo. It'll work for any nxn matrix and
+# you may find use for the other methods. Note that getMatrixInverse(m) takes in an
 # array of arrays as input.
 def math_MatrixTranspose(X):
     # return map(list, zip(*X))
@@ -193,7 +193,7 @@ def resize_proportional(img, layout, dic_key, CANVAS_COLOR = (0, 0, 0)):
 def paste_image(img, img_title, layout, dic_key):
     box = (
         layout[dic_key]['left'],
-        layout[dic_key]['top'], 
+        layout[dic_key]['top'],
         layout[dic_key]['left'] + layout[dic_key]['width'],
         layout[dic_key]['top']  + layout[dic_key]['height']
     )

@@ -53,7 +53,7 @@ class Simulation:
 
         self.screen = pygame.display.set_mode((win_width, win_height))
         pygame.display.set_caption("3D Wireframe Cube Simulation (http://codeNtronix.com)")
-        
+
         self.clock = pygame.time.Clock()
 
         self.vertices = [
@@ -72,7 +72,7 @@ class Simulation:
         self.faces = [(0,1,2,3),(1,5,6,2),(5,4,7,6),(4,0,3,7),(0,4,5,1),(3,2,6,7)]
 
         self.angleX, self.angleY, self.angleZ = 0, 0, 0
-        
+
     def run(self):
         """ Main Loop """
         while 1:
@@ -85,7 +85,7 @@ class Simulation:
 
             # Will hold transformed vertices.
             t = []
-            
+
             for v in self.vertices:
                 # Rotate the point around X axis, then around Y axis, and finally around Z axis.
                 r = v.rotateX(self.angleX).rotateY(self.angleY).rotateZ(self.angleZ)
@@ -99,11 +99,11 @@ class Simulation:
                 pygame.draw.line(self.screen, (255,255,255), (t[f[1]].x, t[f[1]].y), (t[f[2]].x, t[f[2]].y))
                 pygame.draw.line(self.screen, (255,255,255), (t[f[2]].x, t[f[2]].y), (t[f[3]].x, t[f[3]].y))
                 pygame.draw.line(self.screen, (255,255,255), (t[f[3]].x, t[f[3]].y), (t[f[0]].x, t[f[0]].y))
-                
+
             self.angleX += 1
             self.angleY += 1
             self.angleZ += 1
-            
+
             pygame.display.flip()
 
 if __name__ == "__main__":

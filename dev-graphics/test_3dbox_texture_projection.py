@@ -16,8 +16,8 @@ from PIL import ImageFont
 from PIL import ImageDraw
 
 # --- Math functions -----------------------------------------------------------------------------
-# Here is a more elegant and scalable solution, imo. It'll work for any nxn matrix and 
-# you may find use for the other methods. Note that getMatrixInverse(m) takes in an 
+# Here is a more elegant and scalable solution, imo. It'll work for any nxn matrix and
+# you may find use for the other methods. Note that getMatrixInverse(m) takes in an
 # array of arrays as input.
 def math_MatrixTranspose(X):
     # return map(list, zip(*X))
@@ -90,7 +90,7 @@ def perspective_coefficients_numpy(pa, pb):
     B = numpy.array(pb).reshape(8)
 
     # A is 8x8, B is 1x8
-    # numpy.dot() If a is an N-D array and b is a 1-D array, it is a sum product over the 
+    # numpy.dot() If a is an N-D array and b is a 1-D array, it is a sum product over the
     # last axis of a and b.
     res = numpy.dot(numpy.linalg.inv(A.T * A) * A.T, B)
 

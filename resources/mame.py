@@ -203,7 +203,7 @@ SL_better_name_dic = {
 #
 # M.mmm.Xbb
 # |   | | |-> Beta flag 0, 1, ..., 99
-# |   | |---> Release kind flag 
+# |   | |---> Release kind flag
 # |   |       5 for non-beta, non-alpha, non RC versions.
 # |   |       2 for RC versions
 # |   |       1 for beta versions
@@ -368,7 +368,7 @@ def mame_extract_MAME_XML(cfg, st_dic):
 # 2) Creates MAME XML control file.
 def mame_preprocess_RETRO_MAME2003PLUS(cfg, st_dic):
     pDialog = KodiProgressDialog()
-    
+
     # In MAME 2003 Plus MAME XML is already extracted.
     XML_path_FN = FileName(cfg.settings['xml_2003_path'])
 
@@ -884,8 +884,8 @@ def mame_load_INI_datfile_simple(filename):
         return ini_dic
 
     # Compile regexes to increase performance => It is no necessary. According to the docs: The
-    # compiled versions of the most recent patterns passed to re.match(), re.search() or 
-    # re.compile() are cached, so programs that use only a few regular expressions at a 
+    # compiled versions of the most recent patterns passed to re.match(), re.search() or
+    # re.compile() are cached, so programs that use only a few regular expressions at a
     # time needn’t worry about compiling regular expressions.
     fsm_status = FSM_HEADER
     for stripped_line in slist:
@@ -1057,7 +1057,7 @@ def mame_load_History_DAT(filename):
                 bio_str = bio_str[1:] if bio_str[0] == '\n' else bio_str
                 bio_str = bio_str[:-1] if bio_str[-1] == '\n' else bio_str
                 bio_str = bio_str.replace('\n\t\t', '')
-                
+
                 # Clean m_data of bad data due to History.dat syntax errors, for example
                 # empty machine names.
                 # clean_m_data = [
@@ -1285,13 +1285,13 @@ def mame_load_History_xml(filename):
 # --- BEGIN code in dev-parsers/test_parser_mameinfo_dat.py ---------------------------------------
 # mameinfo.dat has information for both MAME machines and MAME drivers.
 #
-# idx_dic  = { 
+# idx_dic  = {
 #     'mame' : {
 #         '88games' : 'beautiful_name',
 #         'flagrall' : 'beautiful_name',
 #     },
 #     'drv' : {
-#         '88games.cpp' : 'beautiful_name'], 
+#         '88games.cpp' : 'beautiful_name'],
 #         'flagrall.cpp' : 'beautiful_name'],
 #     }
 # }
@@ -1387,7 +1387,7 @@ def mame_load_MameInfo_DAT(filename):
 #     '88games', 'beautiful_name',
 #     'flagrall', 'beautiful_name',
 # }
-# data_dic = { 
+# data_dic = {
 #     '88games' : 'string',
 #     'flagrall' : 'string',
 # }
@@ -1463,7 +1463,7 @@ def mame_load_GameInit_DAT(filename):
 #     '88games', 'beautiful_name',
 #     'flagrall', 'beautiful_name',
 # }
-# data_dic = { 
+# data_dic = {
 #     '88games' : 'string',
 #     'flagrall' : 'string',
 # }
@@ -3060,7 +3060,7 @@ def mame_build_SL_plots(cfg, SL_dic):
 # MAME loads ROMs by hash, not by filename. This is the reason MAME is able to load ROMs even
 # if they have a wrong name and providing they are in the correct ZIP file (parent or clone set).
 #
-# Adds new field 'status': ROMS  'OK', 'OK (invalid ROM)', 'ZIP not found', 'Bad ZIP file', 
+# Adds new field 'status': ROMS  'OK', 'OK (invalid ROM)', 'ZIP not found', 'Bad ZIP file',
 #                                'ROM not in ZIP', 'ROM bad size', 'ROM bad CRC'.
 #                          DISKS 'OK', 'OK (invalid CHD)', 'CHD not found', 'CHD bad SHA1'
 # Adds fields 'status_colour'.
@@ -3088,7 +3088,7 @@ def mame_audit_MAME_machine(cfg, rom_list, audit_dic):
 
     # --- Cache the ROM set ZIP files and detect wrong named files by CRC ---
     # 1) Traverse ROMs, determine the set ZIP files, open ZIP files and put ZIPs in the cache.
-    # 2) If a ZIP file is not in the cache is because the ZIP file was not found 
+    # 2) If a ZIP file is not in the cache is because the ZIP file was not found
     # 3) z_cache_exists is used to check if the ZIP file has been found the first time or not.
     #
     # z_cache = {
@@ -3323,7 +3323,7 @@ def mame_audit_MAME_machine(cfg, rom_list, audit_dic):
     audit_dic['machine_SAMPLES_are_OK'] = all(SAM_OK_status_list) if audit_dic['machine_has_SAMPLES'] else True
     audit_dic['machine_CHDs_are_OK']    = all(CHD_OK_status_list) if audit_dic['machine_has_CHDs'] else True
     audit_dic['machine_is_OK'] = audit_dic['machine_ROMs_are_OK'] and \
-        audit_dic['machine_SAMPLES_are_OK'] and audit_dic['machine_CHDs_are_OK'] 
+        audit_dic['machine_SAMPLES_are_OK'] and audit_dic['machine_CHDs_are_OK']
 
 # -------------------------------------------------------------------------------------------------
 # SL ROM/CHD audit code
@@ -4204,7 +4204,7 @@ def _update_stats(stats, machine, m_render, runnable):
                 stats['mechanical_parents'] += 1
         if machine['isDead']:
             stats['dead'] += 1
-            if m_render['cloneof']: 
+            if m_render['cloneof']:
                 stats['dead_clones'] += 1
             else:
                 stats['dead_parents'] += 1
@@ -4471,8 +4471,8 @@ def mame_build_MAME_main_database(cfg, st_dic):
             m_roms['bios'].append(bios)
 
         # Check in machine has ROMs
-        # A) ROM is considered to be valid if SHA1 has exists. 
-        #    Are there ROMs with no sha1? There are a lot, for example 
+        # A) ROM is considered to be valid if SHA1 has exists.
+        #    Are there ROMs with no sha1? There are a lot, for example
         #    machine 1941j <rom name="yi22b.1a" size="279" status="nodump" region="bboardplds" />
         #
         # B) A ROM is unique to that machine if the <rom> tag does not have the 'merge' attribute.
@@ -5062,10 +5062,10 @@ def _get_ROM_location(rom_set, rom, m_name, machines, renderdb_dic, machine_roms
         else:
             # --- Clone machine ---
             # 1. In the Split set, non-merged ROMs are in the machine ZIP archive and
-            #    merged ROMs are in the parent archive. 
-            # 2. If ROM is a BIOS it is located in the romof of the parent. BIOS ROMs 
-            #    always have the merge attribute. 
-            # 3. Some machines (notably mslugN) also have non-BIOS common ROMs merged in 
+            #    merged ROMs are in the parent archive.
+            # 2. If ROM is a BIOS it is located in the romof of the parent. BIOS ROMs
+            #    always have the merge attribute.
+            # 3. Some machines (notably mslugN) also have non-BIOS common ROMs merged in
             #    neogeo.zip BIOS archive.
             # 4. Some machines (notably XXXXX) have all ROMs merged. In other words, do not
             #    have their own ROMs.
@@ -6373,9 +6373,9 @@ def mame_build_MAME_catalogs(cfg, st_dic, db_dic_in):
 # -------------------------------------------------------------------------------------------------
 #
 # https://www.mess.org/mess/swlist_format
-# The basic idea (which leads basically the whole format) is that each <software> entry should 
-# correspond to a game box you could have bought in a shop, and that each <part> entry should 
-# correspond to a piece (i.e. a cart, a disk or a tape) that you would have found in such a box. 
+# The basic idea (which leads basically the whole format) is that each <software> entry should
+# correspond to a game box you could have bought in a shop, and that each <part> entry should
+# correspond to a piece (i.e. a cart, a disk or a tape) that you would have found in such a box.
 #
 # --- Example 1: 32x.xml-chaotix ---
 # Stored as: SL_ROMS/32x/chaotix.zip
@@ -6560,7 +6560,7 @@ def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
 
         # In the nes.xml SL some ROM names have a trailing dot '.'. For example (MAME 0.196):
         #
-        # ROM  131072  028bfc44  nes/kingey/0.prg              OK            
+        # ROM  131072  028bfc44  nes/kingey/0.prg              OK
         # ROM  131072  1aca7960  nes/kingey/king ver 1.3 vid.  ROM not in ZIP
         #
         # PD torrents do not have the trailing dot because this files cause trouble in Windows.
@@ -7376,7 +7376,7 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
     pDialog.endProgress()
 
     # --- Scan machine archives ---
-    # Traverses all machines and scans if all required files exist. 
+    # Traverses all machines and scans if all required files exist.
     scan_march_ROM_total = 0
     scan_march_ROM_have = 0
     scan_march_ROM_missing = 0
@@ -7552,7 +7552,7 @@ def mame_scan_MAME_ROMs(cfg, st_dic, options_dic, db_dic_in):
         r_have_list.append('Ouch!!! You do not have any ROM ZIP files and/or CHDs.')
     report_slist.extend(r_have_list)
     utils_write_slist_to_file(cfg.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), report_slist)
-  
+
     pDialog.updateProgress(2)
     log_info('Writing report "{}"'.format(cfg.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
     report_slist = [
@@ -7998,7 +7998,7 @@ def mame_scan_SL_ROMs(cfg, st_dic, options_dic, SL_dic):
     pDialog.endProgress()
 
     # --- SL ROM ZIP archives and CHDs ---
-    # Traverse the Software Lists, check if ROMs ZIPs and CHDs exists for every SL item, 
+    # Traverse the Software Lists, check if ROMs ZIPs and CHDs exists for every SL item,
     # update and save database.
     SL_ROMs_have = 0
     SL_ROMs_missing = 0

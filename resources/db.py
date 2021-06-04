@@ -878,7 +878,7 @@ def db_initial_flags(machine, machine_render, m_roms):
             if device['att_mandatory']:
                 flag_Devices = 'D'
                 num_dev_mandatory += 1
-            else: 
+            else:
                 flag_Devices  = 'd'
         if num_dev_mandatory > 2:
             message = 'Machine {} has {} mandatory devices'.format(machine_name, num_dev_mandatory)

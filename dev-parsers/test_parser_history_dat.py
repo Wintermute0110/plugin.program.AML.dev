@@ -159,7 +159,7 @@ def mame_load_History_DAT(filename):
                 bio_str = bio_str[1:] if bio_str[0] == '\n' else bio_str
                 bio_str = bio_str[:-1] if bio_str[-1] == '\n' else bio_str
                 bio_str = bio_str.replace('\n\t\t', '')
-                
+
                 # Clean m_data of bad data due to History.dat syntax errors, for example
                 # empty machine names.
                 # clean_m_data = [
@@ -243,7 +243,7 @@ def mame_load_History_DAT(filename):
 # --- main code -----------------------------------------------------------------------------------
 # Test all possible sintactic errors in History.dat
 print('*** Testing regular expressions')
-re_str = r'^\$(.+?)=(.*?),?$' 
+re_str = r'^\$(.+?)=(.*?),?$'
 test_re(re_str, '$megadriv=sonic1')
 test_re(re_str, '$megadriv=sonic1,')
 test_re(re_str, '$megadriv=sonic1,,')

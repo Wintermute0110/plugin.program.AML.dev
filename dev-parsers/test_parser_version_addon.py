@@ -30,7 +30,7 @@ def log_debug(string): print(string)
 #
 # aa.bb.cc.Xdd    formatted aab,bcc,Xdd
 #  |  |  | | |--> Beta/Alpha flag 0, 1, ..., 99
-#  |  |  | |----> Release kind flag 
+#  |  |  | |----> Release kind flag
 #  |  |  |        5 for non-beta, non-alpha, non RC versions.
 #  |  |  |        2 for RC versions
 #  |  |  |        1 for beta versions
