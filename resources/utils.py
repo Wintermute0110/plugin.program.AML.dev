@@ -64,7 +64,7 @@ import string
 import sys
 import threading
 import time
-import xml
+import xml.etree.ElementTree
 import zlib
 
 # --- Determine interpreter running platform ---
@@ -331,15 +331,12 @@ def utils_load_XML_to_ET(filename):
         # log_debug(text_type(ex.errno.errorcode))
         # No such file or directory
         if ex.errno == errno.ENOENT:
-            log_error('utils_load_XML_to_ET() (IOError) No such file or directory.')
+            log_error('utils_load_XML_to_ET() (IOError) ENOENT No such file or directory.')
         else:
             log_error('utils_load_XML_to_ET() (IOError) Unhandled errno value.')
     except xml.etree.ElementTree.ParseError as ex:
-        log_error('utils_load_XML_to_ET() (ParseError) Exception parsing XML categories.xml')
+        log_error('utils_load_XML_to_ET() (ParseError) Exception parsing {}'.format(filename))
         log_error('utils_load_XML_to_ET() (ParseError) {}'.format(text_type(ex)))
-        # kodi_dialog_OK('(ET.ParseError) when reading categories.xml. '
-        #     'XML file is corrupt or contains invalid characters.')
-
     return xml_tree
 
 # -------------------------------------------------------------------------------------------------

@@ -83,10 +83,8 @@ def _tiff_header_for_CCITT(width, height, img_size, CCITT_group = 4):
        0  # last IFD
    )
 
-#
 # Extracs an image from an xobj_dic object.
 # Returns a PIL image object or None
-#
 def _extract_image_from_XObject(xobj_dic):
     log_debug('extract_image_from_XObject() Initialising ...')
 
@@ -301,7 +299,6 @@ def manuals_extract_pages_pdfrw(status_dic, PDF_file_FN, img_dir_FN):
 # If JSON INFO files does not exists then rendering is needed.
 # If JSON INFO file exists, then compare manual mtime with image extraction time.
 # Returns True if extraction is needed, False otherwise.
-#
 def manuals_check_img_extraction_needed(PDF_file_FN, img_dir_FN):
     log_debug('manuals_check_img_extraction_needed() Starting ...')
     status_dic = {
@@ -314,7 +311,7 @@ def manuals_check_img_extraction_needed(PDF_file_FN, img_dir_FN):
     }
 
     # Does the JSON INFO file exists?
-    rom_name = PDF_file_FN.getBase_noext()
+    rom_name = PDF_file_FN.getBaseNoExt()
     info_FN = img_dir_FN.pjoin(rom_name + '.json')
     log_info('manuals_check_img_extraction_needed() Info file "{}"'.format(info_FN.getPath()))
     if not info_FN.exists():
@@ -348,7 +345,6 @@ PDF_reader = None
 #   status_dic['numImages'] = int
 #
 # Creates a JSON file with the timestamp of the extraction and timestamp of the manual file.
-#
 def manuals_open_PDF_file(status_dic, PDF_file_FN, img_dir_FN):
     global PDF_reader
     log_debug('manuals_open_PDF_file() Starting ...')
@@ -369,11 +365,9 @@ def manuals_close_PDF_file():
 
     PDF_reader = None
 
-#
 # Create JSON INFO file. Call this function after the PDF images have been extracted.
-#
 def manuals_create_INFO_file(status_dic, PDF_file_FN, img_dir_FN):
-    rom_name = PDF_file_FN.getBase_noext()
+    rom_name = PDF_file_FN.getBaseNoExt()
     info_FN = img_dir_FN.pjoin(rom_name + '.json')
     log_info('manuals_create_INFO_file() Info file "{}"'.format(info_FN.getPath()))
     PDF_timestamp = PDF_file_FN.getmtime()
@@ -395,11 +389,9 @@ def manuals_create_INFO_file(status_dic, PDF_file_FN, img_dir_FN):
     }
     utils_write_JSON_file_pprint(info_FN.getPath(), info_dic)
 
-#
 # Gets a list of filters (codecs) used in the PDF file.
 # manuals_extract_PDF_page() is based on this function. In other words, this function has
 # debug code and manuals_extract_PDF_page() is a cleaner version.
-#
 def manuals_get_PDF_filter_list(status_dic, man_file_FN, img_dir_FN):
     # List of lists because each image may have more than 1 filter.
     img_filter_list_list = []
@@ -467,9 +459,7 @@ def manuals_get_PDF_filter_list(status_dic, man_file_FN, img_dir_FN):
                 img_index += 1
     status_dic['imgFilterList'] = img_filter_list_list
 
-#
 # Extracts images in a PDF page.
-#
 def manuals_extract_PDF_page(status_dic, man_file_FN, img_dir_FN, page_index):
     # --- Get page object ---
     page = PDF_reader.pages[page_index]

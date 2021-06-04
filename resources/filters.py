@@ -1318,7 +1318,7 @@ def filter_get_filter_DB(cfg, db_dic_in):
     ]
     for dname, dnumber in sorted(genres_drivers_dic.items(), key = lambda x: x[1], reverse = True):
         table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
-    rslist.extend(text_render_table_str(table_str))
+    rslist.extend(text_render_table(table_str))
     rslist.append('')
 
     table_str = [
@@ -1327,7 +1327,7 @@ def filter_get_filter_DB(cfg, db_dic_in):
     ]
     for dname, dnumber in sorted(controls_drivers_dic.items(), key = lambda x: x[1], reverse = True):
         table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
-    rslist.extend(text_render_table_str(table_str))
+    rslist.extend(text_render_table(table_str))
     rslist.append('')
 
     table_str = [
@@ -1336,7 +1336,7 @@ def filter_get_filter_DB(cfg, db_dic_in):
     ]
     for dname, dnumber in sorted(pdevices_drivers_dic.items(), key = lambda x: x[1], reverse = True):
         table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
-    rslist.extend(text_render_table_str(table_str))
+    rslist.extend(text_render_table(table_str))
     rslist.append('')
     utils_write_slist_to_file(cfg.REPORT_CF_HISTOGRAMS_PATH.getPath(), rslist)
 

@@ -76,6 +76,7 @@ FEATURE  [CORE] xbmc.translatePath is deprecated in Matrix, use xbmcvfs.translat
 FIX      [MANUALS] The pdfwr library is not working well with Python 3. PDF image extraction
          have been disabled until this issue is fixed.
 
+
 [B]Advanced MAME Launcher | version 0.10.2 | xx xxxxxx 2021[/B]
 
 FEATURE  Ported misc.py and utils.py modules from AEL.

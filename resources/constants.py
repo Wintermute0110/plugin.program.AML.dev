@@ -181,6 +181,7 @@ NPLAYERS_INI  = 'nplayers.ini'
 SERIES_INI    = 'series.ini'
 COMMAND_DAT   = 'command.dat'
 GAMEINIT_DAT  = 'gameinit.dat'
+HISTORY_XML   = 'history.xml'
 HISTORY_DAT   = 'history.dat'
 MAMEINFO_DAT  = 'mameinfo.dat'
 

@@ -3419,7 +3419,7 @@ def command_context_view_audit(cfg, machine_name, SL_name, SL_ROM, location):
             return
         man_file_FN = FileName(assets['manual'])
         img_dir_FN = FileName(cfg.settings['assets_path']).pjoin('manuals').pjoin(machine_name + '.pages')
-        rom_name = man_file_FN.getBase_noext()
+        rom_name = man_file_FN.getBaseNoExt()
         info_FN = img_dir_FN.pjoin(rom_name + '.json')
         if not info_FN.exists():
             kodi_dialog_OK('Manual JSON INFO file not found. View the manual first.')
@@ -3646,10 +3646,10 @@ def action_view_machine_roms(cfg, machine_name, SL_name, SL_ROM, location):
             bios_table_str.append(table_row)
 
     # --- Render text information window ---
-    table_str_list = text_render_table_str(table_str)
+    table_str_list = text_render_table(table_str)
     info_text.extend(table_str_list)
     if roms_dic['bios']:
-        bios_table_str_list = text_render_table_str(bios_table_str)
+        bios_table_str_list = text_render_table(bios_table_str)
         info_text.append('')
         info_text.extend(bios_table_str_list)
     window_title = 'Machine {} ROMs'.format(machine_name)
@@ -3714,7 +3714,7 @@ def action_view_machine_audit_roms(cfg, machine_name, SL_name, SL_ROM, location)
             table_row = [text_type(m_rom['type']), text_type(m_rom['name']), text_type(m_rom['size']),
                 text_type(m_rom['crc']), text_type(m_rom['location'])]
         table_str.append(table_row)
-    info_text.extend(text_render_table_str(table_str))
+    info_text.extend(text_render_table(table_str))
     info_text.append('')
 
     # --- ZIP/CHD/Sample file list ---
@@ -3728,7 +3728,7 @@ def action_view_machine_audit_roms(cfg, machine_name, SL_name, SL_ROM, location)
         table_str.append(['CHD', '[COLOR orange]CHD_path[/COLOR]/' + m_file + '.chd'])
     for m_file in machine_archives[machine_name]['Samples']:
         table_str.append(['Sample', '[COLOR orange]Samples_path[/COLOR]/' + m_file + '.zip'])
-    info_text.extend(text_render_table_str(table_str))
+    info_text.extend(text_render_table(table_str))
 
     window_title = 'Machine {} ROM audit'.format(machine_name)
     kodi_display_text_window_mono(window_title, '\n'.join(info_text))
@@ -3788,7 +3788,7 @@ def action_view_sl_item_roms(cfg, machine_name, SL_name, SL_ROM, location):
                     table_row = [part_name, part_interface, 'diskarea', diskarea_name,
                         rom_dic['name'], '', rom_dic['sha1'][0:8]]
                     table_str.append(table_row)
-    table_str_list = text_render_table_str(table_str)
+    table_str_list = text_render_table(table_str)
     info_text.extend(table_str_list)
     window_title = 'Software List ROM List (ROMs DB)'
     kodi_display_text_window_mono(window_title, '\n'.join(info_text))
@@ -3830,7 +3830,7 @@ def action_view_sl_item_audit_roms(cfg, machine_name, SL_name, SL_ROM, location)
             table_row = [rom_dic['type'], # rom_dic['name'],
                 text_type(rom_dic['size']), rom_dic['crc'], rom_dic['location']]
             table_str.append(table_row)
-    table_str_list = text_render_table_str(table_str)
+    table_str_list = text_render_table(table_str)
     info_text.extend(table_str_list)
     window_title = 'Software List ROM List (Audit DB)'
     kodi_display_text_window_mono(window_title, '\n'.join(info_text))
@@ -3897,7 +3897,7 @@ def action_audit_mame_machine(cfg, machine_name, SL_name, SL_ROM, location):
             table_row = [text_type(m_rom['type']), text_type(m_rom['name']),
                 text_type(m_rom['size']), text_type(m_rom['crc']), m_rom['location'], m_rom['status_colour']]
         table_str.append(table_row)
-    table_str_list = text_render_table_str(table_str)
+    table_str_list = text_render_table(table_str)
     info_text.extend(table_str_list)
     window_title = 'Machine {} ROM audit'.format(machine_name)
     kodi_display_text_window_mono(window_title, '\n'.join(info_text))
@@ -3944,7 +3944,7 @@ def action_audit_sl_item(cfg, machine_name, SL_name, SL_ROM, location):
             table_row = [m_rom['type'], # m_rom['name'],
                 text_type(m_rom['size']), m_rom['crc'], m_rom['location'], m_rom['status_colour']]
             table_str.append(table_row)
-    table_str_list = text_render_table_str(table_str)
+    table_str_list = text_render_table(table_str)
     info_text.extend(table_str_list)
     window_title = 'SL {} Software {} ROM audit'.format(SL_name, SL_ROM)
     kodi_display_text_window_mono(window_title, '\n'.join(info_text))
@@ -6726,7 +6726,8 @@ def command_exec_utility(cfg, which_utility):
                 SERIES_FN = DATS_dir_FN.pjoin(SERIES_INI)
                 COMMAND_FN = DATS_dir_FN.pjoin(COMMAND_DAT)
                 GAMEINIT_FN = DATS_dir_FN.pjoin(GAMEINIT_DAT)
-                HISTORY_FN = DATS_dir_FN.pjoin(HISTORY_DAT)
+                HISTORY_XML_FN = DATS_dir_FN.pjoin(HISTORY_XML)
+                HISTORY_DAT_FN = DATS_dir_FN.pjoin(HISTORY_DAT)
                 MAMEINFO_FN = DATS_dir_FN.pjoin(MAMEINFO_DAT)
 
                 aux_check_file_WARN(slist, ALLTIME_FN.getPath(), ALLTIME_INI + ' file')
@@ -6741,7 +6742,8 @@ def command_exec_utility(cfg, which_utility):
                 aux_check_file_WARN(slist, SERIES_FN.getPath(), SERIES_INI + ' file')
                 aux_check_file_WARN(slist, COMMAND_FN.getPath(), COMMAND_DAT + ' file')
                 aux_check_file_WARN(slist, GAMEINIT_FN.getPath(), GAMEINIT_DAT + ' file')
-                aux_check_file_WARN(slist, HISTORY_FN.getPath(), HISTORY_DAT + ' file')
+                aux_check_file_WARN(slist, HISTORY_XML_FN.getPath(), HISTORY_XML + ' file')
+                aux_check_file_WARN(slist, HISTORY_DAT_FN.getPath(), HISTORY_DAT + ' file')
                 aux_check_file_WARN(slist, MAMEINFO_FN.getPath(), MAMEINFO_DAT + ' file')
             else:
                 slist.append('{} MAME INI/DAT path not found'.format(ERR))
@@ -6850,7 +6852,7 @@ def command_exec_utility(cfg, which_utility):
             'There are {} CRC32 collisions'.format(num_collisions),
             '',
         ]
-        table_str_list = text_render_table_str(table_str)
+        table_str_list = text_render_table(table_str)
         slist.extend(table_str_list)
         kodi_display_text_window_mono('AML MAME CRC32 hash collision report', '\n'.join(slist))
         log_info('Writing "{}"'.format(cfg.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath()))
@@ -6942,7 +6944,7 @@ def command_exec_utility(cfg, which_utility):
             'There are {} CRC32 collisions'.format(num_collisions),
             '',
         ]
-        table_str_list = text_render_table_str(table_str)
+        table_str_list = text_render_table(table_str)
         slist.extend(table_str_list)
         kodi_display_text_window_mono('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
         log_info('Writing "{}"'.format(cfg.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath()))
@@ -7010,7 +7012,7 @@ def command_exec_utility(cfg, which_utility):
 
         # --- Write report ---
         slist = []
-        table_str_list = text_render_table_str(table_str)
+        table_str_list = text_render_table(table_str)
         slist.extend(table_str_list)
         if show_BIG:
             window_title = 'MAME machines with biggest ROMs'
