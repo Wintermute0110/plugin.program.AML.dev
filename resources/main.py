@@ -56,7 +56,7 @@ class Configuration:
     def __init__(self):
         # --- Kodi-related variables and data ---
         # TODO Use this instead of the bottom deprecated code.
-        # Change self.__addon_id__ with self.addon.info_id
+        # Change self.addon.info_id with self.addon.info_id
         self.addon = kodi_addon_obj()
 
         # Former global variables
@@ -273,6 +273,11 @@ g_base_url = ''
 # Module loading time. This variable is read only (only modified here).
 g_time_str = text_type(datetime.datetime.now())
 
+# Do not change context menus with listitem.addContextMenuItems() in Kiosk mode.
+# In other words, change the CM if Kiosk mode is disabled.
+# By default kiosk mode is disabled.
+g_kiosk_mode_disabled = True
+
 # ---------------------------------------------------------------------------------------------
 # This is the plugin entry point.
 # ---------------------------------------------------------------------------------------------
@@ -295,16 +300,25 @@ def run_plugin(addon_argv):
     set_log_level(cfg.settings['log_level'])
 
     # --- Some debug stuff for development ---
-    log_debug('---------- Called AML Main::run_plugin() constructor ----------')
-    log_debug('sys.platform    {}'.format(sys.platform))
-    log_debug('Python version  ' + sys.version.replace('\n', ''))
-    log_debug('__a_id__        {}'.format(cfg.__addon_id__))
-    log_debug('__a_version__   {}'.format(cfg.__addon_version__))
-    # log_debug('ADDON_DATA_DIR {}'.format(cfg.ADDON_DATA_DIR.getPath()))
-    for i in range(len(addon_argv)): log_debug('addon_argv[{}] = "{}"'.format(i, addon_argv[i]))
-    # Timestamp to see if this submodule is reinterpreted or not (interpreter uses a cached instance).
-    log_debug('submodule global timestamp {}'.format(g_time_str))
-    # log_debug('recursionlimit {}'.format(sys.getrecursionlimit()))
+    log_debug('-------------------- Called AML run_plugin() --------------------')
+    log_debug('sys.platform   "{}"'.format(sys.platform))
+    # log_debug('WindowId       "{}"'.format(xbmcgui.getCurrentWindowId()))
+    # log_debug('WindowName     "{}"'.format(xbmc.getInfoLabel('Window.Property(xmlfile)')))
+    log_debug('Python version "' + sys.version.replace('\n', '') + '"')
+    # log_debug('addon_name     "{}"'.format(cfg.addon.info_name))
+    log_debug('addon_id       "{}"'.format(cfg.addon.info_id))
+    log_debug('addon_version  "{}"'.format(cfg.addon.info_version))
+    # log_debug('addon_author   "{}"'.format(cfg.addon.info_author))
+    # log_debug('addon_profile  "{}"'.format(cfg.addon.info_profile))
+    # log_debug('addon_type     "{}"'.format(cfg.addon.info_type))
+    for i in range(len(addon_argv)): log_debug('addon_argv[{}] "{}"'.format(i, addon_argv[i]))
+    # log_debug('PLUGIN_DATA_DIR OP "{}"'.format(cfg.PLUGIN_DATA_DIR.getOriginalPath()))
+    # log_debug('PLUGIN_DATA_DIR  P "{}"'.format(cfg.PLUGIN_DATA_DIR.getPath()))
+    # log_debug('ADDON_CODE_DIR OP "{}"'.format(cfg.ADDON_CODE_DIR.getOriginalPath()))
+    # log_debug('ADDON_CODE_DIR  P "{}"'.format(cfg.ADDON_CODE_DIR.getPath()))
+
+    # Print Python module path.
+    # for i in range(len(sys.path)): log_debug('sys.path[{}] "{}"'.format(i, text_type(sys.path[i])))
 
     # --- Secondary setting processing ---
     get_settings_log_enabled(cfg)
@@ -313,6 +327,9 @@ def run_plugin(addon_argv):
 
     # --- Playground and testing code ---
     # kodi_get_screensaver_mode()
+
+    # Kiosk mode for skins.
+    g_kiosk_mode_disabled = xbmc.getCondVisibility('!Skin.HasSetting(KioskMode.Enabled)')
 
     # --- Addon data paths creation ---
     if not cfg.ADDON_DATA_DIR.exists(): cfg.ADDON_DATA_DIR.makedirs()
@@ -634,8 +651,8 @@ def get_settings(cfg):
 # Called after log is enabled. Process secondary settings.
 #
 def get_settings_log_enabled(cfg):
-    # Convenience data
-    cfg.__addon_version_int__ = misc_addon_version_str_to_int(cfg.__addon_version__)
+    # Convenience data.
+    cfg.addon_version_int = misc_addon_version_str_to_int(cfg.addon.info_version)
 
     # Additional settings.
     cfg.settings['op_mode'] = OP_MODE_LIST[cfg.settings['op_mode_raw']]
@@ -1584,7 +1601,7 @@ def render_root_catalog_row(cfg, catalog_name, catalog_key, display_name, plot_s
         ('Setup addon', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Utilities', URL_utils),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id)),
     ]
     listitem.addContextMenuItems(commands)
     URL = misc_url_2_arg('catalog', catalog_name, 'category', catalog_key)
@@ -1608,7 +1625,7 @@ def render_root_category_row(cfg, display_name, plot_str, root_URL, color_str = 
     commands = [
         ('Setup addon', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id)),
     ]
     listitem.addContextMenuItems(commands)
     xbmcplugin.addDirectoryItem(cfg.addon_handle, root_URL, listitem, isFolder = True)
@@ -1628,7 +1645,7 @@ def render_root_category_row_custom_CM(cfg, display_name, plot_str, root_URL, cm
     commands = [
         ('Setup addon', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id)),
     ]
     cmenu_list.extend(commands)
     listitem.addContextMenuItems(cmenu_list)
@@ -1653,7 +1670,7 @@ def render_Utilities_vlaunchers(cfg):
     # --- Common context menu for all VLaunchers ---
     common_commands = [
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id)),
     ]
 
     # --- Check MAME version ---
@@ -1741,7 +1758,7 @@ def render_GlobalReports_vlaunchers(cfg):
     # --- Common context menu for all VLaunchers ---
     common_commands = [
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id)),
     ]
 
     # --- View MAME last execution output --------------------------------------------------------
@@ -2049,7 +2066,7 @@ def render_catalog_list_row(cfg, catalog_name, catalog_key, num_machines, machin
     commands = [
         ('Utilities', URL_utils),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id)),
     ]
     listitem.addContextMenuItems(commands)
     URL = misc_url_2_arg('catalog', catalog_name, 'category', catalog_key)
@@ -2375,7 +2392,7 @@ def render_process_machines(cfg, catalog_dic, catalog_name, category_name,
                 ('Show clones', URL_clones),
                 ('Add to MAME Favourites', URL_fav),
                 ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-                ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
+                ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id)),
             ]
         else:
             commands = [
@@ -2383,7 +2400,7 @@ def render_process_machines(cfg, catalog_dic, catalog_name, category_name,
                 ('View / Audit', URL_view),
                 ('Add to MAME Favourites', URL_fav),
                 ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-                ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
+                ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id)),
             ]
         r_dict['context'] = commands
 
@@ -2646,7 +2663,7 @@ def render_SL_list_row(cfg, SL_name, SL):
     listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
     listitem.addContextMenuItems([
         ('Kodi File Manager', 'ActivateWindow(filemanager)' ),
-        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__))
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id))
     ])
     URL = misc_url_2_arg('catalog', 'SL', 'category', SL_name)
     xbmcplugin.addDirectoryItem(cfg.addon_handle, URL, listitem, isFolder = True)
@@ -2719,7 +2736,7 @@ def render_SL_ROM_row(cfg, SL_name, rom_name, ROM, assets, flag_parent_list = Fa
             ('Show clones', URL_show_c),
             ('Add ROM to SL Favourites', URL_fav),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id))
         ]
     else:
         commands = [
@@ -2727,7 +2744,7 @@ def render_SL_ROM_row(cfg, SL_name, rom_name, ROM, assets, flag_parent_list = Fa
             ('View / Audit', URL_view),
             ('Add ROM to SL Favourites', URL_fav),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id))
         ]
     listitem.addContextMenuItems(commands)
     URL = misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
@@ -2746,7 +2763,7 @@ def render_DAT_list(cfg, catalog_name):
     commands = [
         ('View', misc_url_1_arg_RunPlugin('command', 'VIEW')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id)),
     ]
     # --- Unrolled variables ---
     ICON_OVERLAY = 6
@@ -2856,7 +2873,7 @@ def render_DAT_category_row(cfg, catalog_name, category_name, machine_key, displ
     listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
     commands = [
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('Add-on Settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__))
+        ('Add-on Settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id))
     ]
     listitem.addContextMenuItems(commands)
     URL = misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', machine_key)
@@ -4098,7 +4115,7 @@ def render_fav_machine_row(cfg, m_name, machine, m_assets, location):
             ('View / Audit',  URL_view),
             ('Manage Favourites', URL_manage),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id))
         ]
     elif location == LOCATION_MAME_MOST_PLAYED:
         URL_manage = misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED', 'machine', m_name)
@@ -4107,7 +4124,7 @@ def render_fav_machine_row(cfg, m_name, machine, m_assets, location):
             ('View / Audit',  URL_view),
             ('Manage Most Played', URL_manage),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id))
         ]
     elif location == LOCATION_MAME_RECENT_PLAYED:
         URL_manage = misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED', 'machine', m_name)
@@ -4116,7 +4133,7 @@ def render_fav_machine_row(cfg, m_name, machine, m_assets, location):
             ('View / Audit',  URL_view),
             ('Manage Recently Played', URL_manage),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id))
         ]
     listitem.addContextMenuItems(commands)
     URL = misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', location)
@@ -4631,7 +4648,7 @@ def render_sl_fav_machine_row(cfg, SL_fav_key, ROM, assets, location):
             ('View / Audit', URL_view),
             ('Manage SL Favourites', URL_manage),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__)),
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id)),
         ]
     elif location == LOCATION_SL_MOST_PLAYED:
         URL_manage = misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED', 'SL', SL_name, 'ROM', SL_ROM_name)
@@ -4640,7 +4657,7 @@ def render_sl_fav_machine_row(cfg, SL_fav_key, ROM, assets, location):
             ('View / Audit',  URL_view),
             ('Manage SL Most Played', URL_manage),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id))
         ]
     elif location == LOCATION_SL_RECENT_PLAYED:
         URL_manage = misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED', 'SL', SL_name, 'ROM', SL_ROM_name)
@@ -4649,7 +4666,7 @@ def render_sl_fav_machine_row(cfg, SL_fav_key, ROM, assets, location):
             ('View / Audit',  URL_view),
             ('Manage SL Recently Played', URL_manage),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id))
         ]
     listitem.addContextMenuItems(commands)
     URL = misc_url_4_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', SL_ROM_name, 'location', location)
@@ -5307,7 +5324,7 @@ def render_custom_filter_item_row(cfg, f_name, num_machines, machine_str, plot):
     # --- Create context menu ---
     commands = [
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.__addon_id__))
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(cfg.addon.info_id))
     ]
     listitem.addContextMenuItems(commands)
     URL = misc_url_2_arg('catalog', 'Custom', 'category', f_name)
