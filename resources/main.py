@@ -631,7 +631,12 @@ def get_settings(cfg):
 
     # --- Advanced ---
     settings['media_state_action'] = kodi_get_int_setting(cfg, 'media_state_action')
-    settings['delay_tempo'] = kodi_get_float_setting_as_int(cfg, 'delay_tempo')
+    if ADDON_RUNNING_PYTHON_2:
+        self.settings['delay_tempo'] = kodi_get_float_setting_as_int(cfg, 'delay_tempo')
+    elif ADDON_RUNNING_PYTHON_3:
+        self.settings['delay_tempo'] = kodi_get_int_setting(cfg, 'delay_tempo')
+    else:
+        raise TypeError('Undefined Python runtime version.')
     settings['suspend_audio_engine'] = kodi_get_bool_setting(cfg, 'suspend_audio_engine')
     settings['suspend_screensaver'] = kodi_get_bool_setting(cfg, 'suspend_screensaver')
     settings['toggle_window'] = kodi_get_bool_setting(cfg, 'toggle_window')
@@ -1491,7 +1496,8 @@ def render_skin_fav_slots(cfg):
         rd = set_render_root_data()
         # Remove special markers (first and last character)
         rsCM = rd.copy()
-        for key, value in rsCM['root_special_CM'].iteritems(): value[0] = value[0][1:-1]
+        for key in rsCM['root_special_CM']:
+            rsCM['root_special_CM'][key][0] = rsCM['root_special_CM'][key][0][1:-1]
         render_root_category_row_custom_CM(cfg, *rsCM['root_special_CM']['MAME_Favs'])
         render_root_category_row_custom_CM(cfg, *rsCM['root_special_CM']['MAME_Most'])
         render_root_category_row_custom_CM(cfg, *rsCM['root_special_CM']['MAME_Recent'])
@@ -2285,7 +2291,8 @@ def render_process_machines(cfg, catalog_dic, catalog_name, category_name,
 
     # --- Traverse machines ---
     r_list = []
-    for machine_name, render_name in catalog_dic[category_name].iteritems():
+    for machine_name in catalog_dic[category_name]:
+        render_name = catalog_dic[category_name][machine_name]
         machine = render_db_dic[machine_name]
         m_assets = assets_dic[machine_name]
         if not flag_ignore_filters:
@@ -2414,10 +2421,8 @@ def render_process_machines(cfg, catalog_dic, catalog_name, category_name,
 
     return r_list
 
-#
 # Renders a processed list of machines/ROMs. Basically, this function only calls the
 # Kodi API with the precomputed values.
-#
 def render_commit_machines(cfg, r_list):
     listitem_list = []
 
@@ -2443,8 +2448,8 @@ def render_commit_machines(cfg, r_list):
         for r_dict in r_list:
             listitem = xbmcgui.ListItem(r_dict['render_name'])
             listitem.setInfo('video', r_dict['info'])
-            for prop_name, prop_value in r_dict['props'].iteritems():
-                listitem.setProperty(prop_name, prop_value)
+            for prop_name in r_dict['props']:
+                listitem.setProperty(prop_name, r_dict['props'][prop_name])
             listitem.setArt(r_dict['art'])
             listitem.addContextMenuItems(r_dict['context'])
             listitem_list.append((r_dict['URL'], listitem, False))
@@ -2452,9 +2457,7 @@ def render_commit_machines(cfg, r_list):
     # Add all listitems in one go.
     xbmcplugin.addDirectoryItems(cfg.addon_handle, listitem_list, len(listitem_list))
 
-#
 # Not used at the moment -> There are global display settings in addon settings for this.
-#
 def command_context_display_settings(cfg, catalog_name, category_name):
     # Load ListItem properties.
     log_debug('command_display_settings() catalog_name  "{}"'.format(catalog_name))
@@ -2517,22 +2520,26 @@ def render_SL_list(cfg, catalog_name):
     SL_main_catalog_dic = utils_load_JSON_file(cfg.SL_INDEX_PATH.getPath())
     SL_catalog_dic = {}
     if catalog_name == 'SL':
-        for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
-            SL_catalog_dic[SL_name] = SL_dic
+        for SL_name in SL_main_catalog_dic:
+            SL_catalog_dic[SL_name] = SL_main_catalog_dic[SL_name]
     elif catalog_name == 'SL_ROM':
-        for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+        for SL_name in SL_main_catalog_dic:
+            SL_dic = SL_main_catalog_dic[SL_name]
             if SL_dic['num_with_ROMs'] > 0 and SL_dic['num_with_CHDs'] == 0:
                 SL_catalog_dic[SL_name] = SL_dic
     elif catalog_name == 'SL_CHD':
-        for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+        for SL_name in SL_main_catalog_dic:
+            SL_dic = SL_main_catalog_dic[SL_name]
             if SL_dic['num_with_ROMs'] == 0 and SL_dic['num_with_CHDs'] > 0:
                 SL_catalog_dic[SL_name] = SL_dic
     elif catalog_name == 'SL_ROM_CHD':
-        for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+        for SL_name in SL_main_catalog_dic:
+            SL_dic = SL_main_catalog_dic[SL_name]
             if SL_dic['num_with_ROMs'] > 0 and SL_dic['num_with_CHDs'] > 0:
                 SL_catalog_dic[SL_name] = SL_dic
     elif catalog_name == 'SL_empty':
-        for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+        for SL_name in SL_main_catalog_dic:
+            SL_dic = SL_main_catalog_dic[SL_name]
             if SL_dic['num_with_ROMs'] == 0 and SL_dic['num_with_CHDs'] == 0:
                 SL_catalog_dic[SL_name] = SL_dic
     else:

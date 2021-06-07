@@ -4770,7 +4770,8 @@ def mame_build_MAME_main_database(cfg, st_dic):
     log_info('Making PClone list...')
     main_pclone_dic = {}
     main_clone_to_parent_dic = {}
-    for machine_name, m_render in renderdb_dic.iteritems():
+    for machine_name in renderdb_dic:
+        m_render = renderdb_dic[machine_name]
         if m_render['cloneof']:
             parent_name = m_render['cloneof']
             # If parent already in main_pclone_dic then add clone to parent list.
@@ -4791,15 +4792,17 @@ def mame_build_MAME_main_database(cfg, st_dic):
     assetdb_dic = {key : db_new_MAME_asset() for key in machines}
     if cfg.settings['generate_history_infolabel'] and history_idx_dic:
         log_debug('Adding History.DAT to MAME asset database.')
-        for m_name, asset in assetdb_dic.iteritems():
+        for m_name in assetdb_dic:
+            asset = assetdb_dic[m_name]
             asset['flags'] = db_initial_flags(machines[m_name], renderdb_dic[m_name], machines_roms[m_name])
             if m_name in history_idx_dic['mame']['machines']:
                 d_name, db_list, db_machine = history_idx_dic['mame']['machines'][m_name].split('|')
                 asset['history'] = history_dic[db_list][db_machine]
     else:
         log_debug('Not including History.DAT in MAME asset database.')
-        for m_name, asset in assetdb_dic.iteritems():
-            asset['flags'] = db_initial_flags(machines[m_name], renderdb_dic[m_name], machines_roms[m_name])
+        for m_name in assetdb_dic:
+            assetdb_dic[m_name]['flags'] = db_initial_flags(machines[m_name],
+                renderdb_dic[m_name], machines_roms[m_name])
 
     # ---------------------------------------------------------------------------------------------
     # Improve information fields in Main Render database
