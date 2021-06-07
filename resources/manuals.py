@@ -27,8 +27,8 @@ import xbmcaddon
 
 # --- Load pdfrw module ---
 import sys
-__addon_id__ = xbmcaddon.Addon().getAddonInfo('id')
-sys.path.insert(0, FileName('special://home/addons').pjoin(__addon_id__).pjoin('pdfrw').getPath())
+addon_id = xbmcaddon.Addon().getAddonInfo('id')
+sys.path.insert(0, FileName('special://home/addons').pjoin(addon_id).pjoin('pdfrw').getPath())
 from pdfrw import PdfReader
 from pdfrw.objects.pdfarray import PdfArray
 from pdfrw.objects.pdfname import BasePdfName
@@ -236,21 +236,23 @@ def manuals_extract_pages_pdfrw(status_dic, PDF_file_FN, img_dir_FN):
         # --- Iterate /Resources in page ---
         # log_debug('###### Processing page {} ######'.format(page_index))
         resource_dic = page['/Resources']
-        for r_name, resource in resource_dic.iteritems():
-            # >> Skip non /XObject keys in /Resources
+        for r_name in resource_dic:
+            resource = resource_dic[r_name]
+            # Skip non /XObject keys in /Resources
             if r_name != '/XObject': continue
 
-            # >> DEBUG dump /XObjects dictionary
+            # DEBUG dump /XObjects dictionary
             # print('--- resource ---')
             # pprint(resource)
             # print('----------------')
 
-            # >> Traverse /XObject dictionary data. Each page may have 0, 1 or more /XObjects
-            # >> If there is more than 1 image in the page there could be more than 1 /XObject.
-            # >> Some /XObjects are not images, for example, /Subtype = /Form.
-            # >> NOTE Also, images may be inside the /Resources of a /From /XObject.
+            # Traverse /XObject dictionary data. Each page may have 0, 1 or more /XObjects
+            # If there is more than 1 image in the page there could be more than 1 /XObject.
+            # Some /XObjects are not images, for example, /Subtype = /Form.
+            # NOTE Also, images may be inside the /Resources of a /From /XObject.
             img_index = 0
-            for xobj_name, xobj_dic in resource.iteritems():
+            for xobj_name in resource:
+                xobj_dic = resource[xobj_name]
                 xobj_type = xobj_dic['/Type']
                 xobj_subtype = xobj_dic['/Subtype']
                 # >> Skip XObject forms
@@ -401,26 +403,28 @@ def manuals_get_PDF_filter_list(status_dic, man_file_FN, img_dir_FN):
         # log_debug('###### Processing page {} ######'.format(page_index))
         resource_dic = page['/Resources']
         # --- Iterate /Resources in page ---
-        for resource_name, resource in resource_dic.iteritems():
-            # >> Skip non /XObject keys in /Resources
+        for resource_name in resource_dic:
+            resource = resource_dic[resource_name]
+            # Skip non /XObject keys in /Resources
             if resource_name != '/XObject': continue
 
-            # >> DEBUG dump /XObjects dictionary
+            # DEBUG dump /XObjects dictionary
             # print('--- resource ---')
             # pprint(resource)
             # print('----------------')
 
-            # >> Traverse /XObject dictionary data. Each page may have 0, 1 or more /XObjects
-            # >> If there is more than 1 image in the page there could be more than 1 /XObject.
-            # >> Some /XObjects are not images, for example, /Subtype = /Form.
-            # >> Also, images may be inside the /Resources of a /From /XObject.
+            # Traverse /XObject dictionary data. Each page may have 0, 1 or more /XObjects
+            # If there is more than 1 image in the page there could be more than 1 /XObject.
+            # Some /XObjects are not images, for example, /Subtype = /Form.
+            # Also, images may be inside the /Resources of a /From /XObject.
             img_index = 0
-            for xobj_name, xobj_dic in resource.iteritems():
+            for xobj_name in resource:
+                xobj_dic = resource[xobj_name]
                 xobj_type = xobj_dic['/Type']
                 xobj_subtype = xobj_dic['/Subtype']
-                # >> Skip XObject forms
+                # Skip XObject forms
                 if xobj_subtype == '/Form':
-                    # >> NOTE There could be an image /XObject in the /From : /Resources dictionary.
+                    # NOTE There could be an image /XObject in the /From : /Resources dictionary.
                     log_info('Skipping /Form /XObject')
                     log_info('--- xobj_dic ---')
                     log_info(pprint.pformat(xobj_dic))
@@ -468,18 +472,20 @@ def manuals_extract_PDF_page(status_dic, man_file_FN, img_dir_FN, page_index):
     image_counter = 0
     log_debug('###### Processing page {} ######'.format(page_index))
     resource_dic = page['/Resources']
-    for resource_name, resource in resource_dic.iteritems():
-        # >> Skip non /XObject keys in /Resources
+    for resource_name in resource_dic:
+        resource = resource_dic[resource_name]
+        # Skip non /XObject keys in /Resources
         if resource_name != '/XObject': continue
 
-        # >> Traverse /XObject dictionary data.
+        # Traverse /XObject dictionary data.
         img_index = 0
-        for xobj_name, xobj_dic in resource.iteritems():
+        for xobj_name in resource:
+            xobj_dic = resource[xobj_name]
             xobj_type = xobj_dic['/Type']
             xobj_subtype = xobj_dic['/Subtype']
-            # >> Skip XObject forms
+            # Skip XObject forms
             if xobj_subtype == '/Form':
-                # >> NOTE There could be an image /XObject in the /From : /Resources dictionary.
+                # NOTE There could be an image /XObject in the /From : /Resources dictionary.
                 log_info('Skipping /Form /XObject')
                 log_info('--- xobj_dic ---')
                 log_info(pprint.pformat(xobj_dic))

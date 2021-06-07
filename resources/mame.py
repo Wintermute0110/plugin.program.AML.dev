@@ -2072,9 +2072,12 @@ def mame_stats_main_print_slist(cfg, slist, control_dic, XML_ctrl_dic):
     SL_str = 'enabled' if settings['global_enable_SL'] else 'disabled'
 
     slist.append('[COLOR orange]Main information[/COLOR]')
-    slist.append('AML version            {:,} [COLOR violet]{}[/COLOR]'.format(cfg.__addon_version_int__, cfg.__addon_version__))
-    slist.append('Database version       {:,} [COLOR violet]{}[/COLOR]'.format(ctrl['ver_AML_int'], ctrl['ver_AML_str']))
-    slist.append('MAME version           {:,} [COLOR violet]{}[/COLOR]'.format(ctrl['ver_mame_int'], ctrl['ver_mame_str']))
+    slist.append('AML version            {:,} [COLOR violet]{}[/COLOR]'.format(
+        cfg.addon_version_int, cfg.addon.info_version))
+    slist.append('Database version       {:,} [COLOR violet]{}[/COLOR]'.format(
+        ctrl['ver_AML_int'], ctrl['ver_AML_str']))
+    slist.append('MAME version           {:,} [COLOR violet]{}[/COLOR]'.format(
+        ctrl['ver_mame_int'], ctrl['ver_mame_str']))
     slist.append('Operation mode         [COLOR violet]{:s}[/COLOR]'.format(settings['op_mode']))
     slist.append('Software Lists         [COLOR violet]{:s}[/COLOR]'.format(SL_str))
     # Information in the MAME XML control file.
@@ -4874,8 +4877,8 @@ def mame_build_MAME_main_database(cfg, st_dic):
     # The XML control file is required to create the new control_dic.
     # ---------------------------------------------------------------------------------------------
     log_info('Creating new control_dic.')
-    log_info('AML version string "{}"'.format(cfg.__addon_version__))
-    log_info('AML version int {}'.format(cfg.__addon_version_int__))
+    log_info('AML version string "{}"'.format(cfg.addon.info_version))
+    log_info('AML version int {}'.format(cfg.addon_version_int))
     control_dic = db_new_control_dic()
     db_safe_edit(control_dic, 'op_mode_raw', cfg.settings['op_mode_raw'])
     db_safe_edit(control_dic, 'op_mode', cfg.settings['op_mode'])
@@ -4884,8 +4887,8 @@ def mame_build_MAME_main_database(cfg, st_dic):
     db_safe_edit(control_dic, 'stats_total_machines', total_machines)
 
     # Addon and MAME version strings
-    db_safe_edit(control_dic, 'ver_AML_str', cfg.__addon_version__)
-    db_safe_edit(control_dic, 'ver_AML_int', cfg.__addon_version_int__)
+    db_safe_edit(control_dic, 'ver_AML_str', cfg.addon.info_version)
+    db_safe_edit(control_dic, 'ver_AML_int', cfg.addon_version_int)
     db_safe_edit(control_dic, 'ver_mame_str', mame_version_str)
     db_safe_edit(control_dic, 'ver_mame_int', mame_version_int)
     # INI files
