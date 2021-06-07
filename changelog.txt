@@ -76,9 +76,8 @@ NOTE     Version was bumped to 1.0.2 to keep feature-sync with 0.10.2
 
 FEATURE  [CORE] Synched utils.py and misc.py with AEL.
 
-WIP      [CORE] There is a new XML format for history.dat, now named history.xml. Do a parser
-         for the new XML format and deprecate the use of the DAT format. It seems that for
-         a time both old and XML formats will be released.
+FEATURE  [CORE] Support new history.dat XML format.
+         See https://forum.kodi.tv/showthread.php?tid=304186&pid=3029005#pid3029005
 
 
 [B]Advanced MAME Launcher | version 1.0.1 | xx xxxxxx 2021[/B]
@@ -103,11 +102,13 @@ FIX      [MANUALS] The pdfwr library is not working well with Python 3. PDF imag
          have been disabled until this issue is fixed.
 
 
-[B]Advanced MAME Launcher | version 0.10.2 | xx xxxxxx 2021[/B]
+[B]Advanced MAME Launcher | version 0.10.2 | xx June 2021[/B]
 
-FEATURE  Ported misc.py and utils.py modules from AEL.
+NOTE     Code synched with 1.0.2.
 
-WIP      Support new history.dat XML format.
+FEATURE  [CORE] Synched utils.py and misc.py with AEL.
+
+FEATURE  [CORE] Support new history.dat XML format.
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=3029005#pid3029005
 
 
