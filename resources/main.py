@@ -628,9 +628,9 @@ def get_settings(cfg):
     # --- Advanced ---
     settings['media_state_action'] = kodi_get_int_setting(cfg, 'media_state_action')
     if ADDON_RUNNING_PYTHON_2:
-        self.settings['delay_tempo'] = kodi_get_float_setting_as_int(cfg, 'delay_tempo')
+        settings['delay_tempo'] = kodi_get_float_setting_as_int(cfg, 'delay_tempo')
     elif ADDON_RUNNING_PYTHON_3:
-        self.settings['delay_tempo'] = kodi_get_int_setting(cfg, 'delay_tempo')
+        settings['delay_tempo'] = kodi_get_int_setting(cfg, 'delay_tempo')
     else:
         raise TypeError('Undefined Python runtime version.')
     settings['suspend_audio_engine'] = kodi_get_bool_setting(cfg, 'suspend_audio_engine')
