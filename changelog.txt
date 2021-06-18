@@ -70,7 +70,7 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
          See https://github.com/libretro/mame2010-libretro/tree/master/metadata
 
 
-[B]Advanced MAME Launcher | version 1.0.2 | xx June 2021[/B]
+[B]Advanced MAME Launcher | version 1.0.2 | 18 June 2021[/B]
 
 NOTE     Version was bumped to 1.0.2 to keep feature-sync with 0.10.2
 
@@ -80,7 +80,7 @@ FEATURE  [CORE] Support new history.dat XML format.
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=3029005#pid3029005
 
 
-[B]Advanced MAME Launcher | version 1.0.1 | xx xxxxxx 2021[/B]
+[B]Advanced MAME Launcher | version 1.0.1 | non-released[/B]
 
 NOTE     This version was never uploaded to the Kodi repo.
 
