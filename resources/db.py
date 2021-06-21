@@ -1170,10 +1170,8 @@ def db_get_asset_cache_row(cfg, cache_index_dic, catalog_name, category_name):
 # -------------------------------------------------------------------------------------------------
 # Load and save a bunch of JSON files
 # -------------------------------------------------------------------------------------------------
-#
 # Accepts a list of JSON files to be loaded. Displays a progress dialog.
 # Returns a dictionary with the context of the loaded files.
-#
 def db_load_files(db_files):
     log_debug('db_load_files() Loading {} JSON database files...'.format(len(db_files)))
     db_dic = {}
@@ -1188,7 +1186,7 @@ def db_load_files(db_files):
 
     return db_dic
 
-def db_save_files(db_files, json_write_func = utils_write_JSON_file):
+def db_save_files(db_files):
     log_debug('db_save_files() Saving {} JSON database files...'.format(len(db_files)))
     d_text = 'Saving databases...'
     pDialog = KodiProgressDialog()
@@ -1196,7 +1194,7 @@ def db_save_files(db_files, json_write_func = utils_write_JSON_file):
     for f_item in db_files:
         dict_data, db_name, db_path = f_item
         pDialog.updateProgressInc('{}\nDatabase [COLOR orange]{}[/COLOR]'.format(d_text, db_name))
-        json_write_func(db_path, dict_data)
+        utils_write_JSON_file(db_path, dict_data)
     pDialog.endProgress()
 
 # -------------------------------------------------------------------------------------------------

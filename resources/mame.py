@@ -4951,12 +4951,6 @@ def mame_build_MAME_main_database(cfg, st_dic):
 
     # --- Save databases ---
     log_info('Saving database JSON files...')
-    if OPTION_LOWMEM_WRITE_JSON:
-        json_write_func = utils_write_JSON_file_lowmem
-        log_debug('Using utils_write_JSON_file_lowmem() JSON writer')
-    else:
-        json_write_func = utils_write_JSON_file
-        log_debug('Using utils_write_JSON_file() JSON writer')
     db_files = [
         [machines, 'MAME machines main', cfg.MAIN_DB_PATH.getPath()],
         [renderdb_dic, 'MAME render DB', cfg.RENDER_DB_PATH.getPath()],
@@ -4977,7 +4971,7 @@ def mame_build_MAME_main_database(cfg, st_dic):
         # --- Save control_dic after everything is saved ---
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
-    db_save_files(db_files, json_write_func)
+    db_save_files(db_files)
 
     # Return a dictionary with references to the objects just in case they are needed after
     # this function (in "Build everything", for example). This saves time, because databases do not
@@ -5541,30 +5535,21 @@ def mame_build_ROM_audit_databases(cfg, st_dic, db_dic_in):
     db_safe_edit(control_dic, 't_MAME_Audit_DB_build', time.time())
 
     # --- Save databases ---
-    if OPTION_LOWMEM_WRITE_JSON:
-        json_write_func = utils_write_JSON_file_lowmem
-        log_debug('Using utils_write_JSON_file_lowmem() JSON writer')
-    else:
-        json_write_func = utils_write_JSON_file
-        log_debug('Using utils_write_JSON_file() JSON writer')
     db_files = [
         [audit_roms_dic, 'MAME ROM Audit', cfg.ROM_AUDIT_DB_PATH.getPath()],
         [machine_archives_dic, 'Machine file list', cfg.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
         # --- Save control_dic after everything is saved ---
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
-    db_save_files(db_files, json_write_func)
+    db_save_files(db_files)
     # Add data generated in this function to dictionary for caller code use.
     db_dic_in['audit_roms'] = audit_roms_dic
     db_dic_in['machine_archives'] = machine_archives_dic
 
-#
 # Checks for errors before scanning for SL ROMs.
 # Display a Kodi dialog if an error is found.
 # Returns a dictionary of settings:
 # options_dic['abort'] is always present.
-# 
-#
 def mame_check_before_build_MAME_catalogs(cfg, st_dic, control_dic):
     kodi_reset_status(st_dic)
 
@@ -7228,12 +7213,6 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
     db_safe_edit(control_dic, 't_SL_DB_build', time.time())
 
     # --- Save modified/created stuff in this function ---
-    if OPTION_LOWMEM_WRITE_JSON:
-        json_write_func = utils_write_JSON_file_lowmem
-        log_debug('Using utils_write_JSON_file_lowmem() JSON writer')
-    else:
-        json_write_func = utils_write_JSON_file
-        log_debug('Using utils_write_JSON_file() JSON writer')
     db_files = [
         # Fix this list of files!!!
         [SL_catalog_dic, 'Software Lists index', cfg.SL_INDEX_PATH.getPath()],
@@ -7242,7 +7221,7 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
         # Save control_dic after everything is saved.
         [control_dic, 'Control dictionary', cfg.MAIN_CONTROL_PATH.getPath()],
     ]
-    db_save_files(db_files, json_write_func)
+    db_save_files(db_files)
     db_dic_in['SL_index'] = SL_catalog_dic
     db_dic_in['SL_machines'] = SL_machines_dic
     db_dic_in['SL_PClone_dic'] = SL_PClone_dic
@@ -7250,10 +7229,8 @@ def mame_build_SoftwareLists_databases(cfg, st_dic, db_dic_in):
 # -------------------------------------------------------------------------------------------------
 # ROM/CHD and asset scanner
 # -------------------------------------------------------------------------------------------------
-#
 # Checks for errors before scanning for SL ROMs.
 # Display a Kodi dialog if an error is found.
-#
 def mame_check_before_scan_MAME_ROMs(cfg, st_dic, options_dic, control_dic):
     log_info('mame_check_before_scan_MAME_ROMs() Starting...')
     kodi_reset_status(st_dic)
