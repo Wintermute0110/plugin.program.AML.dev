@@ -52,7 +52,7 @@ JSON_INDENT = 1
 JSON_SEP = (', ', ': ')
 
 # -------------------------------------------------------------------------------------------------
-# DEBUG/TEST settings
+# CUSTOM/DEBUG/TEST settings
 # -------------------------------------------------------------------------------------------------
 # If True MAME is not launched. Useful to test the Recently Played and Most Played code.
 # This setting must be False when releasing.
