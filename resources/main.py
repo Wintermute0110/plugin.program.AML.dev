@@ -267,7 +267,7 @@ class Configuration:
 # --- Global variables ---
 # Use functional programming as much as possible and avoid global variables.
 # g_base_url must be a global variable because it is used in the misc_url_*() functions
-# for speed reasons.
+# for performance reasons.
 g_base_url = ''
 
 # Module loading time. This variable is read only (only modified here).
@@ -295,7 +295,7 @@ def run_plugin(addon_argv):
     # Place it before setting loading so settings can be dumped during debugging.
     # set_log_level(LOG_DEBUG)
 
-    # --- Fill in settings dictionary using addon_obj.getSetting() ---
+    # Fill in settings dictionary using cfg.addon.addon_obj.getSetting()
     get_settings(cfg)
     set_log_level(cfg.settings['log_level'])
 
@@ -320,7 +320,7 @@ def run_plugin(addon_argv):
     # Print Python module path.
     # for i in range(len(sys.path)): log_debug('sys.path[{}] "{}"'.format(i, text_type(sys.path[i])))
 
-    # --- Secondary setting processing ---
+    # Secondary setting processing
     get_settings_log_enabled(cfg)
     log_debug('Operation mode "{}"'.format(cfg.settings['op_mode']))
     log_debug('SL global enable is {}'.format(cfg.settings['global_enable_SL']))
