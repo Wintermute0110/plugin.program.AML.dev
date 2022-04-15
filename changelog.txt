@@ -72,6 +72,11 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
 
 [B]Advanced MAME Launcher | version 1.0.3 | xx xxxxxx 2022[/B]
 
+FEATURE  [CORE] Imported some code from AEL master branch to equalize code between both addons.
+
+FEATURE  [CORE] Minor changes and improvements: improved SL standard ROM viewer, improved SL
+         audit ROM viewer, ...
+
 
 [B]Advanced MAME Launcher | version 1.0.2 | 18 June 2021[/B]
 

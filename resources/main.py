@@ -3761,12 +3761,12 @@ def action_view_sl_item_roms(cfg, machine_name, SL_name, SL_ROM, location):
     rom = roms[SL_ROM]
     rom_db_list = roms_db[SL_ROM]
 
-    cloneof = rom['cloneof'] if rom['cloneof'] else 'None'
     info_text = []
-    info_text.append('[COLOR violet]SL_name[/COLOR] {}'.format(SL_name))
-    info_text.append('[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM))
+    cloneof = rom['cloneof'] if rom['cloneof'] else 'None'
+    info_text.append('[COLOR violet]SL_name[/COLOR] {} / '.format(SL_name) +
+        '[COLOR violet]SL_ROM[/COLOR] {} / '.format(SL_ROM) +
+        '[COLOR violet]cloneof[/COLOR] {}'.format(cloneof))
     info_text.append('[COLOR violet]description[/COLOR] {}'.format(rom['description']))
-    info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(cloneof))
     info_text.append('')
 
     table_str = []
@@ -3815,12 +3815,12 @@ def action_view_sl_item_audit_roms(cfg, machine_name, SL_name, SL_ROM, location)
     rom = roms[SL_ROM]
     rom_db_list = rom_audit_db[SL_ROM]
 
-    cloneof = rom['cloneof'] if rom['cloneof'] else 'None'
     info_text = []
-    info_text.append('[COLOR violet]SL_name[/COLOR] {}'.format(SL_name))
-    info_text.append('[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM))
+    cloneof = rom['cloneof'] if rom['cloneof'] else 'None'
+    info_text.append('[COLOR violet]SL_name[/COLOR] {} / '.format(SL_name) +
+        '[COLOR violet]SL_ROM[/COLOR] {} / '.format(SL_ROM) +
+        '[COLOR violet]cloneof[/COLOR] {}'.format(cloneof))
     info_text.append('[COLOR violet]description[/COLOR] {}'.format(rom['description']))
-    info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(cloneof))
     info_text.append('')
 
     # table_str = [    ['left', 'left',         'left', 'left',     'left'] ]
