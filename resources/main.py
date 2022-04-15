@@ -2159,30 +2159,30 @@ def render_catalog_parent_list(cfg, catalog_name, category_name):
         xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
         return
 
-    # --- Process ROMs for rendering ---
+    # Process ROMs for rendering.
     processing_ticks_start = time.time()
     r_list = render_process_machines(cfg, catalog_dic, catalog_name, category_name,
         render_db_dic, assets_db_dic, fav_machines, True, main_pclone_dic, False)
     processing_time = time.time() - processing_ticks_start
 
-    # --- Commit ROMs ---
-    rendering_ticks_start = time.time()
+    # Commit ROMs.
+    commit_ticks_start = time.time()
     set_Kodi_all_sorting_methods(cfg)
     render_commit_machines(cfg, r_list)
     xbmcplugin.endOfDirectory(cfg.addon_handle, succeeded = True, cacheToDisc = False)
-    rendering_time = time.time() - rendering_ticks_start
+    commit_time = time.time() - commit_ticks_start
 
-    # --- DEBUG Data loading/rendering statistics ---
-    total_time = loading_time + processing_time + rendering_time
+    # DEBUG Data loading/rendering statistics.
+    total_time = loading_time + processing_time + commit_time
     # log_debug('Loading catalog     {0:.4f} s'.format(catalog_t))
     # log_debug('Loading render db   {0:.4f} s'.format(render_t))
     # log_debug('Loading assets db   {0:.4f} s'.format(assets_t))
     # log_debug('Loading pclone dic  {0:.4f} s'.format(pclone_t))
     # log_debug('Loading MAME favs   {0:.4f} s'.format(favs_t))
-    log_debug('Loading time        {0:.4f} s'.format(loading_time))
-    log_debug('Processing time     {0:.4f} s'.format(processing_time))
-    log_debug('Rendering time      {0:.4f} s'.format(rendering_time))
-    log_debug('Total time          {0:.4f} s'.format(total_time))
+    log_debug('Loading time     {0:.4f} s'.format(loading_time))
+    log_debug('Processing time  {0:.4f} s'.format(processing_time))
+    log_debug('Commit time      {0:.4f} s'.format(commit_time))
+    log_debug('Total time       {0:.4f} s'.format(total_time))
 
 #
 # Renders a list of MAME Clone machines (including parent).
@@ -2257,25 +2257,25 @@ def render_catalog_clone_list(cfg, catalog_name, category_name, parent_name):
     log_debug('Rendering   {0:.4f} s'.format(rendering_time))
     log_debug('Total       {0:.4f} s'.format(total_time))
 
-#
 # First make this function work OK, then try to optimize it.
 # "Premature optimization is the root of all evil." Donald Knuth
 # Returns a list of dictionaries:
 # r_list = [
 #   {
-#     'm_name' : text_type, 'render_name' : text_type,
-#     'info' : {}, 'props' : {}, 'art' : {},
-#     'context' : [], 'URL' ; text_type
-#   }, ...
+#     'm_name' : text_type, 
+#     'render_name' : text_type,
+#     'info' : {},
+#     'props' : {},
+#     'art' : {},
+#     'context' : [],
+#     'URL' ; text_type
+#   },
+#   ...
 # ]
-#
-# By default renders a flat list, main_pclone_dic is not needed and filters are ignored.
-# These settings are for rendering the custom MAME filters.
-#
 def render_process_machines(cfg, catalog_dic, catalog_name, category_name,
     render_db_dic, assets_dic, fav_machines,
     flag_parent_list = False, main_pclone_dic = None, flag_ignore_filters = True):
-    # --- Prepare for processing ---
+    # Prepare for processing.
     display_hide_Mature = cfg.settings['display_hide_Mature']
     display_hide_BIOS = cfg.settings['display_hide_BIOS']
     if catalog_name == 'None' and category_name == 'BIOS': display_hide_BIOS = False
@@ -2288,6 +2288,7 @@ def render_process_machines(cfg, catalog_dic, catalog_name, category_name,
     # --- Traverse machines ---
     r_list = []
     for machine_name in catalog_dic[category_name]:
+        # Grab machine/ROM data.
         render_name = catalog_dic[category_name][machine_name]
         machine = render_db_dic[machine_name]
         m_assets = assets_dic[machine_name]
@@ -2299,18 +2300,17 @@ def render_process_machines(cfg, catalog_dic, catalog_name, category_name,
             if display_rom_available and m_assets['flags'][0] == 'r': continue
             if display_chd_available and m_assets['flags'][1] == 'c': continue
 
-        # --- Add machine to list, set default values ---
+        # Add machine/ROM to list, set default values.
         r_dict = {}
         r_dict['m_name'] = machine_name
-        AEL_InFav_bool_value = AEL_INFAV_BOOL_VALUE_FALSE
-        AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
-
         # main_pclone_dic and num_clones only used when rendering parents.
         if flag_parent_list:
             num_clones = len(main_pclone_dic[machine_name]) if machine_name in main_pclone_dic else 0
 
-        # --- Render machine name string ---
+        # Render machine name string and compute properties --------------------------------------
         display_name = render_name
+        AEL_InFav_bool_value = AEL_INFAV_BOOL_VALUE_FALSE
+        AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
         if display_MAME_flags:
             # Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status.
             flags_str = ' [COLOR skyblue]{}[/COLOR]'.format(m_assets['flags'])
@@ -2343,30 +2343,42 @@ def render_process_machines(cfg, catalog_dic, catalog_name, category_name,
             else:
                 AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
 
-        # --- Assets/artwork ---
+        # Make all the infolabels compatible with Advanced Emulator Launcher
+        ICON_OVERLAY = 6
+        r_dict['render_name'] = display_name
+        r_dict['info'] = {
+            'title' : display_name,
+            'year' : machine['year'],
+            'genre' : machine['genre'],
+            'studio' : machine['manufacturer'],
+            'plot' : m_assets['plot'],
+            'overlay' : ICON_OVERLAY,
+        }
+        if not cfg.settings['display_hide_trailers']:
+            r_dict['info']['trailer'] = m_assets['trailer']
+
+        # Assets/artwork -------------------------------------------------------------------------
         icon_path      = m_assets[cfg.mame_icon] if m_assets[cfg.mame_icon] else 'DefaultProgram.png'
         fanart_path    = m_assets[cfg.mame_fanart]
         banner_path    = m_assets['marquee']
         clearlogo_path = m_assets['clearlogo']
         poster_path    = m_assets['3dbox'] if m_assets['3dbox'] else m_assets['flyer']
+        r_dict['art'] = {
+            'title' : m_assets['title'],
+            'snap' : m_assets['snap'],
+            'boxfront' : m_assets['cabinet'],
+            'boxback' : m_assets['cpanel'],
+            'cartridge' : m_assets['PCB'],
+            'flyer' : m_assets['flyer'],
+            '3dbox' : m_assets['3dbox'],
+            'icon' : icon_path,
+            'fanart' : fanart_path,
+            'banner' : banner_path,
+            'clearlogo' : clearlogo_path,
+            'poster' : poster_path,
+        }
 
-        # --- Create listitem row ---
-        # Make all the infolabels compatible with Advanced Emulator Launcher
-        ICON_OVERLAY = 6
-        r_dict['render_name'] = display_name
-        if cfg.settings['display_hide_trailers']:
-            r_dict['info'] = {
-                'title' : display_name, 'year' : machine['year'],
-                'genre' : machine['genre'], 'studio' : machine['manufacturer'],
-                'plot' : m_assets['plot'], 'overlay' : ICON_OVERLAY,
-            }
-        else:
-            r_dict['info'] = {
-                'title' : display_name, 'year' : machine['year'],
-                'genre' : machine['genre'], 'studio' : machine['manufacturer'],
-                'plot' : m_assets['plot'], 'overlay' : ICON_OVERLAY,
-                'trailer' : m_assets['trailer'],
-            }
+        # Properties -----------------------------------------------------------------------------
         r_dict['props'] = {
             'nplayers' : machine['nplayers'],
             'platform' : 'MAME',
@@ -2375,18 +2387,7 @@ def render_process_machines(cfg, catalog_dic, catalog_name, category_name,
             AEL_INFAV_BOOL_LABEL : AEL_InFav_bool_value,
         }
 
-        # --- Assets ---
-        r_dict['art'] = {
-            'title'     : m_assets['title'],   'snap'      : m_assets['snap'],
-            'boxfront'  : m_assets['cabinet'], 'boxback'   : m_assets['cpanel'],
-            'cartridge' : m_assets['PCB'],     'flyer'     : m_assets['flyer'],
-            '3dbox'     : m_assets['3dbox'],
-            'icon'      : icon_path,           'fanart'    : fanart_path,
-            'banner'    : banner_path,         'clearlogo' : clearlogo_path,
-            'poster'    : poster_path
-        }
-
-        # --- Create context menu ---
+        # Context menu ---------------------------------------------------------------------------
         URL_view_DAT = misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', machine_name)
         URL_view     = misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
         URL_fav      = misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
@@ -2411,44 +2412,29 @@ def render_process_machines(cfg, catalog_dic, catalog_name, category_name,
             ]
         r_dict['context'] = commands
 
-        # Add row to the list.
+        # Create URL and add row to the list -----------------------------------------------------
         r_dict['URL'] = misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
         r_list.append(r_dict)
 
     return r_list
 
 # Renders a processed list of machines/ROMs. Basically, this function only calls the
-# Kodi API with the precomputed values.
+# Kodi API with all the precomputed values.
 def render_commit_machines(cfg, r_list):
     listitem_list = []
-
-    if kodi_running_version >= KODI_VERSION_LEIA:
-        # Kodi Leia and up.
-        log_debug('Rendering machine list in Kodi Leia and up.')
-        for r_dict in r_list:
-            # --- New offscreen parameter in Leia ---
-            # offscreen increases the performance a bit. For example, for a list with 4058 items:
-            # offscreent = True  Rendering time  0.4620 s
-            # offscreent = True  Rendering time  0.5780 s
-            # See https://forum.kodi.tv/showthread.php?tid=329315&pid=2711937#pid2711937
-            # and https://forum.kodi.tv/showthread.php?tid=307394&pid=2531524
-            listitem = xbmcgui.ListItem(r_dict['render_name'], offscreen = True)
-            listitem.setInfo('video', r_dict['info'])
-            listitem.setProperties(r_dict['props'])
-            listitem.setArt(r_dict['art'])
-            listitem.addContextMenuItems(r_dict['context'])
-            listitem_list.append((r_dict['URL'], listitem, False))
-    else:
-        # Kodi Krypton and down.
-        log_debug('Rendering machine list in Kodi Krypton and down.')
-        for r_dict in r_list:
-            listitem = xbmcgui.ListItem(r_dict['render_name'])
-            listitem.setInfo('video', r_dict['info'])
-            for prop_name in r_dict['props']:
-                listitem.setProperty(prop_name, r_dict['props'][prop_name])
-            listitem.setArt(r_dict['art'])
-            listitem.addContextMenuItems(r_dict['context'])
-            listitem_list.append((r_dict['URL'], listitem, False))
+    for r_dict in r_list:
+        # --- New offscreen parameter in Leia ---
+        # offscreen increases the performance a bit. For example, for a list with 4058 items:
+        # offscreent = True  Rendering time  0.4620 s
+        # offscreent = True  Rendering time  0.5780 s
+        # See https://forum.kodi.tv/showthread.php?tid=329315&pid=2711937#pid2711937
+        # and https://forum.kodi.tv/showthread.php?tid=307394&pid=2531524
+        listitem = xbmcgui.ListItem(r_dict['render_name'], offscreen = True)
+        listitem.setInfo('video', r_dict['info'])
+        listitem.setProperties(r_dict['props'])
+        listitem.setArt(r_dict['art'])
+        listitem.addContextMenuItems(r_dict['context'])
+        listitem_list.append((r_dict['URL'], listitem, False))
 
     # Add all listitems in one go.
     xbmcplugin.addDirectoryItems(cfg.addon_handle, listitem_list, len(listitem_list))
