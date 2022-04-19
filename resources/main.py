@@ -1799,7 +1799,7 @@ def render_GlobalReports_vlaunchers(cfg):
     xbmcplugin.addDirectoryItem(cfg.addon_handle, url_str, listitem, isFolder = False)
 
     # View timestamps and DAT/INI version.
-    t = 'View timestamps'
+    t = 'View DAT/INI versions and timestamps'
     listitem = aux_get_generic_listitem(cfg, t, t, common_commands)
     url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_STATS_TIMESTAMPS')
     xbmcplugin.addDirectoryItem(cfg.addon_handle, url_str, listitem, isFolder = False)
